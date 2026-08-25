@@ -1,0 +1,2284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Financial Hero: Smart Saver 2D - Form 4 Mathematics</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: #080c16;
+            color: #f3f4f6;
+            touch-action: manipulation;
+            user-select: none;
+            -webkit-user-select: none;
+            overflow: hidden;
+        }
+        .font-tech {
+            font-family: 'Orbitron', sans-serif;
+        }
+        .font-code {
+            font-family: 'JetBrains Mono', monospace;
+        }
+        canvas {
+            display: block;
+            background: radial-gradient(circle at center, #172338 0%, #090e1a 100%);
+            border-radius: 14px;
+            box-shadow: 0 12px 35px rgba(0, 0, 0, 0.6), 0 0 25px rgba(16, 185, 129, 0.15);
+        }
+        .glass-panel {
+            background: rgba(13, 20, 36, 0.88);
+            backdrop-filter: blur(14px);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+        }
+        .glass-panel-glow {
+            background: rgba(13, 20, 36, 0.94);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(52, 211, 153, 0.25);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5), 0 0 20px rgba(16, 185, 129, 0.12);
+        }
+        .glow-green {
+            box-shadow: 0 0 18px rgba(16, 185, 129, 0.45);
+        }
+        .glow-cyan {
+            box-shadow: 0 0 18px rgba(6, 182, 212, 0.45);
+        }
+        .glow-gold {
+            box-shadow: 0 0 20px rgba(245, 158, 11, 0.45);
+        }
+        .glow-purple {
+            box-shadow: 0 0 18px rgba(168, 85, 247, 0.45);
+        }
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: rgba(15, 23, 42, 0.6);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #334155;
+            border-radius: 3px;
+        }
+        @keyframes pulse-subtle {
+            0%, 100% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.04); opacity: 0.9; }
+        }
+        .animate-pulse-subtle {
+            animation: pulse-subtle 2s infinite ease-in-out;
+        }
+    </style>
+</head>
+<body class="h-screen w-screen flex flex-col justify-between p-2 md:p-3 select-none">
+
+    <!-- TOP HUD BAR -->
+    <header class="glass-panel w-full max-w-5xl mx-auto rounded-xl px-3.5 py-2.5 flex items-center justify-between z-10">
+        <!-- Logo / Title & Stage Select Trigger -->
+        <div class="flex items-center space-x-2.5">
+            <button id="btn-logo" class="w-10 h-10 rounded-xl bg-gradient-to-tr from-emerald-500 via-teal-400 to-cyan-400 flex items-center justify-center font-tech font-black text-slate-950 text-2xl shadow-lg hover:scale-105 transition cursor-pointer">
+                $
+            </button>
+            <div>
+                <div class="flex items-center space-x-2">
+                    <h1 class="font-tech text-sm md:text-base font-bold tracking-wider text-emerald-400">FINANCIAL HERO</h1>
+                    <span class="bg-emerald-500/20 text-emerald-300 text-xs font-bold px-2 py-0.5 rounded border border-emerald-500/30">SPM Form 4</span>
+                </div>
+                <p class="text-xs text-slate-400 hidden sm:block">Chapter 10: Financial Management 2D Adventure</p>
+            </div>
+        </div>
+
+        <!-- Gameplay Stats -->
+        <div class="flex items-center space-x-3 md:space-x-6">
+            <!-- Stage Selector Button -->
+            <button id="btn-open-stages" class="px-3 py-1.5 rounded-lg bg-slate-800/90 hover:bg-slate-700 border border-slate-600 text-center transition group">
+                <span class="text-xs uppercase tracking-wider text-slate-400 block font-semibold group-hover:text-cyan-300">Stage Map</span>
+                <span id="hud-level" class="font-tech text-sm md:text-base font-bold text-cyan-400 flex items-center justify-center gap-1">
+                    Stage 1 <span class="text-xs">▼</span>
+                </span>
+            </button>
+
+            <!-- Health Hearts -->
+            <div class="text-center">
+                <span class="text-xs uppercase tracking-wider text-slate-400 block font-semibold">Health</span>
+                <div id="hud-health" class="flex space-x-0.5 text-base md:text-lg">
+                    <span>❤️</span><span>❤️</span><span>❤️</span>
+                </div>
+            </div>
+
+            <!-- Active Buffs Indicator -->
+            <div id="hud-buff-container" class="hidden md:flex items-center space-x-1.5 min-w-[80px]">
+                <div id="hud-buff-badge" class="px-2.5 py-1 rounded-full text-xs font-bold bg-amber-500/20 text-amber-300 border border-amber-500/40 hidden">
+                    ⚡ 2X (8s)
+                </div>
+                <div id="hud-shield-badge" class="px-2.5 py-1 rounded-full text-xs font-bold bg-cyan-500/20 text-cyan-300 border border-cyan-500/40 hidden">
+                    🛡️ Shield
+                </div>
+            </div>
+
+            <!-- Savings Score -->
+            <div class="text-center">
+                <span class="text-xs uppercase tracking-wider text-slate-400 block font-semibold">Net Savings</span>
+                <span id="hud-savings" class="font-tech text-sm md:text-lg font-extrabold text-emerald-400">RM 0</span>
+            </div>
+        </div>
+
+        <!-- Utility Buttons -->
+        <div class="flex items-center space-x-2">
+            <!-- Live Balance Sheet Modal Trigger -->
+            <button id="btn-balance-sheet" title="View Financial Balance Sheet (B)" class="px-2.5 py-1.5 rounded-lg bg-emerald-950/80 hover:bg-emerald-900/90 border border-emerald-500/40 text-emerald-300 font-bold text-xs md:text-sm flex items-center space-x-1.5 transition cursor-pointer">
+                <span>📊</span> <span class="hidden lg:inline text-xs font-bold">Balance Sheet</span>
+            </button>
+            <button id="btn-audio" title="Mute/Unmute Audio" class="w-9 h-9 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 flex items-center justify-center text-sm transition cursor-pointer">
+                🔊
+            </button>
+            <button id="btn-restart" title="Restart Level" class="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 font-semibold text-xs md:text-sm transition cursor-pointer">
+                ↺ Reset
+            </button>
+        </div>
+    </header>
+
+    <!-- MAIN GAME CANVAS WRAPPER -->
+    <main class="relative flex-1 w-full max-w-5xl mx-auto my-1 flex items-center justify-center overflow-hidden">
+        <canvas id="gameCanvas" class="w-full h-full max-h-[560px] object-contain border border-slate-800/80"></canvas>
+
+        <!-- START OVERLAY -->
+        <div id="screen-start" class="absolute inset-0 glass-panel-glow rounded-xl flex flex-col items-center justify-center p-6 text-center z-20 overflow-y-auto">
+            <div class="inline-block p-4 rounded-2xl bg-gradient-to-tr from-emerald-500/20 to-cyan-500/20 border border-emerald-500/30 mb-3 animate-pulse-subtle">
+                <span class="text-5xl md:text-6xl">🚀</span>
+            </div>
+            <h2 class="font-tech text-3xl md:text-5xl font-black text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 via-teal-300 to-cyan-400 mb-2">
+                FINANCIAL HERO 2D
+            </h2>
+            <p class="text-sm md:text-base text-slate-300 max-w-xl mb-6 leading-relaxed">
+                Master <strong class="text-emerald-400">Form 4 Mathematics (Chapter 10: Financial Management)</strong> in an epic 6-stage arcade platformer! Calculate cash flows, eliminate debt traps, activate compound interest multipliers, and build your emergency fund!
+            </p>
+
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-3 w-full max-w-2xl text-left mb-6 text-sm">
+                <div class="bg-slate-800/80 p-3 rounded-xl border border-slate-700/80 flex items-center space-x-2.5">
+                    <span class="text-2xl">💎</span>
+                    <div>
+                        <div class="font-bold text-emerald-400 text-xs md:text-sm">Income Gems</div>
+                        <div class="text-xs text-slate-400">Active & Passive Assets</div>
+                    </div>
+                </div>
+                <div class="bg-slate-800/80 p-3 rounded-xl border border-slate-700/80 flex items-center space-x-2.5">
+                    <span class="text-2xl">🛡️</span>
+                    <div>
+                        <div class="font-bold text-cyan-400 text-xs md:text-sm">Insurance Shield</div>
+                        <div class="text-xs text-slate-400">Hazard Hit Protection</div>
+                    </div>
+                </div>
+                <div class="bg-slate-800/80 p-3 rounded-xl border border-slate-700/80 flex items-center space-x-2.5">
+                    <span class="text-2xl">⚡</span>
+                    <div>
+                        <div class="font-bold text-amber-400 text-xs md:text-sm">Compound Surge</div>
+                        <div class="text-xs text-slate-400">2X Multiplier Boost</div>
+                    </div>
+                </div>
+                <div class="bg-slate-800/80 p-3 rounded-xl border border-slate-700/80 flex items-center space-x-2.5">
+                    <span class="text-2xl">🧹</span>
+                    <div>
+                        <div class="font-bold text-purple-400 text-xs md:text-sm">Debt Buster</div>
+                        <div class="text-xs text-slate-400">Destroy Debt Traps</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="flex flex-wrap items-center justify-center gap-4">
+                <button id="btn-start" class="font-tech px-9 py-4 rounded-xl bg-gradient-to-r from-emerald-500 via-teal-500 to-cyan-500 hover:from-emerald-400 hover:to-cyan-400 text-slate-950 font-black text-sm md:text-base tracking-wider uppercase transition-all duration-200 transform hover:scale-105 glow-green cursor-pointer">
+                    Start Mission ➔
+                </button>
+                <button id="btn-start-stages" class="font-tech px-7 py-4 rounded-xl bg-slate-800 hover:bg-slate-700 border border-slate-600 text-slate-200 font-bold text-sm md:text-base tracking-wider transition cursor-pointer">
+                    Select Stage (1-6)
+                </button>
+            </div>
+        </div>
+
+        <!-- STAGE SELECT MODAL -->
+        <div id="modal-stages" class="hidden fixed inset-0 bg-slate-950/85 backdrop-blur-md flex items-center justify-center p-3 md:p-4 z-50 overflow-y-auto">
+            <div class="bg-slate-900 border border-slate-700 rounded-2xl max-w-2xl w-full p-5 md:p-6 shadow-2xl space-y-4 max-h-[92vh] overflow-y-auto my-auto">
+                <div class="flex justify-between items-center border-b border-slate-800 pb-3">
+                    <div>
+                        <h3 class="font-tech text-base md:text-xl font-bold text-emerald-400">STAGE MAP & CURRICULUM</h3>
+                        <p class="text-xs text-slate-400">Form 4 Chapter 10 Mathematics Roadmap</p>
+                    </div>
+                    <button id="btn-close-stages" class="w-9 h-9 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-400 hover:text-white flex items-center justify-center font-bold cursor-pointer">
+                        ✕
+                    </button>
+                </div>
+
+                <div id="stages-grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3.5">
+                    <!-- Dynamically generated stage cards -->
+                </div>
+
+                <div class="flex justify-between items-center pt-3 border-t border-slate-800 text-sm text-slate-400">
+                    <span>Total Stars: <strong id="total-stars-count" class="text-amber-400 font-tech text-base">0 / 18 ⭐</strong></span>
+                    <button id="btn-reset-progress" class="text-xs text-red-400 hover:underline cursor-pointer">Reset Saved Progress</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- QUIZ MODAL POPUP -->
+        <div id="modal-quiz" class="hidden fixed inset-0 bg-slate-950/85 backdrop-blur-md flex items-center justify-center p-3 md:p-4 z-50 overflow-y-auto">
+            <div class="bg-slate-900 border border-slate-700 rounded-2xl max-w-xl w-full p-4 md:p-6 shadow-2xl space-y-3 max-h-[92vh] overflow-y-auto my-auto">
+                <div class="flex justify-between items-center border-b border-slate-800 pb-2.5">
+                    <div class="flex items-center space-x-2">
+                        <span class="w-2.5 h-2.5 rounded-full bg-cyan-400 animate-ping"></span>
+                        <span class="font-tech text-xs md:text-sm text-cyan-400 font-bold tracking-widest uppercase">Financial Terminal</span>
+                    </div>
+                    <span id="quiz-number" class="text-xs md:text-sm bg-slate-800 border border-slate-700 text-slate-300 px-3 py-1 rounded-full font-code font-semibold">Q1 / 24</span>
+                </div>
+
+                <div class="bg-slate-950/80 p-3.5 md:p-4 rounded-xl border border-slate-800 space-y-1">
+                    <span id="quiz-topic" class="text-xs uppercase font-bold text-emerald-400 tracking-wider block">Topic: Budgeting & SMART Goals</span>
+                    <h3 id="quiz-question" class="text-sm md:text-base font-bold text-slate-100 leading-snug">
+                        Question text goes here...
+                    </h3>
+                </div>
+
+                <div id="quiz-options" class="space-y-2 pt-0.5">
+                    <!-- Option buttons dynamically generated -->
+                </div>
+
+                <div id="quiz-feedback" class="hidden p-3.5 md:p-4 rounded-xl text-sm font-semibold leading-relaxed border space-y-1.5 shadow-inner"></div>
+
+                <div class="flex justify-end pt-1 pb-1">
+                    <button id="btn-quiz-continue" class="hidden font-tech px-7 py-3 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-400 hover:to-teal-400 text-slate-950 font-black text-xs md:text-sm uppercase tracking-wider transition transform hover:scale-105 shadow-xl cursor-pointer">
+                        Continue Mission ➔
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- LIVE BALANCE SHEET DRAWER / MODAL -->
+        <div id="modal-balance-sheet" class="hidden fixed inset-0 bg-slate-950/85 backdrop-blur-md flex items-center justify-center p-3 md:p-4 z-50 overflow-y-auto">
+            <div class="bg-slate-900 border border-slate-700 rounded-2xl max-w-xl w-full p-5 md:p-6 shadow-2xl space-y-4 max-h-[92vh] overflow-y-auto my-auto">
+                <div class="flex justify-between items-center border-b border-slate-800 pb-3">
+                    <div class="flex items-center space-x-2.5">
+                        <span class="text-2xl">📊</span>
+                        <div>
+                            <h3 class="font-tech text-base md:text-lg font-bold text-emerald-400">FINANCIAL BALANCE SHEET</h3>
+                            <p class="text-xs text-slate-400">Real-time Personal Financial Statement</p>
+                        </div>
+                    </div>
+                    <button id="btn-close-balance-sheet" class="w-9 h-9 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-400 hover:text-white flex items-center justify-center font-bold cursor-pointer">
+                        ✕
+                    </button>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs md:text-sm">
+                    <!-- Assets & Inflow -->
+                    <div class="bg-slate-950/80 p-3.5 rounded-xl border border-emerald-500/25 space-y-2.5">
+                        <div class="font-bold text-emerald-400 uppercase tracking-wider text-xs md:text-sm flex justify-between">
+                            <span>Assets / Inflow</span>
+                            <span>(+)</span>
+                        </div>
+                        <div class="flex justify-between text-slate-300">
+                            <span>Active Income:</span>
+                            <span id="bs-active-income" class="font-code text-emerald-400 font-bold">RM 0</span>
+                        </div>
+                        <div class="flex justify-between text-slate-300">
+                            <span>Passive Income:</span>
+                            <span id="bs-passive-income" class="font-code text-cyan-400 font-bold">RM 0</span>
+                        </div>
+                        <div class="flex justify-between text-slate-300">
+                            <span>Quiz Knowledge Bonuses:</span>
+                            <span id="bs-quiz-bonus" class="font-code text-amber-400 font-bold">RM 0</span>
+                        </div>
+                        <div class="border-t border-slate-800 pt-1.5 flex justify-between font-bold text-slate-100">
+                            <span>Total Cash Inflow:</span>
+                            <span id="bs-total-inflow" class="font-code text-emerald-300">RM 0</span>
+                        </div>
+                    </div>
+
+                    <!-- Liabilities & Hazards -->
+                    <div class="bg-slate-950/80 p-3.5 rounded-xl border border-red-500/25 space-y-2.5">
+                        <div class="font-bold text-red-400 uppercase tracking-wider text-xs md:text-sm flex justify-between">
+                            <span>Debts & Hazards</span>
+                            <span>(-)</span>
+                        </div>
+                        <div class="flex justify-between text-slate-300">
+                            <span>Impulse / Debt Hits:</span>
+                            <span id="bs-debt-losses" class="font-code text-red-400 font-bold">RM 0</span>
+                        </div>
+                        <div class="flex justify-between text-slate-300">
+                            <span>Shields Blocked:</span>
+                            <span id="bs-shield-blocked" class="font-code text-cyan-300 font-bold">0 Hits</span>
+                        </div>
+                        <div class="flex justify-between text-slate-300">
+                            <span>Debt Traps Cleared:</span>
+                            <span id="bs-debt-cleared" class="font-code text-purple-300 font-bold">0</span>
+                        </div>
+                        <div class="border-t border-slate-800 pt-1.5 flex justify-between font-bold text-slate-100">
+                            <span>Total Lost to Traps:</span>
+                            <span id="bs-total-lost" class="font-code text-red-300">RM 0</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Emergency Fund Gauge -->
+                <div class="bg-slate-950/80 p-3.5 rounded-xl border border-slate-800 space-y-2">
+                    <div class="flex justify-between text-xs md:text-sm font-semibold">
+                        <span class="text-slate-200">Emergency Fund Target (RM 10,000)</span>
+                        <span id="bs-ef-percent" class="text-emerald-400 font-code font-bold">0%</span>
+                    </div>
+                    <div class="w-full bg-slate-800 rounded-full h-3 overflow-hidden">
+                        <div id="bs-ef-bar" class="bg-gradient-to-r from-emerald-500 to-cyan-400 h-3 rounded-full transition-all duration-300" style="width: 0%"></div>
+                    </div>
+                    <div class="flex justify-between text-xs text-slate-400 italic">
+                        <span>Form 4 Rule: 3 to 6 months of expenses</span>
+                        <span id="bs-ef-months" class="text-cyan-300 font-bold">0.0 Months Built</span>
+                    </div>
+                </div>
+
+                <!-- Net Worth Calculation Summary -->
+                <div class="bg-gradient-to-r from-emerald-950/40 via-teal-950/30 to-slate-900 p-4 rounded-xl border border-emerald-500/30 flex items-center justify-between">
+                    <div>
+                        <div class="text-xs uppercase tracking-wider text-slate-400 font-bold">Net Financial Worth</div>
+                        <div class="text-xs text-slate-300">Total Assets − Total Liabilities</div>
+                    </div>
+                    <div id="bs-net-worth" class="font-tech text-xl md:text-2xl font-black text-emerald-400">
+                        RM 0
+                    </div>
+                </div>
+
+                <div class="flex justify-end pt-1">
+                    <button id="btn-resume-game" class="font-tech px-6 py-3 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 font-bold text-xs md:text-sm uppercase tracking-wider transition cursor-pointer">
+                        Resume Game (ESC)
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- STAGE CLEAR MODAL -->
+        <div id="screen-stageclear" class="hidden fixed inset-0 bg-slate-950/85 backdrop-blur-md flex items-center justify-center p-3 md:p-4 z-50 overflow-y-auto">
+            <div class="glass-panel-glow border border-emerald-500/30 rounded-2xl p-6 md:p-8 max-w-md w-full text-center flex flex-col items-center shadow-2xl my-auto">
+                <div class="text-5xl mb-2 animate-bounce">🎉</div>
+                <h2 class="font-tech text-2xl md:text-4xl font-black text-emerald-400 mb-1">STAGE CLEARED!</h2>
+                <p id="clear-stage-title" class="text-sm md:text-base text-slate-300 mb-3 font-semibold">Level Complete</p>
+
+                <!-- Star Rating Display -->
+                <div id="clear-stars-row" class="flex space-x-2 text-4xl mb-4">
+                    <span id="star-1" class="text-slate-600 transition duration-300">⭐</span>
+                    <span id="star-2" class="text-slate-600 transition duration-300">⭐</span>
+                    <span id="star-3" class="text-slate-600 transition duration-300">⭐</span>
+                </div>
+
+                <div class="bg-slate-900/90 border border-slate-800 rounded-xl p-5 w-full text-left space-y-2.5 mb-5 text-sm">
+                    <div class="flex justify-between border-b border-slate-800/80 pb-1.5">
+                        <span class="text-slate-400">Stage Savings Earned:</span>
+                        <span id="clear-savings" class="font-bold text-emerald-400 font-code">RM 0</span>
+                    </div>
+                    <div class="flex justify-between border-b border-slate-800/80 pb-1.5">
+                        <span class="text-slate-400">Health Remaining:</span>
+                        <span id="clear-health" class="font-bold text-red-400">3 / 3</span>
+                    </div>
+                    <div class="flex justify-between border-b border-slate-800/80 pb-1.5">
+                        <span class="text-slate-400">Quiz Accuracy:</span>
+                        <span id="clear-quiz" class="font-bold text-cyan-400 font-code">100%</span>
+                    </div>
+                    <div class="flex justify-between text-slate-300 pt-0.5">
+                        <span class="text-slate-400">Total Net Worth:</span>
+                        <span id="clear-total-net" class="font-bold text-amber-300 font-code">RM 0</span>
+                    </div>
+                </div>
+
+                <div class="flex space-x-3">
+                    <button id="btn-stage-map" class="font-tech px-6 py-3.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold text-xs md:text-sm uppercase tracking-wider transition cursor-pointer">
+                        Stage Map
+                    </button>
+                    <button id="btn-next-stage" class="font-tech px-8 py-3.5 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-400 hover:to-teal-400 text-slate-950 font-black text-xs md:text-sm uppercase tracking-wider transition transform hover:scale-105 shadow-lg cursor-pointer">
+                        Next Stage ➔
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- GAME OVER MODAL -->
+        <div id="screen-gameover" class="hidden fixed inset-0 bg-slate-950/85 backdrop-blur-md flex items-center justify-center p-3 md:p-4 z-50 overflow-y-auto">
+            <div class="glass-panel border border-red-500/40 rounded-2xl p-6 md:p-8 max-w-md w-full text-center flex flex-col items-center shadow-2xl my-auto">
+                <div class="text-6xl mb-2">💸</div>
+                <h2 class="font-tech text-3xl md:text-4xl font-black text-red-500 mb-2">FINANCIAL CRISIS</h2>
+                <p id="gameover-reason" class="text-sm md:text-base text-slate-300 max-w-md mb-6 leading-relaxed">
+                    Your financial health dropped to zero due to bad debt traps and negative cash flow!
+                </p>
+                <div class="flex space-x-4">
+                    <button id="btn-gameover-map" class="font-tech px-6 py-3.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold text-xs md:text-sm tracking-wider uppercase transition cursor-pointer">
+                        Stage Map
+                    </button>
+                    <button id="btn-retry" class="font-tech px-8 py-3.5 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-black text-xs md:text-sm tracking-wider uppercase transition transform hover:scale-105 cursor-pointer">
+                        Retry Level ↺
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- GRAND VICTORY MODAL (ALL 6 STAGES COMPLETED) -->
+        <div id="screen-victory" class="hidden fixed inset-0 bg-slate-950/85 backdrop-blur-md flex items-center justify-center p-3 md:p-4 z-50 overflow-y-auto">
+            <div class="glass-panel-glow border border-cyan-500/30 rounded-2xl p-6 md:p-8 max-w-lg w-full text-center flex flex-col items-center shadow-2xl my-auto">
+                <div class="text-6xl mb-2 animate-bounce">🏆</div>
+                <h2 class="font-tech text-3xl md:text-5xl font-black text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 via-amber-300 to-cyan-300 mb-2">
+                    FINANCIAL FREEDOM MASTER!
+                </h2>
+                <p class="text-sm md:text-base text-slate-300 mb-4 max-w-lg">
+                    Congratulations! You have completed all 6 stages of Form 4 Mathematics Chapter 10: Financial Management with distinction!
+                </p>
+
+                <div class="bg-slate-900/90 border border-slate-800 rounded-xl p-5 w-full text-left space-y-2.5 mb-6 text-sm md:text-base">
+                    <div class="flex justify-between border-b border-slate-800 pb-2">
+                        <span class="text-slate-400">Total Net Worth Accumulated:</span>
+                        <span id="vic-savings" class="font-bold text-emerald-400 font-code text-base md:text-lg">RM 0</span>
+                    </div>
+                    <div class="flex justify-between border-b border-slate-800 pb-2">
+                        <span class="text-slate-400">Overall Quiz Accuracy:</span>
+                        <span id="vic-accuracy" class="font-bold text-cyan-400 font-code">0%</span>
+                    </div>
+                    <div class="flex justify-between border-b border-slate-800 pb-2">
+                        <span class="text-slate-400">Total Stars Achieved:</span>
+                        <span id="vic-stars" class="font-bold text-amber-400 font-code">18 / 18 ⭐</span>
+                    </div>
+                    <div class="flex justify-between border-b border-slate-800 pb-2">
+                        <span class="text-slate-400">Financial Advisor Grade:</span>
+                        <span id="vic-grade" class="font-bold text-yellow-300">Chartered Financial Master</span>
+                    </div>
+                    <div class="pt-2">
+                        <p class="text-xs md:text-sm text-slate-400 leading-relaxed italic" id="vic-eval">
+                            Outstanding grasp of financial planning, compounding assets, emergency buffers, and debt management!
+                        </p>
+                    </div>
+                </div>
+
+                <div class="flex space-x-4">
+                    <button id="btn-vic-stages" class="font-tech px-7 py-3.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 font-bold text-xs md:text-sm uppercase tracking-wider transition cursor-pointer">
+                        Stage Select
+                    </button>
+                    <button id="btn-play-again" class="font-tech px-9 py-3.5 rounded-xl bg-gradient-to-r from-emerald-500 via-teal-500 to-cyan-500 text-slate-950 font-black text-xs md:text-sm uppercase tracking-wider transition transform hover:scale-105 shadow-lg cursor-pointer">
+                        Replay Campaign ↺
+                    </button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- MOBILE / TOUCH CONTROLS -->
+    <footer class="w-full max-w-5xl mx-auto flex justify-between items-center px-2 py-1.5 z-10 select-none">
+        <!-- Directional Touch Buttons -->
+        <div class="flex space-x-2.5">
+            <button id="btn-left" class="w-13 h-13 md:w-16 md:h-16 rounded-xl glass-panel active:bg-emerald-500/30 text-white font-bold text-xl flex items-center justify-center border border-slate-700 transition cursor-pointer">
+                ◀
+            </button>
+            <button id="btn-right" class="w-13 h-13 md:w-16 md:h-16 rounded-xl glass-panel active:bg-emerald-500/30 text-white font-bold text-xl flex items-center justify-center border border-slate-700 transition cursor-pointer">
+                ▶
+            </button>
+        </div>
+
+        <div class="text-xs md:text-sm text-slate-300 hidden md:block text-center font-medium">
+            Controls: <span class="bg-slate-800 px-2 py-0.5 rounded text-emerald-300 font-bold">A / ◀</span> Move Left &bull; 
+            <span class="bg-slate-800 px-2 py-0.5 rounded text-emerald-300 font-bold">D / ▶</span> Move Right &bull; 
+            <span class="bg-slate-800 px-2 py-0.5 rounded text-cyan-300 font-bold">Space / W / ▲</span> Jump &bull; 
+            <span class="bg-slate-800 px-2 py-0.5 rounded text-amber-300 font-bold">B</span> Balance Sheet
+        </div>
+
+        <!-- Jump Touch Button & Quick Balance Sheet Button -->
+        <div class="flex space-x-2.5">
+            <button id="btn-touch-bs" class="w-13 h-13 md:hidden rounded-xl glass-panel text-emerald-300 font-bold text-base flex items-center justify-center border border-emerald-500/40 cursor-pointer">
+                📊
+            </button>
+            <button id="btn-jump" class="w-20 h-13 md:w-24 md:h-16 rounded-xl bg-gradient-to-tr from-emerald-600 via-teal-500 to-cyan-500 active:from-emerald-500 active:to-cyan-400 text-slate-950 font-tech font-extrabold text-sm md:text-base flex items-center justify-center shadow-lg border border-emerald-400/30 transition cursor-pointer">
+                JUMP
+            </button>
+        </div>
+    </footer>
+
+    <script>
+        /* ==========================================================================
+           SOUND SYNTHESIZER (Web Audio API)
+           ========================================================================== */
+        class SoundFX {
+            constructor() {
+                this.ctx = null;
+                this.enabled = true;
+            }
+
+            init() {
+                if (!this.ctx) {
+                    const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+                    if (AudioContextClass) {
+                        this.ctx = new AudioContextClass();
+                    }
+                }
+                if (this.ctx && this.ctx.state === 'suspended') {
+                    this.ctx.resume();
+                }
+            }
+
+            playJump() {
+                if (!this.enabled || !this.ctx) return;
+                try {
+                    const osc = this.ctx.createOscillator();
+                    const gain = this.ctx.createGain();
+                    osc.connect(gain);
+                    gain.connect(this.ctx.destination);
+                    osc.type = 'sine';
+                    osc.frequency.setValueAtTime(170, this.ctx.currentTime);
+                    osc.frequency.exponentialRampToValueAtTime(460, this.ctx.currentTime + 0.12);
+                    gain.gain.setValueAtTime(0.18, this.ctx.currentTime);
+                    gain.gain.linearRampToValueAtTime(0.01, this.ctx.currentTime + 0.12);
+                    osc.start();
+                    osc.stop(this.ctx.currentTime + 0.12);
+                } catch(e) {}
+            }
+
+            playSpring() {
+                if (!this.enabled || !this.ctx) return;
+                try {
+                    const osc = this.ctx.createOscillator();
+                    const gain = this.ctx.createGain();
+                    osc.connect(gain);
+                    gain.connect(this.ctx.destination);
+                    osc.type = 'triangle';
+                    osc.frequency.setValueAtTime(200, this.ctx.currentTime);
+                    osc.frequency.exponentialRampToValueAtTime(800, this.ctx.currentTime + 0.25);
+                    gain.gain.setValueAtTime(0.25, this.ctx.currentTime);
+                    gain.gain.linearRampToValueAtTime(0.01, this.ctx.currentTime + 0.25);
+                    osc.start();
+                    osc.stop(this.ctx.currentTime + 0.25);
+                } catch(e) {}
+            }
+
+            playCoin() {
+                if (!this.enabled || !this.ctx) return;
+                try {
+                    const osc = this.ctx.createOscillator();
+                    const gain = this.ctx.createGain();
+                    osc.connect(gain);
+                    gain.connect(this.ctx.destination);
+                    osc.type = 'triangle';
+                    osc.frequency.setValueAtTime(587.33, this.ctx.currentTime); // D5
+                    osc.frequency.setValueAtTime(880, this.ctx.currentTime + 0.07); // A5
+                    gain.gain.setValueAtTime(0.22, this.ctx.currentTime);
+                    gain.gain.linearRampToValueAtTime(0.01, this.ctx.currentTime + 0.22);
+                    osc.start();
+                    osc.stop(this.ctx.currentTime + 0.22);
+                } catch(e) {}
+            }
+
+            playPowerUp() {
+                if (!this.enabled || !this.ctx) return;
+                try {
+                    const now = this.ctx.currentTime;
+                    [330, 440, 554, 659, 880].forEach((freq, idx) => {
+                        const osc = this.ctx.createOscillator();
+                        const gain = this.ctx.createGain();
+                        osc.connect(gain);
+                        gain.connect(this.ctx.destination);
+                        osc.type = 'sine';
+                        osc.frequency.value = freq;
+                        gain.gain.setValueAtTime(0.18, now + idx * 0.05);
+                        gain.gain.linearRampToValueAtTime(0.01, now + idx * 0.05 + 0.15);
+                        osc.start(now + idx * 0.05);
+                        osc.stop(now + idx * 0.05 + 0.15);
+                    });
+                } catch(e) {}
+            }
+
+            playShieldBlock() {
+                if (!this.enabled || !this.ctx) return;
+                try {
+                    const osc = this.ctx.createOscillator();
+                    const gain = this.ctx.createGain();
+                    osc.connect(gain);
+                    gain.connect(this.ctx.destination);
+                    osc.type = 'square';
+                    osc.frequency.setValueAtTime(400, this.ctx.currentTime);
+                    osc.frequency.linearRampToValueAtTime(200, this.ctx.currentTime + 0.2);
+                    gain.gain.setValueAtTime(0.2, this.ctx.currentTime);
+                    gain.gain.linearRampToValueAtTime(0.01, this.ctx.currentTime + 0.2);
+                    osc.start();
+                    osc.stop(this.ctx.currentTime + 0.2);
+                } catch(e) {}
+            }
+
+            playHurt() {
+                if (!this.enabled || !this.ctx) return;
+                try {
+                    const osc = this.ctx.createOscillator();
+                    const gain = this.ctx.createGain();
+                    osc.connect(gain);
+                    gain.connect(this.ctx.destination);
+                    osc.type = 'sawtooth';
+                    osc.frequency.setValueAtTime(160, this.ctx.currentTime);
+                    osc.frequency.linearRampToValueAtTime(60, this.ctx.currentTime + 0.2);
+                    gain.gain.setValueAtTime(0.28, this.ctx.currentTime);
+                    gain.gain.linearRampToValueAtTime(0.01, this.ctx.currentTime + 0.2);
+                    osc.start();
+                    osc.stop(this.ctx.currentTime + 0.2);
+                } catch(e) {}
+            }
+
+            playCorrect() {
+                if (!this.enabled || !this.ctx) return;
+                try {
+                    const now = this.ctx.currentTime;
+                    [523.25, 659.25, 783.99, 1046.50].forEach((freq, idx) => {
+                        const osc = this.ctx.createOscillator();
+                        const gain = this.ctx.createGain();
+                        osc.connect(gain);
+                        gain.connect(this.ctx.destination);
+                        osc.type = 'sine';
+                        osc.frequency.value = freq;
+                        gain.gain.setValueAtTime(0.2, now + idx * 0.08);
+                        gain.gain.linearRampToValueAtTime(0.01, now + idx * 0.08 + 0.2);
+                        osc.start(now + idx * 0.08);
+                        osc.stop(now + idx * 0.08 + 0.2);
+                    });
+                } catch(e) {}
+            }
+
+            playWrong() {
+                if (!this.enabled || !this.ctx) return;
+                try {
+                    const now = this.ctx.currentTime;
+                    [220, 196].forEach((freq, idx) => {
+                        const osc = this.ctx.createOscillator();
+                        const gain = this.ctx.createGain();
+                        osc.connect(gain);
+                        gain.connect(this.ctx.destination);
+                        osc.type = 'square';
+                        osc.frequency.value = freq;
+                        gain.gain.setValueAtTime(0.18, now + idx * 0.14);
+                        gain.gain.linearRampToValueAtTime(0.01, now + idx * 0.14 + 0.22);
+                        osc.start(now + idx * 0.14);
+                        osc.stop(now + idx * 0.14 + 0.22);
+                    });
+                } catch(e) {}
+            }
+        }
+
+        const sfx = new SoundFX();
+
+        /* ==========================================================================
+           FORM 4 CHAPTER 10 MATHEMATICS QUESTION BANK (24 QUESTIONS)
+           ========================================================================== */
+        const quizDataset = [
+            // Stage 1 Topics: Financial Goals & Active/Passive Income (0-3)
+            {
+                topic: "Financial Process & SMART Concept",
+                question: "What is the FIRST essential step in the financial management process?",
+                options: ["Creating a financial plan", "Setting financial goals", "Evaluating financial status", "Reviewing progress"],
+                answer: 1,
+                explanation: "<strong>Step 1: Setting financial goals</strong> (short-term & long-term) is the starting foundation of effective financial planning before making any budget."
+            },
+            {
+                topic: "SMART Concept Breakdown",
+                question: "In the SMART financial goal principle, what does the letter 'M' stand for?",
+                options: ["Manageable", "Measurable", "Money-oriented", "Modern"],
+                answer: 1,
+                explanation: "<strong>M = Measurable</strong>. A financial goal must have a quantifiable monetary figure (e.g., 'Save RM3,000' rather than just 'Save money')."
+            },
+            {
+                topic: "Active vs Passive Income",
+                question: "Which of the following is classified as PASSIVE income?",
+                options: ["Overtime shift allowance", "Monthly fixed salary", "Dividends from stock and unit trusts", "Tuition center teaching wages"],
+                answer: 2,
+                explanation: "<strong>Passive income</strong> is generated from investments, rental properties, or dividends without requiring active daily labor."
+            },
+            {
+                topic: "Needs vs Wants",
+                question: "Which expenditure item is a basic NEED rather than a luxury WANT?",
+                options: ["Basic nutritious food & clean water", "Flagship smartphone upgrade", "Designer streetwear clothes", "Online gaming subscriptions"],
+                answer: 0,
+                explanation: "<strong>Needs</strong> are fundamental essentials for daily survival and health (staple food, shelter, healthcare)."
+            },
+
+            // Stage 2 Topics: Fixed vs Variable Expenses & Cash Flow (4-7)
+            {
+                topic: "Fixed Expenses Definition",
+                question: "Which of the following represents a FIXED expense in monthly budgeting?",
+                options: ["Monthly housing loan / rental installment", "Groceries and dining out", "Electricity and water utility bills", "Petrol and toll transport fares"],
+                answer: 0,
+                explanation: "<strong>Fixed expenses</strong> are mandatory commitments that stay the same amount every month regardless of usage."
+            },
+            {
+                topic: "Cash Flow Calculation Problem",
+                question: "Mr. Tan earns RM4,200 total income. His fixed expenses are RM1,800 and variable expenses are RM1,500. What is his Net Cash Flow?",
+                options: ["+RM 900 (Surplus)", "-RM 900 (Deficit)", "+RM 2,400 (Surplus)", "+RM 2,700 (Surplus)"],
+                answer: 0,
+                explanation: "<strong>Net Cash Flow = Total Income − (Fixed + Variable Expenses)</strong><br>RM4,200 − (RM1,800 + RM1,500) = RM4,200 − RM3,300 = <strong>+RM900 (Positive Surplus)</strong>."
+            },
+            {
+                topic: "Cash Flow Management",
+                question: "If your monthly cash flow is NEGATIVE (Deficit), what immediate corrective action should be taken?",
+                options: ["Take a high-interest personal loan", "Cut down non-essential variable expenses", "Stop paying fixed housing rent", "Increase credit card spending"],
+                answer: 1,
+                explanation: "To convert a negative cash flow into a surplus, the most effective immediate action is cutting down <strong>variable / discretionary expenses</strong> (entertainment, dining out, luxuries)."
+            },
+            {
+                topic: "Variable Expenses Identification",
+                question: "Which item below is a VARIABLE expense?",
+                options: ["Car hire-purchase monthly installment", "Life insurance annual premium", "Electricity bill based on air-cond usage", "Fixed house rental agreement"],
+                answer: 2,
+                explanation: "<strong>Variable expenses</strong> fluctuate from month to month depending on usage, lifestyle habits, and consumption."
+            },
+
+            // Stage 3 Topics: SMART Goals & Emergency Fund (8-11)
+            {
+                topic: "Emergency Fund Formula",
+                question: "Aisyah has monthly living expenses of RM2,400. What is the recommended MINIMUM Emergency Fund (3 months)?",
+                options: ["RM 4,800", "RM 7,200", "RM 14,400", "RM 24,000"],
+                answer: 1,
+                explanation: "<strong>Emergency Fund = 3 × Monthly Expenses</strong><br>3 × RM2,400 = <strong>RM7,200</strong> (standard safety net for 3 to 6 months)."
+            },
+            {
+                topic: "SMART Time-Bound Target",
+                question: "Rahim wants to save RM6,000 to buy a laptop in 12 months. How much must he save per month?",
+                options: ["RM 400", "RM 500", "RM 600", "RM 1,000"],
+                answer: 1,
+                explanation: "<strong>Monthly Savings Target = Total Goal ÷ Time Horizon (Months)</strong><br>RM6,000 ÷ 12 months = <strong>RM500 / month</strong>."
+            },
+            {
+                topic: "Short-term vs Long-term Goals",
+                question: "Which of the following qualifies as a LONG-TERM financial goal in Form 4 Maths?",
+                options: ["Purchasing textbooks for the new school term", "Saving RM1,500 for a holiday trip in 4 months", "Accumulating a retirement fund over 25 years", "Buying a replacement smartphone in 8 months"],
+                answer: 2,
+                explanation: "<strong>Long-term financial goals</strong> take more than 5 years to achieve (e.g. buying a property, children's tertiary education, retirement)."
+            },
+            {
+                topic: "Emergency Fund Purpose",
+                question: "What is the primary function of maintaining a 3 to 6 months Emergency Fund?",
+                options: ["To invest in high-risk crypto speculation", "To fund impulsive luxury shopping sprees", "To cover unexpected events like job loss or medical emergencies", "To eliminate all fixed housing rent"],
+                answer: 2,
+                explanation: "An <strong>emergency fund</strong> provides liquidity to absorb sudden financial shocks without incurring burdensome debts."
+            },
+
+            // Stage 4 Topics: Compound Interest & Investments (12-15)
+            {
+                topic: "Compound Interest Concept",
+                question: "In the compound interest formula MV = P(1 + r/n)^(nt), what does the variable 'n' represent?",
+                options: ["Number of years", "Number of times interest is compounded per year", "Annual nominal interest rate", "Principal deposit sum"],
+                answer: 1,
+                explanation: "<strong>n</strong> is the frequency of compounding per year (e.g., n = 4 for compounded quarterly, n = 12 for compounded monthly)."
+            },
+            {
+                topic: "Investment Return Comparison",
+                question: "Which investment vehicle generally carries the LOWEST risk and highest capital preservation in Malaysia?",
+                options: ["Fixed Deposit (FD) / ASB", "Penny stock equities", "Cryptocurrency tokens", "High-yield venture capital"],
+                answer: 0,
+                explanation: "<strong>Fixed Deposits (guaranteed by PIDM) and ASB</strong> offer high capital safety and steady returns with minimal volatility compared to equities and crypto."
+            },
+            {
+                topic: "Return on Investment (ROI) Problem",
+                question: "Kumar invested RM5,000 in unit trusts. After 1 year, his total return was RM400. What is his Return on Investment (ROI)?",
+                options: ["4%", "8%", "10%", "12.5%"],
+                answer: 1,
+                explanation: "<strong>ROI = (Total Return ÷ Initial Capital) × 100%</strong><br>(RM400 ÷ RM5,000) × 100% = <strong>8%</strong>."
+            },
+            {
+                topic: "Inflation Impact",
+                question: "How does inflation affect cash savings kept under a mattress without earning interest?",
+                options: ["Increases the purchasing power of money", "Has zero effect on purchasing power", "Decreases the real purchasing power over time", "Doubles the nominal value every 5 years"],
+                answer: 2,
+                explanation: "<strong>Inflation</strong> causes the prices of goods to rise over time, eroding the real purchasing power of idle, non-interest-bearing cash."
+            },
+
+            // Stage 5 Topics: Loans & Credit Card Debt Management (16-19)
+            {
+                topic: "Credit Card Minimum Repayment",
+                question: "What is the standard minimum monthly repayment required by banks on a credit card outstanding balance?",
+                options: ["1% or RM10", "5% of balance or RM50 (whichever is higher)", "15% of balance", "50% of balance"],
+                answer: 1,
+                explanation: "Bank Negara guidelines state minimum payment is typically <strong>5% of the outstanding balance or minimum RM50</strong>, whichever is higher."
+            },
+            {
+                topic: "Credit Card Interest Danger",
+                question: "Why is paying ONLY the minimum 5% monthly amount on credit card debt financially dangerous?",
+                options: ["The bank will immediately freeze all bank accounts", "It incurs massive compounding finance charges (15%-18% p.a.) and prolongs debt for years", "Credit score automatically drops to zero instantly", "It converts the credit card into a debit card"],
+                answer: 1,
+                explanation: "Paying only minimums causes unpaid balances to compound at high annual interest rates (up to 18% p.a.), taking years or decades to clear."
+            },
+            {
+                topic: "Debt-to-Income Ratio",
+                question: "Financial planners recommend keeping your total monthly debt loan repayments BELOW what percentage of your net income?",
+                options: ["10% to 15%", "30% to 40%", "70% to 80%", "90% to 100%"],
+                answer: 1,
+                explanation: "The recommended <strong>Debt Service Ratio (DSR)</strong> is generally below <strong>30% to 40%</strong> of net income to maintain financial health."
+            },
+            {
+                topic: "Debt Avalanche Strategy",
+                question: "Under the Debt Avalanche repayment method, which debt should be cleared first with extra cash?",
+                options: ["The debt with the lowest balance", "The debt with the highest interest rate", "The oldest loan taken", "The loan from friends"],
+                answer: 1,
+                explanation: "The <strong>Debt Avalanche method</strong> prioritizes debts with the <strong>highest interest rate</strong> first, minimizing total interest paid over time."
+            },
+
+            // Stage 6 Topics: Net Worth & Comprehensive Planning (20-23)
+            {
+                topic: "Net Worth Calculation Formula",
+                question: "How is personal Net Worth calculated in SPM Form 4 Mathematics?",
+                options: ["Total Income − Total Expenses", "Total Assets − Total Liabilities", "Total Savings + Total Investments", "Fixed Assets ÷ Variable Liabilities"],
+                answer: 1,
+                explanation: "<strong>Net Worth = Total Assets (what you own) − Total Liabilities (what you owe)</strong>."
+            },
+            {
+                topic: "Net Worth Arithmetic Challenge",
+                question: "Hafiz has assets: House (RM250,000), Savings (RM30,000), Car (RM40,000). Liabilities: Home loan (RM180,000), Car loan (RM20,000). What is his Net Worth?",
+                options: ["RM 80,000", "RM 120,000", "RM 200,000", "RM 320,000"],
+                answer: 1,
+                explanation: "<strong>Total Assets</strong> = 250,000 + 30,000 + 40,000 = RM320,000.<br><strong>Total Liabilities</strong> = 180,000 + 20,000 = RM200,000.<br><strong>Net Worth</strong> = RM320,000 − RM200,000 = <strong>RM120,000</strong>."
+            },
+            {
+                topic: "Feasibility of Financial Plan",
+                question: "What proves that a personal financial plan is FEASIBLE and effective?",
+                options: ["It produces a consistent positive monthly cash flow and meets SMART deadlines", "Total expenses exceed total income every month", "Zero money is allocated for emergency savings", "All income is spent on high-risk lottery"],
+                answer: 0,
+                explanation: "A financial plan is feasible when it maintains a <strong>surplus cash flow</strong>, meets SMART goal targets within the set timeline, and builds emergency reserves."
+            },
+            {
+                topic: "5 Steps of Financial Planning Process",
+                question: "What is the final (5th) step in the complete financial management process?",
+                options: ["Reviewing and revising the financial progress", "Setting short-term goals", "Taking loan applications", "Ignoring monthly bank statements"],
+                answer: 0,
+                explanation: "The 5 steps are: 1. Setting goals, 2. Evaluating financial status, 3. Creating plan, 4. Carrying out plan, <strong>5. Reviewing and revising progress regularly</strong>."
+            }
+        ];
+
+        /* ==========================================================================
+           GAME ENGINE & STATE MANAGEMENT
+           ========================================================================== */
+        const canvas = document.getElementById('gameCanvas');
+        const ctx = canvas.getContext('2d');
+
+        // Virtual Resolution Coordinates
+        const V_WIDTH = 960;
+        const V_HEIGHT = 540;
+
+        function resizeCanvas() {
+            const container = canvas.parentElement;
+            const aspect = V_WIDTH / V_HEIGHT;
+            let w = container.clientWidth;
+            let h = w / aspect;
+
+            if (h > container.clientHeight) {
+                h = container.clientHeight;
+                w = h * aspect;
+            }
+
+            canvas.width = V_WIDTH;
+            canvas.height = V_HEIGHT;
+        }
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        // Game Stages Configuration
+        const STAGE_CONFIG = [
+            { id: 1, name: "Stage 1: Budgeting & Active/Passive Income", goal: 1200, qStart: 0, qCount: 4, desc: "Master Needs vs Wants and classify Active & Passive income streams." },
+            { id: 2, name: "Stage 2: Cash Flow & Fixed/Variable Costs", goal: 2000, qStart: 4, qCount: 4, desc: "Navigate surplus vs deficit cash flows and identify variable expense traps." },
+            { id: 3, name: "Stage 3: SMART Goals & Emergency Fund", goal: 3200, qStart: 8, qCount: 4, desc: "Calculate 3 to 6 months safety reserves and time-bound savings goals." },
+            { id: 4, name: "Stage 4: Compound Interest & Investments", goal: 4500, qStart: 12, qCount: 4, desc: "Use spring pads, compound multiplier orbs, and maximize ROI." },
+            { id: 5, name: "Stage 5: Loan & Credit Card Debt Escape", goal: 6000, qStart: 16, qCount: 4, desc: "Dodge high-interest traps, conquer conveyor belts, and unleash Debt Busters." },
+            { id: 6, name: "Stage 6: Net Worth Summit (Mastery)", goal: 8000, qStart: 20, qCount: 4, desc: "Ascend the financial towers to calculate Net Worth and achieve Financial Freedom!" }
+        ];
+
+        // Persistent Progress
+        let gameProgress = {
+            unlockedStage: 1,
+            stars: [0, 0, 0, 0, 0, 0],
+            highScores: [0, 0, 0, 0, 0, 0]
+        };
+
+        function loadProgress() {
+            try {
+                const saved = localStorage.getItem('financial_hero_save_v2');
+                if (saved) {
+                    gameProgress = Object.assign(gameProgress, JSON.parse(saved));
+                }
+            } catch(e) {}
+        }
+
+        function saveProgress() {
+            try {
+                localStorage.setItem('financial_hero_save_v2', JSON.stringify(gameProgress));
+            } catch(e) {}
+        }
+        loadProgress();
+
+        // Runtime Game State
+        let gameState = 'START'; // START, PLAYING, QUIZ, STAGECLEAR, GAMEOVER, VICTORY, BALANCESHEET
+        let currentLevel = 1;
+        let health = 3;
+        let savings = 0;
+        let stageSavingsEarned = 0;
+        let totalActiveIncome = 0;
+        let totalPassiveIncome = 0;
+        let totalQuizBonus = 0;
+        let totalDebtLosses = 0;
+        let totalShieldBlocks = 0;
+        let totalDebtTrapsCleared = 0;
+
+        let totalQuestionsAnswered = 0;
+        let correctAnswersCount = 0;
+        let stageQuestionsAnswered = 0;
+        let stageCorrectCount = 0;
+
+        // Active Buffs
+        let activeMultiplierTimer = 0; // in frames (60fps)
+        let hasInsuranceShield = false;
+        let activeSpeedTimer = 0;
+        let activeDebtBusterTimer = 0;
+
+        // Particle System
+        class Particle {
+            constructor(x, y, vx, vy, color, size, life, type = 'sparkle') {
+                this.x = x;
+                this.y = y;
+                this.vx = vx;
+                this.vy = vy;
+                this.color = color;
+                this.size = size;
+                this.life = life;
+                this.maxLife = life;
+                this.type = type;
+            }
+
+            update() {
+                this.x += this.vx;
+                this.y += this.vy;
+                if (this.type !== 'confetti') {
+                    this.vx *= 0.96;
+                    this.vy *= 0.96;
+                } else {
+                    this.vy += 0.1; // gentle gravity
+                }
+                this.life--;
+            }
+
+            draw(ctx) {
+                const alpha = Math.max(0, this.life / this.maxLife);
+                ctx.save();
+                ctx.globalAlpha = alpha;
+                ctx.fillStyle = this.color;
+                ctx.shadowColor = this.color;
+                ctx.shadowBlur = 6;
+
+                if (this.type === 'ring') {
+                    ctx.strokeStyle = this.color;
+                    ctx.lineWidth = 2;
+                    ctx.beginPath();
+                    ctx.arc(this.x, this.y, this.size * (1 + (1 - alpha) * 2), 0, Math.PI * 2);
+                    ctx.stroke();
+                } else if (this.type === 'confetti') {
+                    ctx.fillRect(this.x, this.y, this.size, this.size * 1.5);
+                } else {
+                    ctx.beginPath();
+                    ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                    ctx.fill();
+                }
+                ctx.restore();
+            }
+        }
+
+        let particles = [];
+        function spawnParticles(x, y, count, color, type = 'sparkle', speed = 3) {
+            for (let i = 0; i < count; i++) {
+                const angle = Math.random() * Math.PI * 2;
+                const spd = (Math.random() * 0.8 + 0.2) * speed;
+                const vx = Math.cos(angle) * spd;
+                const vy = Math.sin(angle) * spd;
+                const size = Math.random() * 3 + 2;
+                const life = Math.floor(Math.random() * 20 + 20);
+                particles.push(new Particle(x, y, vx, vy, color, size, life, type));
+            }
+        }
+
+        // Key states
+        const keys = { left: false, right: false, jump: false };
+
+        // Player Object
+        const player = {
+            x: 60,
+            y: 380,
+            w: 32,
+            h: 48,
+            vx: 0,
+            vy: 0,
+            speed: 5.4,
+            jumpPower: -12.8,
+            gravity: 0.56,
+            grounded: false,
+            facing: 'right',
+            animFrame: 0,
+            invulnerable: 0
+        };
+
+        // Level Elements
+        let platforms = [];
+        let conveyors = [];
+        let springs = [];
+        let collectables = [];
+        let powerUps = [];
+        let hazards = [];
+        let quizNodes = [];
+        let goalFlag = { x: 0, y: 0, w: 40, h: 60 };
+
+        /* ==========================================================================
+           STAGE DEFINITIONS & LEVEL LOADER (STAGES 1 TO 6)
+           ========================================================================== */
+        function loadLevel(lvl) {
+            currentLevel = lvl;
+            stageSavingsEarned = 0;
+            stageQuestionsAnswered = 0;
+            stageCorrectCount = 0;
+
+            document.getElementById('hud-level').innerHTML = `Stage ${lvl} <span class="text-[10px]">▼</span>`;
+            player.x = 50;
+            player.y = 380;
+            player.vx = 0;
+            player.vy = 0;
+            player.grounded = false;
+
+            platforms = [];
+            conveyors = [];
+            springs = [];
+            collectables = [];
+            powerUps = [];
+            hazards = [];
+            quizNodes = [];
+
+            if (lvl === 1) {
+                // STAGE 1: Budgeting & Active/Passive Income
+                platforms = [
+                    { x: 0, y: 480, w: 320, h: 60, type: 'normal' },
+                    { x: 370, y: 420, w: 220, h: 20, type: 'normal' },
+                    { x: 650, y: 360, w: 200, h: 20, type: 'normal' },
+                    { x: 220, y: 280, w: 180, h: 20, type: 'normal' },
+                    { x: 480, y: 220, w: 220, h: 20, type: 'normal' },
+                    { x: 760, y: 160, w: 200, h: 380, type: 'normal' }
+                ];
+
+                collectables = [
+                    { x: 120, y: 440, w: 22, h: 22, value: 150, isPassive: false, label: 'Salary (+RM150)', collected: false },
+                    { x: 420, y: 380, w: 22, h: 22, value: 150, isPassive: false, label: 'Part-time (+RM150)', collected: false },
+                    { x: 260, y: 240, w: 22, h: 22, value: 250, isPassive: true, label: 'Dividend (+RM250)', collected: false },
+                    { x: 540, y: 180, w: 22, h: 22, value: 300, isPassive: true, label: 'Rental (+RM300)', collected: false }
+                ];
+
+                powerUps = [
+                    { x: 680, y: 320, w: 24, h: 24, type: 'shield', label: 'Insurance Shield', collected: false }
+                ];
+
+                hazards = [
+                    { x: 480, y: 400, w: 26, h: 20, label: 'Impulse Shopping', touched: false },
+                    { x: 300, y: 260, w: 26, h: 20, label: 'Peer Pressure Want', touched: false }
+                ];
+
+                quizNodes = [
+                    { x: 250, y: 432, w: 34, h: 48, qIdx: 0, solved: false },
+                    { x: 720, y: 312, w: 34, h: 48, qIdx: 1, solved: false },
+                    { x: 620, y: 172, w: 34, h: 48, qIdx: 2, solved: false }
+                ];
+
+                goalFlag = { x: 880, y: 100, w: 40, h: 60 };
+            }
+            else if (lvl === 2) {
+                // STAGE 2: Cash Flow & Fixed vs Variable Costs
+                platforms = [
+                    { x: 0, y: 480, w: 240, h: 60, type: 'normal' },
+                    { x: 290, y: 410, w: 160, h: 20, type: 'normal' },
+                    { x: 500, y: 340, w: 170, h: 20, type: 'moving', dx: 1.8, minX: 470, maxX: 690 },
+                    { x: 220, y: 270, w: 180, h: 20, type: 'normal' },
+                    { x: 40, y: 200, w: 160, h: 20, type: 'normal' },
+                    { x: 280, y: 140, w: 220, h: 20, type: 'normal' },
+                    { x: 580, y: 120, w: 380, h: 420, type: 'normal' }
+                ];
+
+                collectables = [
+                    { x: 100, y: 440, w: 22, h: 22, value: 200, isPassive: true, label: 'ASB Dividend (+RM200)', collected: false },
+                    { x: 330, y: 370, w: 22, h: 22, value: 200, isPassive: false, label: 'Side Hustle (+RM200)', collected: false },
+                    { x: 80, y: 160, w: 22, h: 22, value: 350, isPassive: true, label: 'Investment Return (+RM350)', collected: false },
+                    { x: 350, y: 100, w: 22, h: 22, value: 300, isPassive: false, label: 'Surplus Cash Flow (+RM300)', collected: false }
+                ];
+
+                powerUps = [
+                    { x: 160, y: 160, w: 24, h: 24, type: 'multiplier', label: '2X Compound Surge', collected: false }
+                ];
+
+                hazards = [
+                    { x: 360, y: 390, w: 26, h: 20, label: 'High Interest Penalty', touched: false },
+                    { x: 280, y: 250, w: 26, h: 20, label: 'Unused Subscriptions', touched: false },
+                    { x: 120, y: 180, w: 26, h: 20, label: 'Late Payment Fee', touched: false }
+                ];
+
+                quizNodes = [
+                    { x: 180, y: 432, w: 34, h: 48, qIdx: 4, solved: false },
+                    { x: 310, y: 222, w: 34, h: 48, qIdx: 5, solved: false },
+                    { x: 420, y: 92, w: 34, h: 48, qIdx: 6, solved: false }
+                ];
+
+                goalFlag = { x: 880, y: 60, w: 40, h: 60 };
+            }
+            else if (lvl === 3) {
+                // STAGE 3: SMART Goals & Emergency Fund Fortress
+                platforms = [
+                    { x: 0, y: 480, w: 200, h: 60, type: 'normal' },
+                    { x: 250, y: 420, w: 150, h: 20, type: 'moving', dx: 2, minX: 230, maxX: 430 },
+                    { x: 490, y: 360, w: 150, h: 20, type: 'normal' },
+                    { x: 680, y: 300, w: 160, h: 20, type: 'moving', dx: 2.5, minX: 630, maxX: 830 },
+                    { x: 440, y: 220, w: 170, h: 20, type: 'normal' },
+                    { x: 200, y: 170, w: 180, h: 20, type: 'normal' },
+                    { x: 0, y: 120, w: 150, h: 20, type: 'normal' },
+                    { x: 720, y: 140, w: 240, h: 400, type: 'normal' }
+                ];
+
+                collectables = [
+                    { x: 80, y: 440, w: 22, h: 22, value: 300, isPassive: true, label: 'Fixed Deposit (+RM300)', collected: false },
+                    { x: 530, y: 320, w: 22, h: 22, value: 400, isPassive: false, label: 'SMART Target (+RM400)', collected: false },
+                    { x: 500, y: 180, w: 22, h: 22, value: 450, isPassive: true, label: 'Bond Yield (+RM450)', collected: false },
+                    { x: 50, y: 80, w: 22, h: 22, value: 600, isPassive: false, label: '3-Month Emergency Fund (+RM600)', collected: false }
+                ];
+
+                powerUps = [
+                    { x: 130, y: 440, w: 24, h: 24, type: 'shield', label: 'Insurance Shield', collected: false },
+                    { x: 80, y: 80, w: 24, h: 24, type: 'multiplier', label: 'Compound Surge 2X', collected: false }
+                ];
+
+                hazards = [
+                    { x: 540, y: 340, w: 26, h: 20, label: 'Scam Investment Scheme', touched: false },
+                    { x: 280, y: 150, w: 26, h: 20, label: 'Emergency Cash Drain', touched: false }
+                ];
+
+                quizNodes = [
+                    { x: 140, y: 432, w: 34, h: 48, qIdx: 8, solved: false },
+                    { x: 260, y: 122, w: 34, h: 48, qIdx: 9, solved: false },
+                    { x: 760, y: 92, w: 34, h: 48, qIdx: 10, solved: false }
+                ];
+
+                goalFlag = { x: 880, y: 80, w: 40, h: 60 };
+            }
+            else if (lvl === 4) {
+                // STAGE 4: Compound Interest & Investment Acceleration (Spring pads!)
+                platforms = [
+                    { x: 0, y: 480, w: 220, h: 60, type: 'normal' },
+                    { x: 270, y: 440, w: 120, h: 20, type: 'normal' },
+                    { x: 440, y: 370, w: 130, h: 20, type: 'moving', dx: 2, minX: 420, maxX: 600 },
+                    { x: 660, y: 420, w: 140, h: 20, type: 'normal' },
+                    { x: 720, y: 220, w: 180, h: 20, type: 'normal' },
+                    { x: 480, y: 180, w: 170, h: 20, type: 'normal' },
+                    { x: 200, y: 150, w: 190, h: 20, type: 'moving', dx: -1.8, minX: 180, maxX: 360 },
+                    { x: 0, y: 100, w: 140, h: 20, type: 'normal' },
+                    { x: 780, y: 110, w: 180, h: 430, type: 'normal' }
+                ];
+
+                // Spring Pads (Super High Jumps)
+                springs = [
+                    { x: 310, y: 430, w: 30, h: 10, bouncePower: -17 },
+                    { x: 740, y: 410, w: 30, h: 10, bouncePower: -18 }
+                ];
+
+                collectables = [
+                    { x: 100, y: 440, w: 22, h: 22, value: 350, isPassive: true, label: 'ASB Compound (+RM350)', collected: false },
+                    { x: 760, y: 180, w: 22, h: 22, value: 500, isPassive: true, label: 'Unit Trust Growth (+RM500)', collected: false },
+                    { x: 530, y: 140, w: 22, h: 22, value: 450, isPassive: true, label: 'Capital Gain (+RM450)', collected: false },
+                    { x: 50, y: 60, w: 22, h: 22, value: 600, isPassive: true, label: 'Compound King (+RM600)', collected: false }
+                ];
+
+                powerUps = [
+                    { x: 340, y: 260, w: 24, h: 24, type: 'multiplier', label: '2X Compound Surge', collected: false },
+                    { x: 240, y: 110, w: 24, h: 24, type: 'speed', label: 'Financial Agility', collected: false }
+                ];
+
+                hazards = [
+                    { x: 500, y: 350, w: 26, h: 20, label: 'High Inflation Erosion', touched: false },
+                    { x: 550, y: 160, w: 26, h: 20, label: 'Hidden Management Fees', touched: false }
+                ];
+
+                quizNodes = [
+                    { x: 150, y: 432, w: 34, h: 48, qIdx: 12, solved: false },
+                    { x: 800, y: 172, w: 34, h: 48, qIdx: 13, solved: false },
+                    { x: 490, y: 132, w: 34, h: 48, qIdx: 14, solved: false }
+                ];
+
+                goalFlag = { x: 900, y: 50, w: 40, h: 60 };
+            }
+            else if (lvl === 5) {
+                // STAGE 5: Loan & Credit Card Debt Escape (Conveyor Belts & Debt Buster!)
+                platforms = [
+                    { x: 0, y: 480, w: 180, h: 60, type: 'normal' },
+                    { x: 230, y: 440, w: 200, h: 20, type: 'normal' },
+                    { x: 490, y: 380, w: 180, h: 20, type: 'normal' },
+                    { x: 720, y: 340, w: 180, h: 20, type: 'normal' },
+                    { x: 450, y: 260, w: 200, h: 20, type: 'normal' },
+                    { x: 180, y: 200, w: 210, h: 20, type: 'normal' },
+                    { x: 450, y: 140, w: 200, h: 20, type: 'normal' },
+                    { x: 740, y: 110, w: 220, h: 430, type: 'normal' }
+                ];
+
+                // Fast Conveyor Belts
+                conveyors = [
+                    { x: 230, y: 440, w: 200, h: 10, speed: 2.2 },
+                    { x: 450, y: 260, w: 200, h: 10, speed: -2.5 },
+                    { x: 450, y: 140, w: 200, h: 10, speed: 2.8 }
+                ];
+
+                springs = [
+                    { x: 190, y: 190, w: 30, h: 10, bouncePower: -16 }
+                ];
+
+                collectables = [
+                    { x: 80, y: 440, w: 22, h: 22, value: 400, isPassive: false, label: 'Debt Restructuring (+RM400)', collected: false },
+                    { x: 550, y: 340, w: 22, h: 22, value: 500, isPassive: false, label: 'Zero-Interest Balance (+RM500)', collected: false },
+                    { x: 280, y: 160, w: 22, h: 22, value: 550, isPassive: true, label: 'Cashback Yield (+RM550)', collected: false },
+                    { x: 520, y: 100, w: 22, h: 22, value: 650, isPassive: false, label: 'Debt Avalanche (+RM650)', collected: false }
+                ];
+
+                powerUps = [
+                    { x: 300, y: 400, w: 24, h: 24, type: 'debt_buster', label: '🧹 Debt Buster', collected: false },
+                    { x: 760, y: 300, w: 24, h: 24, type: 'shield', label: '🛡️ Insurance Shield', collected: false }
+                ];
+
+                hazards = [
+                    { x: 370, y: 420, w: 26, h: 20, label: '18% Credit Card Trap', touched: false },
+                    { x: 590, y: 360, w: 26, h: 20, label: 'Minimum Payment Blackhole', touched: false },
+                    { x: 530, y: 240, w: 26, h: 20, label: 'Loan Shark Interest', touched: false },
+                    { x: 570, y: 120, w: 26, h: 20, label: 'Late Penalty Charge', touched: false }
+                ];
+
+                quizNodes = [
+                    { x: 120, y: 432, w: 34, h: 48, qIdx: 16, solved: false },
+                    { x: 820, y: 292, w: 34, h: 48, qIdx: 17, solved: false },
+                    { x: 220, y: 152, w: 34, h: 48, qIdx: 18, solved: false }
+                ];
+
+                goalFlag = { x: 880, y: 50, w: 40, h: 60 };
+            }
+            else if (lvl === 6) {
+                // STAGE 6: The Net Worth Summit - Master Financial Independence
+                platforms = [
+                    { x: 0, y: 480, w: 160, h: 60, type: 'normal' },
+                    { x: 210, y: 430, w: 130, h: 20, type: 'moving', dx: 2.2, minX: 190, maxX: 380 },
+                    { x: 440, y: 400, w: 140, h: 20, type: 'normal' },
+                    { x: 640, y: 360, w: 130, h: 20, type: 'moving', dx: -2, minX: 600, maxX: 790 },
+                    { x: 830, y: 310, w: 130, h: 20, type: 'normal' },
+                    { x: 620, y: 250, w: 160, h: 20, type: 'normal' },
+                    { x: 380, y: 200, w: 180, h: 20, type: 'moving', dx: 2.5, minX: 340, maxX: 560 },
+                    { x: 120, y: 160, w: 170, h: 20, type: 'normal' },
+                    { x: 360, y: 100, w: 200, h: 20, type: 'normal' },
+                    { x: 680, y: 80, w: 280, h: 460, type: 'normal' }
+                ];
+
+                springs = [
+                    { x: 70, y: 470, w: 30, h: 10, bouncePower: -16 },
+                    { x: 880, y: 300, w: 30, h: 10, bouncePower: -17 },
+                    { x: 160, y: 150, w: 30, h: 10, bouncePower: -16 }
+                ];
+
+                conveyors = [
+                    { x: 360, y: 100, w: 200, h: 10, speed: 3.0 }
+                ];
+
+                collectables = [
+                    { x: 480, y: 360, w: 22, h: 22, value: 500, isPassive: true, label: 'Real Estate Equity (+RM500)', collected: false },
+                    { x: 680, y: 210, w: 22, h: 22, value: 600, isPassive: true, label: 'Blue-Chip Dividend (+RM600)', collected: false },
+                    { x: 200, y: 120, w: 22, h: 22, value: 750, isPassive: true, label: 'Retirement Portfolio (+RM750)', collected: false },
+                    { x: 420, y: 60, w: 22, h: 22, value: 1000, isPassive: true, label: 'Financial Freedom Crown (+RM1000)', collected: false }
+                ];
+
+                powerUps = [
+                    { x: 490, y: 360, w: 24, h: 24, type: 'shield', label: '🛡️ Insurance Shield', collected: false },
+                    { x: 670, y: 210, w: 24, h: 24, type: 'multiplier', label: '⚡ 2X Compound Surge', collected: false },
+                    { x: 130, y: 120, w: 24, h: 24, type: 'debt_buster', label: '🧹 Debt Buster', collected: false }
+                ];
+
+                hazards = [
+                    { x: 490, y: 380, w: 26, h: 20, label: 'Market Crash Panic', touched: false },
+                    { x: 680, y: 230, w: 26, h: 20, label: 'Depreciating Asset Trap', touched: false },
+                    { x: 420, y: 80, w: 26, h: 20, label: 'Unbudgeted Liability', touched: false }
+                ];
+
+                quizNodes = [
+                    { x: 470, y: 352, w: 34, h: 48, qIdx: 20, solved: false },
+                    { x: 660, y: 202, w: 34, h: 48, qIdx: 21, solved: false },
+                    { x: 460, y: 52, w: 34, h: 48, qIdx: 22, solved: false },
+                    { x: 740, y: 32, w: 34, h: 48, qIdx: 23, solved: false }
+                ];
+
+                goalFlag = { x: 880, y: 20, w: 40, h: 60 };
+            }
+
+            updateHUD();
+        }
+
+        /* ==========================================================================
+           KEYBOARD & TOUCH CONTROLS
+           ========================================================================== */
+        window.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowLeft' || e.key === 'a' || e.key === 'A') keys.left = true;
+            if (e.key === 'ArrowRight' || e.key === 'd' || e.key === 'D') keys.right = true;
+            if (e.key === 'ArrowUp' || e.key === 'w' || e.key === 'W' || e.key === ' ') {
+                keys.jump = true;
+                e.preventDefault();
+            }
+            if (e.key === 'b' || e.key === 'B') {
+                toggleBalanceSheet();
+            }
+            if (e.key === 'Escape') {
+                closeAllModals();
+            }
+        });
+
+        window.addEventListener('keyup', (e) => {
+            if (e.key === 'ArrowLeft' || e.key === 'a' || e.key === 'A') keys.left = false;
+            if (e.key === 'ArrowRight' || e.key === 'd' || e.key === 'D') keys.right = false;
+            if (e.key === 'ArrowUp' || e.key === 'w' || e.key === 'W' || e.key === ' ') keys.jump = false;
+        });
+
+        // Touch Control Listeners
+        const bindTouch = (id, keyName) => {
+            const btn = document.getElementById(id);
+            if (!btn) return;
+            btn.addEventListener('touchstart', (e) => {
+                e.preventDefault();
+                sfx.init();
+                keys[keyName] = true;
+            });
+            btn.addEventListener('touchend', (e) => {
+                e.preventDefault();
+                keys[keyName] = false;
+            });
+        };
+        bindTouch('btn-left', 'left');
+        bindTouch('btn-right', 'right');
+        bindTouch('btn-jump', 'jump');
+
+        document.getElementById('btn-touch-bs').onclick = () => toggleBalanceSheet();
+
+        /* ==========================================================================
+           PHYSICS & GAME LOOP
+           ========================================================================== */
+        function updatePhysics() {
+            if (gameState !== 'PLAYING') return;
+
+            // Handle Active Buff Timers
+            if (activeMultiplierTimer > 0) {
+                activeMultiplierTimer--;
+                if (Math.random() < 0.3) {
+                    spawnParticles(player.x + Math.random() * player.w, player.y + Math.random() * player.h, 1, '#f59e0b', 'sparkle', 1.5);
+                }
+            }
+            if (activeSpeedTimer > 0) {
+                activeSpeedTimer--;
+                player.speed = 7.2;
+                player.jumpPower = -14.2;
+                if (Math.random() < 0.3) {
+                    spawnParticles(player.x + Math.random() * player.w, player.y + player.h, 1, '#06b6d4', 'sparkle', 1.5);
+                }
+            } else {
+                player.speed = 5.4;
+                player.jumpPower = -12.8;
+            }
+            if (activeDebtBusterTimer > 0) {
+                activeDebtBusterTimer--;
+                // Destroy nearby hazards
+                hazards.forEach(hazard => {
+                    if (!hazard.touched) {
+                        const dist = Math.hypot((player.x + player.w/2) - (hazard.x + hazard.w/2), (player.y + player.h/2) - (hazard.y + hazard.h/2));
+                        if (dist < 100) {
+                            hazard.touched = true;
+                            totalDebtTrapsCleared++;
+                            savings += 100;
+                            stageSavingsEarned += 100;
+                            spawnParticles(hazard.x + hazard.w/2, hazard.y + hazard.h/2, 12, '#a855f7', 'ring', 4);
+                            sfx.playCorrect();
+                        }
+                    }
+                });
+            }
+
+            // Horizontal Movement
+            if (keys.left) {
+                player.vx = -player.speed;
+                player.facing = 'left';
+            } else if (keys.right) {
+                player.vx = player.speed;
+                player.facing = 'right';
+            } else {
+                player.vx *= 0.72; // Friction
+            }
+
+            // Jump
+            if (keys.jump && player.grounded) {
+                player.vy = player.jumpPower;
+                player.grounded = false;
+                sfx.playJump();
+                spawnParticles(player.x + player.w/2, player.y + player.h, 5, '#10b981', 'sparkle', 2);
+            }
+
+            // Gravity
+            player.vy += player.gravity;
+
+            // Apply Velocities
+            player.x += player.vx;
+            player.y += player.vy;
+
+            // Invulnerability timer
+            if (player.invulnerable > 0) player.invulnerable--;
+
+            // Platform Collision Detection
+            player.grounded = false;
+
+            // Update & check moving platforms
+            platforms.forEach(plat => {
+                if (plat.type === 'moving') {
+                    plat.x += plat.dx;
+                    if (plat.x <= plat.minX || plat.x + plat.w >= plat.maxX) {
+                        plat.dx *= -1;
+                    }
+                }
+
+                // Check Box Collision (landing on top)
+                if (
+                    player.x < plat.x + plat.w &&
+                    player.x + player.w > plat.x &&
+                    player.y + player.h >= plat.y &&
+                    player.y + player.h <= plat.y + 16 &&
+                    player.vy >= 0
+                ) {
+                    player.grounded = true;
+                    player.vy = 0;
+                    player.y = plat.y - player.h;
+
+                    if (plat.type === 'moving') {
+                        player.x += plat.dx;
+                    }
+                }
+            });
+
+            // Conveyor Belt interactions
+            conveyors.forEach(conv => {
+                if (
+                    player.x < conv.x + conv.w &&
+                    player.x + player.w > conv.x &&
+                    player.y + player.h >= conv.y &&
+                    player.y + player.h <= conv.y + 16 &&
+                    player.vy >= 0
+                ) {
+                    player.x += conv.speed;
+                }
+            });
+
+            // Spring Pad interactions
+            springs.forEach(spring => {
+                if (
+                    player.x < spring.x + spring.w &&
+                    player.x + player.w > spring.x &&
+                    player.y + player.h >= spring.y &&
+                    player.y + player.h <= spring.y + 20 &&
+                    player.vy >= 0
+                ) {
+                    player.vy = spring.bouncePower;
+                    player.grounded = false;
+                    sfx.playSpring();
+                    spawnParticles(spring.x + spring.w/2, spring.y, 14, '#38bdf8', 'ring', 4);
+                }
+            });
+
+            // Screen boundary clamping
+            if (player.x < 0) player.x = 0;
+            if (player.x + player.w > V_WIDTH) player.x = V_WIDTH - player.w;
+
+            // Fall Off Screen check
+            if (player.y > V_HEIGHT + 40) {
+                takeDamage("Fell into negative liquidity and overdraft debt!");
+                player.x = 60;
+                player.y = 300;
+                player.vy = 0;
+            }
+
+            // Income Collectables Collision
+            collectables.forEach(item => {
+                if (!item.collected && isColliding(player, item)) {
+                    item.collected = true;
+                    const multiplier = activeMultiplierTimer > 0 ? 2 : 1;
+                    const finalVal = item.value * multiplier;
+
+                    savings += finalVal;
+                    stageSavingsEarned += finalVal;
+                    if (item.isPassive) {
+                        totalPassiveIncome += finalVal;
+                    } else {
+                        totalActiveIncome += finalVal;
+                    }
+
+                    sfx.playCoin();
+                    spawnParticles(item.x + item.w/2, item.y + item.h/2, 10, '#10b981', 'sparkle', 3);
+                    updateHUD();
+                }
+            });
+
+            // Power-Up Pickups Collision
+            powerUps.forEach(p => {
+                if (!p.collected && isColliding(player, p)) {
+                    p.collected = true;
+                    sfx.playPowerUp();
+                    spawnParticles(p.x + p.w/2, p.y + p.h/2, 16, '#f59e0b', 'ring', 4);
+
+                    if (p.type === 'shield') {
+                        hasInsuranceShield = true;
+                    } else if (p.type === 'multiplier') {
+                        activeMultiplierTimer = 60 * 10; // 10 seconds
+                    } else if (p.type === 'speed') {
+                        activeSpeedTimer = 60 * 8; // 8 seconds
+                    } else if (p.type === 'debt_buster') {
+                        activeDebtBusterTimer = 60 * 8; // 8 seconds
+                    }
+                    updateHUD();
+                }
+            });
+
+            // Hazards Collision
+            hazards.forEach(hazard => {
+                if (!hazard.touched && isColliding(player, hazard) && player.invulnerable === 0) {
+                    if (hasInsuranceShield) {
+                        // Shield absorbs hit!
+                        hasInsuranceShield = false;
+                        player.invulnerable = 60;
+                        hazard.touched = true;
+                        totalShieldBlocks++;
+                        sfx.playShieldBlock();
+                        spawnParticles(player.x + player.w/2, player.y + player.h/2, 18, '#06b6d4', 'ring', 5);
+                        updateHUD();
+                    } else {
+                        hazard.touched = true;
+                        const penalty = 75;
+                        savings = Math.max(0, savings - penalty);
+                        stageSavingsEarned = Math.max(0, stageSavingsEarned - penalty);
+                        totalDebtLosses += penalty;
+                        takeDamage(`Hit debt trap: ${hazard.label} (-1 Health)`);
+                        player.invulnerable = 60;
+                        spawnParticles(hazard.x + hazard.w/2, hazard.y + hazard.h/2, 12, '#ef4444', 'smoke', 3);
+                    }
+                }
+            });
+
+            // Quiz Terminal Stations Collision
+            quizNodes.forEach(node => {
+                if (!node.solved && isColliding(player, node)) {
+                    triggerQuizModal(node);
+                }
+            });
+
+            // Goal Flag Clearance
+            if (isColliding(player, goalFlag)) {
+                triggerStageClear();
+            }
+
+            // Update active particles
+            for (let i = particles.length - 1; i >= 0; i--) {
+                particles[i].update();
+                if (particles[i].life <= 0) {
+                    particles.splice(i, 1);
+                }
+            }
+        }
+
+        function isColliding(r1, r2) {
+            return (
+                r1.x < r2.x + r2.w &&
+                r1.x + r1.w > r2.x &&
+                r1.y < r2.y + r2.h &&
+                r1.y + r1.h > r2.y
+            );
+        }
+
+        function takeDamage(reason) {
+            health--;
+            sfx.playHurt();
+            updateHUD();
+            if (health <= 0) {
+                gameState = 'GAMEOVER';
+                document.getElementById('gameover-reason').innerText = reason;
+                document.getElementById('screen-gameover').classList.remove('hidden');
+            }
+        }
+
+        function updateHUD() {
+            document.getElementById('hud-savings').innerText = `RM ${savings.toLocaleString()}`;
+            
+            // Hearts
+            const heartsArr = [];
+            for (let i = 0; i < 3; i++) {
+                heartsArr.push(i < health ? '❤️' : '🖤');
+            }
+            document.getElementById('hud-health').innerHTML = heartsArr.join('');
+
+            // Buff badges
+            const multiplierBadge = document.getElementById('hud-buff-badge');
+            if (activeMultiplierTimer > 0) {
+                const secs = Math.ceil(activeMultiplierTimer / 60);
+                multiplierBadge.innerText = `⚡ 2X (${secs}s)`;
+                multiplierBadge.classList.remove('hidden');
+            } else {
+                multiplierBadge.classList.add('hidden');
+            }
+
+            const shieldBadge = document.getElementById('hud-shield-badge');
+            if (hasInsuranceShield) {
+                shieldBadge.classList.remove('hidden');
+            } else {
+                shieldBadge.classList.add('hidden');
+            }
+        }
+
+        /* ==========================================================================
+           CANVAS RENDER ENGINE
+           ========================================================================== */
+        let renderFrame = 0;
+        function render() {
+            renderFrame++;
+            ctx.clearRect(0, 0, V_WIDTH, V_HEIGHT);
+
+            // Tech Grid Parallax Background
+            ctx.strokeStyle = 'rgba(51, 65, 85, 0.2)';
+            ctx.lineWidth = 1;
+            for (let x = 0; x < V_WIDTH; x += 40) {
+                ctx.beginPath();
+                ctx.moveTo(x, 0);
+                ctx.lineTo(x, V_HEIGHT);
+                ctx.stroke();
+            }
+            for (let y = 0; y < V_HEIGHT; y += 40) {
+                ctx.beginPath();
+                ctx.moveTo(0, y);
+                ctx.lineTo(V_WIDTH, y);
+                ctx.stroke();
+            }
+
+            // Draw Platforms
+            platforms.forEach(plat => {
+                ctx.save();
+                ctx.fillStyle = plat.type === 'moving' ? '#0f3a56' : '#1e293b';
+                ctx.fillRect(plat.x, plat.y, plat.w, plat.h);
+
+                // Neon Top Ledge
+                ctx.fillStyle = plat.type === 'moving' ? '#38bdf8' : '#10b981';
+                ctx.shadowColor = plat.type === 'moving' ? '#38bdf8' : '#10b981';
+                ctx.shadowBlur = 8;
+                ctx.fillRect(plat.x, plat.y, plat.w, 4);
+                ctx.restore();
+            });
+
+            // Draw Conveyor Belts
+            conveyors.forEach(conv => {
+                ctx.save();
+                ctx.fillStyle = '#334155';
+                ctx.fillRect(conv.x, conv.y, conv.w, conv.h);
+
+                // Animated chevron markings
+                ctx.fillStyle = '#f59e0b';
+                ctx.font = 'bold 8px monospace';
+                const offset = (renderFrame * conv.speed * 2) % 20;
+                for (let cx = conv.x + offset; cx < conv.x + conv.w - 10; cx += 20) {
+                    if (cx >= conv.x) {
+                        ctx.fillText(conv.speed > 0 ? '▶' : '◀', cx, conv.y + 8);
+                    }
+                }
+                ctx.restore();
+            });
+
+            // Draw Spring Pads
+            springs.forEach(spring => {
+                ctx.save();
+                ctx.fillStyle = '#0284c7';
+                ctx.fillRect(spring.x, spring.y + 4, spring.w, spring.h - 4);
+
+                // Spring top coil
+                ctx.fillStyle = '#38bdf8';
+                ctx.shadowColor = '#38bdf8';
+                ctx.shadowBlur = 10;
+                ctx.fillRect(spring.x - 2, spring.y, spring.w + 4, 4);
+
+                ctx.fillStyle = '#ffffff';
+                ctx.font = 'bold 9px Orbitron';
+                ctx.textAlign = 'center';
+                ctx.fillText('▲', spring.x + spring.w / 2, spring.y + 8);
+                ctx.restore();
+            });
+
+            // Draw Income Gems (Collectables)
+            collectables.forEach(item => {
+                if (!item.collected) {
+                    ctx.save();
+                    const bob = Math.sin(renderFrame * 0.08 + item.x) * 3;
+                    const cy = item.y + bob;
+
+                    ctx.fillStyle = item.isPassive ? '#06b6d4' : '#10b981';
+                    ctx.shadowColor = item.isPassive ? '#06b6d4' : '#10b981';
+                    ctx.shadowBlur = 12;
+
+                    // Diamond shape
+                    ctx.beginPath();
+                    ctx.moveTo(item.x + item.w / 2, cy);
+                    ctx.lineTo(item.x + item.w, cy + item.h / 2);
+                    ctx.lineTo(item.x + item.w / 2, cy + item.h);
+                    ctx.lineTo(item.x, cy + item.h / 2);
+                    ctx.closePath();
+                    ctx.fill();
+
+                    // Inner Shine
+                    ctx.fillStyle = '#ffffff';
+                    ctx.beginPath();
+                    ctx.arc(item.x + item.w / 2, cy + item.h / 2, 3, 0, Math.PI * 2);
+                    ctx.fill();
+
+                    // Label
+                    ctx.fillStyle = item.isPassive ? '#a5f3fc' : '#a7f3d0';
+                    ctx.font = 'bold 11px Plus Jakarta Sans';
+                    ctx.textAlign = 'center';
+                    ctx.fillText(item.label, item.x + item.w / 2, cy - 6);
+                    ctx.restore();
+                }
+            });
+
+            // Draw Power-Up Entities
+            powerUps.forEach(p => {
+                if (!p.collected) {
+                    ctx.save();
+                    const bob = Math.sin(renderFrame * 0.1 + p.x) * 4;
+                    const py = p.y + bob;
+
+                    let glowCol = '#f59e0b';
+                    let symbol = '⚡';
+                    if (p.type === 'shield') { glowCol = '#06b6d4'; symbol = '🛡️'; }
+                    if (p.type === 'speed') { glowCol = '#10b981'; symbol = '👟'; }
+                    if (p.type === 'debt_buster') { glowCol = '#a855f7'; symbol = '🧹'; }
+
+                    ctx.fillStyle = 'rgba(15, 23, 42, 0.9)';
+                    ctx.strokeStyle = glowCol;
+                    ctx.lineWidth = 2;
+                    ctx.shadowColor = glowCol;
+                    ctx.shadowBlur = 14;
+
+                    ctx.beginPath();
+                    ctx.arc(p.x + p.w/2, py + p.h/2, 14, 0, Math.PI * 2);
+                    ctx.fill();
+                    ctx.stroke();
+
+                    ctx.font = '14px serif';
+                    ctx.textAlign = 'center';
+                    ctx.textBaseline = 'middle';
+                    ctx.fillText(symbol, p.x + p.w/2, py + p.h/2);
+
+                    ctx.fillStyle = glowCol;
+                    ctx.font = 'bold 10px Plus Jakarta Sans';
+                    ctx.fillText(p.label, p.x + p.w/2, py - 6);
+                    ctx.restore();
+                }
+            });
+
+            // Draw Hazards (Debt Traps)
+            hazards.forEach(hazard => {
+                ctx.save();
+                ctx.fillStyle = hazard.touched ? '#475569' : '#ef4444';
+                ctx.shadowColor = hazard.touched ? 'transparent' : '#ef4444';
+                ctx.shadowBlur = hazard.touched ? 0 : 10;
+
+                // Spikey Trap
+                ctx.beginPath();
+                ctx.moveTo(hazard.x, hazard.y + hazard.h);
+                ctx.lineTo(hazard.x + hazard.w / 2, hazard.y);
+                ctx.lineTo(hazard.x + hazard.w, hazard.y + hazard.h);
+                ctx.closePath();
+                ctx.fill();
+
+                ctx.fillStyle = hazard.touched ? '#94a3b8' : '#fca5a5';
+                ctx.font = '10px Plus Jakarta Sans';
+                ctx.textAlign = 'center';
+                ctx.fillText(hazard.label, hazard.x + hazard.w / 2, hazard.y - 4);
+                ctx.restore();
+            });
+
+            // Draw Quiz Terminals
+            quizNodes.forEach(node => {
+                ctx.save();
+                ctx.fillStyle = node.solved ? '#334155' : '#0284c7';
+                ctx.shadowColor = node.solved ? 'transparent' : '#38bdf8';
+                ctx.shadowBlur = 14;
+
+                // Computer Screen
+                ctx.fillRect(node.x, node.y, node.w, node.h);
+                ctx.fillStyle = node.solved ? '#1e293b' : '#0f172a';
+                ctx.fillRect(node.x + 3, node.y + 3, node.w - 6, node.h - 14);
+
+                // Stand
+                ctx.fillStyle = '#64748b';
+                ctx.fillRect(node.x + 10, node.y + node.h - 6, 14, 6);
+
+                ctx.fillStyle = node.solved ? '#10b981' : '#38bdf8';
+                ctx.font = 'bold 14px Orbitron';
+                ctx.textAlign = 'center';
+                ctx.fillText(node.solved ? '✓' : '?', node.x + node.w / 2, node.y + 22);
+                ctx.restore();
+            });
+
+            // Draw Goal Flag
+            ctx.save();
+            ctx.fillStyle = '#f59e0b';
+            ctx.shadowColor = '#f59e0b';
+            ctx.shadowBlur = 16;
+            ctx.fillRect(goalFlag.x, goalFlag.y, 6, goalFlag.h);
+
+            // Waving Flag Pennant
+            const wave = Math.sin(renderFrame * 0.1) * 3;
+            ctx.beginPath();
+            ctx.moveTo(goalFlag.x + 6, goalFlag.y);
+            ctx.lineTo(goalFlag.x + goalFlag.w + wave, goalFlag.y + 16);
+            ctx.lineTo(goalFlag.x + 6, goalFlag.y + 32);
+            ctx.closePath();
+            ctx.fill();
+
+            ctx.fillStyle = '#fef3c7';
+            ctx.font = 'bold 11px Orbitron';
+            ctx.fillText('FINISH', goalFlag.x - 4, goalFlag.y - 6);
+            ctx.restore();
+
+            // Draw Particles
+            particles.forEach(p => p.draw(ctx));
+
+            // Draw Player Hero Character
+            ctx.save();
+            if (player.invulnerable % 4 > 2) ctx.globalAlpha = 0.35;
+
+            // Shield Bubble Aura if active
+            if (hasInsuranceShield) {
+                ctx.strokeStyle = '#06b6d4';
+                ctx.fillStyle = 'rgba(6, 182, 212, 0.15)';
+                ctx.lineWidth = 2;
+                ctx.shadowColor = '#06b6d4';
+                ctx.shadowBlur = 15;
+                ctx.beginPath();
+                ctx.arc(player.x + player.w/2, player.y + player.h/2, 28, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.stroke();
+            }
+
+            // Compound Surge Aura if active
+            if (activeMultiplierTimer > 0) {
+                ctx.strokeStyle = '#f59e0b';
+                ctx.lineWidth = 2;
+                ctx.shadowColor = '#f59e0b';
+                ctx.shadowBlur = 12;
+                ctx.strokeRect(player.x - 4, player.y - 4, player.w + 8, player.h + 8);
+            }
+
+            // Body / Tech Suit
+            ctx.fillStyle = activeSpeedTimer > 0 ? '#06b6d4' : '#10b981';
+            ctx.shadowColor = '#10b981';
+            ctx.shadowBlur = 8;
+            ctx.fillRect(player.x + 4, player.y + 16, player.w - 8, player.h - 20);
+
+            // Cyber Helmet
+            ctx.fillStyle = '#0f172a';
+            ctx.fillRect(player.x + 5, player.y + 2, player.w - 10, 15);
+
+            // Glowing Visor
+            ctx.fillStyle = activeMultiplierTimer > 0 ? '#f59e0b' : '#38bdf8';
+            ctx.shadowColor = ctx.fillStyle;
+            ctx.shadowBlur = 6;
+            const visorX = player.facing === 'right' ? player.x + 14 : player.x + 4;
+            ctx.fillRect(visorX, player.y + 6, 12, 6);
+
+            // Boots
+            ctx.fillStyle = '#334155';
+            ctx.fillRect(player.x + 5, player.y + player.h - 6, 8, 6);
+            ctx.fillRect(player.x + player.w - 13, player.y + player.h - 6, 8, 6);
+
+            ctx.restore();
+        }
+
+        /* ==========================================================================
+           QUIZ SYSTEM & MODALS
+           ========================================================================== */
+        let activeQuizNode = null;
+
+        function triggerQuizModal(node) {
+            gameState = 'QUIZ';
+            activeQuizNode = node;
+            const qData = quizDataset[node.qIdx];
+
+            document.getElementById('quiz-number').innerText = `Checkpoint ${node.qIdx + 1} / ${quizDataset.length}`;
+            document.getElementById('quiz-topic').innerText = `Topic: ${qData.topic}`;
+            document.getElementById('quiz-question').innerText = qData.question;
+
+            const optionsContainer = document.getElementById('quiz-options');
+            optionsContainer.innerHTML = '';
+            document.getElementById('quiz-feedback').classList.add('hidden');
+            document.getElementById('btn-quiz-continue').classList.add('hidden');
+
+            qData.options.forEach((optText, index) => {
+                const btn = document.createElement('button');
+                btn.className = "w-full text-left p-3.5 rounded-xl bg-slate-800 hover:bg-slate-700/80 border border-slate-700/60 text-sm md:text-base text-slate-100 font-semibold transition flex items-center justify-between cursor-pointer";
+                btn.innerHTML = `<span>${String.fromCharCode(65 + index)}. ${optText}</span> <span class="text-slate-400 text-xs bg-slate-900 px-2 py-0.5 rounded border border-slate-700">Select</span>`;
+                btn.onclick = () => handleQuizAnswer(index, qData, btn);
+                optionsContainer.appendChild(btn);
+            });
+
+            document.getElementById('modal-quiz').classList.remove('hidden');
+        }
+
+        function handleQuizAnswer(selectedIndex, qData, clickedBtn) {
+            totalQuestionsAnswered++;
+            stageQuestionsAnswered++;
+            const isCorrect = selectedIndex === qData.answer;
+            const feedbackEl = document.getElementById('quiz-feedback');
+
+            // Disable all option buttons
+            const allBtns = document.getElementById('quiz-options').children;
+            for (let btn of allBtns) {
+                btn.disabled = true;
+                btn.classList.add('opacity-60');
+            }
+
+            if (isCorrect) {
+                correctAnswersCount++;
+                stageCorrectCount++;
+                const bonus = 300;
+                savings += bonus;
+                stageSavingsEarned += bonus;
+                totalQuizBonus += bonus;
+
+                sfx.playCorrect();
+                updateHUD();
+
+                clickedBtn.classList.remove('bg-slate-800', 'opacity-60');
+                clickedBtn.classList.add('bg-emerald-500/20', 'border-emerald-500', 'text-emerald-300');
+
+                feedbackEl.className = "p-4 rounded-xl text-sm md:text-base font-semibold leading-relaxed border bg-emerald-950/80 border-emerald-500/50 text-emerald-300 space-y-1.5";
+                feedbackEl.innerHTML = `<div class="text-base font-bold">✓ Correct! (+RM 300 Knowledge Bonus)</div><div class="text-slate-200">${qData.explanation}</div>`;
+                spawnParticles(player.x + player.w/2, player.y, 15, '#10b981', 'sparkle', 3);
+            } else {
+                sfx.playWrong();
+                clickedBtn.classList.remove('bg-slate-800', 'opacity-60');
+                clickedBtn.classList.add('bg-red-500/20', 'border-red-500', 'text-red-300');
+
+                // Highlight the correct option
+                allBtns[qData.answer].classList.remove('opacity-60');
+                allBtns[qData.answer].classList.add('bg-emerald-500/20', 'border-emerald-500', 'text-emerald-300');
+
+                feedbackEl.className = "p-4 rounded-xl text-sm md:text-base font-semibold leading-relaxed border bg-red-950/80 border-red-500/50 text-red-300 space-y-1.5";
+                feedbackEl.innerHTML = `<div class="text-base font-bold">✗ Incorrect!</div><div class="text-slate-200">${qData.explanation}</div>`;
+            }
+
+            feedbackEl.classList.remove('hidden');
+            activeQuizNode.solved = true;
+            const contBtn = document.getElementById('btn-quiz-continue');
+            contBtn.classList.remove('hidden');
+
+            setTimeout(() => {
+                contBtn.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            }, 80);
+        }
+
+        document.getElementById('btn-quiz-continue').onclick = () => {
+            document.getElementById('modal-quiz').classList.add('hidden');
+            gameState = 'PLAYING';
+        };
+
+        /* ==========================================================================
+           STAGE CLEAR & STAR RATING LOGIC
+           ========================================================================== */
+        function triggerStageClear() {
+            gameState = 'STAGECLEAR';
+            sfx.playCorrect();
+
+            // Calculate Stars (1 to 3 stars)
+            let starsEarned = 1; // 1 star for clearing stage
+            const stageConfig = STAGE_CONFIG[currentLevel - 1];
+
+            // Star 2: Earned target stage savings
+            if (stageSavingsEarned >= stageConfig.goal * 0.7) {
+                starsEarned++;
+            }
+            // Star 3: 100% quiz accuracy & health >= 2
+            if (stageCorrectCount === stageQuestionsAnswered && health >= 2) {
+                starsEarned++;
+            }
+
+            // Update persistent save
+            if (starsEarned > gameProgress.stars[currentLevel - 1]) {
+                gameProgress.stars[currentLevel - 1] = starsEarned;
+            }
+            if (stageSavingsEarned > gameProgress.highScores[currentLevel - 1]) {
+                gameProgress.highScores[currentLevel - 1] = stageSavingsEarned;
+            }
+            if (currentLevel < 6 && gameProgress.unlockedStage <= currentLevel) {
+                gameProgress.unlockedStage = currentLevel + 1;
+            }
+            saveProgress();
+
+            // Populate Stage Clear Modal
+            document.getElementById('clear-stage-title').innerText = stageConfig.name;
+            document.getElementById('clear-savings').innerText = `RM ${stageSavingsEarned.toLocaleString()}`;
+            document.getElementById('clear-health').innerText = `${health} / 3 Hearts`;
+            const quizAcc = stageQuestionsAnswered > 0 ? Math.round((stageCorrectCount / stageQuestionsAnswered) * 100) : 100;
+            document.getElementById('clear-quiz').innerText = `${quizAcc}% (${stageCorrectCount}/${stageQuestionsAnswered})`;
+            document.getElementById('clear-total-net').innerText = `RM ${savings.toLocaleString()}`;
+
+            // Animate stars
+            ['star-1', 'star-2', 'star-3'].forEach((id, idx) => {
+                const el = document.getElementById(id);
+                if (idx < starsEarned) {
+                    el.className = "text-amber-400 transform scale-110";
+                } else {
+                    el.className = "text-slate-700";
+                }
+            });
+
+            // Next button text
+            const btnNext = document.getElementById('btn-next-stage');
+            if (currentLevel >= 6) {
+                btnNext.innerText = "Final Victory Report 🏆";
+                btnNext.onclick = triggerGrandVictory;
+            } else {
+                btnNext.innerText = `Next: Stage ${currentLevel + 1} ➔`;
+                btnNext.onclick = () => {
+                    document.getElementById('screen-stageclear').classList.add('hidden');
+                    loadLevel(currentLevel + 1);
+                    gameState = 'PLAYING';
+                };
+            }
+
+            // Confetti
+            spawnParticles(V_WIDTH/2, V_HEIGHT/3, 40, '#f59e0b', 'confetti', 5);
+            spawnParticles(V_WIDTH/2, V_HEIGHT/3, 30, '#10b981', 'sparkle', 4);
+
+            document.getElementById('screen-stageclear').classList.remove('hidden');
+        }
+
+        /* ==========================================================================
+           GRAND VICTORY & SPM REPORT CARD
+           ========================================================================== */
+        function triggerGrandVictory() {
+            document.getElementById('screen-stageclear').classList.add('hidden');
+            gameState = 'VICTORY';
+            sfx.playCorrect();
+
+            const accuracy = totalQuestionsAnswered > 0 ? Math.round((correctAnswersCount / totalQuestionsAnswered) * 100) : 100;
+            const totalStars = gameProgress.stars.reduce((a, b) => a + b, 0);
+
+            document.getElementById('vic-savings').innerText = `RM ${savings.toLocaleString()}`;
+            document.getElementById('vic-accuracy').innerText = `${accuracy}% (${correctAnswersCount}/${totalQuestionsAnswered})`;
+            document.getElementById('vic-stars').innerText = `${totalStars} / 18 ⭐`;
+
+            let grade = "Chartered Financial Master";
+            let evalText = "Supreme mastery of SPM Form 4 Chapter 10 mathematics! You have demonstrated flawless execution of SMART budgeting, compound investment multiplication, and complete debt immunity.";
+
+            if (accuracy < 75) {
+                grade = "Certified Financial Planner";
+                evalText = "Great overall performance! You have built a solid emergency fund and maintained positive cash flow throughout all 6 stages.";
+            }
+
+            document.getElementById('vic-grade').innerText = grade;
+            document.getElementById('vic-eval').innerText = evalText;
+
+            spawnParticles(V_WIDTH/2, V_HEIGHT/2, 60, '#38bdf8', 'confetti', 6);
+            spawnParticles(V_WIDTH/2, V_HEIGHT/2, 40, '#f59e0b', 'sparkle', 5);
+
+            document.getElementById('screen-victory').classList.remove('hidden');
+        }
+
+        /* ==========================================================================
+           LIVE BALANCE SHEET DRAWER
+           ========================================================================== */
+        function toggleBalanceSheet() {
+            const modal = document.getElementById('modal-balance-sheet');
+            if (modal.classList.contains('hidden')) {
+                // Populate live data
+                const totalInflow = totalActiveIncome + totalPassiveIncome + totalQuizBonus;
+                document.getElementById('bs-active-income').innerText = `RM ${totalActiveIncome.toLocaleString()}`;
+                document.getElementById('bs-passive-income').innerText = `RM ${totalPassiveIncome.toLocaleString()}`;
+                document.getElementById('bs-quiz-bonus').innerText = `RM ${totalQuizBonus.toLocaleString()}`;
+                document.getElementById('bs-total-inflow').innerText = `RM ${totalInflow.toLocaleString()}`;
+
+                document.getElementById('bs-debt-losses').innerText = `RM ${totalDebtLosses.toLocaleString()}`;
+                document.getElementById('bs-shield-blocked').innerText = `${totalShieldBlocks} Hits`;
+                document.getElementById('bs-debt-cleared').innerText = `${totalDebtTrapsCleared}`;
+                document.getElementById('bs-total-lost').innerText = `RM ${totalDebtLosses.toLocaleString()}`;
+
+                // Emergency Fund Progress (Goal RM 10,000)
+                const efTarget = 10000;
+                const efPercent = Math.min(100, Math.round((savings / efTarget) * 100));
+                document.getElementById('bs-ef-percent').innerText = `${efPercent}%`;
+                document.getElementById('bs-ef-bar').style.width = `${efPercent}%`;
+                const monthsBuilt = (savings / 2000).toFixed(1);
+                document.getElementById('bs-ef-months').innerText = `${monthsBuilt} Months of Safety Built`;
+
+                // Net Worth
+                document.getElementById('bs-net-worth').innerText = `RM ${savings.toLocaleString()}`;
+
+                modal.classList.remove('hidden');
+            } else {
+                modal.classList.add('hidden');
+            }
+        }
+
+        document.getElementById('btn-balance-sheet').onclick = toggleBalanceSheet;
+        document.getElementById('btn-close-balance-sheet').onclick = toggleBalanceSheet;
+        document.getElementById('btn-resume-game').onclick = toggleBalanceSheet;
+
+        /* ==========================================================================
+           STAGE SELECT MODAL
+           ========================================================================== */
+        function openStagesModal() {
+            const grid = document.getElementById('stages-grid');
+            grid.innerHTML = '';
+
+            let totalStarsCount = 0;
+            STAGE_CONFIG.forEach((stg, idx) => {
+                const isUnlocked = stg.id <= gameProgress.unlockedStage;
+                const stars = gameProgress.stars[idx] || 0;
+                totalStarsCount += stars;
+                const high = gameProgress.highScores[idx] || 0;
+
+                const card = document.createElement('div');
+                card.className = `p-4 rounded-xl border transition ${
+                    isUnlocked 
+                    ? 'bg-slate-800/90 hover:bg-slate-700/90 border-slate-700 cursor-pointer shadow-lg' 
+                    : 'bg-slate-950/50 border-slate-800/50 opacity-50 cursor-not-allowed'
+                }`;
+
+                let starsText = '';
+                for (let s = 0; s < 3; s++) {
+                    starsText += s < stars ? '⭐' : '🖤';
+                }
+
+                card.innerHTML = `
+                    <div class="flex justify-between items-center mb-1.5">
+                        <span class="font-tech text-sm font-bold ${isUnlocked ? 'text-emerald-400' : 'text-slate-500'}">Stage ${stg.id}</span>
+                        <span class="text-sm">${isUnlocked ? starsText : '🔒 Locked'}</span>
+                    </div>
+                    <h4 class="font-bold text-sm md:text-base text-slate-100 mb-1 leading-snug">${stg.name.split(':')[1] || stg.name}</h4>
+                    <p class="text-xs text-slate-300 mb-2.5 line-clamp-2 leading-relaxed">${stg.desc}</p>
+                    <div class="flex justify-between text-xs text-slate-400 pt-1.5 border-t border-slate-700/60">
+                        <span>Best: <strong class="text-emerald-300 font-code font-bold">RM ${high}</strong></span>
+                        <span class="${isUnlocked ? 'text-cyan-300 font-bold' : 'text-slate-600'}">${isUnlocked ? 'Play ➔' : 'Complete Prev'}</span>
+                    </div>
+                `;
+
+                if (isUnlocked) {
+                    card.onclick = () => {
+                        document.getElementById('modal-stages').classList.add('hidden');
+                        document.getElementById('screen-start').classList.add('hidden');
+                        document.getElementById('screen-stageclear').classList.add('hidden');
+                        document.getElementById('screen-gameover').classList.add('hidden');
+                        document.getElementById('screen-victory').classList.add('hidden');
+                        loadLevel(stg.id);
+                        gameState = 'PLAYING';
+                    };
+                }
+
+                grid.appendChild(card);
+            });
+
+            document.getElementById('total-stars-count').innerText = `${totalStarsCount} / 18 ⭐`;
+            document.getElementById('modal-stages').classList.remove('hidden');
+        }
+
+        document.getElementById('btn-open-stages').onclick = openStagesModal;
+        document.getElementById('btn-start-stages').onclick = openStagesModal;
+        document.getElementById('btn-close-stages').onclick = () => document.getElementById('modal-stages').classList.add('hidden');
+        document.getElementById('btn-stage-map').onclick = openStagesModal;
+        document.getElementById('btn-gameover-map').onclick = openStagesModal;
+        document.getElementById('btn-vic-stages').onclick = openStagesModal;
+
+        document.getElementById('btn-reset-progress').onclick = () => {
+            if (confirm("Reset all stage progression and high scores?")) {
+                gameProgress = { unlockedStage: 1, stars: [0,0,0,0,0,0], highScores: [0,0,0,0,0,0] };
+                saveProgress();
+                openStagesModal();
+            }
+        };
+
+        function closeAllModals() {
+            document.getElementById('modal-balance-sheet').classList.add('hidden');
+            document.getElementById('modal-stages').classList.add('hidden');
+        }
+
+        /* ==========================================================================
+           GAME LOOP & START / RESTART BUTTONS
+           ========================================================================== */
+        function gameLoop() {
+            updatePhysics();
+            render();
+            requestAnimationFrame(gameLoop);
+        }
+
+        // Start Mission Button
+        document.getElementById('btn-start').onclick = () => {
+            sfx.init();
+            document.getElementById('screen-start').classList.add('hidden');
+            health = 3;
+            savings = 0;
+            totalActiveIncome = 0;
+            totalPassiveIncome = 0;
+            totalQuizBonus = 0;
+            totalDebtLosses = 0;
+            totalShieldBlocks = 0;
+            totalDebtTrapsCleared = 0;
+            totalQuestionsAnswered = 0;
+            correctAnswersCount = 0;
+            hasInsuranceShield = false;
+            activeMultiplierTimer = 0;
+            activeSpeedTimer = 0;
+            activeDebtBusterTimer = 0;
+            updateHUD();
+            loadLevel(1);
+            gameState = 'PLAYING';
+        };
+
+        // Reset / Replay Buttons
+        const resetCurrentLevel = () => {
+            document.getElementById('screen-gameover').classList.add('hidden');
+            document.getElementById('screen-victory').classList.add('hidden');
+            document.getElementById('screen-stageclear').classList.add('hidden');
+            health = 3;
+            hasInsuranceShield = false;
+            activeMultiplierTimer = 0;
+            activeSpeedTimer = 0;
+            activeDebtBusterTimer = 0;
+            updateHUD();
+            loadLevel(currentLevel);
+            gameState = 'PLAYING';
+        };
+
+        document.getElementById('btn-restart').onclick = resetCurrentLevel;
+        document.getElementById('btn-retry').onclick = resetCurrentLevel;
+        document.getElementById('btn-play-again').onclick = () => {
+            document.getElementById('screen-victory').classList.add('hidden');
+            loadLevel(1);
+            health = 3;
+            savings = 0;
+            totalQuestionsAnswered = 0;
+            correctAnswersCount = 0;
+            updateHUD();
+            gameState = 'PLAYING';
+        };
+
+        // Audio Mute Toggle
+        document.getElementById('btn-audio').onclick = function() {
+            sfx.enabled = !sfx.enabled;
+            this.innerText = sfx.enabled ? '🔊' : '🔇';
+        };
+
+        // Start Loop on Window Load
+        window.onload = () => {
+            gameLoop();
+        };
+    </script>
+</body>
+</html>

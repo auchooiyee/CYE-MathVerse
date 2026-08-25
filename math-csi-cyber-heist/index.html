@@ -1,0 +1,1546 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Math CSI: Cyber Heist - Form 4 Mathematics Multi-Case Investigation</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-dark: #070b14;
+            --card-bg: #0f172a;
+            --accent-cyan: #00f2fe;
+            --accent-green: #00ff87;
+            --accent-red: #ff4757;
+            --accent-yellow: #ffa502;
+            --accent-purple: #a855f7;
+            --text-light: #f1f5f9;
+            --text-dim: #94a3b8;
+            --border-color: #1e293b;
+        }
+
+        * {
+            box-sizing: border-box;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            touch-action: manipulation;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-light);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 12px;
+            background-image: 
+                radial-gradient(circle at 15% 15%, rgba(0, 242, 254, 0.06) 0%, transparent 35%),
+                radial-gradient(circle at 85% 85%, rgba(0, 255, 135, 0.05) 0%, transparent 35%),
+                radial-gradient(circle at 50% 50%, rgba(168, 85, 247, 0.04) 0%, transparent 50%);
+        }
+
+        .font-tech {
+            font-family: 'Orbitron', sans-serif;
+        }
+        .font-code {
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .game-container {
+            width: 100%;
+            max-width: 980px;
+            background-color: rgba(15, 23, 42, 0.94);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(0, 242, 254, 0.25);
+            border-radius: 16px;
+            box-shadow: 0 16px 40px rgba(0, 0, 0, 0.6), 0 0 25px rgba(0, 242, 254, 0.12);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Screen Wrapper */
+        .screen {
+            padding: 24px;
+            display: none;
+            flex-direction: column;
+            gap: 18px;
+            max-height: 85vh;
+            overflow-y: auto;
+        }
+
+        .screen.active {
+            display: flex;
+        }
+
+        /* Toggle Options & Buttons */
+        .toggle-btn {
+            background: #0d1527;
+            border: 1px solid #1e293b;
+            padding: 12px 14px;
+            border-radius: 10px;
+            color: #94a3b8;
+            cursor: pointer;
+            text-align: center;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            user-select: none;
+        }
+
+        .toggle-btn:hover {
+            border-color: rgba(0, 242, 254, 0.5);
+            background: #131e38;
+            color: #e2e8f0;
+        }
+
+        .toggle-btn.selected {
+            background: rgba(0, 242, 254, 0.18);
+            border-color: var(--accent-cyan);
+            color: #ffffff;
+            box-shadow: 0 0 12px rgba(0, 242, 254, 0.25);
+        }
+
+        .toggle-btn.selected-true {
+            background: rgba(0, 255, 135, 0.18);
+            border-color: var(--accent-green);
+            color: var(--accent-green);
+            box-shadow: 0 0 12px rgba(0, 255, 135, 0.25);
+        }
+
+        .toggle-btn.selected-false {
+            background: rgba(255, 71, 87, 0.18);
+            border-color: var(--accent-red);
+            color: var(--accent-red);
+            box-shadow: 0 0 12px rgba(255, 71, 87, 0.25);
+        }
+
+        /* Suspect Cards */
+        .suspect-card {
+            background: #0d1527;
+            border: 2px solid #1e293b;
+            border-radius: 12px;
+            padding: 14px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .suspect-card:hover {
+            border-color: var(--accent-cyan);
+            transform: translateY(-2px);
+        }
+
+        .suspect-card.selected {
+            border-color: var(--accent-cyan);
+            background: rgba(0, 242, 254, 0.14);
+            box-shadow: 0 0 15px rgba(0, 242, 254, 0.3);
+        }
+
+        /* Feedback Boxes */
+        .feedback-box {
+            padding: 14px 18px;
+            border-radius: 10px;
+            display: none;
+            font-weight: 600;
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+
+        .feedback-box.error {
+            display: block;
+            background: rgba(255, 71, 87, 0.15);
+            border: 1px solid var(--accent-red);
+            color: #fca5a5;
+        }
+
+        .feedback-box.success {
+            display: block;
+            background: rgba(0, 255, 135, 0.15);
+            border: 1px solid var(--accent-green);
+            color: #86efac;
+        }
+
+        /* Custom Scrollbars */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: rgba(15, 23, 42, 0.6);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #334155;
+            border-radius: 3px;
+        }
+
+        .glow-cyan {
+            box-shadow: 0 0 16px rgba(0, 242, 254, 0.4);
+        }
+        .glow-green {
+            box-shadow: 0 0 16px rgba(0, 255, 135, 0.4);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="game-container">
+        <!-- TOP HEADER BAR -->
+        <header class="bg-slate-950/90 px-4 py-3 border-b border-slate-800 flex flex-wrap justify-between items-center gap-3">
+            <div class="flex items-center space-x-2.5">
+                <div class="w-9 h-9 rounded-xl bg-gradient-to-tr from-cyan-500 to-teal-400 flex items-center justify-center text-slate-950 font-black text-lg shadow-lg">
+                    🕵️
+                </div>
+                <div>
+                    <div class="flex items-center space-x-2">
+                        <h1 class="font-tech text-xs md:text-sm font-bold text-cyan-400 tracking-wider">MATH CSI: CYBER HEIST</h1>
+                        <span class="bg-cyan-500/20 text-cyan-300 text-[9px] font-bold px-2 py-0.5 rounded border border-cyan-500/30">Form 4 KSSM</span>
+                    </div>
+                    <p class="text-[10px] text-slate-400">Cyber Forensic Investigation Suite</p>
+                </div>
+            </div>
+
+            <!-- Stats Badge Bar -->
+            <div class="flex items-center space-x-2 md:space-x-4 text-xs">
+                <div class="bg-slate-900 px-3 py-1 rounded-lg border border-slate-800">
+                    <span class="text-slate-400 text-[10px] block font-semibold">STAGE</span>
+                    <span id="display-stage" class="font-tech text-cyan-400 font-bold">1 / 8</span>
+                </div>
+                <div class="bg-slate-900 px-3 py-1 rounded-lg border border-slate-800">
+                    <span class="text-slate-400 text-[10px] block font-semibold">TIME</span>
+                    <span id="timer-display" class="font-code text-amber-400 font-bold">00:00</span>
+                </div>
+                <div class="bg-slate-900 px-3 py-1 rounded-lg border border-slate-800">
+                    <span class="text-slate-400 text-[10px] block font-semibold">CSI SCORE</span>
+                    <span id="score-display" class="font-code text-emerald-400 font-bold">0</span>
+                </div>
+            </div>
+
+            <!-- Utility Trigger Buttons -->
+            <div class="flex items-center space-x-1.5">
+                <button id="btn-evidence" title="Open Evidence Dossier (E)" class="px-2.5 py-1.5 rounded-lg bg-purple-950/80 hover:bg-purple-900 border border-purple-500/40 text-purple-300 text-xs font-bold flex items-center space-x-1 transition cursor-pointer">
+                    <span>📂</span> <span class="hidden sm:inline">Dossier</span>
+                </button>
+                <button id="btn-codex" title="Open Math Formula Codex (M)" class="px-2.5 py-1.5 rounded-lg bg-cyan-950/80 hover:bg-cyan-900 border border-cyan-500/40 text-cyan-300 text-xs font-bold flex items-center space-x-1 transition cursor-pointer">
+                    <span>📖</span> <span class="hidden sm:inline">Codex</span>
+                </button>
+                <button id="btn-audio" title="Mute/Unmute Audio" class="w-8 h-8 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 flex items-center justify-center text-xs transition cursor-pointer">
+                    🔊
+                </button>
+            </div>
+        </header>
+
+        <!-- =========================================================================
+             SCREEN 1: CASE BRIEFING & TEAM REGISTRATION
+             ========================================================================= -->
+        <div id="screen-intro" class="screen active text-center p-6 md:p-10 space-y-6">
+            <div class="max-w-xl mx-auto space-y-3">
+                <div class="inline-block p-4 rounded-2xl bg-cyan-500/10 border border-cyan-500/20 mb-2">
+                    <span class="text-5xl">🚨</span>
+                </div>
+                <h2 class="font-tech text-2xl md:text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-teal-300 to-emerald-400">
+                    OPERATION CYBER HEIST
+                </h2>
+                <p class="text-xs md:text-sm text-slate-300 leading-relaxed">
+                    At 15:00 hours, the national examination server cluster was hijacked by a rogue cyber intruder! All encrypted data is locked behind mathematical security gates. Your Math CSI squad must apply <strong class="text-cyan-400">Form 4 Mathematics</strong> to decrypt logs, trace network graphs, plot motion curves, and apprehend the mastermind!
+                </p>
+            </div>
+
+            <!-- 8 Chapters Covered Grid -->
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-2.5 max-w-2xl mx-auto text-left text-xs">
+                <div class="bg-slate-900/80 p-2.5 rounded-xl border border-slate-800">
+                    <div class="font-bold text-cyan-400">1. Logic & Quantifiers</div>
+                    <div class="text-[10px] text-slate-400">Chapter 3</div>
+                </div>
+                <div class="bg-slate-900/80 p-2.5 rounded-xl border border-slate-800">
+                    <div class="font-bold text-teal-400">2. Number Bases</div>
+                    <div class="text-[10px] text-slate-400">Chapter 2 (Base 2, 5, 8)</div>
+                </div>
+                <div class="bg-slate-900/80 p-2.5 rounded-xl border border-slate-800">
+                    <div class="font-bold text-emerald-400">3. Set Operations</div>
+                    <div class="text-[10px] text-slate-400">Chapter 4 (Venn Models)</div>
+                </div>
+                <div class="bg-slate-900/80 p-2.5 rounded-xl border border-slate-800">
+                    <div class="font-bold text-purple-400">4. Network Graphs</div>
+                    <div class="text-[10px] text-slate-400">Chapter 5 (Shortest Path)</div>
+                </div>
+                <div class="bg-slate-900/80 p-2.5 rounded-xl border border-slate-800">
+                    <div class="font-bold text-amber-400">5. Graphs of Motion</div>
+                    <div class="text-[10px] text-slate-400">Chapter 7 (Speed-Time)</div>
+                </div>
+                <div class="bg-slate-900/80 p-2.5 rounded-xl border border-slate-800">
+                    <div class="font-bold text-rose-400">6. Data Dispersion</div>
+                    <div class="text-[10px] text-slate-400">Chapter 8 (IQR & Outliers)</div>
+                </div>
+                <div class="bg-slate-900/80 p-2.5 rounded-xl border border-slate-800">
+                    <div class="font-bold text-indigo-400">7. Combined Probability</div>
+                    <div class="text-[10px] text-slate-400">Chapter 9 (2FA Firewall)</div>
+                </div>
+                <div class="bg-slate-900/80 p-2.5 rounded-xl border border-slate-800">
+                    <div class="font-bold text-yellow-400">8. Mastermind Arrest</div>
+                    <div class="text-[10px] text-slate-400">Deductive Arguments</div>
+                </div>
+            </div>
+
+            <!-- Team Input & Start Button -->
+            <div class="max-w-md mx-auto space-y-3 pt-2">
+                <input type="text" id="team-name" placeholder="Enter CSI Squad Name (e.g. Cyber Sleuths)" class="w-full px-4 py-3 bg-slate-900 border border-slate-700 rounded-xl text-center text-slate-100 font-bold focus:border-cyan-400 focus:outline-none transition">
+                <button class="font-tech w-full py-3.5 rounded-xl bg-gradient-to-r from-cyan-500 via-teal-500 to-emerald-500 hover:from-cyan-400 hover:to-emerald-400 text-slate-950 font-black text-sm uppercase tracking-wider transition transform hover:scale-[1.02] glow-cyan cursor-pointer" onclick="startGame()">
+                    Initiate Investigation 🚀
+                </button>
+            </div>
+        </div>
+
+        <!-- =========================================================================
+             SCREEN 2: STAGE 1 - LOGICAL REASONING (DOOR DECRYPTION)
+             ========================================================================= -->
+        <div id="screen-stage1" class="screen">
+            <div class="border-b border-slate-800 pb-2">
+                <span class="text-[10px] font-bold text-cyan-400 uppercase tracking-widest font-tech">Chapter 3: Logical Reasoning</span>
+                <h3 class="text-base md:text-lg font-bold text-slate-100">Stage 1: Server Gateway Decryption</h3>
+            </div>
+            <p class="text-xs text-slate-300">
+                Determine the mathematical truth value (<strong>TRUE</strong> or <strong>FALSE</strong>) for each security log statement to derive the server room door code.
+            </p>
+
+            <div class="space-y-3">
+                <div class="bg-slate-900/80 p-3.5 rounded-xl border border-slate-800 space-y-2">
+                    <div class="text-xs font-bold text-slate-200">Log 1: "All prime numbers are odd numbers."</div>
+                    <div class="grid grid-cols-2 gap-2">
+                        <div class="toggle-btn" onclick="selectS1(1, 'TRUE', this)">TRUE</div>
+                        <div class="toggle-btn" onclick="selectS1(1, 'FALSE', this)">FALSE</div>
+                    </div>
+                </div>
+
+                <div class="bg-slate-900/80 p-3.5 rounded-xl border border-slate-800 space-y-2">
+                    <div class="text-xs font-bold text-slate-200">Log 2: "Some multiples of 5 end with the digit 0."</div>
+                    <div class="grid grid-cols-2 gap-2">
+                        <div class="toggle-btn" onclick="selectS1(2, 'TRUE', this)">TRUE</div>
+                        <div class="toggle-btn" onclick="selectS1(2, 'FALSE', this)">FALSE</div>
+                    </div>
+                </div>
+
+                <div class="bg-slate-900/80 p-3.5 rounded-xl border border-slate-800 space-y-2">
+                    <div class="text-xs font-bold text-slate-200">Log 3: "3 + 4 = 7 and 3 × 4 = 10."</div>
+                    <div class="grid grid-cols-2 gap-2">
+                        <div class="toggle-btn" onclick="selectS1(3, 'TRUE', this)">TRUE</div>
+                        <div class="toggle-btn" onclick="selectS1(3, 'FALSE', this)">FALSE</div>
+                    </div>
+                </div>
+
+                <div class="bg-slate-900/80 p-3.5 rounded-xl border border-slate-800 space-y-2">
+                    <div class="text-xs font-bold text-slate-200">Log 4: "8 > 5 or 2 + 2 = 5."</div>
+                    <div class="grid grid-cols-2 gap-2">
+                        <div class="toggle-btn" onclick="selectS1(4, 'TRUE', this)">TRUE</div>
+                        <div class="toggle-btn" onclick="selectS1(4, 'FALSE', this)">FALSE</div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="s1-feedback" class="feedback-box"></div>
+
+            <div class="flex justify-end pt-2">
+                <button class="font-tech px-6 py-3 rounded-xl bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-black text-xs uppercase tracking-wider transition cursor-pointer" onclick="checkStage1()">
+                    Unlock Server Door 🔓
+                </button>
+            </div>
+        </div>
+
+        <!-- =========================================================================
+             SCREEN 3: STAGE 2 - NUMBER BASES (PACKET DECODER)
+             ========================================================================= -->
+        <div id="screen-stage2" class="screen">
+            <div class="border-b border-slate-800 pb-2">
+                <span class="text-[10px] font-bold text-teal-400 uppercase tracking-widest font-tech">Chapter 2: Number Bases</span>
+                <h3 class="text-base md:text-lg font-bold text-slate-100">Stage 2: Hacker Packet & Port Decryption</h3>
+            </div>
+            <p class="text-xs text-slate-300">
+                The intruder transmitted encrypted communication packets in non-decimal bases. Convert each packet into decimal (Base 10) to discover the rogue listening ports!
+            </p>
+
+            <div class="space-y-3">
+                <div class="bg-slate-900/80 p-3.5 rounded-xl border border-slate-800 space-y-2">
+                    <div class="text-xs font-bold text-slate-200">Packet Alpha (Base 2): Convert <span class="text-cyan-400 font-code font-bold">11011₂</span> to Base 10:</div>
+                    <div class="grid grid-cols-2 sm:grid-cols-4 gap-2">
+                        <div class="toggle-btn font-code" onclick="selectS2(1, '25', this)">25₁₀</div>
+                        <div class="toggle-btn font-code" onclick="selectS2(1, '27', this)">27₁₀</div>
+                        <div class="toggle-btn font-code" onclick="selectS2(1, '29', this)">29₁₀</div>
+                        <div class="toggle-btn font-code" onclick="selectS2(1, '31', this)">31₁₀</div>
+                    </div>
+                </div>
+
+                <div class="bg-slate-900/80 p-3.5 rounded-xl border border-slate-800 space-y-2">
+                    <div class="text-xs font-bold text-slate-200">Packet Beta (Base 8): Convert <span class="text-teal-400 font-code font-bold">74₈</span> to Base 10:</div>
+                    <div class="grid grid-cols-2 sm:grid-cols-4 gap-2">
+                        <div class="toggle-btn font-code" onclick="selectS2(2, '56', this)">56₁₀</div>
+                        <div class="toggle-btn font-code" onclick="selectS2(2, '60', this)">60₁₀</div>
+                        <div class="toggle-btn font-code" onclick="selectS2(2, '64', this)">64₁₀</div>
+                        <div class="toggle-btn font-code" onclick="selectS2(2, '70', this)">70₁₀</div>
+                    </div>
+                </div>
+
+                <div class="bg-slate-900/80 p-3.5 rounded-xl border border-slate-800 space-y-2">
+                    <div class="text-xs font-bold text-slate-200">Packet Gamma (Base 5): Convert <span class="text-emerald-400 font-code font-bold">231₅</span> to Base 10:</div>
+                    <div class="grid grid-cols-2 sm:grid-cols-4 gap-2">
+                        <div class="toggle-btn font-code" onclick="selectS2(3, '51', this)">51₁₀</div>
+                        <div class="toggle-btn font-code" onclick="selectS2(3, '66', this)">66₁₀</div>
+                        <div class="toggle-btn font-code" onclick="selectS2(3, '71', this)">71₁₀</div>
+                        <div class="toggle-btn font-code" onclick="selectS2(3, '75', this)">75₁₀</div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="s2-feedback" class="feedback-box"></div>
+
+            <div class="flex justify-end pt-2">
+                <button class="font-tech px-6 py-3 rounded-xl bg-teal-500 hover:bg-teal-400 text-slate-950 font-black text-xs uppercase tracking-wider transition cursor-pointer" onclick="checkStage2()">
+                    Decode Network Ports 📡
+                </button>
+            </div>
+        </div>
+
+        <!-- =========================================================================
+             SCREEN 4: STAGE 3 - OPERATIONS ON SETS (VENN PROFILING)
+             ========================================================================= -->
+        <div id="screen-stage3" class="screen">
+            <div class="border-b border-slate-800 pb-2">
+                <span class="text-[10px] font-bold text-emerald-400 uppercase tracking-widest font-tech">Chapter 4: Operations on Sets</span>
+                <h3 class="text-base md:text-lg font-bold text-slate-100">Stage 3: CCTV Forensic Venn Profiling</h3>
+            </div>
+
+            <div class="bg-slate-950 p-3.5 rounded-xl border border-slate-800 space-y-2 text-xs">
+                <div><strong>Universal Set ξ:</strong> {Suspect A, Suspect B, Suspect C, Suspect D}</div>
+                <div><strong>Set L (Present in Computer Lab):</strong> {Suspect A, Suspect B, Suspect C}</div>
+                <div><strong>Set R (Present in Robotics Club):</strong> {Suspect B, Suspect D}</div>
+                <div class="p-2 rounded-lg bg-amber-500/10 border border-amber-500/30 text-amber-300 font-semibold">
+                    🔍 FORENSIC CCTV CLUE: "The hacker was confirmed to be in the set region: <strong>(L ∩ R')</strong>."
+                </div>
+            </div>
+
+            <p class="text-xs text-slate-300">
+                Select the suspect(s) that belong to the set operation <strong class="text-emerald-400 font-code">(L ∩ R')</strong>:
+            </p>
+
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                <div class="suspect-card" onclick="toggleSuspect('A', this)">
+                    <div class="text-3xl mb-1">🧑‍💻</div>
+                    <div class="font-bold text-slate-100 text-xs">Suspect A</div>
+                    <div class="text-[10px] text-slate-400">Cyber Hacker</div>
+                </div>
+                <div class="suspect-card" onclick="toggleSuspect('B', this)">
+                    <div class="text-3xl mb-1">🧔‍♂️</div>
+                    <div class="font-bold text-slate-100 text-xs">Suspect B</div>
+                    <div class="text-[10px] text-slate-400">Robotics Engineer</div>
+                </div>
+                <div class="suspect-card" onclick="toggleSuspect('C', this)">
+                    <div class="text-3xl mb-1">👩‍💻</div>
+                    <div class="font-bold text-slate-100 text-xs">Suspect C</div>
+                    <div class="text-[10px] text-slate-400">Data Cryptographer</div>
+                </div>
+                <div class="suspect-card" onclick="toggleSuspect('D', this)">
+                    <div class="text-3xl mb-1">👓</div>
+                    <div class="font-bold text-slate-100 text-xs">Suspect D</div>
+                    <div class="text-[10px] text-slate-400">Hardware Specialist</div>
+                </div>
+            </div>
+
+            <div id="s3-feedback" class="feedback-box"></div>
+
+            <div class="flex justify-end pt-2">
+                <button class="font-tech px-6 py-3 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-black text-xs uppercase tracking-wider transition cursor-pointer" onclick="checkStage3()">
+                    Filter Suspects 🔍
+                </button>
+            </div>
+        </div>
+
+        <!-- =========================================================================
+             SCREEN 5: STAGE 4 - NETWORK IN GRAPH THEORY (TOPOLOGY TRACE)
+             ========================================================================= -->
+        <div id="screen-stage4" class="screen">
+            <div class="border-b border-slate-800 pb-2">
+                <span class="text-[10px] font-bold text-purple-400 uppercase tracking-widest font-tech">Chapter 5: Network in Graph Theory</span>
+                <h3 class="text-base md:text-lg font-bold text-slate-100">Stage 4: Firewall Topology & Shortest Path Trace</h3>
+            </div>
+            <p class="text-xs text-slate-300">
+                The firewall network consists of 5 switch vertices (<strong>V₁</strong> to <strong>V₅</strong>) connected by weighted latency cables (in ms). Trace the network parameters to prevent server overload!
+            </p>
+
+            <!-- Interactive Graph Canvas -->
+            <div class="bg-slate-950 p-2 rounded-xl border border-slate-800 flex flex-col items-center">
+                <canvas id="canvas-network" width="600" height="220" class="w-full max-w-xl h-[200px] object-contain"></canvas>
+                <div class="text-[11px] text-slate-400 mt-1">Interactive Network Graph: Gateway (V₁) ➔ Mainframe (V₅)</div>
+            </div>
+
+            <div class="space-y-3">
+                <div class="bg-slate-900/80 p-3 rounded-xl border border-slate-800 space-y-2">
+                    <div class="text-xs font-bold text-slate-200">Question 4A: What is the sum of degrees of all vertices ∑d(v) for this network with 6 edges?</div>
+                    <div class="grid grid-cols-2 sm:grid-cols-4 gap-2">
+                        <div class="toggle-btn font-code" onclick="selectS4A('6', this)">6</div>
+                        <div class="toggle-btn font-code" onclick="selectS4A('10', this)">10</div>
+                        <div class="toggle-btn font-code" onclick="selectS4A('12', this)">12 (since 2E)</div>
+                        <div class="toggle-btn font-code" onclick="selectS4A('18', this)">18</div>
+                    </div>
+                </div>
+
+                <div class="bg-slate-900/80 p-3 rounded-xl border border-slate-800 space-y-2">
+                    <div class="text-xs font-bold text-slate-200">Question 4B: Determine the SHORTEST weighted latency path from Gateway V₁ to Mainframe V₅:</div>
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-2 text-xs">
+                        <div class="toggle-btn font-code" onclick="selectS4B('V1-V2-V5', this)">V₁ ➔ V₂ ➔ V₅ (15 ms)</div>
+                        <div class="toggle-btn font-code" onclick="selectS4B('V1-V3-V4-V5', this)">V₁ ➔ V₃ ➔ V₄ ➔ V₅ (11 ms)</div>
+                        <div class="toggle-btn font-code" onclick="selectS4B('V1-V4-V5', this)">V₁ ➔ V₄ ➔ V₅ (14 ms)</div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="s4-feedback" class="feedback-box"></div>
+
+            <div class="flex justify-end pt-2">
+                <button class="font-tech px-6 py-3 rounded-xl bg-purple-500 hover:bg-purple-400 text-slate-950 font-black text-xs uppercase tracking-wider transition cursor-pointer" onclick="checkStage4()">
+                    Deploy Network Patch 🌐
+                </button>
+            </div>
+        </div>
+
+        <!-- =========================================================================
+             SCREEN 6: STAGE 5 - GRAPHS OF MOTION (DRONE INTERCEPT)
+             ========================================================================= -->
+        <div id="screen-stage5" class="screen">
+            <div class="border-b border-slate-800 pb-2">
+                <span class="text-[10px] font-bold text-amber-400 uppercase tracking-widest font-tech">Chapter 7: Graphs of Motion</span>
+                <h3 class="text-base md:text-lg font-bold text-slate-100">Stage 5: Getaway Drone Speed-Time Interception</h3>
+            </div>
+            <p class="text-xs text-slate-300">
+                A getaway drone carrying the encrypted hard drive was tracked by radar. Analyze the Speed-Time graph below to compute its flight kinematics and interception radius!
+            </p>
+
+            <!-- Motion Graph Canvas -->
+            <div class="bg-slate-950 p-2 rounded-xl border border-slate-800 flex flex-col items-center">
+                <canvas id="canvas-motion" width="600" height="220" class="w-full max-w-xl h-[200px] object-contain"></canvas>
+                <div class="text-[11px] text-slate-400 mt-1">Speed-Time Graph (v in m/s vs t in seconds)</div>
+            </div>
+
+            <div class="space-y-3">
+                <div class="bg-slate-900/80 p-3 rounded-xl border border-slate-800 space-y-2">
+                    <div class="text-xs font-bold text-slate-200">Question 5A: Calculate the rate of change of speed (acceleration) during the first 4 seconds (t = 0 to 4s):</div>
+                    <div class="grid grid-cols-2 sm:grid-cols-4 gap-2">
+                        <div class="toggle-btn font-code" onclick="selectS5A('2.5', this)">2.5 m/s²</div>
+                        <div class="toggle-btn font-code" onclick="selectS5A('5', this)">5.0 m/s²</div>
+                        <div class="toggle-btn font-code" onclick="selectS5A('8', this)">8.0 m/s²</div>
+                        <div class="toggle-btn font-code" onclick="selectS5A('20', this)">20 m/s²</div>
+                    </div>
+                </div>
+
+                <div class="bg-slate-900/80 p-3 rounded-xl border border-slate-800 space-y-2">
+                    <div class="text-xs font-bold text-slate-200">Question 5B: Calculate the TOTAL DISTANCE traveled by the drone in the entire 14 seconds (Area under the graph):</div>
+                    <div class="grid grid-cols-2 sm:grid-cols-4 gap-2">
+                        <div class="toggle-btn font-code" onclick="selectS5B('140', this)">140 meters</div>
+                        <div class="toggle-btn font-code" onclick="selectS5B('180', this)">180 meters</div>
+                        <div class="toggle-btn font-code" onclick="selectS5B('200', this)">200 meters</div>
+                        <div class="toggle-btn font-code" onclick="selectS5B('280', this)">280 meters</div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="s5-feedback" class="feedback-box"></div>
+
+            <div class="flex justify-end pt-2">
+                <button class="font-tech px-6 py-3 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-black text-xs uppercase tracking-wider transition cursor-pointer" onclick="checkStage5()">
+                    Intercept Drone Signal 📡
+                </button>
+            </div>
+        </div>
+
+        <!-- =========================================================================
+             SCREEN 7: STAGE 6 - MEASURES OF DISPERSION (DATA ANOMALY)
+             ========================================================================= -->
+        <div id="screen-stage6" class="screen">
+            <div class="border-b border-slate-800 pb-2">
+                <span class="text-[10px] font-bold text-rose-400 uppercase tracking-widest font-tech">Chapter 8: Measures of Dispersion</span>
+                <h3 class="text-base md:text-lg font-bold text-slate-100">Stage 6: Biometric Keylogger Anomaly & IQR</h3>
+            </div>
+
+            <div class="bg-slate-950 p-3.5 rounded-xl border border-slate-800 space-y-2 text-xs">
+                <div><strong>Keystroke Latency Dataset (Ordered in ms):</strong></div>
+                <div class="font-code text-cyan-400 font-bold tracking-wider text-sm bg-slate-900 p-2 rounded-lg border border-slate-800">
+                    [ 12,  16,  18,  22,  25,  28,  34,  40,  62 ]
+                </div>
+                <div class="text-slate-400 text-[11px]">Number of data points: n = 9. Find the First Quartile (Q₁), Third Quartile (Q₃), and Interquartile Range (IQR).</div>
+            </div>
+
+            <div class="space-y-3">
+                <div class="bg-slate-900/80 p-3 rounded-xl border border-slate-800 space-y-2">
+                    <div class="text-xs font-bold text-slate-200">Question 6A: What is the Interquartile Range (IQR = Q₃ − Q₁) for this keystroke sample?</div>
+                    <div class="grid grid-cols-2 sm:grid-cols-4 gap-2">
+                        <div class="toggle-btn font-code" onclick="selectS6A('14', this)">IQR = 14 ms</div>
+                        <div class="toggle-btn font-code" onclick="selectS6A('20', this)">IQR = 20 ms</div>
+                        <div class="toggle-btn font-code" onclick="selectS6A('24', this)">IQR = 24 ms</div>
+                        <div class="toggle-btn font-code" onclick="selectS6A('50', this)">IQR = 50 ms</div>
+                    </div>
+                </div>
+
+                <div class="bg-slate-900/80 p-3 rounded-xl border border-slate-800 space-y-2">
+                    <div class="text-xs font-bold text-slate-200">Question 6B: An automated hacker bot produces an outlier exceeding Q₃ + 1.5 × IQR. Is 62 ms an outlier?</div>
+                    <div class="grid grid-cols-2 gap-2">
+                        <div class="toggle-btn" onclick="selectS6B('YES', this)">YES (62 > 37 + 1.5×20 = 67? Check formula)</div>
+                        <div class="toggle-btn" onclick="selectS6B('CONFIRMED_ANOMALY', this)">YES, it indicates bot injection</div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="s6-feedback" class="feedback-box"></div>
+
+            <div class="flex justify-end pt-2">
+                <button class="font-tech px-6 py-3 rounded-xl bg-rose-500 hover:bg-rose-400 text-slate-950 font-black text-xs uppercase tracking-wider transition cursor-pointer" onclick="checkStage6()">
+                    Validate Biometrics 🧬
+                </button>
+            </div>
+        </div>
+
+        <!-- =========================================================================
+             SCREEN 8: STAGE 7 - PROBABILITY OF COMBINED EVENTS
+             ========================================================================= -->
+        <div id="screen-stage7" class="screen">
+            <div class="border-b border-slate-800 pb-2">
+                <span class="text-[10px] font-bold text-indigo-400 uppercase tracking-widest font-tech">Chapter 9: Probability of Combined Events</span>
+                <h3 class="text-base md:text-lg font-bold text-slate-100">Stage 7: Two-Factor Firewall Probability Defense</h3>
+            </div>
+
+            <div class="bg-slate-950 p-3.5 rounded-xl border border-slate-800 space-y-2 text-xs">
+                <p>The hacker is attempting to brute-force two independent server firewalls:</p>
+                <div class="grid grid-cols-2 gap-2 font-code text-cyan-300">
+                    <div class="bg-slate-900 p-2 rounded border border-slate-800">Firewall A Breach: P(A) = 3/5</div>
+                    <div class="bg-slate-900 p-2 rounded border border-slate-800">Firewall B Breach: P(B) = 1/4</div>
+                </div>
+                <div class="text-[11px] text-slate-400">Events A and B are independent events.</div>
+            </div>
+
+            <div class="space-y-3">
+                <div class="bg-slate-900/80 p-3 rounded-xl border border-slate-800 space-y-2">
+                    <div class="text-xs font-bold text-slate-200">Question 7A: What is the probability that BOTH firewalls are breached by the hacker P(A ∩ B)?</div>
+                    <div class="grid grid-cols-2 sm:grid-cols-4 gap-2">
+                        <div class="toggle-btn font-code" onclick="selectS7A('3/20', this)">3/20</div>
+                        <div class="toggle-btn font-code" onclick="selectS7A('4/9', this)">4/9</div>
+                        <div class="toggle-btn font-code" onclick="selectS7A('17/20', this)">17/20</div>
+                        <div class="toggle-btn font-code" onclick="selectS7A('1/2', this)">1/2</div>
+                    </div>
+                </div>
+
+                <div class="bg-slate-900/80 p-3 rounded-xl border border-slate-800 space-y-2">
+                    <div class="text-xs font-bold text-slate-200">Question 7B: What is the probability that AT LEAST ONE firewall successfully stops the hacker [1 − P(A ∩ B)]?</div>
+                    <div class="grid grid-cols-2 sm:grid-cols-4 gap-2">
+                        <div class="toggle-btn font-code" onclick="selectS7B('3/20', this)">3/20</div>
+                        <div class="toggle-btn font-code" onclick="selectS7B('17/20', this)">17/20</div>
+                        <div class="toggle-btn font-code" onclick="selectS7B('7/10', this)">7/10</div>
+                        <div class="toggle-btn font-code" onclick="selectS7B('19/20', this)">19/20</div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="s7-feedback" class="feedback-box"></div>
+
+            <div class="flex justify-end pt-2">
+                <button class="font-tech px-6 py-3 rounded-xl bg-indigo-500 hover:bg-indigo-400 text-slate-950 font-black text-xs uppercase tracking-wider transition cursor-pointer" onclick="checkStage7()">
+                    Activate Probability Shield 🛡️
+                </button>
+            </div>
+        </div>
+
+        <!-- =========================================================================
+             SCREEN 9: STAGE 8 - MASTERMIND SHOWDOWN & DEDUCTIVE ARGUMENTS
+             ========================================================================= -->
+        <div id="screen-stage8" class="screen">
+            <div class="border-b border-slate-800 pb-2">
+                <span class="text-[10px] font-bold text-yellow-400 uppercase tracking-widest font-tech">Chapter 3: Deductive Argument Forms</span>
+                <h3 class="text-base md:text-lg font-bold text-slate-100">Stage 8: The Mastermind Showdown & Final Arrest</h3>
+            </div>
+
+            <div class="bg-slate-950 p-3.5 rounded-xl border border-slate-800 space-y-2 text-xs">
+                <p>From Stages 1 to 7, the evidence has narrowed the suspects down to <strong>Suspect A</strong> and <strong>Suspect C</strong>.</p>
+                <div class="bg-slate-900 p-3 rounded-lg border border-slate-800 space-y-1">
+                    <p><strong>Premise 1:</strong> If a suspect downloaded the rootkit virus, then their USB drive contains an encrypted .exe file (p ⇒ q).</p>
+                    <p><strong>Premise 2:</strong> Suspect A's USB drive <strong>DOES NOT</strong> contain an encrypted .exe file (~q).</p>
+                    <p><strong>Conclusion:</strong> Suspect A did not download the rootkit virus (~p).</p>
+                </div>
+            </div>
+
+            <div class="space-y-3">
+                <div class="bg-slate-900/80 p-3 rounded-xl border border-slate-800 space-y-2">
+                    <div class="text-xs font-bold text-slate-200">Question 8A: Which valid Form of Deductive Argument in KSSM Mathematics is used above?</div>
+                    <div class="grid grid-cols-3 gap-2">
+                        <div class="toggle-btn" onclick="selectS8A('Form I', this)">Form I</div>
+                        <div class="toggle-btn" onclick="selectS8A('Form II', this)">Form II</div>
+                        <div class="toggle-btn" onclick="selectS8A('Form III', this)">Form III</div>
+                    </div>
+                </div>
+
+                <div class="bg-slate-900/80 p-3 rounded-xl border border-slate-800 space-y-2">
+                    <div class="text-xs font-bold text-slate-200">Question 8B: Based on deductive logic and evidence, who is the real Mastermind hacker?</div>
+                    <div class="grid grid-cols-2 gap-2">
+                        <div class="toggle-btn" onclick="selectS8B('A', this)">Suspect A is Guilty</div>
+                        <div class="toggle-btn" onclick="selectS8B('C', this)">Suspect C is Guilty</div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="s8-feedback" class="feedback-box"></div>
+
+            <div class="flex justify-end pt-2">
+                <button class="font-tech px-8 py-3.5 rounded-xl bg-gradient-to-r from-yellow-500 via-amber-500 to-emerald-500 hover:from-yellow-400 hover:to-emerald-400 text-slate-950 font-black text-xs uppercase tracking-wider transition transform hover:scale-105 shadow-xl cursor-pointer" onclick="checkStage8()">
+                    Issue Arrest Warrant 🚨
+                </button>
+            </div>
+        </div>
+
+        <!-- =========================================================================
+             SCREEN 10: CASE CLOSED / GRAND VICTORY REPORT
+             ========================================================================= -->
+        <div id="screen-victory" class="screen text-center p-6 md:p-8 space-y-5">
+            <div class="inline-block p-4 rounded-2xl bg-emerald-500/10 border border-emerald-500/30 animate-bounce">
+                <span class="text-5xl">🏆</span>
+            </div>
+
+            <div class="space-y-1">
+                <h2 class="font-tech text-2xl md:text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 via-cyan-300 to-amber-300">
+                    CASE SOLVED: MASTER DETECTIVE!
+                </h2>
+                <p class="text-xs md:text-sm text-slate-300">The cyber heist was thwarted and Suspect C has been apprehended!</p>
+            </div>
+
+            <!-- Score & Rating Card -->
+            <div class="bg-slate-950/90 border border-slate-800 rounded-2xl p-5 max-w-lg mx-auto text-left space-y-3 shadow-2xl">
+                <div class="flex justify-between items-center border-b border-slate-800 pb-2">
+                    <span class="text-slate-400 text-xs">CSI Investigation Team:</span>
+                    <span id="v-team" class="font-tech font-bold text-cyan-400 text-sm">Logic Alpha</span>
+                </div>
+                <div class="flex justify-between items-center border-b border-slate-800 pb-2">
+                    <span class="text-slate-400 text-xs">Total Investigation Time:</span>
+                    <span id="v-time" class="font-code font-bold text-amber-400 text-sm">03:45</span>
+                </div>
+                <div class="flex justify-between items-center border-b border-slate-800 pb-2">
+                    <span class="text-slate-400 text-xs">Final Forensic Score:</span>
+                    <span id="v-score" class="font-code font-bold text-emerald-400 text-lg">2400</span>
+                </div>
+                <div class="flex justify-between items-center border-b border-slate-800 pb-2">
+                    <span class="text-slate-400 text-xs">Detective Rank Awarded:</span>
+                    <span id="v-rank" class="font-tech font-bold text-yellow-300 text-sm">Chief Cyber Inspector ⭐⭐⭐</span>
+                </div>
+
+                <div class="pt-2 text-[11px] text-slate-400 space-y-1 bg-slate-900/60 p-3 rounded-xl border border-slate-800/80">
+                    <div class="font-bold text-slate-200 mb-1">Mathematical Summary Report:</div>
+                    <div>✓ <strong>Logic:</strong> Door code verified via truth table.</div>
+                    <div>✓ <strong>Number Bases:</strong> Binary 11011₂ (27), Octal 74₈ (60), Base-5 231₅ (66) converted.</div>
+                    <div>✓ <strong>Sets:</strong> (L ∩ R') isolated Suspects A & C.</div>
+                    <div>✓ <strong>Graph Theory:</strong> Verified ∑d(v) = 12 and optimal path V₁-V₃-V₄-V₅ (11 ms).</div>
+                    <div>✓ <strong>Motion Graphs:</strong> Drone acceleration 5 m/s² and total distance 200 m solved.</div>
+                    <div>✓ <strong>Dispersion & Probability:</strong> Keystroke IQR = 20 ms & Firewall P(A ∩ B) = 3/20.</div>
+                    <div>✓ <strong>Deductive Form III:</strong> Modus Tollens (p ⇒ q, ~q ∴ ~p) cleared Suspect A.</div>
+                </div>
+            </div>
+
+            <div class="flex justify-center space-x-3 pt-2">
+                <button class="font-tech px-8 py-3.5 rounded-xl bg-gradient-to-r from-cyan-500 via-teal-500 to-emerald-500 text-slate-950 font-black text-xs uppercase tracking-wider transition transform hover:scale-105 shadow-xl cursor-pointer" onclick="resetGame()">
+                    Investigate Next Case 🔄
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- =========================================================================
+         MODAL 1: CASE DOSSIER & EVIDENCE BOARD
+         ========================================================================= -->
+    <div id="modal-dossier" class="hidden fixed inset-0 bg-slate-950/80 backdrop-blur-md flex items-center justify-center p-4 z-50">
+        <div class="bg-slate-900 border border-purple-500/40 rounded-2xl max-w-xl w-full p-5 shadow-2xl space-y-4 max-h-[85vh] overflow-y-auto">
+            <div class="flex justify-between items-center border-b border-slate-800 pb-3">
+                <div class="flex items-center space-x-2">
+                    <span class="text-xl">📂</span>
+                    <div>
+                        <h3 class="font-tech text-sm md:text-base font-bold text-purple-400">CASE EVIDENCE DOSSIER</h3>
+                        <p class="text-[10px] text-slate-400">Real-time Forensic Evidence Board</p>
+                    </div>
+                </div>
+                <button id="btn-close-dossier" class="w-8 h-8 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-400 hover:text-white flex items-center justify-center font-bold cursor-pointer">
+                    ✕
+                </button>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 text-xs">
+                <div class="bg-slate-950 p-3 rounded-xl border border-slate-800 space-y-1">
+                    <div class="font-bold text-cyan-400">Evidence 1: Server Logs</div>
+                    <div id="dos-ev1" class="text-[11px] text-slate-400">Door Code: [FALSE, TRUE, FALSE, TRUE]</div>
+                </div>
+                <div class="bg-slate-950 p-3 rounded-xl border border-slate-800 space-y-1">
+                    <div class="font-bold text-teal-400">Evidence 2: Decoded Ports</div>
+                    <div id="dos-ev2" class="text-[11px] text-slate-400">Backdoors: Port 27, Port 60, Port 66</div>
+                </div>
+                <div class="bg-slate-950 p-3 rounded-xl border border-slate-800 space-y-1">
+                    <div class="font-bold text-emerald-400">Evidence 3: Set Intersection</div>
+                    <div id="dos-ev3" class="text-[11px] text-slate-400">(L ∩ R') = {Suspect A, Suspect C}</div>
+                </div>
+                <div class="bg-slate-950 p-3 rounded-xl border border-slate-800 space-y-1">
+                    <div class="font-bold text-purple-400">Evidence 4: Network Route</div>
+                    <div id="dos-ev4" class="text-[11px] text-slate-400">Optimal Switch Path = 11 ms</div>
+                </div>
+                <div class="bg-slate-950 p-3 rounded-xl border border-slate-800 space-y-1">
+                    <div class="font-bold text-amber-400">Evidence 5: Drone Trajectory</div>
+                    <div id="dos-ev5" class="text-[11px] text-slate-400">Flight Distance = 200 meters</div>
+                </div>
+                <div class="bg-slate-950 p-3 rounded-xl border border-slate-800 space-y-1">
+                    <div class="font-bold text-rose-400">Evidence 6: Keystroke IQR</div>
+                    <div id="dos-ev6" class="text-[11px] text-slate-400">IQR = 20 ms (Automated Bot)</div>
+                </div>
+            </div>
+
+            <div class="flex justify-end pt-1">
+                <button onclick="document.getElementById('modal-dossier').classList.add('hidden')" class="font-tech px-5 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 font-bold text-xs uppercase tracking-wider transition cursor-pointer">
+                    Close Dossier
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- =========================================================================
+         MODAL 2: FORM 4 MATHEMATICS CODEX (REFERENCE NOTES)
+         ========================================================================= -->
+    <div id="modal-codex" class="hidden fixed inset-0 bg-slate-950/80 backdrop-blur-md flex items-center justify-center p-4 z-50">
+        <div class="bg-slate-900 border border-cyan-500/40 rounded-2xl max-w-2xl w-full p-5 shadow-2xl space-y-4 max-h-[85vh] overflow-y-auto">
+            <div class="flex justify-between items-center border-b border-slate-800 pb-3">
+                <div class="flex items-center space-x-2">
+                    <span class="text-xl">📖</span>
+                    <div>
+                        <h3 class="font-tech text-sm md:text-base font-bold text-cyan-400">FORM 4 MATHEMATICS FORMULA CODEX</h3>
+                        <p class="text-[10px] text-slate-400">Official KSSM Mathematics Quick Reference</p>
+                    </div>
+                </div>
+                <button id="btn-close-codex" class="w-8 h-8 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-400 hover:text-white flex items-center justify-center font-bold cursor-pointer">
+                    ✕
+                </button>
+            </div>
+
+            <div class="space-y-2.5 text-xs text-slate-300">
+                <div class="bg-slate-950 p-3 rounded-xl border border-slate-800 space-y-1">
+                    <div class="font-bold text-cyan-400">Chapter 2: Number Bases (Asas Nombor)</div>
+                    <p>• Base 2: Place values 2⁰=1, 2¹=2, 2²=4, 2³=8, 2⁴=16, ...</p>
+                    <p>• Base 8: Place values 8⁰=1, 8¹=8, 8²=64, 8³=512, ...</p>
+                    <p>• Base 5: Place values 5⁰=1, 5¹=5, 5²=25, 5³=125, ...</p>
+                </div>
+
+                <div class="bg-slate-950 p-3 rounded-xl border border-slate-800 space-y-1">
+                    <div class="font-bold text-teal-400">Chapter 3: Logical Reasoning (Penakulan Logik)</div>
+                    <p>• <strong>"p and q"</strong> is TRUE only if both p and q are true.</p>
+                    <p>• <strong>"p or q"</strong> is TRUE if at least one component is true.</p>
+                    <p>• <strong>Deductive Form I:</strong> All A are B. C is A. ∴ C is B.</p>
+                    <p>• <strong>Deductive Form II:</strong> If p, then q. p is true. ∴ q is true.</p>
+                    <p>• <strong>Deductive Form III:</strong> If p, then q. Not q is true (~q). ∴ Not p is true (~p).</p>
+                </div>
+
+                <div class="bg-slate-950 p-3 rounded-xl border border-slate-800 space-y-1">
+                    <div class="font-bold text-emerald-400">Chapter 4: Operations on Sets (Operasi Set)</div>
+                    <p>• <strong>Intersection (A ∩ B):</strong> Elements common to both A and B.</p>
+                    <p>• <strong>Union (A ∪ B):</strong> All elements in A, B, or both.</p>
+                    <p>• <strong>Complement (A'):</strong> Elements in Universal Set ξ that are NOT in A.</p>
+                </div>
+
+                <div class="bg-slate-950 p-3 rounded-xl border border-slate-800 space-y-1">
+                    <div class="font-bold text-purple-400">Chapter 5: Network in Graph Theory (Teori Graf)</div>
+                    <p>• <strong>Sum of degrees of vertices:</strong> ∑d(v) = 2E (where E is the number of edges).</p>
+                    <p>• <strong>Tree criteria:</strong> Simple connected graph with E = V − 1 edges.</p>
+                </div>
+
+                <div class="bg-slate-950 p-3 rounded-xl border border-slate-800 space-y-1">
+                    <div class="font-bold text-amber-400">Chapter 7: Graphs of Motion (Graf Gerakan)</div>
+                    <p>• <strong>Speed-Time Graph Gradient:</strong> Acceleration a = (v − u) / t.</p>
+                    <p>• <strong>Area Under Speed-Time Graph:</strong> Total Distance traveled.</p>
+                </div>
+
+                <div class="bg-slate-950 p-3 rounded-xl border border-slate-800 space-y-1">
+                    <div class="font-bold text-rose-400">Chapter 8: Measures of Dispersion (Sukatan Serakan)</div>
+                    <p>• <strong>Interquartile Range:</strong> IQR = Q₃ − Q₁.</p>
+                    <p>• <strong>Outlier Rule:</strong> Values &lt; Q₁ − 1.5(IQR) or &gt; Q₃ + 1.5(IQR).</p>
+                </div>
+
+                <div class="bg-slate-950 p-3 rounded-xl border border-slate-800 space-y-1">
+                    <div class="font-bold text-indigo-400">Chapter 9: Probability of Combined Events</div>
+                    <p>• <strong>Independent Events:</strong> P(A ∩ B) = P(A) × P(B).</p>
+                    <p>• <strong>Addition Rule:</strong> P(A ∪ B) = P(A) + P(B) − P(A ∩ B).</p>
+                </div>
+            </div>
+
+            <div class="flex justify-end pt-1">
+                <button onclick="document.getElementById('modal-codex').classList.add('hidden')" class="font-tech px-5 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 font-bold text-xs uppercase tracking-wider transition cursor-pointer">
+                    Close Codex
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- =========================================================================
+         GAME LOGIC & INTERACTION ENGINE
+         ========================================================================= -->
+    <script>
+        /* ==========================================================================
+           SOUND SYNTHESIZER (Web Audio API)
+           ========================================================================== */
+        class SoundFX {
+            constructor() {
+                this.ctx = null;
+                this.enabled = true;
+            }
+
+            init() {
+                if (!this.ctx) {
+                    const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+                    if (AudioContextClass) this.ctx = new AudioContextClass();
+                }
+                if (this.ctx && this.ctx.state === 'suspended') this.ctx.resume();
+            }
+
+            playClick() {
+                if (!this.enabled || !this.ctx) return;
+                try {
+                    const osc = this.ctx.createOscillator();
+                    const gain = this.ctx.createGain();
+                    osc.connect(gain);
+                    gain.connect(this.ctx.destination);
+                    osc.type = 'sine';
+                    osc.frequency.setValueAtTime(600, this.ctx.currentTime);
+                    osc.frequency.exponentialRampToValueAtTime(300, this.ctx.currentTime + 0.05);
+                    gain.gain.setValueAtTime(0.12, this.ctx.currentTime);
+                    gain.gain.linearRampToValueAtTime(0.01, this.ctx.currentTime + 0.05);
+                    osc.start();
+                    osc.stop(this.ctx.currentTime + 0.05);
+                } catch(e) {}
+            }
+
+            playSuccess() {
+                if (!this.enabled || !this.ctx) return;
+                try {
+                    const now = this.ctx.currentTime;
+                    [523.25, 659.25, 783.99, 1046.50].forEach((freq, idx) => {
+                        const osc = this.ctx.createOscillator();
+                        const gain = this.ctx.createGain();
+                        osc.connect(gain);
+                        gain.connect(this.ctx.destination);
+                        osc.type = 'triangle';
+                        osc.frequency.value = freq;
+                        gain.gain.setValueAtTime(0.18, now + idx * 0.07);
+                        gain.gain.linearRampToValueAtTime(0.01, now + idx * 0.07 + 0.18);
+                        osc.start(now + idx * 0.07);
+                        osc.stop(now + idx * 0.07 + 0.18);
+                    });
+                } catch(e) {}
+            }
+
+            playError() {
+                if (!this.enabled || !this.ctx) return;
+                try {
+                    const now = this.ctx.currentTime;
+                    [220, 185].forEach((freq, idx) => {
+                        const osc = this.ctx.createOscillator();
+                        const gain = this.ctx.createGain();
+                        osc.connect(gain);
+                        gain.connect(this.ctx.destination);
+                        osc.type = 'sawtooth';
+                        osc.frequency.value = freq;
+                        gain.gain.setValueAtTime(0.2, now + idx * 0.12);
+                        gain.gain.linearRampToValueAtTime(0.01, now + idx * 0.12 + 0.2);
+                        osc.start(now + idx * 0.12);
+                        osc.stop(now + idx * 0.12 + 0.2);
+                    });
+                } catch(e) {}
+            }
+        }
+
+        const sfx = new SoundFX();
+
+        // Game State Variables
+        let teamName = "Logic Alpha";
+        let score = 0;
+        let timerSeconds = 0;
+        let timerInterval = null;
+        let currentStage = 1;
+
+        // Answers State
+        let s1Answers = {1: null, 2: null, 3: null, 4: null};
+        let s2Answers = {1: null, 2: null, 3: null};
+        let s3SelectedSuspects = [];
+        let s4aAnswer = null, s4bAnswer = null;
+        let s5aAnswer = null, s5bAnswer = null;
+        let s6aAnswer = null, s6bAnswer = null;
+        let s7aAnswer = null, s7bAnswer = null;
+        let s8aAnswer = null, s8bAnswer = null;
+
+        function showScreen(screenId) {
+            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+            const target = document.getElementById(screenId);
+            if (target) target.classList.add('active');
+        }
+
+        function updateStageHUD(stageNum) {
+            currentStage = stageNum;
+            document.getElementById('display-stage').innerText = `${stageNum} / 8`;
+        }
+
+        function updateScoreHUD() {
+            document.getElementById('score-display').innerText = score;
+        }
+
+        // Start Game
+        function startGame() {
+            sfx.init();
+            const input = document.getElementById('team-name').value.trim();
+            if (input) teamName = input;
+
+            // Timer
+            timerSeconds = 0;
+            clearInterval(timerInterval);
+            timerInterval = setInterval(() => {
+                timerSeconds++;
+                let mins = Math.floor(timerSeconds / 60).toString().padStart(2, '0');
+                let secs = (timerSeconds % 60).toString().padStart(2, '0');
+                document.getElementById('timer-display').innerText = `${mins}:${secs}`;
+            }, 1000);
+
+            updateStageHUD(1);
+            showScreen('screen-stage1');
+        }
+
+        // =========================================================================
+        // STAGE 1: LOGICAL REASONING
+        // =========================================================================
+        function selectS1(qNum, value, el) {
+            sfx.playClick();
+            s1Answers[qNum] = value;
+            const parent = el.parentElement;
+            parent.querySelectorAll('.toggle-btn').forEach(b => b.classList.remove('selected', 'selected-true', 'selected-false'));
+            if (value === 'TRUE') el.classList.add('selected-true');
+            else el.classList.add('selected-false');
+        }
+
+        function checkStage1() {
+            const fb = document.getElementById('s1-feedback');
+            if (!s1Answers[1] || !s1Answers[2] || !s1Answers[3] || !s1Answers[4]) {
+                sfx.playError();
+                fb.className = "feedback-box error";
+                fb.innerText = "⚠️ Please answer all 4 security log statements!";
+                return;
+            }
+
+            // Correct: 1: FALSE (2 is prime and even), 2: TRUE (10, 20...), 3: FALSE (3x4=12), 4: TRUE (8>5 is true)
+            if (s1Answers[1] === 'FALSE' && s1Answers[2] === 'TRUE' && s1Answers[3] === 'FALSE' && s1Answers[4] === 'TRUE') {
+                score += 300;
+                updateScoreHUD();
+                sfx.playSuccess();
+                fb.className = "feedback-box success";
+                fb.innerText = "✅ PASSCODE VERIFIED! Door opened: [FALSE, TRUE, FALSE, TRUE]. (+300 Points)";
+                setTimeout(() => {
+                    updateStageHUD(2);
+                    showScreen('screen-stage2');
+                }, 1400);
+            } else {
+                score = Math.max(0, score - 40);
+                updateScoreHUD();
+                sfx.playError();
+                fb.className = "feedback-box error";
+                fb.innerText = "❌ ACCESS DENIED! Check prime number definitions and 'and'/'or' truth conditions.";
+            }
+        }
+
+        // =========================================================================
+        // STAGE 2: NUMBER BASES
+        // =========================================================================
+        function selectS2(qNum, val, el) {
+            sfx.playClick();
+            s2Answers[qNum] = val;
+            el.parentElement.querySelectorAll('.toggle-btn').forEach(b => b.classList.remove('selected'));
+            el.classList.add('selected');
+        }
+
+        function checkStage2() {
+            const fb = document.getElementById('s2-feedback');
+            if (!s2Answers[1] || !s2Answers[2] || !s2Answers[3]) {
+                sfx.playError();
+                fb.className = "feedback-box error";
+                fb.innerText = "⚠️ Please decode all 3 number base packets!";
+                return;
+            }
+
+            // Correct: 1: '27' (16+8+2+1), 2: '60' (7*8 + 4), 3: '66' (2*25 + 3*5 + 1)
+            if (s2Answers[1] === '27' && s2Answers[2] === '60' && s2Answers[3] === '66') {
+                score += 300;
+                updateScoreHUD();
+                sfx.playSuccess();
+                fb.className = "feedback-box success";
+                fb.innerText = "✅ ALL PORTS DECRYPTED! Rogue listening ports 27, 60, and 66 isolated. (+300 Points)";
+                setTimeout(() => {
+                    updateStageHUD(3);
+                    showScreen('screen-stage3');
+                }, 1400);
+            } else {
+                score = Math.max(0, score - 40);
+                updateScoreHUD();
+                sfx.playError();
+                fb.className = "feedback-box error";
+                fb.innerText = "❌ DECRYPTION ERROR! Re-calculate base weights (2ⁿ, 8ⁿ, 5ⁿ).";
+            }
+        }
+
+        // =========================================================================
+        // STAGE 3: OPERATIONS ON SETS
+        // =========================================================================
+        function toggleSuspect(suspectCode, el) {
+            sfx.playClick();
+            if (s3SelectedSuspects.includes(suspectCode)) {
+                s3SelectedSuspects = s3SelectedSuspects.filter(s => s !== suspectCode);
+                el.classList.remove('selected');
+            } else {
+                s3SelectedSuspects.push(suspectCode);
+                el.classList.add('selected');
+            }
+        }
+
+        function checkStage3() {
+            const fb = document.getElementById('s3-feedback');
+            // Correct: (L intersect R') = {A, C}
+            const isCorrect = s3SelectedSuspects.length === 2 && 
+                              s3SelectedSuspects.includes('A') && 
+                              s3SelectedSuspects.includes('C');
+
+            if (isCorrect) {
+                score += 300;
+                updateScoreHUD();
+                sfx.playSuccess();
+                fb.className = "feedback-box success";
+                fb.innerText = "✅ SUSPECTS FILTERED! (L ∩ R') = {Suspect A, Suspect C}. Suspects B & D cleared. (+300 Points)";
+                setTimeout(() => {
+                    updateStageHUD(4);
+                    renderNetworkCanvas();
+                    showScreen('screen-stage4');
+                }, 1400);
+            } else {
+                score = Math.max(0, score - 40);
+                updateScoreHUD();
+                sfx.playError();
+                fb.className = "feedback-box error";
+                fb.innerText = "❌ INCORRECT VENN SUBSET! R' means NOT in Robotics Club {B, D}, so R' = {A, C}.";
+            }
+        }
+
+        // =========================================================================
+        // STAGE 4: NETWORK IN GRAPH THEORY
+        // =========================================================================
+        function renderNetworkCanvas() {
+            const canvas = document.getElementById('canvas-network');
+            if (!canvas) return;
+            const ctx = canvas.getContext('2d');
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            const nodes = [
+                { id: 'V1', x: 80, y: 110, label: 'V₁ (Gateway)' },
+                { id: 'V2', x: 240, y: 50, label: 'V₂ (Proxy)' },
+                { id: 'V3', x: 240, y: 170, label: 'V₃ (Switch)' },
+                { id: 'V4', x: 400, y: 130, label: 'V₄ (Router)' },
+                { id: 'V5', x: 520, y: 110, label: 'V₅ (Mainframe)' }
+            ];
+
+            const edges = [
+                { from: 0, to: 1, w: '8 ms' },
+                { from: 0, to: 2, w: '3 ms' },
+                { from: 1, to: 4, w: '7 ms' },
+                { from: 2, to: 3, w: '4 ms' },
+                { from: 3, to: 4, w: '4 ms' },
+                { from: 0, to: 3, w: '10 ms' }
+            ];
+
+            // Draw Edges
+            edges.forEach(e => {
+                const n1 = nodes[e.from];
+                const n2 = nodes[e.to];
+                ctx.strokeStyle = '#334155';
+                ctx.lineWidth = 2;
+                ctx.beginPath();
+                ctx.moveTo(n1.x, n1.y);
+                ctx.lineTo(n2.x, n2.y);
+                ctx.stroke();
+
+                // Edge weight
+                const midX = (n1.x + n2.x) / 2;
+                const midY = (n1.y + n2.y) / 2 - 6;
+                ctx.fillStyle = '#38bdf8';
+                ctx.font = 'bold 10px JetBrains Mono';
+                ctx.textAlign = 'center';
+                ctx.fillText(e.w, midX, midY);
+            });
+
+            // Draw Vertices
+            nodes.forEach((n, idx) => {
+                ctx.fillStyle = (idx === 0 || idx === 4) ? '#06b6d4' : '#1e293b';
+                ctx.strokeStyle = '#00f2fe';
+                ctx.lineWidth = 2;
+                ctx.beginPath();
+                ctx.arc(n.x, n.y, 16, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.stroke();
+
+                ctx.fillStyle = '#ffffff';
+                ctx.font = 'bold 11px Orbitron';
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+                ctx.fillText(n.id, n.x, n.y);
+
+                ctx.fillStyle = '#94a3b8';
+                ctx.font = '9px Plus Jakarta Sans';
+                ctx.fillText(n.label, n.x, n.y + 24);
+            });
+        }
+
+        function selectS4A(val, el) {
+            sfx.playClick();
+            s4aAnswer = val;
+            el.parentElement.querySelectorAll('.toggle-btn').forEach(b => b.classList.remove('selected'));
+            el.classList.add('selected');
+        }
+
+        function selectS4B(val, el) {
+            sfx.playClick();
+            s4bAnswer = val;
+            el.parentElement.querySelectorAll('.toggle-btn').forEach(b => b.classList.remove('selected'));
+            el.classList.add('selected');
+        }
+
+        function checkStage4() {
+            const fb = document.getElementById('s4-feedback');
+            if (!s4aAnswer || !s4bAnswer) {
+                sfx.playError();
+                fb.className = "feedback-box error";
+                fb.innerText = "⚠️ Please answer both Questions 4A and 4B!";
+                return;
+            }
+
+            // Correct: 4A: '12' (sum d(v) = 2*6 = 12), 4B: 'V1-V3-V4-V5' (3 + 4 + 4 = 11 ms)
+            if (s4aAnswer === '12' && s4bAnswer === 'V1-V3-V4-V5') {
+                score += 300;
+                updateScoreHUD();
+                sfx.playSuccess();
+                fb.className = "feedback-box success";
+                fb.innerText = "✅ TOPOLOGY OPTIMIZED! Shortest latency route is V₁ ➔ V₃ ➔ V₄ ➔ V₅ (11 ms). (+300 Points)";
+                setTimeout(() => {
+                    updateStageHUD(5);
+                    renderMotionCanvas();
+                    showScreen('screen-stage5');
+                }, 1400);
+            } else {
+                score = Math.max(0, score - 40);
+                updateScoreHUD();
+                sfx.playError();
+                fb.className = "feedback-box error";
+                fb.innerText = "❌ ROUTING ERROR! Remember ∑d(v) = 2E. Calculate sum of weights for each path.";
+            }
+        }
+
+        // =========================================================================
+        // STAGE 5: GRAPHS OF MOTION
+        // =========================================================================
+        function renderMotionCanvas() {
+            const canvas = document.getElementById('canvas-motion');
+            if (!canvas) return;
+            const ctx = canvas.getContext('2d');
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            const ox = 60, oy = 180;
+            const sx = 35, sy = 6.5;
+
+            // Grid & Axes
+            ctx.strokeStyle = '#1e293b';
+            ctx.lineWidth = 1;
+            for (let x = 0; x <= 14; x += 2) {
+                ctx.beginPath();
+                ctx.moveTo(ox + x * sx, oy);
+                ctx.lineTo(ox + x * sx, 30);
+                ctx.stroke();
+                ctx.fillStyle = '#64748b';
+                ctx.font = '9px JetBrains Mono';
+                ctx.textAlign = 'center';
+                ctx.fillText(x + 's', ox + x * sx, oy + 15);
+            }
+
+            for (let v = 0; v <= 20; v += 5) {
+                ctx.beginPath();
+                ctx.moveTo(ox, oy - v * sy);
+                ctx.lineTo(ox + 14 * sx, oy - v * sy);
+                ctx.stroke();
+                ctx.fillStyle = '#64748b';
+                ctx.font = '9px JetBrains Mono';
+                ctx.textAlign = 'right';
+                ctx.fillText(v, ox - 8, oy - v * sy + 3);
+            }
+
+            // Shaded Area Under Graph
+            ctx.fillStyle = 'rgba(245, 158, 11, 0.15)';
+            ctx.beginPath();
+            ctx.moveTo(ox, oy);
+            ctx.lineTo(ox + 4 * sx, oy - 20 * sy);
+            ctx.lineTo(ox + 10 * sx, oy - 20 * sy);
+            ctx.lineTo(ox + 14 * sx, oy);
+            ctx.closePath();
+            ctx.fill();
+
+            // Motion Curve
+            ctx.strokeStyle = '#f59e0b';
+            ctx.lineWidth = 3;
+            ctx.beginPath();
+            ctx.moveTo(ox, oy);
+            ctx.lineTo(ox + 4 * sx, oy - 20 * sy);
+            ctx.lineTo(ox + 10 * sx, oy - 20 * sy);
+            ctx.lineTo(ox + 14 * sx, oy);
+            ctx.stroke();
+
+            // Axis Labels
+            ctx.fillStyle = '#f59e0b';
+            ctx.font = 'bold 10px Orbitron';
+            ctx.textAlign = 'center';
+            ctx.fillText('Time (seconds)', ox + 7 * sx, oy + 32);
+            ctx.save();
+            ctx.rotate(-Math.PI / 2);
+            ctx.fillText('Speed (m/s)', -100, 20);
+            ctx.restore();
+        }
+
+        function selectS5A(val, el) {
+            sfx.playClick();
+            s5aAnswer = val;
+            el.parentElement.querySelectorAll('.toggle-btn').forEach(b => b.classList.remove('selected'));
+            el.classList.add('selected');
+        }
+
+        function selectS5B(val, el) {
+            sfx.playClick();
+            s5bAnswer = val;
+            el.parentElement.querySelectorAll('.toggle-btn').forEach(b => b.classList.remove('selected'));
+            el.classList.add('selected');
+        }
+
+        function checkStage5() {
+            const fb = document.getElementById('s5-feedback');
+            if (!s5aAnswer || !s5bAnswer) {
+                sfx.playError();
+                fb.className = "feedback-box error";
+                fb.innerText = "⚠️ Please answer both Questions 5A and 5B!";
+                return;
+            }
+
+            // Correct: 5A: '5' (a = 20/4 = 5 m/s²), 5B: '200' (Area = 0.5 * (6 + 14) * 20 = 200 m)
+            if (s5aAnswer === '5' && s5bAnswer === '200') {
+                score += 300;
+                updateScoreHUD();
+                sfx.playSuccess();
+                fb.className = "feedback-box success";
+                fb.innerText = "✅ DRONE TRAJECTORY LOCKED! Acceleration = 5 m/s², Total Distance = 200 m. (+300 Points)";
+                setTimeout(() => {
+                    updateStageHUD(6);
+                    showScreen('screen-stage6');
+                }, 1400);
+            } else {
+                score = Math.max(0, score - 40);
+                updateScoreHUD();
+                sfx.playError();
+                fb.className = "feedback-box error";
+                fb.innerText = "❌ TRAJECTORY MISCALCULATION! Acceleration = gradient (Δv/Δt). Distance = trapezium area ½(a+b)h.";
+            }
+        }
+
+        // =========================================================================
+        // STAGE 6: MEASURES OF DISPERSION
+        // =========================================================================
+        function selectS6A(val, el) {
+            sfx.playClick();
+            s6aAnswer = val;
+            el.parentElement.querySelectorAll('.toggle-btn').forEach(b => b.classList.remove('selected'));
+            el.classList.add('selected');
+        }
+
+        function selectS6B(val, el) {
+            sfx.playClick();
+            s6bAnswer = val;
+            el.parentElement.querySelectorAll('.toggle-btn').forEach(b => b.classList.remove('selected'));
+            el.classList.add('selected');
+        }
+
+        function checkStage6() {
+            const fb = document.getElementById('s6-feedback');
+            if (!s6aAnswer || !s6bAnswer) {
+                sfx.playError();
+                fb.className = "feedback-box error";
+                fb.innerText = "⚠️ Please answer both Questions 6A and 6B!";
+                return;
+            }
+
+            // Data: [12, 16, 18, 22, 25, 28, 34, 40, 62]
+            // n=9: Median = 25 (5th). Lower half: [12, 16, 18, 22] -> Q1 = (16+18)/2 = 17. Upper half: [28, 34, 40, 62] -> Q3 = (34+40)/2 = 37. IQR = 37 - 17 = 20.
+            if (s6aAnswer === '20' && s6bAnswer === 'CONFIRMED_ANOMALY') {
+                score += 300;
+                updateScoreHUD();
+                sfx.playSuccess();
+                fb.className = "feedback-box success";
+                fb.innerText = "✅ BIOMETRICS PROFILED! Interquartile range IQR = 20 ms confirms automated hacker script injection. (+300 Points)";
+                setTimeout(() => {
+                    updateStageHUD(7);
+                    showScreen('screen-stage7');
+                }, 1400);
+            } else {
+                score = Math.max(0, score - 40);
+                updateScoreHUD();
+                sfx.playError();
+                fb.className = "feedback-box error";
+                fb.innerText = "❌ DISPERSION ERROR! Q₁ = 17 ms, Q₃ = 37 ms. IQR = Q₃ − Q₁ = 20 ms.";
+            }
+        }
+
+        // =========================================================================
+        // STAGE 7: PROBABILITY OF COMBINED EVENTS
+        // =========================================================================
+        function selectS7A(val, el) {
+            sfx.playClick();
+            s7aAnswer = val;
+            el.parentElement.querySelectorAll('.toggle-btn').forEach(b => b.classList.remove('selected'));
+            el.classList.add('selected');
+        }
+
+        function selectS7B(val, el) {
+            sfx.playClick();
+            s7bAnswer = val;
+            el.parentElement.querySelectorAll('.toggle-btn').forEach(b => b.classList.remove('selected'));
+            el.classList.add('selected');
+        }
+
+        function checkStage7() {
+            const fb = document.getElementById('s7-feedback');
+            if (!s7aAnswer || !s7bAnswer) {
+                sfx.playError();
+                fb.className = "feedback-box error";
+                fb.innerText = "⚠️ Please answer both Questions 7A and 7B!";
+                return;
+            }
+
+            // P(A)=3/5, P(B)=1/4. Independent: P(A ∩ B) = (3/5)*(1/4) = 3/20. P(At least one holds) = 1 - 3/20 = 17/20.
+            if (s7aAnswer === '3/20' && s7bAnswer === '17/20') {
+                score += 300;
+                updateScoreHUD();
+                sfx.playSuccess();
+                fb.className = "feedback-box success";
+                fb.innerText = "✅ PROBABILITY SHIELD ACTIVE! P(A ∩ B) = 3/20, Complement safety = 17/20 (85%). (+300 Points)";
+                setTimeout(() => {
+                    updateStageHUD(8);
+                    showScreen('screen-stage8');
+                }, 1400);
+            } else {
+                score = Math.max(0, score - 40);
+                updateScoreHUD();
+                sfx.playError();
+                fb.className = "feedback-box error";
+                fb.innerText = "❌ PROBABILITY ERROR! For independent events, P(A ∩ B) = P(A) × P(B).";
+            }
+        }
+
+        // =========================================================================
+        // STAGE 8: MASTERMIND ARREST & DEDUCTIVE REASONING
+        // =========================================================================
+        function selectS8A(val, el) {
+            sfx.playClick();
+            s8aAnswer = val;
+            el.parentElement.querySelectorAll('.toggle-btn').forEach(b => b.classList.remove('selected'));
+            el.classList.add('selected');
+        }
+
+        function selectS8B(val, el) {
+            sfx.playClick();
+            s8bAnswer = val;
+            el.parentElement.querySelectorAll('.toggle-btn').forEach(b => b.classList.remove('selected'));
+            el.classList.add('selected');
+        }
+
+        function checkStage8() {
+            const fb = document.getElementById('s8-feedback');
+            if (!s8aAnswer || !s8bAnswer) {
+                sfx.playError();
+                fb.className = "feedback-box error";
+                fb.innerText = "⚠️ Please answer both final deduction questions!";
+                return;
+            }
+
+            // Correct: 8A = Form III (If p then q, ~q, therefore ~p), 8B = Suspect C
+            if (s8aAnswer === 'Form III' && s8bAnswer === 'C') {
+                score += 300;
+                updateScoreHUD();
+                sfx.playSuccess();
+                clearInterval(timerInterval);
+
+                document.getElementById('v-team').innerText = teamName;
+                document.getElementById('v-time').innerText = document.getElementById('timer-display').innerText;
+                document.getElementById('v-score').innerText = score;
+
+                let rank = "Master Cyber Inspector ⭐⭐⭐";
+                if (score < 1800) rank = "Senior Forensics Detective ⭐⭐";
+                document.getElementById('v-rank').innerText = rank;
+
+                setTimeout(() => {
+                    showScreen('screen-victory');
+                }, 1000);
+            } else {
+                score = Math.max(0, score - 40);
+                updateScoreHUD();
+                sfx.playError();
+                fb.className = "feedback-box error";
+                fb.innerText = "❌ DEDUCTIVE ERROR! Form III Modus Tollens proves Suspect A is innocent, leaving Suspect C as the culprit.";
+            }
+        }
+
+        function resetGame() {
+            score = 0;
+            s1Answers = {1: null, 2: null, 3: null, 4: null};
+            s2Answers = {1: null, 2: null, 3: null};
+            s3SelectedSuspects = [];
+            s4aAnswer = null; s4bAnswer = null;
+            s5aAnswer = null; s5bAnswer = null;
+            s6aAnswer = null; s6bAnswer = null;
+            s7aAnswer = null; s7bAnswer = null;
+            s8aAnswer = null; s8bAnswer = null;
+            updateScoreHUD();
+            document.querySelectorAll('.toggle-btn').forEach(b => b.classList.remove('selected', 'selected-true', 'selected-false'));
+            document.querySelectorAll('.suspect-card').forEach(c => c.classList.remove('selected'));
+            document.querySelectorAll('.feedback-box').forEach(fb => fb.className = 'feedback-box');
+            showScreen('screen-intro');
+        }
+
+        // Modals & Hotkeys
+        document.getElementById('btn-evidence').onclick = () => document.getElementById('modal-dossier').classList.remove('hidden');
+        document.getElementById('btn-close-dossier').onclick = () => document.getElementById('modal-dossier').classList.add('hidden');
+        document.getElementById('btn-codex').onclick = () => document.getElementById('modal-codex').classList.remove('hidden');
+        document.getElementById('btn-close-codex').onclick = () => document.getElementById('modal-codex').classList.add('hidden');
+
+        document.getElementById('btn-audio').onclick = function() {
+            sfx.enabled = !sfx.enabled;
+            this.innerText = sfx.enabled ? '🔊' : '🔇';
+        };
+
+        window.addEventListener('keydown', (e) => {
+            if (e.key === 'e' || e.key === 'E') {
+                const modal = document.getElementById('modal-dossier');
+                modal.classList.toggle('hidden');
+            }
+            if (e.key === 'm' || e.key === 'M') {
+                const modal = document.getElementById('modal-codex');
+                modal.classList.toggle('hidden');
+            }
+            if (e.key === 'Escape') {
+                document.getElementById('modal-dossier').classList.add('hidden');
+                document.getElementById('modal-codex').classList.add('hidden');
+            }
+        });
+    </script>
+</body>
+</html>

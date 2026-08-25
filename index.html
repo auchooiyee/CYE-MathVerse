@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CYE MathVerse — Game Library</title>
+    
+    <!-- Load Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Load Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind Configuration -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Plus Jakarta Sans', 'sans-serif'],
+                        tech: ['Orbitron', 'sans-serif'],
+                    },
+                    colors: {
+                        primary: {
+                            50: '#f0fdfa',
+                            100: '#ccfbf1',
+                            400: '#2dd4bf',
+                            500: '#14b8a6', // Teal
+                            600: '#0d9488',
+                            700: '#0f766e',
+                        },
+                        accent: {
+                            500: '#8b5cf6', // Violet
+                            600: '#7c3aed',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .font-tech { font-family: 'Orbitron', sans-serif; }
+        
+        .game-card {
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1), border-color 0.3s ease;
+        }
+        .game-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 30px -10px rgba(0, 0, 0, 0.12), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+        .pattern-bg {
+            background-color: #f8fafc;
+            background-image: radial-gradient(#e2e8f0 1.5px, transparent 1.5px);
+            background-size: 28px 28px;
+        }
+        .filter-btn.active {
+            background-color: #0f172a;
+            color: #ffffff;
+            border-color: #0f172a;
+            box-shadow: 0 4px 12px rgba(15, 23, 42, 0.15);
+        }
+    </style>
+</head>
+<body class="pattern-bg min-h-screen flex flex-col text-slate-800 antialiased">
+
+    <!-- Navigation Bar -->
+    <nav class="bg-white/90 backdrop-blur-md shadow-sm sticky top-0 z-50 border-b border-slate-100">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16 items-center">
+                <!-- Logo & Brand -->
+                <a href="#" class="flex items-center gap-3 cursor-pointer group">
+                    <img src="assets/cye-logo.svg" alt="CYE Logo" class="h-9 w-9 group-hover:scale-105 transition-transform">
+                    <span class="font-black text-2xl tracking-tight text-slate-900">
+                        CYE Math<span class="text-primary-500">Verse</span>
+                    </span>
+                </a>
+
+                <!-- Nav Links -->
+                <div class="flex items-center gap-4">
+                    <a href="#games" class="text-sm font-bold text-primary-600 hover:text-primary-700 transition">
+                        Game Library
+                    </a>
+                    <a href="game-template/" class="hidden sm:inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold transition shadow-sm">
+                        <span>⚡ Starter Kit Demo</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <header class="relative overflow-hidden bg-white border-b border-slate-200">
+        <div class="absolute top-0 left-0 w-full h-full overflow-hidden -z-10 pointer-events-none">
+            <div class="absolute -top-24 -right-24 w-96 h-96 bg-primary-100 rounded-full mix-blend-multiply filter blur-3xl opacity-70"></div>
+            <div class="absolute top-32 -left-24 w-72 h-72 bg-accent-100 rounded-full mix-blend-multiply filter blur-3xl opacity-70"></div>
+        </div>
+
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14 sm:py-20 text-center">
+            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary-50 border border-primary-100 text-primary-700 text-xs font-extrabold tracking-wide uppercase mb-4 shadow-sm">
+                <span class="w-2 h-2 rounded-full bg-primary-500 animate-ping"></span>
+                SPM & Secondary Mathematics Gaming Portal
+            </div>
+
+            <h1 class="text-4xl sm:text-5xl md:text-6xl font-black text-slate-900 mb-5 leading-tight tracking-tight">
+                Welcome to <br class="sm:hidden"/> 
+                <span class="text-transparent bg-clip-text bg-gradient-to-r from-primary-600 via-teal-500 to-accent-600">CYE MathVerse</span>
+            </h1>
+            <p class="mt-2 max-w-2xl text-base sm:text-lg text-slate-600 mx-auto font-medium leading-relaxed">
+                Explore a universe of numbers, logic, and financial adventures. Master secondary mathematics while playing engaging, interactive games!
+            </p>
+            <div class="mt-8 flex flex-wrap justify-center gap-3">
+                <a href="#games" class="px-7 py-3.5 border border-transparent text-sm sm:text-base font-bold rounded-xl text-white bg-primary-600 hover:bg-primary-700 shadow-md hover:shadow-lg transition transform hover:-translate-y-0.5">
+                    🎮 Explore Game Collection
+                </a>
+                <a href="game-template/" class="px-7 py-3.5 border border-slate-200 text-sm sm:text-base font-bold rounded-xl text-slate-700 bg-white hover:bg-slate-50 shadow-sm hover:shadow transition">
+                    🚀 Build a Game (Starter Kit)
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content: Game Library -->
+    <main id="games" class="flex-grow max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 w-full">
+        
+        <!-- Section Header & Dynamic Filter Pills -->
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
+            <div>
+                <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900 flex items-center gap-3">
+                    <span class="text-2xl">🎮</span>
+                    <span>Game Collection</span>
+                </h2>
+                <p class="text-xs sm:text-sm text-slate-500 font-medium mt-1">Select a game below to launch directly in your browser.</p>
+            </div>
+            
+            <!-- Category & Form Filters -->
+            <div class="flex flex-wrap gap-2 items-center" id="filter-container">
+                <button data-filter="all" class="filter-btn active px-4 py-1.5 rounded-full text-xs font-bold border border-slate-200 bg-slate-900 text-white transition">All Games</button>
+                <button data-filter="form-4" class="filter-btn px-4 py-1.5 rounded-full text-xs font-bold border border-slate-200 bg-white text-slate-600 hover:bg-slate-100 transition">📘 Form 4</button>
+                <button data-filter="form-5" class="filter-btn px-4 py-1.5 rounded-full text-xs font-bold border border-slate-200 bg-white text-slate-600 hover:bg-slate-100 transition">📕 Form 5</button>
+                <button data-filter="finance" class="filter-btn px-4 py-1.5 rounded-full text-xs font-bold border border-slate-200 bg-white text-slate-600 hover:bg-slate-100 transition">💰 Finance & Tax</button>
+                <button data-filter="algebra" class="filter-btn px-4 py-1.5 rounded-full text-xs font-bold border border-slate-200 bg-white text-slate-600 hover:bg-slate-100 transition">🚀 Algebra & Space</button>
+                <button data-filter="mystery" class="filter-btn px-4 py-1.5 rounded-full text-xs font-bold border border-slate-200 bg-white text-slate-600 hover:bg-slate-100 transition">🕵️ Mystery & Logic</button>
+            </div>
+        </div>
+
+        <!-- Grid Container -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-7" id="games-grid">
+
+            <!-- GAME 1: Financial Hero -->
+            <div class="game-card bg-white rounded-2xl overflow-hidden shadow-sm border border-slate-200/80 flex flex-col group" data-category="form-4 finance">
+                <!-- Thumbnail -->
+                <div class="h-44 bg-gradient-to-br from-emerald-400 via-teal-500 to-green-600 relative overflow-hidden flex items-center justify-center">
+                    <span class="text-6xl group-hover:scale-110 transition-transform duration-500">💰</span>
+                    <div class="absolute top-3 right-3 bg-white/95 backdrop-blur-sm text-emerald-800 text-[10px] font-black px-2.5 py-1 rounded-full shadow-sm">
+                        ⭐ EASY-MEDIUM
+                    </div>
+                </div>
+
+                <!-- Info -->
+                <div class="p-5 flex flex-col flex-grow">
+                    <!-- Form & Topic Header -->
+                    <div class="flex items-center justify-between gap-1 mb-2">
+                        <span class="text-[11px] font-black text-emerald-600 uppercase tracking-wide">FORM 4</span>
+                        <span class="text-[11px] text-slate-500 font-bold">⏱️ 10–15 min</span>
+                    </div>
+                    <div class="text-xs font-bold text-slate-500 mb-1">
+                        Chapter 10 • Financial Management
+                    </div>
+                    <h3 class="text-lg font-black text-slate-900 mb-2 group-hover:text-primary-600 transition">
+                        Financial Hero
+                    </h3>
+                    <p class="text-slate-600 text-xs sm:text-sm mb-5 flex-grow font-medium leading-relaxed">
+                        Collect income, avoid debt traps, answer financial checkpoints, and build your emergency fund in a 2D side-scrolling adventure.
+                    </p>
+                    
+                    <!-- Link -->
+                    <a href="financial-hero/" class="block w-full text-center bg-primary-600 hover:bg-primary-700 text-white font-bold py-2.5 px-4 rounded-xl transition shadow-sm text-sm">
+                        PLAY NOW ➔
+                    </a>
+                </div>
+            </div>
+
+            <!-- GAME 2: Math CSI: Cyber Heist -->
+            <div class="game-card bg-white rounded-2xl overflow-hidden shadow-sm border border-slate-200/80 flex flex-col group" data-category="form-4 form-5 mystery">
+                <div class="h-44 bg-gradient-to-br from-indigo-500 via-purple-600 to-violet-700 relative overflow-hidden flex items-center justify-center">
+                    <span class="text-6xl group-hover:scale-110 transition-transform duration-500">🔐</span>
+                    <div class="absolute top-3 right-3 bg-white/95 backdrop-blur-sm text-violet-800 text-[10px] font-black px-2.5 py-1 rounded-full shadow-sm">
+                        ⭐⭐ MEDIUM
+                    </div>
+                </div>
+                <div class="p-5 flex flex-col flex-grow">
+                    <div class="flex items-center justify-between gap-1 mb-2">
+                        <span class="text-[11px] font-black text-violet-600 uppercase tracking-wide">FORM 4 & 5</span>
+                        <span class="text-[11px] text-slate-500 font-bold">⏱️ 15–20 min</span>
+                    </div>
+                    <div class="text-xs font-bold text-slate-500 mb-1">
+                        Logic, Ciphers & Coordinate Geometry
+                    </div>
+                    <h3 class="text-lg font-black text-slate-900 mb-2 group-hover:text-primary-600 transition">
+                        Math CSI: Cyber Heist
+                    </h3>
+                    <p class="text-slate-600 text-xs sm:text-sm mb-5 flex-grow font-medium leading-relaxed">
+                        Become a cyber detective and use Mathematics to crack clues, uncover evidence, and solve the cyber heist before time runs out.
+                    </p>
+                    <a href="math-csi-cyber-heist/" class="block w-full text-center bg-primary-600 hover:bg-primary-700 text-white font-bold py-2.5 px-4 rounded-xl transition shadow-sm text-sm">
+                        PLAY NOW ➔
+                    </a>
+                </div>
+            </div>
+
+            <!-- GAME 3: Salary Tax Tycoon 2.0 -->
+            <div class="game-card bg-white rounded-2xl overflow-hidden shadow-sm border border-slate-200/80 flex flex-col group" data-category="form-5 finance">
+                <div class="h-44 bg-gradient-to-br from-amber-400 via-orange-500 to-amber-600 relative overflow-hidden flex items-center justify-center">
+                    <span class="text-6xl group-hover:scale-110 transition-transform duration-500">💼</span>
+                    <div class="absolute top-3 right-3 bg-white/95 backdrop-blur-sm text-orange-800 text-[10px] font-black px-2.5 py-1 rounded-full shadow-sm">
+                        ⭐⭐ MEDIUM
+                    </div>
+                </div>
+                <div class="p-5 flex flex-col flex-grow">
+                    <div class="flex items-center justify-between gap-1 mb-2">
+                        <span class="text-[11px] font-black text-orange-600 uppercase tracking-wide">FORM 5</span>
+                        <span class="text-[11px] text-slate-500 font-bold">⏱️ 15–20 min</span>
+                    </div>
+                    <div class="text-xs font-bold text-slate-500 mb-1">
+                        Chapter 4 • Taxation & Budgeting
+                    </div>
+                    <h3 class="text-lg font-black text-slate-900 mb-2 group-hover:text-primary-600 transition">
+                        Salary Tax Tycoon 2.0
+                    </h3>
+                    <p class="text-slate-600 text-xs sm:text-sm mb-5 flex-grow font-medium leading-relaxed">
+                        Build your career, calculate salary, EPF, SOCSO, and Malaysian income tax while optimizing reliefs in this upgraded tycoon simulation.
+                    </p>
+                    <a href="salary-tax-tycoon/" class="block w-full text-center bg-primary-600 hover:bg-primary-700 text-white font-bold py-2.5 px-4 rounded-xl transition shadow-sm text-sm">
+                        PLAY NOW ➔
+                    </a>
+                </div>
+            </div>
+
+            <!-- GAME 4: Galactic Defense -->
+            <div class="game-card bg-white rounded-2xl overflow-hidden shadow-sm border border-slate-200/80 flex flex-col group" data-category="form-4 algebra">
+                <div class="h-44 bg-gradient-to-br from-cyan-500 via-teal-500 to-indigo-700 relative overflow-hidden flex items-center justify-center">
+                    <span class="text-6xl group-hover:scale-110 transition-transform duration-500">🚀</span>
+                    <div class="absolute top-3 right-3 bg-white/95 backdrop-blur-sm text-indigo-800 text-[10px] font-black px-2.5 py-1 rounded-full shadow-sm">
+                        ⭐⭐⭐ HARD
+                    </div>
+                </div>
+                <div class="p-5 flex flex-col flex-grow">
+                    <div class="flex items-center justify-between gap-1 mb-2">
+                        <span class="text-[11px] font-black text-cyan-600 uppercase tracking-wide">FORM 4</span>
+                        <span class="text-[11px] text-slate-500 font-bold">⏱️ 15–20 min</span>
+                    </div>
+                    <div class="text-xs font-bold text-slate-500 mb-1">
+                        Quadratics, Bases, Motion & Graphs
+                    </div>
+                    <h3 class="text-lg font-black text-slate-900 mb-2 group-hover:text-primary-600 transition">
+                        Galactic Defense
+                    </h3>
+                    <p class="text-slate-600 text-xs sm:text-sm mb-5 flex-grow font-medium leading-relaxed">
+                        Defend planet Earth using Quadratic trajectories, Number Bases, Inequalities, Motion Graphs, Graph Theory, and Combined Probability.
+                    </p>
+                    <a href="galactic-defense/" class="block w-full text-center bg-primary-600 hover:bg-primary-700 text-white font-bold py-2.5 px-4 rounded-xl transition shadow-sm text-sm">
+                        PLAY NOW ➔
+                    </a>
+                </div>
+            </div>
+
+            <!-- STARTER KIT PLAYGROUND CARD -->
+            <div class="game-card bg-slate-900 text-white rounded-2xl overflow-hidden shadow-sm border border-slate-800 flex flex-col group" data-category="form-4 form-5 finance algebra mystery">
+                <div class="h-44 bg-gradient-to-br from-slate-800 via-slate-900 to-slate-950 relative overflow-hidden flex items-center justify-center">
+                    <span class="text-6xl group-hover:scale-110 transition-transform duration-500">⚡</span>
+                    <div class="absolute top-3 right-3 bg-primary-500 text-slate-950 text-[10px] font-black px-2.5 py-1 rounded-full shadow-sm">
+                        STARTER KIT v1
+                    </div>
+                </div>
+                <div class="p-5 flex flex-col flex-grow">
+                    <div class="flex items-center justify-between gap-1 mb-2">
+                        <span class="text-[11px] font-black text-primary-400 uppercase tracking-wide">CREATOR FRAMEWORK</span>
+                        <span class="text-[11px] text-slate-400 font-bold">⏱️ 5 min setup</span>
+                    </div>
+                    <div class="text-xs font-bold text-slate-400 mb-1">
+                        Standard Reusable Game Boilerplate
+                    </div>
+                    <h3 class="text-lg font-black text-white mb-2 group-hover:text-primary-400 transition">
+                        CYE Game Template
+                    </h3>
+                    <p class="text-slate-300 text-xs sm:text-sm mb-5 flex-grow font-medium leading-relaxed">
+                        Test our standardized 4-phase game architecture (Briefing ➔ Player ID ➔ Gameplay & Feedback ➔ Results) ready for your new game ideas.
+                    </p>
+                    <a href="game-template/" class="block w-full text-center bg-slate-800 hover:bg-slate-700 text-white font-bold py-2.5 px-4 rounded-xl transition border border-slate-700 text-sm">
+                        LAUNCH TEMPLATE ➔
+                    </a>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-white border-t border-slate-200 mt-auto">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+            <div class="flex flex-col md:flex-row justify-between items-center gap-4">
+                <div class="flex items-center gap-3">
+                    <img src="assets/cye-logo.svg" alt="CYE Logo" class="h-6 w-6">
+                    <span class="font-bold text-slate-900">CYE MathVerse</span>
+                    <span class="text-slate-400 text-xs font-semibold">| Unified Educational Game Ecosystem</span>
+                </div>
+                <div class="text-slate-500 text-xs font-medium">
+                    &copy; <span id="year"></span> CYE MathVerse. All rights reserved.
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Filter Script -->
+    <script>
+        document.getElementById('year').textContent = new Date().getFullYear();
+
+        // Interactive Filter Buttons
+        const filterBtns = document.querySelectorAll('.filter-btn');
+        const gameCards = document.querySelectorAll('#games-grid .game-card');
+
+        filterBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                filterBtns.forEach(b => b.classList.remove('active', 'bg-slate-900', 'text-white'));
+                filterBtns.forEach(b => b.classList.add('bg-white', 'text-slate-600'));
+                
+                btn.classList.remove('bg-white', 'text-slate-600');
+                btn.classList.add('active', 'bg-slate-900', 'text-white');
+
+                const filter = btn.getAttribute('data-filter');
+
+                gameCards.forEach(card => {
+                    const categories = card.getAttribute('data-category') || '';
+                    if (filter === 'all' || categories.includes(filter)) {
+                        card.style.display = 'flex';
+                    } else {
+                        card.style.display = 'none';
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,2101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Salary &amp; Tax Tycoon 2.0</title>
+<style>
+:root {
+  --ink: #0b1d30;
+  --ink-card: rgba(15, 34, 56, 0.85);
+  --ink-2: #163655;
+  --green: #1B7A4D;
+  --green-light: #2FA968;
+  --green-glow: rgba(47, 169, 104, 0.4);
+  --gold: #F3C246;
+  --gold-dark: #b88a1b;
+  --cream: #F8F4EA;
+  --cream-dim: #e4dcce;
+  --coral: #E35345;
+  --purple: #7E57C2;
+  --blue: #2979FF;
+  --cyan: #00B0FF;
+  --slate: #243447;
+  --paper-line: #d3c9b7;
+  --display: 'Georgia', 'Times New Roman', serif;
+  --mono: 'SF Mono', 'Courier New', Courier, monospace;
+  --body: system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+}
+
+* { box-sizing: border-box; touch-action: manipulation; -webkit-tap-highlight-color: transparent; }
+html, body { height: 100%; margin: 0; padding: 0; }
+body {
+  font-family: var(--body);
+  background: radial-gradient(circle at 50% 20%, #152c48 0%, #0a1829 60%, #050d18 100%);
+  background-attachment: fixed;
+  color: var(--cream);
+  min-height: 100vh;
+  overflow-x: hidden;
+  user-select: none;
+}
+
+#app { min-height: 100vh; display: flex; flex-direction: column; position: relative; }
+#app.shake { animation: appShake 0.45s cubic-bezier(.36,.07,.19,.97) both; }
+@keyframes appShake {
+  10%, 90% { transform: translate3d(-3px, 0, 0); }
+  20%, 80% { transform: translate3d(5px, 0, 0); }
+  30%, 50%, 70% { transform: translate3d(-8px, 0, 0); }
+  40%, 60% { transform: translate3d(8px, 0, 0); }
+}
+
+h1, h2, h3, h4 { font-family: var(--display); margin: 0 0 8px; letter-spacing: .5px; text-shadow: 0 2px 6px rgba(0,0,0,0.4); }
+.eyebrow { font-family: var(--mono); text-transform: uppercase; letter-spacing: 2.5px; font-size: 12px; color: var(--gold); margin-bottom: 6px; }
+
+/* Buttons */
+.btn {
+  font-family: var(--body); font-weight: 700; font-size: 15px; border: none; border-radius: 12px; 
+  padding: 13px 24px; cursor: pointer; background: var(--green); color: #fff; 
+  box-shadow: 0 5px 0 #0f4d30, 0 8px 18px rgba(0,0,0,0.3);
+  transition: transform 0.08s ease, box-shadow 0.08s ease, background 0.2s ease;
+  position: relative; overflow: hidden; display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+}
+.btn::after {
+  content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%;
+  background: linear-gradient(to bottom right, rgba(255,255,255,0) 0%, rgba(255,255,255,0.2) 50%, rgba(255,255,255,0) 100%);
+  transform: rotate(45deg) translate(-100%, -100%); transition: transform 0.5s ease;
+}
+.btn:hover::after { transform: rotate(45deg) translate(100%, 100%); }
+.btn:active { transform: translateY(4px); box-shadow: 0 1px 0 #0f4d30, 0 3px 6px rgba(0,0,0,0.3); }
+.btn.gold { background: var(--gold); color: #352500; box-shadow: 0 5px 0 var(--gold-dark), 0 8px 18px rgba(243,194,70,0.25); }
+.btn.gold:active { box-shadow: 0 1px 0 var(--gold-dark); }
+.btn.coral { background: var(--coral); color: #fff; box-shadow: 0 5px 0 #9e2a1e, 0 8px 18px rgba(227,83,69,0.3); }
+.btn.coral:active { box-shadow: 0 1px 0 #9e2a1e; }
+.btn.purple { background: var(--purple); color: #fff; box-shadow: 0 5px 0 #523588, 0 8px 18px rgba(126,87,194,0.3); }
+.btn.purple:active { box-shadow: 0 1px 0 #523588; }
+.btn.blue { background: var(--blue); color: #fff; box-shadow: 0 5px 0 #1555c2, 0 8px 18px rgba(41,121,255,0.3); }
+.btn.blue:active { box-shadow: 0 1px 0 #1555c2; }
+.btn.ghost { background: rgba(255,255,255,0.08); border: 2px solid rgba(255,255,255,0.3); color: var(--cream); box-shadow: 0 4px 10px rgba(0,0,0,0.2); }
+.btn.ghost:hover { background: rgba(255,255,255,0.15); }
+.btn.ghost:active { transform: translateY(3px); box-shadow: none; }
+.btn.small { padding: 7px 14px; font-size: 13px; border-radius: 8px; box-shadow: 0 3px 0 rgba(0,0,0,0.3); }
+.btn.small:active { transform: translateY(3px); box-shadow: none; }
+.btn:disabled { opacity: 0.45; cursor: not-allowed; transform: none; box-shadow: none; }
+
+.row { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; align-items: center; }
+
+/* Screens */
+.screen { display: none; flex: 1; flex-direction: column; align-items: center; padding: 20px 14px 100px; z-index: 2; position: relative; opacity: 0; transition: opacity 0.25s ease; width: 100%; max-width: 1080px; margin: 0 auto; overflow-y: auto; overflow-x: hidden; }
+.screen.active { display: flex; opacity: 1; }
+
+.card { background: var(--cream); color: var(--slate); border-radius: 18px; padding: 22px; box-shadow: 0 16px 36px rgba(0,0,0,0.45); border: 1px solid rgba(255,255,255,0.15); width: 100%; position: relative; }
+.dark-card { background: var(--ink-card); color: var(--cream); border-radius: 18px; padding: 20px; box-shadow: 0 16px 36px rgba(0,0,0,0.45); border: 1px solid rgba(255,255,255,0.12); backdrop-filter: blur(12px); width: 100%; }
+
+/* Start Screen */
+#screen-start { justify-content: center; text-align: center; min-height: 92vh; }
+.title-badge { font-size: 68px; margin-bottom: 8px; filter: drop-shadow(0 12px 16px rgba(0,0,0,0.4)); animation: floatLogo 3.5s ease-in-out infinite; }
+@keyframes floatLogo { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-12px); } }
+#screen-start h1 { font-size: clamp(32px, 7.5vw, 56px); text-transform: uppercase; background: linear-gradient(135deg, #FFE27A 0%, #FFFFFF 60%, #E8B93E 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+
+/* Top Header Bar */
+.game-header { width: 100%; display: flex; justify-content: space-between; align-items: center; padding: 12px 18px; background: rgba(11,29,48,0.75); backdrop-filter: blur(10px); border-bottom: 1px solid rgba(255,255,255,0.1); position: sticky; top: 0; z-index: 90; }
+.game-header .brand { font-family: var(--display); font-weight: 900; font-size: 16px; color: var(--gold); display: flex; align-items: center; gap: 8px; }
+.header-actions { display: flex; gap: 8px; align-items: center; }
+.icon-btn { background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); border-radius: 8px; color: var(--cream); width: 36px; height: 36px; display: inline-flex; align-items: center; justify-content: center; cursor: pointer; font-size: 16px; transition: all 0.15s; }
+.icon-btn:hover { background: rgba(255,255,255,0.2); }
+.icon-btn.active { background: var(--gold); color: #222; }
+
+/* Player Selection Grid */
+.player-count-picker { display: flex; gap: 10px; justify-content: center; margin: 15px 0 25px; }
+.count-pill { width: 64px; height: 48px; display: flex; flex-direction: column; align-items: center; justify-content: center; border-radius: 12px; font-weight: 800; font-size: 16px; background: rgba(255,255,255,0.1); border: 2px solid rgba(255,255,255,0.2); color: var(--cream); cursor: pointer; transition: all 0.2s; }
+.count-pill.active { background: var(--gold); color: #222; border-color: #fff; box-shadow: 0 0 16px rgba(243,194,70,0.5); transform: scale(1.08); }
+.count-pill span { font-size: 10px; font-weight: normal; opacity: 0.8; }
+
+.player-grid { display: grid; gap: 14px; width: 100%; max-width: 960px; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); }
+.player-slot { border-radius: 16px; padding: 18px; text-align: center; color: #fff; box-shadow: 0 10px 24px rgba(0,0,0,0.35); border: 2px solid rgba(255,255,255,0.15); transition: transform 0.2s, box-shadow 0.2s; position: relative; }
+.player-slot .avatar-choice { font-size: 38px; cursor: pointer; filter: drop-shadow(0 4px 6px rgba(0,0,0,0.3)); display: inline-block; transition: transform 0.15s; }
+.player-slot .avatar-choice:hover { transform: scale(1.15) rotate(8deg); }
+.player-slot input.pname-input { width: 100%; padding: 10px; border-radius: 8px; border: none; text-align: center; font-weight: 700; margin: 8px 0; font-size: 15px; background: rgba(255,255,255,0.92); color: #111; }
+.player-slot select.ptype-select { width: 100%; padding: 8px; border-radius: 8px; border: none; font-size: 12px; font-weight: 700; background: rgba(0,0,0,0.3); color: #fff; cursor: pointer; }
+.player-slot select.ptype-select option { background: #163655; color: #fff; }
+
+/* Career Grid */
+.career-grid { display: grid; gap: 14px; width: 100%; max-width: 980px; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); margin: 15px 0; }
+.career-card { background: var(--cream); color: var(--slate); border-radius: 16px; padding: 18px; cursor: pointer; border: 4px solid transparent; text-align: left; transition: all 0.2s ease; position: relative; overflow: hidden; box-shadow: 0 8px 20px rgba(0,0,0,0.25); }
+.career-card::before { content: ''; position: absolute; inset: 0; background: var(--gold); opacity: 0; transition: opacity 0.2s ease; z-index: 0; }
+.career-card:hover { transform: translateY(-4px); box-shadow: 0 12px 28px rgba(0,0,0,0.35); }
+.career-card.selected { border-color: var(--gold); box-shadow: 0 0 0 4px rgba(243, 194, 70, 0.4), 0 12px 28px rgba(0,0,0,0.35); }
+.career-card.selected::before { opacity: 0.12; }
+.career-card > * { position: relative; z-index: 1; }
+.career-card .emoji { font-size: 38px; filter: drop-shadow(0 3px 5px rgba(0,0,0,0.2)); }
+.career-card .salary { font-family: var(--mono); color: var(--green); font-weight: 900; font-size: 18px; margin: 6px 0 2px; }
+.career-card .badge { display: inline-block; font-size: 11px; font-weight: 700; padding: 3px 8px; border-radius: 6px; background: rgba(0,0,0,0.06); margin-top: 6px; color: #555; }
+
+/* Board Topbar & HUD */
+.topbar { display: flex; flex-direction: column; align-items: center; gap: 10px; max-width: 1000px; margin: 0 auto 20px; width: 100%; background: rgba(15, 34, 56, 0.85); padding: 12px 16px; border-radius: 20px; backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.18); position: sticky; top: 10px; z-index: 50; box-shadow: 0 10px 30px rgba(0,0,0,0.4); }
+.topbar-header { display: flex; justify-content: space-between; align-items: center; width: 100%; flex-wrap: wrap; gap: 8px; }
+.year-badge { font-family: var(--mono); font-weight: 800; color: var(--gold); font-size: 15px; letter-spacing: 1px; }
+.player-chips { display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; width: 100%; }
+.chip { border-radius: 12px; padding: 8px 12px; color: #fff; font-size: 13px; min-width: 130px; box-shadow: 0 4px 10px rgba(0,0,0,0.3); opacity: 0.55; transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1); transform: scale(0.92); position: relative; border: 2px solid transparent; display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+.chip.active { opacity: 1; transform: scale(1.04); border-color: var(--gold); box-shadow: 0 0 16px rgba(243, 194, 70, 0.6), 0 8px 20px rgba(0,0,0,0.4); z-index: 10; animation: pulseChip 2.2s infinite; }
+@keyframes pulseChip { 0% { box-shadow: 0 0 0 0 rgba(243, 194, 70, 0.5); } 70% { box-shadow: 0 0 0 12px rgba(243, 194, 70, 0); } 100% { box-shadow: 0 0 0 0 rgba(243, 194, 70, 0); } }
+.chip .avatar { font-size: 24px; }
+.chip .cinfo { display: flex; flex-direction: column; text-align: left; }
+.chip .cname { font-weight: 700; font-size: 12px; white-space: nowrap; max-width: 80px; overflow: hidden; text-overflow: ellipsis; }
+.chip .cmoney { font-family: var(--mono); font-size: 13px; font-weight: 800; color: #FFE082; }
+.chip .ai-tag { font-size: 9px; padding: 1px 4px; background: rgba(0,0,0,0.3); border-radius: 4px; text-transform: uppercase; margin-left: 2px; }
+
+/* AI Turn Banner */
+.ai-banner { background: linear-gradient(90deg, #7E57C2, #2979FF); color: #fff; padding: 8px 16px; border-radius: 12px; font-size: 13px; font-weight: 700; display: inline-flex; align-items: center; gap: 8px; margin-bottom: 12px; animation: bounceIn 0.3s ease; box-shadow: 0 4px 12px rgba(0,0,0,0.3); }
+@keyframes bounceIn { 0% { transform: scale(0.9); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
+
+/* Wheel */
+.wheel-container { position: relative; width: 280px; height: 280px; margin: 15px auto; filter: drop-shadow(0 12px 28px rgba(0,0,0,0.5)); }
+.wheel-flapper { position: absolute; top: -14px; left: 50%; transform: translateX(-50%); width: 28px; height: 38px; background: var(--gold); clip-path: polygon(50% 100%, 0 0, 100% 0); z-index: 10; transform-origin: top center; box-shadow: 0 4px 8px rgba(0,0,0,0.5); }
+.wheel { width: 100%; height: 100%; border-radius: 50%; border: 7px solid var(--cream); position: relative; overflow: hidden; background: #222; }
+.wheel canvas { width: 100%; height: 100%; display: block; }
+.wheel-center { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 40px; height: 40px; border-radius: 50%; background: var(--cream); border: 4px solid var(--gold); z-index: 5; box-shadow: inset 0 2px 5px rgba(0,0,0,0.3); display: flex; align-items: center; justify-content: center; font-size: 16px; }
+
+/* Payslip & Stamping */
+.form-card { position: relative; background: var(--cream); color: var(--slate); border: 2px solid var(--slate); border-radius: 12px; padding: 24px; width: 100%; max-width: 520px; box-shadow: 0 20px 40px rgba(0,0,0,0.5); user-select: none; }
+.form-header { display: flex; justify-content: space-between; align-items: baseline; border-bottom: 2px dashed var(--paper-line); padding-bottom: 10px; margin-bottom: 16px; }
+.calc-line { display: flex; justify-content: space-between; font-family: var(--mono); font-size: 15px; margin-bottom: 8px; align-items: center; }
+.stamp-target { border: 3px dashed rgba(227, 83, 69, 0.45); border-radius: 12px; height: 86px; display: flex; align-items: center; justify-content: center; font-weight: 800; color: rgba(227, 83, 69, 0.7); margin-top: 18px; transition: all 0.2s; position: relative; background: rgba(227, 83, 69, 0.04); cursor: pointer; text-align: center; padding: 8px; }
+.stamp-target:hover, .stamp-target.hover { background: rgba(227, 83, 69, 0.15); border-style: solid; border-color: var(--coral); transform: scale(1.02); }
+.stamp-target.stamped { border: none; background: transparent; }
+
+.stamp-tool { position: fixed; width: 100px; height: 100px; cursor: grab; z-index: 100; touch-action: none; filter: drop-shadow(0 15px 22px rgba(0,0,0,0.5)); display: flex; flex-direction: column; align-items: center; transition: transform 0.1s; }
+.stamp-tool:active { cursor: grabbing; transform: scale(0.92) rotate(-12deg); }
+.stamp-tool.hidden { display: none; }
+.stamp-handle { width: 34px; height: 50px; background: linear-gradient(to right, #8b4513, #a0522d); border-radius: 18px 18px 5px 5px; box-shadow: inset -4px 0 8px rgba(0,0,0,0.3); }
+.stamp-base { width: 84px; height: 26px; background: #222; border-radius: 5px; margin-top: -4px; box-shadow: 0 4px 0 #000; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 11px; font-weight: 800; }
+.stamp-mark { position: absolute; font-family: var(--display); font-weight: 900; font-size: 36px; color: var(--coral); border: 5px solid var(--coral); padding: 4px 18px; border-radius: 10px; transform: rotate(-15deg); opacity: 0; pointer-events: none; letter-spacing: 3px; box-shadow: 0 0 15px rgba(227,83,69,0.25); text-shadow: 0 2px 4px rgba(0,0,0,0.15); }
+.stamp-mark.visible { opacity: 0.95; animation: stampDown 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; }
+@keyframes stampDown { 0% { transform: scale(2.5) rotate(5deg); opacity: 0; } 100% { transform: scale(1) rotate(-15deg); opacity: 0.95; } }
+
+/* Shop / Marketplace */
+.shop-section-title { font-family: var(--display); font-size: 16px; font-weight: 800; border-bottom: 2px solid var(--paper-line); padding-bottom: 6px; margin: 16px 0 10px; color: var(--ink); display: flex; justify-content: space-between; align-items: center; }
+.shop-item { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px dashed var(--paper-line); padding: 12px 0; gap: 10px; }
+.shop-item:last-child { border-bottom: none; }
+.shop-item .info { display: flex; align-items: center; gap: 10px; font-weight: 600; font-size: 14px; text-align: left; }
+.shop-item .desc-sub { font-size: 11px; color: #666; font-weight: normal; margin-top: 2px; }
+.shop-item .price { font-family: var(--mono); color: var(--green); font-weight: 800; font-size: 14px; background: rgba(27,122,77,0.1); padding: 4px 8px; border-radius: 6px; white-space: nowrap; }
+
+/* Event Cards */
+.event-wrap { perspective: 1000px; width: 280px; height: 370px; margin: 12px auto; }
+.event-card { width: 100%; height: 100%; position: relative; transform-style: preserve-3d; transition: transform 0.7s cubic-bezier(0.34, 1.56, 0.64, 1); cursor: pointer; }
+.event-card.flipped { transform: rotateY(180deg) scale(1.04); }
+.event-face { position: absolute; inset: 0; backface-visibility: hidden; border-radius: 20px; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 22px; text-align: center; box-shadow: 0 15px 35px rgba(0,0,0,0.45); }
+.event-front { background: linear-gradient(135deg, var(--purple), var(--ink)); border: 4px solid var(--gold); }
+.event-front .qmark { font-size: 80px; animation: pulseQ 1.6s ease-in-out infinite; filter: drop-shadow(0 0 20px rgba(243,194,70,0.6)); }
+@keyframes pulseQ { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.12); } }
+.event-back { background: var(--cream); color: var(--slate); transform: rotateY(180deg); border: 4px solid var(--slate); }
+.event-back .emoji { font-size: 54px; margin-bottom: 8px; }
+
+/* Tax Calculation */
+table.taxtable { width: 100%; border-collapse: collapse; font-family: var(--mono); font-size: 12px; margin: 12px 0; border-radius: 8px; overflow: hidden; box-shadow: 0 3px 8px rgba(0,0,0,0.1); }
+table.taxtable th, table.taxtable td { border: 1px solid var(--paper-line); padding: 7px; text-align: center; }
+table.taxtable th { background: var(--ink); color: var(--cream); font-weight: 700; font-size: 11px; }
+.input-block { display: flex; flex-direction: column; gap: 6px; margin-top: 10px; text-align: left; }
+.input-block label { font-size: 13px; font-weight: 700; }
+.input-block input { padding: 12px; border-radius: 10px; border: 2px solid var(--slate); font-family: var(--mono); font-size: 17px; font-weight: 700; text-align: center; transition: all 0.2s; background: #fff; }
+.input-block input:focus { outline: none; border-color: var(--gold); box-shadow: 0 0 0 3px rgba(243,194,70,0.3); }
+.formula-box { background: rgba(0,0,0,0.04); border-left: 4px solid var(--gold); padding: 10px 14px; border-radius: 0 8px 8px 0; font-size: 12px; line-height: 1.5; margin: 8px 0; }
+
+/* Investments */
+.invest-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 10px; width: 100%; margin: 15px 0; }
+.invest-option { background: var(--cream); color: var(--slate); border: 3px solid transparent; border-radius: 14px; padding: 14px 10px; cursor: pointer; text-align: center; transition: all 0.18s; box-shadow: 0 6px 14px rgba(0,0,0,0.2); }
+.invest-option:hover { transform: translateY(-3px); }
+.invest-option.selected { border-color: var(--gold); background: #FFF8E1; box-shadow: 0 0 0 3px rgba(243,194,70,0.4); }
+.invest-option .inv-icon { font-size: 30px; margin-bottom: 4px; }
+.invest-option .inv-name { font-weight: 800; font-size: 13px; margin-bottom: 2px; }
+.invest-option .inv-risk { font-size: 10px; font-weight: 700; text-transform: uppercase; padding: 2px 6px; border-radius: 4px; display: inline-block; }
+.risk-low { background: #E8F5E9; color: #2E7D32; }
+.risk-med { background: #FFF3E0; color: #E65100; }
+.risk-high { background: #FFEBEE; color: #C62828; }
+.risk-extreme { background: #F3E5F5; color: #6A1B9A; }
+
+.invest-canvas-wrapper { width: 100%; height: 210px; background: #0b1522; border-radius: 14px; border: 3px solid var(--slate); margin: 15px 0; position: relative; overflow: hidden; box-shadow: inset 0 8px 20px rgba(0,0,0,0.6); display: none; }
+#invest-canvas { width: 100%; height: 100%; display: block; }
+.invest-overlay { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; font-size: 36px; font-weight: 900; opacity: 0; transition: opacity 0.3s; background: rgba(0,0,0,0.5); text-shadow: 0 4px 12px rgba(0,0,0,0.9); }
+
+/* Minigames & Modals */
+.particle-coin { position: fixed; font-size: 24px; pointer-events: none; z-index: 999; filter: drop-shadow(0 4px 6px rgba(0,0,0,0.3)); }
+.confetti { position: fixed; width: 10px; height: 10px; pointer-events: none; z-index: 999; border-radius: 2px; }
+.float-num { position: absolute; left: 50%; top: 40%; transform: translate(-50%,0); font-family: var(--mono); font-weight: 900; font-size: 28px; pointer-events: none; animation: floatUp 1.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; z-index: 60; text-shadow: 0 4px 10px rgba(0,0,0,0.6); white-space: nowrap; }
+@keyframes floatUp { 0% { opacity: 1; transform: translate(-50%, 20px) scale(0.6); } 20% { transform: translate(-50%, -10px) scale(1.15); } 100% { opacity: 0; transform: translate(-50%, -80px) scale(1); } }
+
+.timer-bar { width: 100%; height: 10px; background: rgba(0,0,0,0.25); border-radius: 5px; overflow: hidden; }
+.timer-fill { height: 100%; background: linear-gradient(90deg, var(--gold), var(--coral)); width: 100%; transform-origin: left; transition: width 0.1s linear; }
+
+.modal { position: fixed; inset: 0; background: rgba(0,0,0,0.85); display: flex; align-items: center; justify-content: center; z-index: 1000; padding: 18px; opacity: 0; pointer-events: none; transition: opacity 0.25s; backdrop-filter: blur(6px); }
+.modal.visible { opacity: 1; pointer-events: all; }
+.modal-inner { background: var(--cream); color: var(--slate); border-radius: 20px; padding: 26px; max-width: 520px; width: 100%; max-height: 88vh; overflow-y: auto; transform: translateY(20px); transition: transform 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275); box-shadow: 0 25px 50px rgba(0,0,0,0.6); text-align: left; }
+.modal.visible .modal-inner { transform: translateY(0); }
+
+/* Minigame Modal Overlay */
+.minigame-modal-overlay { position: fixed; inset: 0; background: rgba(5, 13, 24, 0.92); z-index: 9999; display: flex; align-items: center; justify-content: center; padding: 18px; animation: fadeIn 0.25s ease; backdrop-filter: blur(8px); }
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+.minigame-container { width: 100%; max-width: 420px; background: #0c1c2e; border-radius: 16px; border: 3px solid var(--gold); padding: 22px; position: relative; overflow: hidden; display: flex; flex-direction: column; align-items: center; color: var(--cream); box-shadow: 0 20px 45px rgba(0,0,0,0.6); }
+.minigame-title { font-family: var(--display); color: var(--gold); font-size: 24px; margin-bottom: 6px; }
+.minigame-inst { font-size: 13px; color: #bbb; margin-bottom: 16px; text-align: center; }
+
+.jackpot-bar-wrap { width: 100%; height: 32px; background: #1c2e42; border-radius: 16px; position: relative; overflow: hidden; margin-bottom: 16px; border: 2px solid rgba(255,255,255,0.1); }
+.jackpot-target { position: absolute; left: 40%; width: 20%; height: 100%; background: rgba(47, 169, 104, 0.6); border-left: 2px solid var(--green-light); border-right: 2px solid var(--green-light); }
+.jackpot-cursor { position: absolute; left: 0%; width: 12px; height: 100%; background: #fff; border-radius: 6px; transform: translateX(-50%); box-shadow: 0 0 12px rgba(255,255,255,0.9); }
+
+.catch-area { width: 100%; height: 160px; background: rgba(0,0,0,0.4); border: 2px dashed rgba(255,255,255,0.25); position: relative; overflow: hidden; margin-bottom: 12px; border-radius: 10px; }
+.catch-basket { width: 68px; height: 22px; background: var(--gold); position: absolute; bottom: 10px; left: 50%; transform: translateX(-50%); border-radius: 0 0 12px 12px; box-shadow: 0 4px 0 #a9800f; pointer-events: none; }
+.falling-coin { position: absolute; font-size: 24px; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5)); z-index: 10; }
+
+.math-options { display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; width: 100%; }
+.math-options .btn { flex: 1; min-width: 80px; }
+
+/* Final Screen Podium & Stats */
+.podium-container { display: flex; justify-content: center; align-items: flex-end; gap: 12px; margin: 25px 0 15px; width: 100%; max-width: 480px; }
+.podium-slot { display: flex; flex-direction: column; align-items: center; width: 30%; }
+.podium-avatar { font-size: 40px; margin-bottom: 6px; filter: drop-shadow(0 6px 8px rgba(0,0,0,0.4)); }
+.podium-bar { width: 100%; border-radius: 12px 12px 0 0; display: flex; flex-direction: column; align-items: center; justify-content: center; color: #fff; font-weight: 800; font-size: 16px; box-shadow: 0 10px 25px rgba(0,0,0,0.4); }
+.podium-1 { height: 130px; background: linear-gradient(to top, #c49416, var(--gold)); order: 2; }
+.podium-2 { height: 95px; background: linear-gradient(to top, #718096, #CBD5E0); order: 1; color: #1a202c !important; }
+.podium-3 { height: 70px; background: linear-gradient(to top, #8B5A2B, #CD7F32); order: 3; }
+
+.badge-tag { display: inline-flex; align-items: center; gap: 4px; padding: 4px 8px; border-radius: 6px; font-size: 11px; font-weight: 700; background: rgba(0,0,0,0.06); margin: 2px; }
+.pos { color: var(--green); font-weight: 700; }
+.neg { color: var(--coral); font-weight: 700; }
+.muted { opacity: 0.75; font-size: 13px; }
+
+@media (max-width: 600px) {
+  .screen { padding: 14px 10px 90px; }
+  .card, .dark-card { padding: 16px; border-radius: 14px; }
+  .topbar { padding: 8px 10px; }
+  .chip { min-width: 100px; padding: 6px 8px; font-size: 11px; }
+  .chip .avatar { font-size: 18px; }
+  .career-grid, .player-grid { grid-template-columns: 1fr; }
+  .wheel-container { width: 240px; height: 240px; }
+}
+</style>
+</head>
+<body>
+<div id="app">
+  <!-- Top Nav Bar -->
+  <header class="game-header">
+    <div class="brand">💼 Salary &amp; Tax Tycoon</div>
+    <div class="header-actions">
+      <button class="icon-btn" id="audio-toggle-btn" title="Toggle Sound (Mute/Unmute)" onclick="toggleAudio()">🔊</button>
+      <button class="icon-btn" id="bgm-toggle-btn" title="Toggle Background Music" onclick="toggleBGM()">🎵</button>
+      <button class="icon-btn" title="Rules & How to Play" onclick="openModal('howto-modal')">❓</button>
+    </div>
+  </header>
+
+  <!-- START SCREEN -->
+  <div class="screen active" id="screen-start">
+    <div class="title-badge">💼</div>
+    <h1>Salary &amp; Tax Tycoon</h1>
+    <div class="eyebrow" style="font-size: 14px; margin-bottom: 25px;">2.0 Interactive Malaysian Edition</div>
+    <div class="row">
+      <button class="btn gold" style="font-size: 17px; padding: 14px 32px;" onclick="goSetup()">▶ Play Game</button>
+      <button class="btn ghost" onclick="openModal('howto-modal')">📖 Rules</button>
+    </div>
+    <div class="dark-card" style="max-width: 540px; margin-top: 35px; text-align: left; font-size: 13px; line-height: 1.6;">
+      <div style="font-weight: 800; color: var(--gold); margin-bottom: 6px; font-size: 14px;">✨ What's New in 2.0:</div>
+      <div>• <b>1 to 4 Players</b> with Solo vs Smart AI bots (Fiona, Rick, Bob, Tara)</div>
+      <div>• <b>Click/Tap-to-Stamp</b> &amp; Drag-to-Stamp for both Computer &amp; Mobile</div>
+      <div>• <b>Malaysian LHDN Tax Reliefs</b> (EPF, Medical, Lifestyle, Education, Child, Green Tech)</div>
+      <div>• <b>Multi-Asset Investments</b>: Fixed Deposit, Index ETFs, Real Estate REITs, Crypto</div>
+      <div>• <b>Web Audio Synthesizer</b> sound effects &amp; audio controls</div>
+    </div>
+  </div>
+
+  <!-- SETUP SCREEN -->
+  <div class="screen" id="screen-setup">
+    <div class="eyebrow">Game Setup</div>
+    <h2>Choose Players &amp; Duration</h2>
+    
+    <div style="font-weight: 700; margin-top: 10px;">Number of Players:</div>
+    <div class="player-count-picker">
+      <div class="count-pill" onclick="setPlayerCount(1)">1P<span>Solo + AI</span></div>
+      <div class="count-pill" onclick="setPlayerCount(2)">2P<span>Duel</span></div>
+      <div class="count-pill" onclick="setPlayerCount(3)">3P<span>Trio</span></div>
+      <div class="count-pill active" onclick="setPlayerCount(4)">4P<span>Classic</span></div>
+    </div>
+
+    <div class="player-grid" id="player-grid"></div>
+
+    <div class="dark-card" style="margin-top: 20px; max-width: 460px; width: 100%;">
+      <label style="font-weight: 700; display: block; margin-bottom: 8px;">Game Duration (Years)</label>
+      <select id="year-select" style="width: 100%; padding: 12px; border-radius: 10px; font-family: var(--mono); font-size: 15px; border: 2px solid var(--slate); background: #fff; color: #111;">
+        <option value="3">3 Years (Quick Game &middot; ~10 mins)</option>
+        <option value="5" selected>5 Years (Standard Match &middot; ~18 mins)</option>
+        <option value="7">7 Years (Tycoon Career &middot; ~25 mins)</option>
+      </select>
+    </div>
+
+    <div class="row" style="margin-top: 25px;">
+      <button class="btn ghost" onclick="showScreen('screen-start')">◀ Back</button>
+      <button class="btn gold" style="min-width: 200px;" onclick="goCareer()">Next: Careers ▶</button>
+    </div>
+  </div>
+
+  <!-- CAREER SCREEN -->
+  <div class="screen" id="screen-career">
+    <div class="eyebrow">Phase 1 &middot; Career Path</div>
+    <h2 id="career-heading">Select Your Profession</h2>
+    <div class="eyebrow" id="career-picker-name" style="color: var(--cream); font-size: 16px; margin-bottom: 15px;"></div>
+    <div class="career-grid" id="career-grid"></div>
+    <div class="row" style="margin-top: 20px;">
+      <button class="btn gold" style="min-width: 220px;" id="career-next-btn" disabled onclick="confirmCareer()">Confirm Career ▶</button>
+    </div>
+  </div>
+
+  <!-- MAIN BOARD -->
+  <div class="screen" id="screen-board">
+    <div class="topbar" id="topbar"></div>
+    <div id="ai-indicator-wrap"></div>
+    <div class="phase-content" id="phase-content" style="width: 100%; max-width: 720px; margin: 0 auto; display: flex; flex-direction: column; align-items: center; gap: 16px;"></div>
+  </div>
+
+  <!-- FINAL SCREEN -->
+  <div class="screen" id="screen-final">
+    <h2>🏆 Financial Champion 🏆</h2>
+    <p class="eyebrow" id="final-sub" style="color:var(--gold); font-size: 15px;"></p>
+    <div class="podium-container" id="podium-container"></div>
+    <div class="card" style="max-width: 640px; width: 100%; margin-top: 15px;" id="final-board"></div>
+    <div class="row" style="margin-top: 25px;">
+      <button class="btn gold" onclick="location.reload()">🔄 Play Again</button>
+    </div>
+  </div>
+</div>
+
+<!-- Stamp Tool (For Drag & Drop / Tap) -->
+<div id="stamp-tool" class="stamp-tool hidden" onclick="triggerTapStamp()">
+  <div class="stamp-handle"></div>
+  <div class="stamp-base">PAID</div>
+</div>
+
+<!-- Modals -->
+<div class="modal" id="howto-modal">
+  <div class="modal-inner">
+    <h2 style="color: var(--ink);">📖 Rules &amp; Tax Guide</h2>
+    <p>Welcome to <b>Salary &amp; Tax Tycoon</b>, an authentic adulting and wealth building simulation!</p>
+    <h3 style="font-size: 16px; margin-top: 16px;">Game Phases Every Year:</h3>
+    <ol style="padding-left: 20px; line-height: 1.6; font-size: 14px;">
+      <li><b>Wheel of Fortune:</b> Spin for salary bonuses, jackpot opportunities, or audit risks.</li>
+      <li><b>Payday:</b> Stamp your payslip (tap or drag stamp) to collect your salary.</li>
+      <li><b>Marketplace:</b> Purchase Insurance for protection &amp; LHDN Tax Reliefs to cut taxes.</li>
+      <li><b>Life Events:</b> Draw real-life event cards (medical emergencies, promotions, bonuses).</li>
+      <li><b>LHDN Income Tax:</b> Calculate Chargeable Income and progressive income tax.</li>
+      <li><b>Investments:</b> Allocate savings across Fixed Deposits, ETFs, Real Estate REITs, and Stocks.</li>
+      <li><b>Year-End Summary:</b> Review savings growth and financial performance!</li>
+    </ol>
+    <button class="btn gold" style="margin-top: 20px; width: 100%;" onclick="closeModal('howto-modal')">Got it!</button>
+  </div>
+</div>
+
+<script>
+/* =========================================================================
+   1. CONSTANTS, CAREERS, RELIEFS, ASSETS, AI PROFILES
+   ========================================================================= */
+const CAREERS = {
+  doctor:      {label:'Doctor', emoji:'🩺', salary:120000, carCC:2000, color:'#e57373', tag:'High Earner'},
+  swe:         {label:'Software Engineer', emoji:'💻', salary:96000, carCC:1600, color:'#81c784', tag:'Tech Savvy'},
+  engineer:    {label:'Mechanical Engineer', emoji:'⚙️', salary:78000, carCC:1800, color:'#ffb74d', tag:'Steady Growth'},
+  entrepreneur:{label:'Business Owner', emoji:'📈', salary:65000, carCC:2500, color:'#ba68c8', tag:'Flexible Income'},
+  teacher:     {label:'Senior Educator', emoji:'📘', salary:58000, carCC:1300, color:'#64b5f6', tag:'Reliable'},
+  chef:        {label:'Executive Chef', emoji:'👨‍🍳', salary:52000, carCC:1500, color:'#4dd0e1', tag:'Creative'},
+  creator:     {label:'Digital Creator', emoji:'🎨', salary:48000, carCC:1300, color:'#ffd54f', tag:'High Potential'},
+  pilot:       {label:'Commercial Pilot', emoji:'✈️', salary:135000, carCC:2400, color:'#4fc3f7', tag:'Top Tier'}
+};
+
+const AVATARS = ['😎','🤠','👽','🤖','🦊','🐸','🦁','🦄'];
+const COLORS = ['#2FA968', '#2979FF', '#F3C246', '#E35345'];
+
+const AI_PERSONALITIES = {
+  fiona: { name: 'Fiona (AI)', avatar: '🛡️', type: 'fiona', desc: 'Frugal Saver: Buys all insurance, maxes safe relief, avoids risky gambles.' },
+  rick:  { name: 'Rick (AI)',  avatar: '🚀', type: 'rick',  desc: 'Risky Rick: Gambles on High Stocks & Crypto, skips insurance.' },
+  bob:   { name: 'Bob (AI)',   avatar: '⚖️', type: 'bob',   desc: 'Balanced Bob: Diversified ETF & FD investor, buys medical insurance.' },
+  tara:  { name: 'Tara (AI)',  avatar: '💼', type: 'tara',  desc: 'Tycoon Tara: Aggressive optimizer, buys tax reliefs & Real Estate REITs.' }
+};
+
+const INSURANCE = {
+  medical: { label:'Comprehensive Medical Card', emoji:'🏥', price:1500, covers:'medical', desc:'Covers up to RM10k in hospital emergencies' },
+  motor:   { label:'Comprehensive Motor Insurance', emoji:'🚗', price:900, covers:'motor', desc:'Covers accident damages & towing' },
+  life:    { label:'Life & Disability Coverage', emoji:'🛡️', price:1200, covers:'life', desc:'Guards against critical life disruption' }
+};
+
+const RELIEF = {
+  epf:       { label:'EPF & Life Insurance Relief', emoji:'🏦', price:3000, reliefAmt:3000, desc:'Contribute to retirement, claim RM3,000 relief' },
+  lifestyle: { label:'Lifestyle (PC, Books, Gym)', emoji:'💻', price:2500, reliefAmt:2500, desc:'Claim up to RM2,500 on tech, books & fitness' },
+  education: { label:'Upskilling & Education Fees', emoji:'🎓', price:3000, reliefAmt:3000, desc:'Recognized degree/course, claim RM3,000 relief' },
+  medical_ex:{ label:'Full Medical & Dental Exam', emoji:'🩺', price:1000, reliefAmt:1000, desc:'Preventative health checkup, claim RM1,000 relief' },
+  greentech: { label:'EV Charger & Solar Gear', emoji:'🔋', price:2500, reliefAmt:2500, desc:'Green technology tax deduction of RM2,500' },
+  childcare: { label:'Childcare & Dependent Support', emoji:'👶', price:3000, reliefAmt:3000, desc:'Registered daycare relief of RM3,000' },
+  donation:  { label:'Approved Charity Donation', emoji:'🤝', price:1000, reliefAmt:1000, desc:'100% tax-deductible community donation' }
+};
+
+const BASE_RELIEF = 9000; // Malaysian LHDN Individual Base Relief
+
+const EVENTS = [
+  { key:'accident', label:'Car Fender Bender', emoji:'🚗', desc:'Minor collision at traffic light.', cost:5000, covers:'motor', coveredCost:400, type:'bad' },
+  { key:'hospital', label:'Dengue Fever Hospitalization', emoji:'🏥', desc:'Admitted for 4 days of IV treatment.', cost:6000, covers:'medical', coveredCost:300, type:'bad' },
+  { key:'bonus', label:'Annual Performance Bonus', emoji:'🎉', desc:'Outstanding leadership reward from management!', bonus:4000, type:'good' },
+  { key:'plumbing', label:'Home Pipe Burst', emoji:'🔧', desc:'Emergency plumbing and drywall repair needed.', cost:2200, type:'bad' },
+  { key:'viral', label:'Viral Side Gig', emoji:'📱', desc:'Monetized viral creative content!', bonus:2500, type:'good' },
+  { key:'quiet', label:'Peaceful Balanced Year', emoji:'🍃', desc:'Healthy habits kept expenses smooth.', cost:0, type:'neutral' },
+  { key:'saman', label:'AES Speeding Ticket', emoji:'📸', desc:'Caught exceeding highway limit by 15 km/h.', cost:300, type:'bad' },
+  { key:'dividend', label:'Special Cash Dividend', emoji:'💵', desc:'Corporate earnings payout bonus!', bonus:1800, type:'good' }
+];
+
+const WHEEL_SEGMENTS = [
+  { label:'+RM500 Bonus', val:500, color:'#2FA968', type:'money' },
+  { label:'Tax Audit!', val:-400, color:'#E35345', type:'audit' },
+  { label:'+RM1,000 Cash', val:1000, color:'#2FA968', type:'money' },
+  { label:'Inflation -RM300', val:-300, color:'#E35345', type:'money' },
+  { label:'⭐ Jackpot!', val:2000, color:'#F3C246', type:'jackpot' },
+  { label:'Skip Year Turn', val:0, color:'#7E57C2', type:'skip' },
+  { label:'Salary x1.5', val:0, color:'#2979FF', type:'multiplier' },
+  { label:'Market Crash!', val:-600, color:'#E35345', type:'bankrupt' }
+];
+
+const INVEST_ASSETS = {
+  fd:     { label:'Fixed Deposit (FD)', icon:'🏦', risk:'low', name:'Safe Sukuk / FD', desc:'Guaranteed +4.5% safe yield', minGain:0.04, maxGain:0.06, crashChance: 0 },
+  etf:    { label:'Global Index ETF', icon:'📊', risk:'med', name:'Diversified ETF', desc:'Steady index growth (-3% to +16%)', minGain:-0.03, maxGain:0.16, crashChance: 0.05 },
+  reit:   { label:'Real Estate REIT', icon:'🏢', risk:'med', name:'Property Trusts', desc:'Rental dividends & value shifts (+4% to +20%)', minGain:0.02, maxGain:0.20, crashChance: 0.08 },
+  stocks: { label:'Blue-Chip & Growth Equities', icon:'📈', risk:'high', name:'Stock Market', desc:'High growth or drawdowns (-25% to +45%)', minGain:-0.25, maxGain:0.45, crashChance: 0.15 },
+  crypto: { label:'Crypto & Web3 Innovation', icon:'⚡', risk:'extreme', name:'High Volatility', desc:'Extreme wild swings (-70% to +120%)', minGain:-0.70, maxGain:1.20, crashChance: 0.30 }
+};
+
+const PHASES = ['wheel','salary','shop','event','taxcalc','invest','summary'];
+
+let state = {
+  playerCount: 4,
+  players: [],
+  maxYears: 5,
+  year: 1,
+  turnIndex: 0,
+  phaseIndex: 0,
+  careerPickIndex: 0,
+  audioMuted: false,
+  bgmPlaying: false
+};
+
+/* =========================================================================
+   2. SYNTHESIZED WEB AUDIO ENGINE (Zero-dependency & 100% Offline)
+   ========================================================================= */
+const AudioEngine = {
+  ctx: null,
+  bgmInterval: null,
+  init() {
+    if (!this.ctx) {
+      const AudioCtx = window.AudioContext || window.webkitAudioContext;
+      if (AudioCtx) this.ctx = new AudioCtx();
+    }
+    if (this.ctx && this.ctx.state === 'suspended') {
+      this.ctx.resume();
+    }
+  },
+  playTone(freq, type='sine', duration=0.1, vol=0.1) {
+    if (state.audioMuted || !this.ctx) return;
+    try {
+      const osc = this.ctx.createOscillator();
+      const gain = this.ctx.createGain();
+      osc.type = type;
+      osc.frequency.setValueAtTime(freq, this.ctx.currentTime);
+      gain.gain.setValueAtTime(vol, this.ctx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + duration);
+      osc.connect(gain);
+      gain.connect(this.ctx.destination);
+      osc.start();
+      osc.stop(this.ctx.currentTime + duration);
+    } catch(e) {}
+  },
+  tick() {
+    this.playTone(900, 'triangle', 0.04, 0.06);
+  },
+  coin() {
+    this.playTone(1318.5, 'sine', 0.08, 0.1);
+    setTimeout(() => this.playTone(1760, 'sine', 0.15, 0.1), 70);
+  },
+  stamp() {
+    this.playTone(120, 'square', 0.12, 0.3);
+    this.playTone(80, 'sawtooth', 0.2, 0.3);
+    setTimeout(() => this.playTone(50, 'triangle', 0.15, 0.25), 30);
+  },
+  win() {
+    [523.25, 659.25, 783.99, 1046.50].forEach((f, i) => {
+      setTimeout(() => this.playTone(f, 'sine', 0.25, 0.12), i * 90);
+    });
+  },
+  lose() {
+    [329.63, 293.66, 261.63, 196.00].forEach((f, i) => {
+      setTimeout(() => this.playTone(f, 'sawtooth', 0.3, 0.15), i * 140);
+    });
+  },
+  alarm() {
+    for (let i = 0; i < 3; i++) {
+      setTimeout(() => this.playTone(880, 'sawtooth', 0.1, 0.15), i * 150);
+      setTimeout(() => this.playTone(660, 'sawtooth', 0.1, 0.15), i * 150 + 75);
+    }
+  },
+  cardFlip() {
+    this.playTone(400, 'sine', 0.06, 0.05);
+    setTimeout(() => this.playTone(600, 'sine', 0.08, 0.06), 40);
+  },
+  toggleBGM() {
+    this.init();
+    if (state.bgmPlaying) {
+      clearInterval(this.bgmInterval);
+      state.bgmPlaying = false;
+      document.getElementById('bgm-toggle-btn').classList.remove('active');
+    } else {
+      state.bgmPlaying = true;
+      document.getElementById('bgm-toggle-btn').classList.add('active');
+      const chords = [
+        [261.63, 329.63, 392.00], // C
+        [329.63, 392.00, 493.88], // Em
+        [349.23, 440.00, 523.25], // F
+        [392.00, 493.88, 587.33]  // G
+      ];
+      let step = 0;
+      this.bgmInterval = setInterval(() => {
+        if (state.audioMuted || !state.bgmPlaying) return;
+        const chord = chords[Math.floor(step / 4) % chords.length];
+        const note = chord[step % 3];
+        this.playTone(note, 'sine', 0.18, 0.02);
+        step++;
+      }, 350);
+    }
+  }
+};
+
+function toggleAudio() {
+  AudioEngine.init();
+  state.audioMuted = !state.audioMuted;
+  const btn = document.getElementById('audio-toggle-btn');
+  btn.textContent = state.audioMuted ? '🔇' : '🔊';
+  btn.classList.toggle('active', !state.audioMuted);
+}
+
+function toggleBGM() {
+  AudioEngine.toggleBGM();
+}
+
+/* =========================================================================
+   3. VISUAL EFFECTS & HELPERS
+   ========================================================================= */
+function fmt(n) {
+  return (n < 0 ? '-' : '') + 'RM' + Math.abs(Math.round(n)).toLocaleString('en-MY');
+}
+
+function openModal(id) { document.getElementById(id).classList.add('visible'); }
+function closeModal(id) { document.getElementById(id).classList.remove('visible'); }
+
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  setTimeout(() => {
+    const el = document.getElementById(id);
+    if (el) el.classList.add('active');
+  }, 40);
+}
+
+function spawnCoins(x, y, amount) {
+  AudioEngine.coin();
+  const count = Math.min(Math.max(Math.floor(amount / 200), 6), 25);
+  for (let i = 0; i < count; i++) {
+    const el = document.createElement('div');
+    el.className = 'particle-coin';
+    el.textContent = '🪙';
+    el.style.left = x + 'px';
+    el.style.top = y + 'px';
+    document.body.appendChild(el);
+
+    const angle = (Math.random() * Math.PI) - (Math.PI / 2);
+    const velocity = 8 + Math.random() * 16;
+    let vx = Math.sin(angle) * velocity;
+    let vy = -Math.cos(angle) * velocity;
+    let currX = x, currY = y;
+
+    const anim = setInterval(() => {
+      vy += 0.85;
+      currX += vx;
+      currY += vy;
+      el.style.transform = `translate(${currX - x}px, ${currY - y}px) rotate(${currX * 3}deg)`;
+      if (currY > window.innerHeight + 60) {
+        clearInterval(anim);
+        el.remove();
+      }
+    }, 16);
+  }
+}
+
+function spawnConfetti() {
+  const colors = ['#F3C246', '#2FA968', '#2979FF', '#E35345', '#BA68C8', '#FFF'];
+  for (let i = 0; i < 70; i++) {
+    const el = document.createElement('div');
+    el.className = 'confetti';
+    el.style.background = colors[Math.floor(Math.random() * colors.length)];
+    el.style.left = (Math.random() * 100) + 'vw';
+    el.style.top = '-20px';
+    document.body.appendChild(el);
+
+    let y = -20;
+    let x = parseFloat(el.style.left);
+    let vy = 2 + Math.random() * 5;
+    let vx = (Math.random() - 0.5) * 3;
+    let rot = 0;
+    let rotSpeed = (Math.random() - 0.5) * 15;
+
+    const anim = setInterval(() => {
+      y += vy;
+      x += vx;
+      rot += rotSpeed;
+      el.style.top = y + 'px';
+      el.style.transform = `rotate(${rot}deg)`;
+      if (y > window.innerHeight + 20) {
+        clearInterval(anim);
+        el.remove();
+      }
+    }, 20);
+  }
+}
+
+function floatText(text, type='pos', x=null, y=null) {
+  const el = document.createElement('div');
+  el.className = 'float-num';
+  el.style.color = type === 'pos' ? 'var(--green-light)' : 'var(--coral)';
+  el.textContent = text;
+  el.style.left = x ? x + 'px' : '50%';
+  el.style.top = y ? y + 'px' : '40%';
+  document.getElementById('app').appendChild(el);
+  setTimeout(() => el.remove(), 1400);
+}
+
+function currentPlayer() {
+  return state.players[state.turnIndex];
+}
+
+/* =========================================================================
+   4. SETUP SCREEN & PLAYER CONFIG
+   ========================================================================= */
+function setPlayerCount(num) {
+  AudioEngine.tick();
+  state.playerCount = num;
+  document.querySelectorAll('.count-pill').forEach((p, idx) => {
+    p.classList.toggle('active', idx + 1 === num);
+  });
+  renderPlayerSetupSlots();
+}
+
+function renderPlayerSetupSlots() {
+  const grid = document.getElementById('player-grid');
+  grid.innerHTML = '';
+  const defaultNames = ['Player 1', 'Player 2', 'Player 3', 'Player 4'];
+  const defaultTypes = ['human', 'fiona', 'rick', 'bob'];
+
+  for (let i = 0; i < state.playerCount; i++) {
+    const isFirst = i === 0;
+    grid.innerHTML += `
+      <div class="player-slot" style="background:${COLORS[i]};">
+        <div class="avatar-choice" id="slot-avatar-${i}" onclick="cycleAvatar(${i})">${AVATARS[i]}</div>
+        <div style="font-size: 13px; font-weight: 800; text-transform: uppercase; margin-top: 2px;">Slot ${i+1}</div>
+        <input type="text" class="pname-input" id="pname-${i}" value="${defaultNames[i]}" maxlength="14" placeholder="Name">
+        <select class="ptype-select" id="ptype-${i}" onchange="onPlayerTypeChange(${i})">
+          <option value="human" ${isFirst ? 'selected' : ''}>👤 Human Player</option>
+          <option value="fiona" ${!isFirst && defaultTypes[i]==='fiona' ? 'selected' : ''}>🛡️ AI: Fiona (Frugal)</option>
+          <option value="rick" ${!isFirst && defaultTypes[i]==='rick' ? 'selected' : ''}>🚀 AI: Rick (Risky)</option>
+          <option value="bob" ${!isFirst && defaultTypes[i]==='bob' ? 'selected' : ''}>⚖️ AI: Bob (Balanced)</option>
+          <option value="tara" ${!isFirst && defaultTypes[i]==='tara' ? 'selected' : ''}>💼 AI: Tara (Tycoon)</option>
+        </select>
+      </div>`;
+  }
+}
+
+function onPlayerTypeChange(idx) {
+  AudioEngine.tick();
+  const select = document.getElementById(`ptype-${idx}`);
+  const input = document.getElementById(`pname-${idx}`);
+  const val = select.value;
+  if (val !== 'human' && AI_PERSONALITIES[val]) {
+    input.value = AI_PERSONALITIES[val].name;
+    document.getElementById(`slot-avatar-${idx}`).textContent = AI_PERSONALITIES[val].avatar;
+  } else {
+    input.value = `Player ${idx+1}`;
+    document.getElementById(`slot-avatar-${idx}`).textContent = AVATARS[idx];
+  }
+}
+
+function cycleAvatar(idx) {
+  AudioEngine.tick();
+  const el = document.getElementById(`slot-avatar-${idx}`);
+  const curr = el.textContent;
+  let nextIdx = (AVATARS.indexOf(curr) + 1) % AVATARS.length;
+  el.textContent = AVATARS[nextIdx];
+}
+
+function goSetup() {
+  AudioEngine.init();
+  renderPlayerSetupSlots();
+  showScreen('screen-setup');
+}
+
+function goCareer() {
+  AudioEngine.init();
+  state.maxYears = parseInt(document.getElementById('year-select').value);
+  state.players = [];
+
+  for (let i = 0; i < state.playerCount; i++) {
+    const ptype = document.getElementById(`ptype-${i}`).value;
+    const name = document.getElementById(`pname-${i}`).value || `Player ${i+1}`;
+    const avatar = document.getElementById(`slot-avatar-${i}`).textContent || AVATARS[i];
+    const isAI = ptype !== 'human';
+
+    state.players.push({
+      id: i,
+      name,
+      avatar,
+      color: COLORS[i],
+      isAI,
+      aiProfile: isAI ? (AI_PERSONALITIES[ptype] || AI_PERSONALITIES.bob) : null,
+      money: 0,
+      totalEarned: 0,
+      totalTaxPaid: 0,
+      totalTaxSaved: 0,
+      totalInvestGains: 0,
+      career: null,
+      temp: {},
+      skipNextTurn: false
+    });
+  }
+
+  state.careerPickIndex = 0;
+  showScreen('screen-career');
+  renderCareerPicker();
+}
+
+/* =========================================================================
+   5. CAREER SELECTION
+   ========================================================================= */
+function renderCareerPicker() {
+  const p = state.players[state.careerPickIndex];
+  document.getElementById('career-picker-name').innerHTML = `
+    <span style="font-size:24px">${p.avatar}</span> <b>${p.name}</b>'s Selection ${p.isAI ? '<span class="ai-tag">AI BOT</span>' : ''}
+  `;
+  const grid = document.getElementById('career-grid');
+  grid.innerHTML = '';
+
+  Object.entries(CAREERS).forEach(([k, c]) => {
+    grid.innerHTML += `
+      <div class="career-card" id="career-card-${k}" onclick="selectCareer('${k}', this)">
+        <div class="emoji">${c.emoji}</div>
+        <div style="font-weight:800; font-size:16px; margin-top:6px;">${c.label}</div>
+        <div class="salary">${fmt(c.salary)}/yr</div>
+        <div class="badge">${c.tag}</div>
+      </div>`;
+  });
+
+  const nextBtn = document.getElementById('career-next-btn');
+  nextBtn.disabled = true;
+
+  if (p.isAI) {
+    // Automated AI Career Selection based on personality
+    nextBtn.disabled = false;
+    let chosenKey = 'engineer';
+    const keys = Object.keys(CAREERS);
+    if (p.aiProfile.type === 'rick') chosenKey = 'pilot';
+    else if (p.aiProfile.type === 'tara') chosenKey = 'doctor';
+    else if (p.aiProfile.type === 'fiona') chosenKey = 'teacher';
+    else chosenKey = keys[Math.floor(Math.random() * keys.length)];
+
+    setTimeout(() => {
+      const cardEl = document.getElementById(`career-card-${chosenKey}`);
+      if (cardEl) selectCareer(chosenKey, cardEl);
+      setTimeout(confirmCareer, 800);
+    }, 500);
+  }
+}
+
+function selectCareer(key, el) {
+  AudioEngine.tick();
+  document.querySelectorAll('.career-card').forEach(c => c.classList.remove('selected'));
+  el.classList.add('selected');
+  state.players[state.careerPickIndex].career = key;
+  document.getElementById('career-next-btn').disabled = false;
+}
+
+function confirmCareer() {
+  AudioEngine.init();
+  state.careerPickIndex++;
+  if (state.careerPickIndex < state.players.length) {
+    renderCareerPicker();
+  } else {
+    state.year = 1;
+    state.turnIndex = 0;
+    state.phaseIndex = 0;
+    showScreen('screen-board');
+    beginTurn();
+  }
+}
+
+/* =========================================================================
+   6. MAIN GAME BOARD & TURN CONTROLLER
+   ========================================================================= */
+function beginTurn() {
+  const p = currentPlayer();
+
+  if (state.phaseIndex === 0) {
+    if (p.skipNextTurn) {
+      p.skipNextTurn = false;
+      floatText(`${p.name}'s turn is skipped!`, 'neg');
+      setTimeout(() => advancePhase(true), 1500);
+      return;
+    }
+
+    const c = CAREERS[p.career];
+    p.temp = {
+      salary: c.salary,
+      wheel: 0,
+      ins: {},
+      rel: {},
+      evtCost: 0,
+      evtBonus: 0,
+      tax: 0,
+      invest: 0,
+      investAsset: null,
+      salaryMultiplier: 1
+    };
+  }
+
+  renderTopbar();
+  renderPhase();
+}
+
+function advancePhase(skipToEnd = false) {
+  if (skipToEnd) {
+    state.phaseIndex = PHASES.length;
+  } else {
+    state.phaseIndex++;
+  }
+
+  if (state.phaseIndex >= PHASES.length) {
+    state.turnIndex++;
+    if (state.turnIndex >= state.players.length) {
+      state.turnIndex = 0;
+      state.year++;
+    }
+    if (state.year > state.maxYears) {
+      showFinal();
+      return;
+    }
+    state.phaseIndex = 0;
+  }
+
+  beginTurn();
+}
+
+function renderTopbar() {
+  const tb = document.getElementById('topbar');
+  tb.innerHTML = `
+    <div class="topbar-header">
+      <span class="year-badge">📅 YEAR ${state.year} OF ${state.maxYears}</span>
+      <span class="eyebrow" style="color:var(--cream); font-size:12px;">Phase: ${PHASES[state.phaseIndex].toUpperCase()}</span>
+    </div>
+    <div class="player-chips">` +
+    state.players.map((p, i) => `
+      <div class="chip ${i === state.turnIndex ? 'active' : ''}" style="background:${p.color}">
+        <div class="avatar">${p.avatar}</div>
+        <div class="cinfo">
+          <span class="cname">${p.name}${p.isAI ? '<span class="ai-tag">AI</span>' : ''}</span>
+          <span class="cmoney">${fmt(p.money)}</span>
+        </div>
+      </div>`).join('') + `</div>`;
+
+  const aiWrap = document.getElementById('ai-indicator-wrap');
+  const p = currentPlayer();
+  if (p && p.isAI) {
+    aiWrap.innerHTML = `
+      <div class="ai-banner">
+        <span>🤖</span> <span><b>${p.name}</b> (${p.aiProfile ? p.aiProfile.desc : 'AI Bot'}) is taking their turn...</span>
+      </div>`;
+  } else {
+    aiWrap.innerHTML = '';
+  }
+}
+
+function renderPhase() {
+  const el = document.getElementById('phase-content');
+  el.innerHTML = '';
+  const p = currentPlayer();
+  const phase = PHASES[state.phaseIndex];
+
+  if (phase === 'wheel') renderWheel(el, p);
+  else if (phase === 'salary') renderSalary(el, p);
+  else if (phase === 'shop') renderShop(el, p);
+  else if (phase === 'event') renderEvent(el, p);
+  else if (phase === 'taxcalc') renderTaxCalc(el, p);
+  else if (phase === 'invest') renderInvest(el, p);
+  else if (phase === 'summary') renderSummary(el, p);
+}
+
+/* =========================================================================
+   7. PHASE 1: WHEEL OF FORTUNE
+   ========================================================================= */
+let wheelRot = 0, wheelVel = 0, isSpinning = false, lastTick = 0;
+
+function renderWheel(el, p) {
+  el.innerHTML = `
+    <div class="eyebrow">${p.avatar} ${p.name}'s Fortune</div>
+    <h2>Spin the Wheel!</h2>
+    <div class="wheel-container">
+      <div class="wheel-flapper" id="flapper"></div>
+      <div class="wheel"><canvas id="wheel-canvas"></canvas></div>
+      <div class="wheel-center">🎯</div>
+    </div>
+    <div class="row">
+      <button class="btn gold" id="spin-btn" onclick="startSpin()">🎲 SPIN WHEEL</button>
+    </div>
+    <div id="wheel-result" style="min-height:75px; display:flex; align-items:center; justify-content:center; flex-direction:column; margin-top:8px;"></div>
+  `;
+  drawWheelCanvas(0);
+
+  if (p.isAI) {
+    setTimeout(startSpin, 800);
+  }
+}
+
+function drawWheelCanvas(rotation) {
+  const canvas = document.getElementById('wheel-canvas');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  const size = 300, center = size / 2;
+  canvas.width = size;
+  canvas.height = size;
+  ctx.clearRect(0, 0, size, size);
+  ctx.translate(center, center);
+  ctx.rotate(rotation);
+
+  const num = WHEEL_SEGMENTS.length;
+  const arc = (Math.PI * 2) / num;
+
+  WHEEL_SEGMENTS.forEach((seg, i) => {
+    ctx.beginPath();
+    ctx.fillStyle = seg.color;
+    ctx.moveTo(0, 0);
+    ctx.arc(0, 0, center, i * arc, (i + 1) * arc);
+    ctx.fill();
+    ctx.save();
+    ctx.rotate(i * arc + arc / 2);
+    ctx.textAlign = 'right';
+    ctx.fillStyle = '#fff';
+    ctx.font = 'bold 14px sans-serif';
+    ctx.shadowColor = 'rgba(0,0,0,0.6)';
+    ctx.shadowBlur = 4;
+    ctx.fillText(seg.label, center - 16, 5);
+    ctx.restore();
+  });
+}
+
+function startSpin() {
+  if (isSpinning) return;
+  AudioEngine.init();
+  isSpinning = true;
+  const btn = document.getElementById('spin-btn');
+  if (btn) btn.disabled = true;
+  wheelVel = 0.38 + Math.random() * 0.22;
+  requestAnimationFrame(spinLoop);
+}
+
+function spinLoop() {
+  wheelRot += wheelVel;
+  wheelVel *= 0.984;
+
+  const num = WHEEL_SEGMENTS.length;
+  const arc = (Math.PI * 2) / num;
+  const localAngle = (-Math.PI / 2 - wheelRot) % (Math.PI * 2);
+  const normalizedAngle = (localAngle + Math.PI * 2) % (Math.PI * 2);
+  const currentSegment = Math.floor(normalizedAngle / arc);
+
+  if (currentSegment !== lastTick) {
+    AudioEngine.tick();
+    lastTick = currentSegment;
+    const flap = document.getElementById('flapper');
+    if (flap) {
+      flap.style.transform = 'translateX(-50%) rotate(-22deg)';
+      setTimeout(() => flap.style.transform = 'translateX(-50%) rotate(0deg)', 40);
+    }
+  }
+
+  drawWheelCanvas(wheelRot);
+
+  if (wheelVel < 0.002) {
+    isSpinning = false;
+    resolveWheel(WHEEL_SEGMENTS[currentSegment]);
+  } else {
+    requestAnimationFrame(spinLoop);
+  }
+}
+
+function resolveWheel(seg) {
+  const p = currentPlayer();
+  const res = document.getElementById('wheel-result');
+  let resultHtml = '';
+
+  if (seg.type === 'money') {
+    p.temp.wheel = seg.val;
+    p.money += seg.val;
+    if (seg.val > 0) {
+      AudioEngine.win();
+      spawnCoins(window.innerWidth / 2, window.innerHeight / 2, seg.val);
+    } else {
+      AudioEngine.lose();
+      document.getElementById('app').classList.add('shake');
+      setTimeout(() => document.getElementById('app').classList.remove('shake'), 450);
+    }
+    resultHtml = `<h3 style="color:${seg.val >= 0 ? 'var(--green-light)' : 'var(--coral)'}; font-size:20px;">${seg.label}</h3>`;
+    res.innerHTML = `${resultHtml}<button class="btn small gold" style="margin-top:8px" onclick="advancePhase()">Continue ▶</button>`;
+    if (p.isAI) setTimeout(advancePhase, 1200);
+  } else if (seg.type === 'skip') {
+    p.skipNextTurn = true;
+    AudioEngine.lose();
+    resultHtml = `<h3 style="color:var(--coral)">Oh no! Skip Next Turn!</h3>`;
+    res.innerHTML = `${resultHtml}<button class="btn small ghost" style="margin-top:8px" onclick="advancePhase()">Continue ▶</button>`;
+    if (p.isAI) setTimeout(advancePhase, 1200);
+  } else if (seg.type === 'multiplier') {
+    p.temp.salaryMultiplier = 1.5;
+    AudioEngine.win();
+    spawnCoins(window.innerWidth / 2, window.innerHeight / 2, 1000);
+    resultHtml = `<h3 style="color:var(--gold)">🎉 Salary Boost Activated! (x1.5)</h3>`;
+    res.innerHTML = `${resultHtml}<button class="btn small gold" style="margin-top:8px" onclick="advancePhase()">Continue ▶</button>`;
+    if (p.isAI) setTimeout(advancePhase, 1200);
+  } else if (seg.type === 'jackpot') {
+    createMinigameOverlay(c => startJackpotMinigame(c, p));
+  } else if (seg.type === 'bankrupt') {
+    createMinigameOverlay(c => startBankruptMinigame(c, p));
+  } else if (seg.type === 'audit') {
+    createMinigameOverlay(c => startAuditMinigame(c, p));
+  }
+
+  renderTopbar();
+}
+
+function createMinigameOverlay(initFunc) {
+  const overlay = document.createElement('div');
+  overlay.className = 'minigame-modal-overlay';
+  overlay.id = 'active-minigame-overlay';
+  document.getElementById('app').appendChild(overlay);
+  initFunc(overlay);
+}
+
+function closeMinigameOverlay() {
+  const overlay = document.getElementById('active-minigame-overlay');
+  if (overlay) overlay.remove();
+}
+
+/* =========================================================================
+   8. MINIGAMES (Jackpot, Bankrupt, Audit)
+   ========================================================================= */
+let jackpotAnimId;
+function startJackpotMinigame(container, player) {
+  container.innerHTML = `
+    <div class="minigame-container">
+      <div class="minigame-title">⭐ Jackpot Chance!</div>
+      <div class="minigame-inst">Stop the bouncing bar in the green zone to win <b>RM2,000</b>!</div>
+      <div class="jackpot-bar-wrap">
+        <div class="jackpot-target" id="jp-target"></div>
+        <div class="jackpot-cursor" id="jp-cursor"></div>
+      </div>
+      <button class="btn gold" id="jp-stop-btn" onclick="stopJackpot()">🎯 STOP NOW!</button>
+      <div id="jp-result" style="margin-top:10px; font-weight:bold; text-align:center;"></div>
+    </div>
+  `;
+
+  const target = document.getElementById('jp-target');
+  const targetWidth = 18 + Math.random() * 10;
+  const targetLeft = 12 + Math.random() * (76 - targetWidth);
+  target.style.width = targetWidth + '%';
+  target.style.left = targetLeft + '%';
+  target.dataset.left = targetLeft;
+  target.dataset.right = targetLeft + targetWidth;
+
+  let pos = 0;
+  let dir = 1;
+  const speed = 2.4 + Math.random();
+
+  const animate = () => {
+    pos += speed * dir;
+    if (pos > 100) { pos = 100; dir = -1; }
+    if (pos < 0) { pos = 0; dir = 1; }
+    const cursor = document.getElementById('jp-cursor');
+    if (cursor) cursor.style.left = pos + '%';
+    jackpotAnimId = requestAnimationFrame(animate);
+  };
+  jackpotAnimId = requestAnimationFrame(animate);
+  window.currentJackpotPos = () => pos;
+
+  if (player.isAI) {
+    const delay = 600 + Math.random() * 1200;
+    setTimeout(() => {
+      if (document.getElementById('jp-stop-btn')) stopJackpot();
+    }, delay);
+  }
+}
+
+window.stopJackpot = function() {
+  cancelAnimationFrame(jackpotAnimId);
+  const stopBtn = document.getElementById('jp-stop-btn');
+  if (stopBtn) stopBtn.style.display = 'none';
+  const pos = window.currentJackpotPos ? window.currentJackpotPos() : 50;
+  const target = document.getElementById('jp-target');
+  const left = parseFloat(target.dataset.left);
+  const right = parseFloat(target.dataset.right);
+  const p = currentPlayer();
+  const resDiv = document.getElementById('jp-result');
+
+  if (pos >= left && pos <= right) {
+    const winAmt = 2000;
+    p.temp.wheel = winAmt;
+    p.money += winAmt;
+    AudioEngine.win();
+    spawnCoins(window.innerWidth / 2, window.innerHeight / 2, winAmt);
+    resDiv.innerHTML = `<span style="color:var(--green-light); font-size:18px;">🌟 JACKPOT! You won ${fmt(winAmt)}!</span>`;
+  } else {
+    AudioEngine.lose();
+    document.getElementById('app').classList.add('shake');
+    resDiv.innerHTML = `<span style="color:var(--coral)">Missed the target! Better luck next time.</span>`;
+  }
+
+  resDiv.innerHTML += `<br><button class="btn small gold" style="margin-top:12px" onclick="closeMinigameOverlay(); advancePhase();">Continue ▶</button>`;
+  renderTopbar();
+  if (p.isAI) {
+    setTimeout(() => { closeMinigameOverlay(); advancePhase(); }, 1400);
+  }
+};
+
+let bankruptAnimId;
+function startBankruptMinigame(container, player) {
+  const penalty = 600;
+  container.innerHTML = `
+    <div class="minigame-container">
+      <div class="minigame-title" style="color:var(--coral);">Market Crash!</div>
+      <div class="minigame-inst">Move the basket (touch or mouse) to catch coins and reduce your ${fmt(penalty)} penalty!</div>
+      <div class="catch-area" id="catch-area">
+        <div class="catch-basket" id="catch-basket"></div>
+      </div>
+      <div id="catch-score" style="font-weight:bold; margin-bottom:8px;">Saved: RM0</div>
+      <div id="bk-result" style="text-align:center;"></div>
+    </div>
+  `;
+
+  const area = document.getElementById('catch-area');
+  const basket = document.getElementById('catch-basket');
+  let basketX = area.offsetWidth / 2;
+  let saved = 0;
+  const coins = [];
+  let isPlaying = true;
+  let frames = 0;
+
+  const moveBasket = (x) => {
+    const rect = area.getBoundingClientRect();
+    basketX = Math.max(34, Math.min(rect.width - 34, x - rect.left));
+    basket.style.left = basketX + 'px';
+  };
+
+  area.addEventListener('mousemove', (e) => isPlaying && moveBasket(e.clientX));
+  area.addEventListener('touchmove', (e) => {
+    if (!isPlaying) return;
+    e.preventDefault();
+    moveBasket(e.touches[0].clientX);
+  }, { passive: false });
+
+  const animate = () => {
+    if (!isPlaying) return;
+    frames++;
+
+    if (frames % 18 === 0 && frames < 180) {
+      const coin = document.createElement('div');
+      coin.className = 'falling-coin';
+      coin.textContent = '🪙';
+      coin.style.left = (Math.random() * (area.offsetWidth - 24)) + 'px';
+      coin.style.top = '-20px';
+      coin.dataset.val = 60;
+      area.appendChild(coin);
+      coins.push({ el: coin, y: -20, speed: 2.5 + Math.random() * 3 });
+    }
+
+    if (player.isAI && coins.length > 0) {
+      // AI auto follows lowest coin
+      const targetCoin = coins[0];
+      const coinLeft = parseFloat(targetCoin.el.style.left);
+      basketX += (coinLeft - basketX) * 0.15;
+      basket.style.left = basketX + 'px';
+    }
+
+    for (let i = coins.length - 1; i >= 0; i--) {
+      let c = coins[i];
+      c.y += c.speed;
+      c.el.style.top = c.y + 'px';
+
+      if (c.y > area.offsetHeight - 42 && c.y < area.offsetHeight - 8) {
+        const coinRect = c.el.getBoundingClientRect();
+        const basketRect = basket.getBoundingClientRect();
+        if (coinRect.left < basketRect.right && coinRect.right > basketRect.left) {
+          AudioEngine.tick();
+          saved += parseInt(c.el.dataset.val);
+          document.getElementById('catch-score').innerHTML = `Saved: <span style="color:var(--green-light)">${fmt(saved)}</span>`;
+          c.el.remove();
+          coins.splice(i, 1);
+          continue;
+        }
+      }
+
+      if (c.y > area.offsetHeight) {
+        c.el.remove();
+        coins.splice(i, 1);
+      }
+    }
+
+    if (frames >= 220 && coins.length === 0) {
+      endBankruptMinigame(penalty, saved);
+    } else {
+      bankruptAnimId = requestAnimationFrame(animate);
+    }
+  };
+
+  setTimeout(() => { bankruptAnimId = requestAnimationFrame(animate); }, 400);
+
+  function endBankruptMinigame(pen, savedAmt) {
+    isPlaying = false;
+    const finalPenalty = Math.max(0, pen - savedAmt);
+    player.temp.wheel = -finalPenalty;
+    player.money -= finalPenalty;
+
+    const resDiv = document.getElementById('bk-result');
+    if (finalPenalty > 0) {
+      AudioEngine.lose();
+      document.getElementById('app').classList.add('shake');
+      resDiv.innerHTML = `<span style="color:var(--coral)">Penalty: -${fmt(finalPenalty)}</span>`;
+    } else {
+      AudioEngine.win();
+      resDiv.innerHTML = `<span style="color:var(--green-light)">Amazing! You saved everything!</span>`;
+    }
+    resDiv.innerHTML += `<br><button class="btn small gold" style="margin-top:12px" onclick="closeMinigameOverlay(); advancePhase();">Continue ▶</button>`;
+    renderTopbar();
+    if (player.isAI) setTimeout(() => { closeMinigameOverlay(); advancePhase(); }, 1400);
+  }
+}
+
+let auditTimer;
+function startAuditMinigame(container, player) {
+  const penalty = 400;
+  const ops = ['+', '-'];
+  const op = ops[Math.floor(Math.random() * ops.length)];
+  let num1, num2, ans;
+  if (op === '+') {
+    num1 = Math.floor(Math.random() * 45) + 15;
+    num2 = Math.floor(Math.random() * 45) + 15;
+    ans = num1 + num2;
+  } else {
+    num1 = Math.floor(Math.random() * 50) + 50;
+    num2 = Math.floor(Math.random() * 40) + 10;
+    ans = num1 - num2;
+  }
+
+  let options = [ans];
+  while (options.length < 3) {
+    let wrong = ans + (Math.floor(Math.random() * 24) - 12);
+    if (wrong !== ans && !options.includes(wrong) && wrong > 0) options.push(wrong);
+  }
+  options.sort(() => Math.random() - 0.5);
+
+  container.innerHTML = `
+    <div class="minigame-container">
+      <div class="minigame-title" style="color:var(--coral);">🚨 LHDN Audit!</div>
+      <div class="minigame-inst">Solve this quick calculation within 6 seconds to avoid a ${fmt(penalty)} audit fine!</div>
+      <div style="font-family:var(--mono); font-size:26px; font-weight:900; margin-bottom:10px; color:var(--gold);">${num1} ${op} ${num2} = ?</div>
+      <div class="timer-bar" style="width:85%; margin-bottom:15px; height:8px;"><div class="timer-fill" id="audit-timer" style="background:var(--coral);"></div></div>
+      <div class="math-options" id="math-options">
+        ${options.map(opt => `<button class="btn ghost" onclick="resolveAudit(${opt}, ${ans}, ${penalty})">${opt}</button>`).join('')}
+      </div>
+      <div id="audit-result" style="margin-top:10px; font-weight:bold; text-align:center;"></div>
+    </div>
+  `;
+
+  AudioEngine.alarm();
+  const timerFill = document.getElementById('audit-timer');
+  let timeLeft = 100;
+  const decrement = 100 / (6 * 20);
+
+  auditTimer = setInterval(() => {
+    timeLeft -= decrement;
+    if (timerFill) timerFill.style.width = Math.max(0, timeLeft) + '%';
+    if (timeLeft <= 0) {
+      clearInterval(auditTimer);
+      resolveAudit(null, ans, penalty);
+    }
+  }, 50);
+
+  if (player.isAI) {
+    setTimeout(() => {
+      clearInterval(auditTimer);
+      // AI solves with 90% accuracy
+      const pick = Math.random() > 0.1 ? ans : options.find(o => o !== ans);
+      resolveAudit(pick, ans, penalty);
+    }, 1200);
+  }
+}
+
+window.resolveAudit = function(selected, correct, penalty) {
+  clearInterval(auditTimer);
+  const optsDiv = document.getElementById('math-options');
+  if (optsDiv) optsDiv.style.display = 'none';
+
+  const p = currentPlayer();
+  const resDiv = document.getElementById('audit-result');
+
+  if (selected === correct) {
+    AudioEngine.win();
+    resDiv.innerHTML = `<span style="color:var(--green-light)">✅ Correct! LHDN Audit Passed.</span>`;
+  } else {
+    AudioEngine.lose();
+    document.getElementById('app').classList.add('shake');
+    p.temp.wheel = -penalty;
+    p.money -= penalty;
+    resDiv.innerHTML = `<span style="color:var(--coral)">❌ ${selected === null ? 'Time out!' : 'Incorrect!'} Fined ${fmt(penalty)}.</span>`;
+  }
+
+  resDiv.innerHTML += `<br><button class="btn small gold" style="margin-top:12px" onclick="closeMinigameOverlay(); advancePhase();">Continue ▶</button>`;
+  renderTopbar();
+  if (p.isAI) setTimeout(() => { closeMinigameOverlay(); advancePhase(); }, 1400);
+};
+
+/* =========================================================================
+   9. PHASE 2: PAYDAY & STAMPING (Tap-to-Stamp + Drag-to-Stamp for Mobile & PC)
+   ========================================================================= */
+let isStampDone = false;
+
+function renderSalary(el, p) {
+  isStampDone = false;
+  const c = CAREERS[p.career];
+  const total = Math.round(p.temp.salary * p.temp.salaryMultiplier);
+  let multiStr = p.temp.salaryMultiplier > 1 ? `<div class="calc-line" style="color:var(--gold)"><span>Performance Multiplier</span><span>x${p.temp.salaryMultiplier}</span></div>` : '';
+
+  el.innerHTML = `
+    <div class="eyebrow">Payday</div>
+    <h2>Collect Your Annual Salary</h2>
+    <div class="form-card" id="payslip">
+      <div class="form-header">
+        <div><b>${c.label} Payslip</b></div>
+        <div style="font-family:var(--mono); color:#888;">#MY-${Math.floor(1000 + Math.random()*9000)}</div>
+      </div>
+      <div class="calc-line"><span>Base Annual Salary</span><span>${fmt(p.temp.salary)}</span></div>
+      ${multiStr}
+      <div class="calc-line" style="font-weight:bold; border-top: 1px dashed var(--slate); margin-top: 8px; padding-top: 8px; font-size:17px;">
+        <span>Total Net Pay</span><span style="color:var(--green);">${fmt(total)}</span>
+      </div>
+      <div class="stamp-target" id="stamp-zone" onclick="triggerTapStamp()">
+        <div>
+          <div style="font-size:20px;">🔨</div>
+          <div><b>TAP HERE OR DRAG STAMP TO APPROVE</b></div>
+        </div>
+      </div>
+      <div class="stamp-mark" id="stamp-mark">PAID</div>
+    </div>
+    <div class="row" style="margin-top:15px;">
+      <button class="btn gold" id="quick-stamp-btn" onclick="triggerTapStamp()">👆 TAP TO STAMP (PAY ME)</button>
+    </div>
+  `;
+
+  // Setup Stamp Tool for Dragging or Tapping
+  const tool = document.getElementById('stamp-tool');
+  tool.classList.remove('hidden');
+  const zone = document.getElementById('stamp-zone');
+  let isDragging = false;
+
+  const resetTool = () => {
+    tool.style.transform = '';
+    tool.style.left = '50%';
+    tool.style.top = '82%';
+    tool.style.marginLeft = '-50px';
+  };
+  resetTool();
+
+  const onMove = (e) => {
+    if (!isDragging || isStampDone) return;
+    const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+    const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+    tool.style.left = clientX + 'px';
+    tool.style.top = clientY + 'px';
+    tool.style.marginLeft = '-50px';
+    tool.style.marginTop = '-50px';
+
+    const rect = zone.getBoundingClientRect();
+    if (clientX > rect.left && clientX < rect.right && clientY > rect.top && clientY < rect.bottom) {
+      zone.classList.add('hover');
+    } else {
+      zone.classList.remove('hover');
+    }
+  };
+
+  const onEnd = () => {
+    if (!isDragging || isStampDone) return;
+    isDragging = false;
+    document.removeEventListener('mousemove', onMove);
+    document.removeEventListener('mouseup', onEnd);
+    document.removeEventListener('touchmove', onMove);
+    document.removeEventListener('touchend', onEnd);
+
+    if (zone.classList.contains('hover')) {
+      executeStampSuccess(total);
+    } else {
+      resetTool();
+      AudioEngine.tick();
+    }
+  };
+
+  const onStart = (e) => {
+    if (isStampDone) return;
+    isDragging = true;
+    document.addEventListener('mousemove', onMove);
+    document.addEventListener('mouseup', onEnd);
+    document.addEventListener('touchmove', onMove, { passive: false });
+    document.addEventListener('touchend', onEnd);
+  };
+
+  tool.onmousedown = onStart;
+  tool.ontouchstart = (e) => { e.preventDefault(); onStart(e); };
+
+  if (p.isAI) {
+    setTimeout(() => { triggerTapStamp(); }, 700);
+  }
+}
+
+function triggerTapStamp() {
+  if (isStampDone) return;
+  const p = currentPlayer();
+  const total = Math.round(p.temp.salary * p.temp.salaryMultiplier);
+  executeStampSuccess(total);
+}
+
+function executeStampSuccess(total) {
+  if (isStampDone) return;
+  isStampDone = true;
+  AudioEngine.stamp();
+
+  const tool = document.getElementById('stamp-tool');
+  const zone = document.getElementById('stamp-zone');
+  const mark = document.getElementById('stamp-mark');
+  const quickBtn = document.getElementById('quick-stamp-btn');
+
+  if (tool) tool.classList.add('hidden');
+  if (quickBtn) quickBtn.style.display = 'none';
+  if (zone) {
+    zone.classList.remove('hover');
+    zone.classList.add('stamped');
+    zone.innerHTML = '';
+  }
+  if (mark) {
+    mark.style.top = '100px';
+    mark.style.left = '40px';
+    mark.classList.add('visible');
+  }
+
+  const p = currentPlayer();
+  p.money += total;
+  p.totalEarned += total;
+  spawnCoins(window.innerWidth / 2, window.innerHeight / 2, total);
+  renderTopbar();
+
+  setTimeout(() => {
+    const slip = document.getElementById('payslip');
+    if (slip) {
+      slip.innerHTML += `
+        <div style="text-align:center; margin-top:20px; padding-bottom:10px;">
+          <button class="btn gold" onclick="advancePhase()">Continue to Marketplace ▶</button>
+        </div>`;
+    }
+    if (p.isAI) setTimeout(advancePhase, 900);
+  }, 750);
+}
+
+/* =========================================================================
+   10. PHASE 3: MARKETPLACE (Insurance & Malaysian LHDN Reliefs)
+   ========================================================================= */
+function renderShop(el, p) {
+  document.getElementById('stamp-tool').classList.add('hidden');
+
+  let html = `
+    <div class="eyebrow">Marketplace</div>
+    <h2>Financial Shield &amp; Tax Deductions</h2>
+    <div class="card" style="width:100%; padding:14px 20px; text-align:left;">
+      <div class="shop-section-title">
+        <span>🛡️ Protection Insurance</span>
+        <span style="font-size:11px; font-weight:normal; color:#666;">Protects against life events</span>
+      </div>`;
+
+  Object.entries(INSURANCE).forEach(([k, item]) => {
+    const bought = p.temp.ins && p.temp.ins[k];
+    html += `
+      <div class="shop-item">
+        <div class="info">
+          <span style="font-size:24px">${item.emoji}</span>
+          <div>
+            <div><b>${item.label}</b></div>
+            <div class="desc-sub">${item.desc}</div>
+          </div>
+        </div>
+        <div class="info">
+          <span class="price">${fmt(item.price)}</span>
+          <button class="btn small ${bought ? 'ghost' : 'purple'}" id="btn-ins-${k}" ${bought ? 'disabled' : ''} onclick="buyShopItem('ins','${k}', ${item.price})">
+            ${bought ? 'Covered ✓' : 'Buy'}
+          </button>
+        </div>
+      </div>`;
+  });
+
+  html += `
+    <div class="shop-section-title" style="margin-top:20px;">
+      <span>📑 Malaysian LHDN Tax Reliefs</span>
+      <span style="font-size:11px; font-weight:normal; color:#666;">Subtracts from Chargeable Income</span>
+    </div>`;
+
+  Object.entries(RELIEF).forEach(([k, item]) => {
+    const bought = p.temp.rel && p.temp.rel[k];
+    html += `
+      <div class="shop-item">
+        <div class="info">
+          <span style="font-size:24px">${item.emoji}</span>
+          <div>
+            <div><b>${item.label}</b> <span style="font-size:10px; color:var(--green); font-weight:700;">(-${fmt(item.reliefAmt)} Tax Relief)</span></div>
+            <div class="desc-sub">${item.desc}</div>
+          </div>
+        </div>
+        <div class="info">
+          <span class="price">${fmt(item.price)}</span>
+          <button class="btn small ${bought ? 'ghost' : 'gold'}" id="btn-rel-${k}" ${bought ? 'disabled' : ''} onclick="buyShopItem('rel','${k}', ${item.price})">
+            ${bought ? 'Claimed ✓' : 'Claim'}
+          </button>
+        </div>
+      </div>`;
+  });
+
+  html += `</div>
+    <div class="row" style="margin-top:18px;">
+      <button class="btn gold" style="min-width:200px;" onclick="advancePhase()">Done Shopping ▶</button>
+    </div>`;
+
+  el.innerHTML = html;
+
+  if (p.isAI) {
+    // Automated Smart Purchases based on AI Personality Archetype
+    setTimeout(() => {
+      const type = p.aiProfile.type;
+      if (type === 'fiona' || type === 'bob') {
+        // Fiona & Bob always buy Medical Insurance
+        if (p.money >= INSURANCE.medical.price) buyShopItem('ins', 'medical', INSURANCE.medical.price);
+      }
+      if (type === 'fiona') {
+        if (p.money >= INSURANCE.motor.price) buyShopItem('ins', 'motor', INSURANCE.motor.price);
+        if (p.money >= RELIEF.epf.price) buyShopItem('rel', 'epf', RELIEF.epf.price);
+      } else if (type === 'tara') {
+        // Tara maxes tax reliefs
+        if (p.money >= RELIEF.epf.price) buyShopItem('rel', 'epf', RELIEF.epf.price);
+        if (p.money >= RELIEF.lifestyle.price) buyShopItem('rel', 'lifestyle', RELIEF.lifestyle.price);
+        if (p.money >= INSURANCE.medical.price) buyShopItem('ins', 'medical', INSURANCE.medical.price);
+      }
+      setTimeout(advancePhase, 800);
+    }, 600);
+  }
+}
+
+window.buyShopItem = function(type, key, price) {
+  const p = currentPlayer();
+  if (p.money < price) {
+    AudioEngine.lose();
+    floatText('Not enough cash!', 'neg');
+    return;
+  }
+  p.money -= price;
+  p.temp[type][key] = true;
+  AudioEngine.coin();
+  renderPhase();
+};
+
+/* =========================================================================
+   11. PHASE 4: LIFE HAPPENS (Event Cards)
+   ========================================================================= */
+function renderEvent(el, p) {
+  const ev = EVENTS[Math.floor(Math.random() * EVENTS.length)];
+  el.innerHTML = `
+    <div class="eyebrow">Life Happens</div>
+    <h2>Draw Your Year Card</h2>
+    <div class="event-wrap">
+      <div class="event-card" id="ev-card" onclick="flipEventCard(${JSON.stringify(ev).replace(/"/g, '&quot;')})">
+        <div class="event-face event-front"><div class="qmark">❔</div></div>
+        <div class="event-face event-back" id="ev-back"></div>
+      </div>
+    </div>
+    <div id="ev-action" style="height:45px; margin-top:10px;"></div>
+  `;
+
+  if (p.isAI) {
+    setTimeout(() => { flipEventCard(ev); }, 800);
+  }
+}
+
+window.flipEventCard = function(ev) {
+  const card = document.getElementById('ev-card');
+  if (!card || card.classList.contains('flipped')) return;
+  card.classList.add('flipped');
+  AudioEngine.cardFlip();
+
+  const p = currentPlayer();
+  let costStr = '', impact = 0;
+
+  if (ev.cost > 0) {
+    if (ev.covers && p.temp.ins && p.temp.ins[ev.covers]) {
+      costStr = `<div style="color:var(--green); font-weight:bold; margin-top:6px;">🛡️ Insurance covered! Excess: ${fmt(ev.coveredCost)}</div>`;
+      impact = -ev.coveredCost;
+      p.temp.evtCost = ev.coveredCost;
+    } else {
+      costStr = `<div style="color:var(--coral); font-weight:bold; margin-top:6px;">Cost Out-of-Pocket: -${fmt(ev.cost)}</div>`;
+      impact = -ev.cost;
+      p.temp.evtCost = ev.cost;
+    }
+  } else if (ev.bonus > 0) {
+    costStr = `<div style="color:var(--green); font-weight:bold; margin-top:6px;">Bonus Received: +${fmt(ev.bonus)}</div>`;
+    impact = ev.bonus;
+    p.temp.evtBonus = ev.bonus;
+  }
+
+  document.getElementById('ev-back').innerHTML = `
+    <div class="emoji">${ev.emoji}</div>
+    <h3 style="margin-bottom:4px;">${ev.label}</h3>
+    <p style="font-size:13px; margin:0 0 4px;">${ev.desc}</p>
+    ${costStr}
+  `;
+
+  setTimeout(() => {
+    if (impact > 0) {
+      AudioEngine.win();
+      spawnCoins(window.innerWidth / 2, window.innerHeight / 2, impact);
+    } else if (impact < 0) {
+      AudioEngine.lose();
+      document.getElementById('app').classList.add('shake');
+      setTimeout(() => document.getElementById('app').classList.remove('shake'), 450);
+    } else {
+      AudioEngine.tick();
+    }
+    p.money += impact;
+    renderTopbar();
+    document.getElementById('ev-action').innerHTML = `<button class="btn gold" onclick="advancePhase()">Continue ▶</button>`;
+    if (p.isAI) setTimeout(advancePhase, 1100);
+  }, 500);
+};
+
+/* =========================================================================
+   12. PHASE 5: TAX CALCULATION (Educational Progressive Tax Math)
+   ========================================================================= */
+function calculateExpectedTax(chargeable) {
+  let expectedTax = 0;
+  if (chargeable > 100000) expectedTax = 4750 + (chargeable - 100000) * 0.15;
+  else if (chargeable > 70000) expectedTax = 1750 + (chargeable - 70000) * 0.10;
+  else if (chargeable > 35000) expectedTax = (chargeable - 35000) * 0.05;
+  return Math.round(expectedTax);
+}
+
+function renderTaxCalc(el, p) {
+  let relTotal = BASE_RELIEF;
+  Object.keys(p.temp.rel).forEach(k => {
+    if (RELIEF[k]) relTotal += RELIEF[k].reliefAmt;
+  });
+
+  const totalIncome = p.temp.salary;
+  const chargeable = Math.max(0, totalIncome - relTotal);
+  const expectedTax = calculateExpectedTax(chargeable);
+
+  el.innerHTML = `
+    <div class="eyebrow">LHDN Annual Tax Return</div>
+    <h2>Calculate Your Income Tax</h2>
+    <div class="card" style="width:100%; text-align:left;">
+      <div class="calc-line"><span>Gross Salary</span><span>${fmt(totalIncome)}</span></div>
+      <div class="calc-line"><span>Total Reliefs (Base + Claimed)</span><span style="color:var(--coral)">-${fmt(relTotal)}</span></div>
+
+      <div class="formula-box">
+        <b>Tax Formula:</b> Chargeable Income = Gross Salary - Total Reliefs
+      </div>
+
+      <div class="input-block">
+        <label>1. Chargeable Income:</label>
+        <input type="number" id="tax-in-1" placeholder="Enter RM amount">
+      </div>
+
+      <table class="taxtable">
+        <tr><th>Chargeable Income</th><th>Tax Rate</th><th>Tax Payable</th></tr>
+        <tr><td>RM0 - RM35,000</td><td>0%</td><td>RM0</td></tr>
+        <tr><td>RM35,001 - RM70,000</td><td>5% over RM35k</td><td>(Income - 35k) × 5%</td></tr>
+        <tr><td>RM70,001 - RM100,000</td><td>10% over RM70k</td><td>RM1,750 + (Income - 70k) × 10%</td></tr>
+        <tr><td>Above RM100,000</td><td>15% over RM100k</td><td>RM4,750 + (Income - 100k) × 15%</td></tr>
+      </table>
+
+      <div class="input-block">
+        <label>2. Tax Payable to LHDN:</label>
+        <input type="number" id="tax-in-2" placeholder="Enter calculated tax">
+      </div>
+
+      <div class="row" style="margin-top:18px;">
+        <button class="btn ghost small" onclick="fillTaxHints(${chargeable}, ${expectedTax})">💡 Calculator Hint</button>
+        <button class="btn gold" style="flex:1;" id="tax-check-btn" onclick="checkTax(${chargeable}, ${expectedTax})">Submit to LHDN ▶</button>
+      </div>
+      <div id="tax-feedback" style="margin-top:12px; text-align:center; font-weight:bold;"></div>
+    </div>
+  `;
+
+  if (p.isAI) {
+    setTimeout(() => {
+      // AI solves tax calculation automatically
+      document.getElementById('tax-in-1').value = chargeable;
+      document.getElementById('tax-in-2').value = expectedTax;
+      setTimeout(() => { checkTax(chargeable, expectedTax); }, 600);
+    }, 700);
+  }
+}
+
+window.fillTaxHints = function(c, t) {
+  AudioEngine.tick();
+  document.getElementById('tax-in-1').value = c;
+  document.getElementById('tax-in-2').value = t;
+  floatText('Hints Filled!', 'pos');
+};
+
+window.checkTax = function(ans1, ans2) {
+  const p = currentPlayer();
+  const v1 = Number(document.getElementById('tax-in-1').value);
+  const v2 = Number(document.getElementById('tax-in-2').value);
+  const fb = document.getElementById('tax-feedback');
+
+  if (v1 === ans1 && v2 === ans2) {
+    AudioEngine.win();
+    fb.innerHTML = `<span style="color:var(--green)">✅ Excellent! Paid exactly ${fmt(ans2)} in taxes.</span>`;
+    p.temp.tax = ans2;
+    p.money -= ans2;
+    p.totalTaxPaid += ans2;
+  } else {
+    AudioEngine.lose();
+    document.getElementById('app').classList.add('shake');
+    setTimeout(() => document.getElementById('app').classList.remove('shake'), 450);
+    const penalty = 500;
+    const finalTax = ans2 + penalty;
+    fb.innerHTML = `<span style="color:var(--coral)">❌ Incorrect! LHDN Audit penalty applied (+RM500). Correct: Chargeable ${fmt(ans1)}, Tax ${fmt(ans2)}.</span>`;
+    p.temp.tax = finalTax;
+    p.money -= finalTax;
+    p.totalTaxPaid += finalTax;
+  }
+
+  const taxSaved = Math.max(0, calculateExpectedTax(p.temp.salary - BASE_RELIEF) - ans2);
+  p.totalTaxSaved += taxSaved;
+
+  const btn = document.getElementById('tax-check-btn');
+  if (btn) btn.style.display = 'none';
+  fb.innerHTML += `<br><br><button class="btn gold" onclick="advancePhase()">Continue to Investments ▶</button>`;
+  renderTopbar();
+  if (p.isAI) setTimeout(advancePhase, 1200);
+};
+
+/* =========================================================================
+   13. PHASE 6: MULTI-ASSET INVESTMENT MARKETPLACE
+   ========================================================================= */
+let selectedAssetKey = 'etf';
+
+function renderInvest(el, p) {
+  selectedAssetKey = 'etf';
+  let assetCards = '';
+
+  Object.entries(INVEST_ASSETS).forEach(([k, item]) => {
+    assetCards += `
+      <div class="invest-option ${k === selectedAssetKey ? 'selected' : ''}" id="inv-card-${k}" onclick="selectInvestAsset('${k}')">
+        <div class="inv-icon">${item.icon}</div>
+        <div class="inv-name">${item.name}</div>
+        <div class="inv-risk risk-${item.risk}">${item.risk.toUpperCase()}</div>
+        <div style="font-size:10px; color:#666; margin-top:4px;">${item.desc}</div>
+      </div>`;
+  });
+
+  el.innerHTML = `
+    <div class="eyebrow">Wealth Generation</div>
+    <h2>Investment Portfolio</h2>
+    <p class="muted">Select an asset class and allocate savings for compounding returns.</p>
+
+    <div class="invest-grid">${assetCards}</div>
+
+    <div class="card" id="inv-action-card" style="width:100%; text-align:center;">
+      <div style="font-weight:700; margin-bottom:10px;">Select Amount to Invest:</div>
+      <div class="row" id="inv-opts">
+        <button class="btn ghost small" onclick="runInvest(0)">Skip (RM0)</button>
+        <button class="btn purple small" onclick="runInvest(1000)">RM1,000</button>
+        <button class="btn purple small" onclick="runInvest(3000)">RM3,000</button>
+        <button class="btn gold small" onclick="runInvest(6000)">RM6,000</button>
+      </div>
+    </div>
+
+    <div class="invest-canvas-wrapper" id="inv-wrap">
+      <canvas id="invest-canvas"></canvas>
+      <div class="invest-overlay" id="inv-overlay"></div>
+    </div>
+    <div id="inv-action" style="margin-top:12px; padding-bottom:20px;"></div>
+  `;
+
+  if (p.isAI) {
+    // Automated AI Investment Strategy
+    setTimeout(() => {
+      const type = p.aiProfile.type;
+      let asset = 'etf';
+      let amt = 1000;
+      if (type === 'rick') {
+        asset = Math.random() > 0.5 ? 'crypto' : 'stocks';
+        amt = p.money > 6000 ? 6000 : 3000;
+      } else if (type === 'tara') {
+        asset = 'reit';
+        amt = 3000;
+      } else if (type === 'fiona') {
+        asset = 'fd';
+        amt = 1000;
+      } else {
+        asset = 'etf';
+        amt = 3000;
+      }
+      selectInvestAsset(asset);
+      setTimeout(() => { runInvest(amt); }, 600);
+    }, 600);
+  }
+}
+
+window.selectInvestAsset = function(k) {
+  AudioEngine.tick();
+  selectedAssetKey = k;
+  document.querySelectorAll('.invest-option').forEach(el => el.classList.remove('selected'));
+  const card = document.getElementById(`inv-card-${k}`);
+  if (card) card.classList.add('selected');
+};
+
+window.runInvest = function(amount) {
+  const actionCard = document.getElementById('inv-action-card');
+  if (actionCard) actionCard.style.display = 'none';
+
+  if (amount === 0) {
+    advancePhase();
+    return;
+  }
+
+  const p = currentPlayer();
+  if (p.money < amount) {
+    amount = Math.max(0, p.money);
+    if (amount === 0) {
+      advancePhase();
+      return;
+    }
+  }
+
+  const asset = INVEST_ASSETS[selectedAssetKey] || INVEST_ASSETS.etf;
+  p.temp.investAsset = asset.name;
+
+  const wrap = document.getElementById('inv-wrap');
+  wrap.style.display = 'block';
+  const canvas = document.getElementById('invest-canvas');
+  const ctx = canvas.getContext('2d');
+  const w = wrap.clientWidth;
+  const h = wrap.clientHeight;
+  canvas.width = w;
+  canvas.height = h;
+
+  // Determine return rate based on asset class parameters
+  let returnPct;
+  const roll = Math.random();
+  if (roll < asset.crashChance) {
+    returnPct = asset.minGain;
+  } else {
+    returnPct = asset.minGain + Math.random() * (asset.maxGain - asset.minGain);
+  }
+
+  const finalAmt = Math.round(amount * returnPct);
+  let points = [{ x: 0, y: h / 2 }], x = 0;
+  ctx.strokeStyle = '#fff';
+  ctx.lineWidth = 3.5;
+  ctx.lineJoin = 'round';
+
+  const anim = setInterval(() => {
+    x += w / 35;
+    let targetY = (h / 2) - (finalAmt / amount) * (h / 3);
+    let noise = x < w * 0.82 ? (Math.random() - 0.5) * (h / 2.2) : 0;
+    let y = x < w * 0.82 ? h / 2 + noise : targetY;
+    points.push({ x, y });
+
+    ctx.clearRect(0, 0, w, h);
+    ctx.beginPath();
+    ctx.moveTo(points[0].x, points[0].y);
+    for (let i = 1; i < points.length; i++) ctx.lineTo(points[i].x, points[i].y);
+
+    let currentY = points[points.length - 1].y;
+    ctx.strokeStyle = currentY < h / 2 ? '#2FA968' : '#E35345';
+    ctx.stroke();
+
+    // Pitch follows market fluctuation
+    AudioEngine.playTone(420 + (h / 2 - currentY) * 2.2, 'sine', 0.04, 0.04);
+
+    if (x >= w) {
+      clearInterval(anim);
+      p.money += finalAmt;
+      p.temp.invest = finalAmt;
+      p.totalInvestGains += finalAmt;
+
+      const over = document.getElementById('inv-overlay');
+      const isPositive = finalAmt >= 0;
+      over.innerHTML = `
+        <div style="font-size:18px; color:#fff; font-weight:700;">${asset.name}</div>
+        <div style="color:${isPositive ? 'var(--green-light)' : 'var(--coral)'}; font-size:32px;">
+          ${isPositive ? '+' : ''}${fmt(finalAmt)} (${Math.round(returnPct * 100)}%)
+        </div>
+      `;
+      over.style.opacity = 1;
+
+      if (finalAmt > 0) {
+        AudioEngine.win();
+        spawnCoins(w / 2, window.innerHeight / 2, finalAmt);
+      } else if (finalAmt < 0) {
+        AudioEngine.lose();
+        document.getElementById('app').classList.add('shake');
+        setTimeout(() => document.getElementById('app').classList.remove('shake'), 450);
+      }
+
+      document.getElementById('inv-action').innerHTML = `<button class="btn gold" onclick="advancePhase()">View Summary ▶</button>`;
+      renderTopbar();
+      if (p.isAI) setTimeout(advancePhase, 1400);
+    }
+  }, 45);
+};
+
+/* =========================================================================
+   14. PHASE 7: FINANCIAL SUMMARY (Year End Breakdown)
+   ========================================================================= */
+function renderSummary(el, p) {
+  let relTotal = 0;
+  Object.keys(p.temp.rel).forEach(k => { if (RELIEF[k]) relTotal += RELIEF[k].price; });
+  let insTotal = 0;
+  Object.keys(p.temp.ins).forEach(k => { if (INSURANCE[k]) insTotal += INSURANCE[k].price; });
+
+  const earnedSalary = Math.round(p.temp.salary * p.temp.salaryMultiplier);
+  const investFmt = p.temp.invest > 0 ? '+' + fmt(p.temp.invest) : fmt(p.temp.invest);
+  const evtFmt = p.temp.evtBonus > 0 ? '+' + fmt(p.temp.evtBonus) : (p.temp.evtCost > 0 ? '-' + fmt(p.temp.evtCost) : 'RM0');
+
+  el.innerHTML = `
+    <div class="eyebrow">Year ${state.year} Financial Statement</div>
+    <h2>${p.avatar} ${p.name}'s Annual Summary</h2>
+    <div class="card" style="width:100%; text-align:left;">
+      <div style="display:flex; flex-direction:column; gap:8px;">
+        <div class="calc-line"><span>Salary + Fortune Wheel</span><span class="pos">+${fmt(earnedSalary + p.temp.wheel)}</span></div>
+        <div class="calc-line"><span>Protection &amp; Tax Relief Purchases</span><span class="neg">-${fmt(insTotal + relTotal)}</span></div>
+        <div class="calc-line"><span>Life Events</span><span class="${p.temp.evtBonus > 0 ? 'pos' : (p.temp.evtCost > 0 ? 'neg' : '')}">${evtFmt}</span></div>
+        <div class="calc-line"><span>LHDN Income Tax Paid</span><span class="neg">-${fmt(p.temp.tax)}</span></div>
+        <div class="calc-line"><span>Investment Net Return</span><span class="${p.temp.invest >= 0 ? 'pos' : 'neg'}">${investFmt}</span></div>
+        <div class="calc-line" style="font-weight:900; font-size:18px; border-top:2px solid var(--slate); margin-top:8px; padding-top:10px;">
+          <span>Current Net Savings</span><span style="color:var(--green);">${fmt(p.money)}</span>
+        </div>
+      </div>
+    </div>
+    <div class="row" style="margin-top:20px;">
+      <button class="btn gold" style="min-width:220px;" onclick="advancePhase()">
+        ${state.turnIndex === state.players.length - 1 ? (state.year === state.maxYears ? '🏆 Finish Game ▶' : 'Next Year ▶') : 'Next Player ▶'}
+      </button>
+    </div>
+  `;
+
+  if (p.isAI) {
+    setTimeout(advancePhase, 1600);
+  }
+}
+
+/* =========================================================================
+   15. GAME OVER & FINANCIAL HEALTH ANALYTICS
+   ========================================================================= */
+function showFinal() {
+  showScreen('screen-final');
+  document.getElementById('topbar').innerHTML = '';
+  document.getElementById('ai-indicator-wrap').innerHTML = '';
+
+  const sorted = [...state.players].sort((a, b) => b.money - a.money);
+  const winner = sorted[0];
+
+  document.getElementById('final-sub').textContent = `🏆 ${winner.name} finished 1st with ${fmt(winner.money)} in net savings after ${state.maxYears} years!`;
+  AudioEngine.win();
+  spawnCoins(window.innerWidth / 2, window.innerHeight / 3, 12000);
+  spawnConfetti();
+
+  // Render Podium
+  const podium = document.getElementById('podium-container');
+  if (sorted.length >= 3) {
+    podium.innerHTML = `
+      <div class="podium-slot">
+        <div class="podium-avatar">${sorted[1].avatar}</div>
+        <div style="font-weight:700; font-size:12px; margin-bottom:4px;">${sorted[1].name}</div>
+        <div class="podium-bar podium-2">🥈 2nd</div>
+      </div>
+      <div class="podium-slot">
+        <div class="podium-avatar">${sorted[0].avatar}</div>
+        <div style="font-weight:800; font-size:14px; margin-bottom:4px; color:var(--gold);">${sorted[0].name}</div>
+        <div class="podium-bar podium-1">🥇 1st</div>
+      </div>
+      <div class="podium-slot">
+        <div class="podium-avatar">${sorted[2].avatar}</div>
+        <div style="font-weight:700; font-size:12px; margin-bottom:4px;">${sorted[2].name}</div>
+        <div class="podium-bar podium-3">🥉 3rd</div>
+      </div>
+    `;
+  } else if (sorted.length === 2) {
+    podium.innerHTML = `
+      <div class="podium-slot" style="width:40%;">
+        <div class="podium-avatar">${sorted[0].avatar}</div>
+        <div style="font-weight:800; font-size:14px; color:var(--gold);">${sorted[0].name}</div>
+        <div class="podium-bar podium-1">🥇 Winner (${fmt(sorted[0].money)})</div>
+      </div>
+      <div class="podium-slot" style="width:40%;">
+        <div class="podium-avatar">${sorted[1].avatar}</div>
+        <div style="font-weight:700; font-size:12px;">${sorted[1].name}</div>
+        <div class="podium-bar podium-2">🥈 Runner Up (${fmt(sorted[1].money)})</div>
+      </div>
+    `;
+  } else {
+    podium.innerHTML = `
+      <div class="podium-slot" style="width:50%;">
+        <div class="podium-avatar">${sorted[0].avatar}</div>
+        <div style="font-weight:800; font-size:16px; color:var(--gold);">${sorted[0].name}</div>
+        <div class="podium-bar podium-1" style="height:120px;">🏆 Net Savings: ${fmt(sorted[0].money)}</div>
+      </div>
+    `;
+  }
+
+  // Full Financial Scoreboard
+  let boardHtml = `
+    <h3 style="font-size:16px; border-bottom:2px solid var(--paper-line); padding-bottom:8px; margin-bottom:12px;">
+      📊 Comprehensive Financial Report Card
+    </h3>`;
+
+  sorted.forEach((p, idx) => {
+    boardHtml += `
+      <div style="border-bottom:1px dashed var(--paper-line); padding:12px 0; text-align:left;">
+        <div style="display:flex; justify-content:space-between; align-items:center;">
+          <span style="font-size:15px; font-weight:800;">
+            #${idx+1} ${p.avatar} ${p.name} ${p.isAI ? '<span class="ai-tag">AI</span>' : ''}
+          </span>
+          <span style="font-family:var(--mono); color:var(--green); font-size:16px; font-weight:900;">${fmt(p.money)}</span>
+        </div>
+        <div style="font-size:12px; color:#555; margin-top:6px; display:flex; flex-wrap:wrap; gap:12px;">
+          <span>💰 Gross Salary: <b>${fmt(p.totalEarned)}</b></span>
+          <span>📉 Taxes Paid: <b>${fmt(p.totalTaxPaid)}</b></span>
+          <span>🛡️ Tax Reliefs Saved: <b>${fmt(p.totalTaxSaved)}</b></span>
+          <span>📈 Investments Gain/Loss: <b style="color:${p.totalInvestGains>=0?'var(--green)':'var(--coral)'}">${p.totalInvestGains>=0?'+':''}${fmt(p.totalInvestGains)}</b></span>
+        </div>
+      </div>`;
+  });
+
+  document.getElementById('final-board').innerHTML = boardHtml;
+}
+</script>
+</body>
+</html>

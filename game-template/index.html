@@ -1,0 +1,1382 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>CYE MathVerse — Game Template</title>
+
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Google Fonts for Modern Educational Gaming -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+
+    <!-- Custom Tailwind Configuration -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Plus Jakarta Sans', 'sans-serif'],
+                        tech: ['Orbitron', 'sans-serif'],
+                        code: ['JetBrains Mono', 'monospace'],
+                    },
+                    colors: {
+                        cye: {
+                            50: '#f0fdfa',
+                            100: '#ccfbf1',
+                            400: '#2dd4bf',
+                            500: '#14b8a6', // Primary Teal
+                            600: '#0d9488',
+                            700: '#0f766e',
+                            800: '#115e59',
+                            900: '#134e4a',
+                            dark: '#070b14',
+                            surface: '#0d1527',
+                            card: '#131f38',
+                            accent: '#8b5cf6', // Violet
+                            gold: '#f59e0b',
+                            danger: '#ef4444',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: #070b14;
+            color: #f1f5f9;
+            touch-action: manipulation;
+            user-select: none;
+            -webkit-user-select: none;
+        }
+
+        .font-tech { font-family: 'Orbitron', sans-serif; }
+        .font-code { font-family: 'JetBrains Mono', monospace; }
+
+        /* Glassmorphic UI styling */
+        .glass-panel {
+            background: rgba(13, 21, 39, 0.82);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .glass-card {
+            background: rgba(19, 31, 56, 0.88);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(45, 212, 191, 0.2);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), 0 0 20px rgba(20, 184, 166, 0.08);
+        }
+
+        .glow-teal {
+            box-shadow: 0 0 20px rgba(20, 184, 166, 0.35);
+        }
+        .glow-purple {
+            box-shadow: 0 0 20px rgba(139, 92, 246, 0.35);
+        }
+        .glow-gold {
+            box-shadow: 0 0 20px rgba(245, 158, 11, 0.4);
+        }
+
+        /* Ambient animated background grid */
+        .cyber-grid {
+            background-image: 
+                linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+            background-size: 36px 36px;
+        }
+
+        /* Button Hover & Active Animations */
+        .btn-bounce {
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .btn-bounce:hover {
+            transform: translateY(-2px);
+        }
+        .btn-bounce:active {
+            transform: translateY(1px);
+        }
+
+        /* Confetti Overlay Canvas */
+        #confetti-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none;
+            z-index: 9999;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: rgba(7, 11, 20, 0.6); }
+        ::-webkit-scrollbar-thumb { background: #1e293b; border-radius: 3px; }
+        ::-webkit-scrollbar-thumb:hover { background: #334155; }
+    </style>
+</head>
+<body class="cyber-grid min-h-screen flex flex-col justify-between p-3 sm:p-5">
+
+    <!-- Confetti Effects Canvas -->
+    <canvas id="confetti-canvas"></canvas>
+
+    <!-- =========================================================================
+         TOP NAVIGATION & HEADER (Global)
+         ========================================================================= -->
+    <header class="glass-panel w-full max-w-5xl mx-auto rounded-2xl px-4 py-3 flex items-center justify-between z-20">
+        <!-- Back to Library & Branding -->
+        <div class="flex items-center gap-3">
+            <a href="../" class="flex items-center gap-2 text-slate-400 hover:text-white transition px-2.5 py-1.5 rounded-lg hover:bg-white/5 text-xs sm:text-sm font-semibold">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+                </svg>
+                <span>Game Library</span>
+            </a>
+            <span class="text-slate-600 hidden sm:inline">|</span>
+            <div class="flex items-center gap-2">
+                <span class="w-2.5 h-2.5 rounded-full bg-cye-400 animate-pulse"></span>
+                <span id="game-brand-title" class="font-tech text-xs sm:text-sm font-bold tracking-wider text-cye-400">MATHVERSE ENGINE</span>
+            </div>
+        </div>
+
+        <!-- Global Header Controls -->
+        <div class="flex items-center gap-2">
+            <!-- Formula Reference Modal Trigger -->
+            <button id="btn-formulas" class="p-2 rounded-xl bg-slate-800/80 hover:bg-slate-700 text-slate-300 hover:text-white border border-slate-700 transition" title="Formulas & Reference">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+                </svg>
+            </button>
+
+            <!-- Scratchpad / Drawing Modal Trigger -->
+            <button id="btn-scratchpad" class="p-2 rounded-xl bg-slate-800/80 hover:bg-slate-700 text-slate-300 hover:text-white border border-slate-700 transition" title="Interactive Scratchpad">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
+                </svg>
+            </button>
+
+            <!-- Audio Sound Toggle -->
+            <button id="btn-sound-toggle" class="p-2 rounded-xl bg-slate-800/80 hover:bg-slate-700 text-slate-300 hover:text-white border border-slate-700 transition" title="Toggle Sound">
+                <svg id="icon-sound-on" xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z" />
+                </svg>
+                <svg id="icon-sound-off" xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 hidden text-red-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z" />
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M17 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2" />
+                </svg>
+            </button>
+        </div>
+    </header>
+
+    <!-- =========================================================================
+         MAIN APPLICATION CONTAINER (Screen Switcher)
+         ========================================================================= -->
+    <main class="flex-grow flex items-center justify-center my-4 sm:my-6 w-full max-w-5xl mx-auto px-2">
+
+        <!-- =====================================================================
+             SCREEN 1: OPENING & MISSION BRIEFING
+             ===================================================================== -->
+        <section id="screen-briefing" class="w-full max-w-3xl glass-card rounded-3xl p-6 sm:p-10 flex flex-col items-center text-center animate-fade-in">
+            <!-- Syllabus Tags & Badges -->
+            <div class="flex flex-wrap items-center justify-center gap-2 mb-4">
+                <span id="badge-form" class="px-3 py-1 rounded-full bg-cyan-500/20 text-cyan-300 border border-cyan-500/30 text-xs font-black tracking-wider uppercase">
+                    FORM 4
+                </span>
+                <span id="badge-chapter" class="px-3 py-1 rounded-full bg-cye-500/20 text-cye-300 border border-cye-500/30 text-xs font-bold">
+                    Chapter 10 • Financial Management
+                </span>
+                <span id="badge-difficulty" class="px-3 py-1 rounded-full bg-amber-500/20 text-amber-300 border border-amber-500/30 text-xs font-bold">
+                    ⭐ Medium
+                </span>
+                <span id="badge-time" class="px-3 py-1 rounded-full bg-purple-500/20 text-purple-300 border border-purple-500/30 text-xs font-bold">
+                    ⏱️ 10–15 min
+                </span>
+            </div>
+
+            <!-- Game Title & Subtitle -->
+            <div class="mb-6">
+                <div class="text-5xl sm:text-6xl mb-3" id="game-icon">⚡</div>
+                <h1 id="game-title" class="font-tech text-3xl sm:text-5xl font-black tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-cye-400 via-teal-300 to-cye-accent">
+                    MATHVERSE QUEST
+                </h1>
+                <p id="game-subtitle" class="text-slate-400 text-sm sm:text-base mt-2 max-w-lg mx-auto font-medium">
+                    Master essential mathematics through interactive missions, dynamic problem solving, and instant real-time feedback.
+                </p>
+            </div>
+
+            <!-- Mission Briefing Panel -->
+            <div class="w-full bg-slate-900/80 rounded-2xl p-5 sm:p-6 border border-slate-800 text-left mb-8 space-y-4">
+                <div class="flex items-center gap-2 text-cye-400 font-bold text-sm tracking-wide uppercase">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                    <span>Mission Objective</span>
+                </div>
+                <p id="mission-description" class="text-slate-300 text-sm sm:text-base leading-relaxed">
+                    Welcome, Math Cadet! Your mission is to solve a sequence of tactical challenges. Build high score streaks, avoid traps, utilize mathematical formulas, and earn your 3-star rating!
+                </p>
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-2 border-t border-slate-800 text-xs text-slate-400">
+                    <div class="flex items-center gap-2">
+                        <span class="text-cye-400 font-black text-base">✓</span> 
+                        <span>Multiple Choice & Equations</span>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <span class="text-cye-accent font-black text-base">🔥</span> 
+                        <span>Streak Combo Multipliers</span>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <span class="text-amber-400 font-black text-base">🏆</span> 
+                        <span>Instant Solutions & Ranking</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Action Button -->
+            <button id="btn-enter-mission" class="btn-bounce w-full sm:w-auto px-10 py-4 rounded-2xl font-tech font-black text-base sm:text-lg bg-gradient-to-r from-cye-500 to-cye-600 hover:from-cye-400 hover:to-cye-500 text-slate-950 shadow-lg shadow-cye-500/30 flex items-center justify-center gap-3">
+                <span>ENTER MISSION</span>
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                </svg>
+            </button>
+        </section>
+
+        <!-- =====================================================================
+             SCREEN 2: PLAYER IDENTIFICATION & AVATAR
+             ===================================================================== -->
+        <section id="screen-player-id" class="hidden w-full max-w-xl glass-card rounded-3xl p-6 sm:p-10 flex flex-col items-center text-center animate-fade-in">
+            <div class="w-16 h-16 rounded-2xl bg-cye-500/20 text-cye-400 border border-cye-500/30 flex items-center justify-center text-3xl mb-4">
+                👤
+            </div>
+            <h2 class="font-tech text-2xl sm:text-3xl font-black text-white mb-2">CADET PROFILE</h2>
+            <p class="text-slate-400 text-sm mb-6">Enter your name and select an avatar for your mission record.</p>
+
+            <form id="form-player-id" class="w-full space-y-6">
+                <!-- Name Input -->
+                <div class="text-left">
+                    <label for="input-player-name" class="block text-xs font-bold uppercase tracking-wider text-slate-300 mb-2">
+                        Cadet / Student Name
+                    </label>
+                    <input 
+                        type="text" 
+                        id="input-player-name" 
+                        maxlength="20" 
+                        placeholder="e.g. Agent Micka" 
+                        required
+                        class="w-full px-4 py-3.5 rounded-xl bg-slate-900/90 border border-slate-700 text-white placeholder-slate-500 focus:outline-none focus:border-cye-400 focus:ring-2 focus:ring-cye-400/20 font-bold text-base transition"
+                    >
+                </div>
+
+                <!-- Avatar Selection Grid -->
+                <div class="text-left">
+                    <label class="block text-xs font-bold uppercase tracking-wider text-slate-300 mb-2">
+                        Choose Your Avatar
+                    </label>
+                    <div class="grid grid-cols-6 gap-2.5" id="avatar-picker-grid">
+                        <button type="button" data-avatar="🚀" class="avatar-btn p-3 rounded-xl bg-slate-900/80 border-2 border-cye-500 text-2xl flex items-center justify-center transition hover:scale-105 active:scale-95">🚀</button>
+                        <button type="button" data-avatar="🤖" class="avatar-btn p-3 rounded-xl bg-slate-900/80 border-2 border-transparent text-2xl flex items-center justify-center transition hover:scale-105 active:scale-95">🤖</button>
+                        <button type="button" data-avatar="🦊" class="avatar-btn p-3 rounded-xl bg-slate-900/80 border-2 border-transparent text-2xl flex items-center justify-center transition hover:scale-105 active:scale-95">🦊</button>
+                        <button type="button" data-avatar="🦉" class="avatar-btn p-3 rounded-xl bg-slate-900/80 border-2 border-transparent text-2xl flex items-center justify-center transition hover:scale-105 active:scale-95">🦉</button>
+                        <button type="button" data-avatar="🦁" class="avatar-btn p-3 rounded-xl bg-slate-900/80 border-2 border-transparent text-2xl flex items-center justify-center transition hover:scale-105 active:scale-95">🦁</button>
+                        <button type="button" data-avatar="⚡" class="avatar-btn p-3 rounded-xl bg-slate-900/80 border-2 border-transparent text-2xl flex items-center justify-center transition hover:scale-105 active:scale-95">⚡</button>
+                    </div>
+                </div>
+
+                <!-- Start Button -->
+                <button type="submit" class="btn-bounce w-full py-4 rounded-2xl font-tech font-black text-base bg-gradient-to-r from-cye-500 to-cye-600 hover:from-cye-400 hover:to-cye-500 text-slate-950 shadow-lg shadow-cye-500/30 flex items-center justify-center gap-2">
+                    <span>LAUNCH MISSION</span>
+                    <span>➔</span>
+                </button>
+            </form>
+        </section>
+
+        <!-- =====================================================================
+             SCREEN 3: GAMEPLAY LOOP & INTERACTIVE CHALLENGES
+             ===================================================================== -->
+        <section id="screen-gameplay" class="hidden w-full flex flex-col gap-4 animate-fade-in">
+            
+            <!-- HUD BAR -->
+            <div class="glass-panel rounded-2xl px-4 py-3 flex flex-wrap items-center justify-between gap-3">
+                <!-- Player Info -->
+                <div class="flex items-center gap-2.5">
+                    <span id="hud-avatar" class="text-2xl">🚀</span>
+                    <div>
+                        <div id="hud-player-name" class="font-bold text-xs sm:text-sm text-white leading-tight">Cadet</div>
+                        <div class="text-[10px] text-slate-400 uppercase tracking-wider font-semibold">Active Agent</div>
+                    </div>
+                </div>
+
+                <!-- Progress Bar & Question Count -->
+                <div class="flex-grow max-w-xs mx-auto hidden md:block">
+                    <div class="flex justify-between text-[11px] font-bold text-slate-300 mb-1">
+                        <span>PROGRESS</span>
+                        <span id="hud-progress-text">Challenge 1 / 5</span>
+                    </div>
+                    <div class="w-full h-2.5 rounded-full bg-slate-800 overflow-hidden border border-slate-700">
+                        <div id="hud-progress-bar" class="h-full bg-gradient-to-r from-cye-500 to-cye-400 transition-all duration-300" style="width: 20%;"></div>
+                    </div>
+                </div>
+
+                <!-- Stats: Lives, Streak, Score, Timer -->
+                <div class="flex items-center gap-3 sm:gap-5">
+                    <!-- Lives / Energy -->
+                    <div class="flex items-center gap-1 text-base sm:text-lg" id="hud-lives-container" title="Remaining Lives">
+                        <span class="text-red-500 life-heart">❤️</span>
+                        <span class="text-red-500 life-heart">❤️</span>
+                        <span class="text-red-500 life-heart">❤️</span>
+                    </div>
+
+                    <!-- Streak Multiplier -->
+                    <div id="hud-streak-badge" class="px-2.5 py-1 rounded-lg bg-amber-500/20 border border-amber-500/40 text-amber-300 font-tech text-xs font-black flex items-center gap-1">
+                        <span>🔥</span>
+                        <span id="hud-streak-val">x1</span>
+                    </div>
+
+                    <!-- Score -->
+                    <div class="text-right">
+                        <div class="text-[10px] text-slate-400 uppercase font-bold tracking-wider">Score</div>
+                        <div id="hud-score" class="font-tech text-base sm:text-xl font-black text-cye-400">0</div>
+                    </div>
+
+                    <!-- Timer -->
+                    <div class="px-3 py-1 rounded-xl bg-slate-900 border border-slate-800 font-code text-xs sm:text-sm font-bold text-slate-200" id="hud-timer">
+                        00:00
+                    </div>
+
+                    <!-- Pause Button -->
+                    <button id="btn-pause-game" class="p-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 transition" title="Pause Game">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M10 9v6m4-6v6m7-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Mobile Progress Bar (visible on small screens) -->
+            <div class="md:hidden glass-panel rounded-xl p-2.5">
+                <div class="flex justify-between text-[11px] font-bold text-slate-300 mb-1">
+                    <span>PROGRESS</span>
+                    <span id="hud-mobile-progress-text">Challenge 1 / 5</span>
+                </div>
+                <div class="w-full h-2 rounded-full bg-slate-800 overflow-hidden border border-slate-700">
+                    <div id="hud-mobile-progress-bar" class="h-full bg-cye-400 transition-all duration-300" style="width: 20%;"></div>
+                </div>
+            </div>
+
+            <!-- MAIN CHALLENGE CARD -->
+            <div class="glass-card rounded-3xl p-5 sm:p-8 flex flex-col gap-6">
+                <!-- Question Header -->
+                <div class="flex flex-wrap items-center justify-between gap-2 border-b border-slate-800 pb-4">
+                    <div class="flex items-center gap-2">
+                        <span id="q-category-tag" class="px-2.5 py-0.5 rounded-md bg-cye-500/20 text-cye-300 border border-cye-500/30 text-xs font-bold uppercase">
+                            Concept Mastery
+                        </span>
+                        <span id="q-number-tag" class="text-xs font-semibold text-slate-400">
+                            Question #1
+                        </span>
+                    </div>
+
+                    <!-- Hint Button -->
+                    <button id="btn-hint" class="text-xs font-bold text-amber-400 hover:text-amber-300 bg-amber-500/10 hover:bg-amber-500/20 border border-amber-500/30 px-3 py-1.5 rounded-lg transition flex items-center gap-1.5">
+                        <span>💡</span>
+                        <span>Need a Hint?</span>
+                    </button>
+                </div>
+
+                <!-- Hint Content Drawer -->
+                <div id="hint-box" class="hidden bg-amber-950/40 border border-amber-500/40 rounded-2xl p-4 text-amber-200 text-xs sm:text-sm animate-fade-in">
+                    <div class="font-bold mb-1 flex items-center gap-1.5">
+                        <span>💡 Strategic Clue:</span>
+                    </div>
+                    <p id="hint-text">Remember to review the basic formula: Income - Expenses = Net Cash Flow.</p>
+                </div>
+
+                <!-- Question Prompt & Context -->
+                <div>
+                    <h3 id="q-prompt" class="text-lg sm:text-2xl font-bold text-white leading-relaxed">
+                        Calculate the monthly net surplus if your active income is RM4,500, passive income is RM500, and total monthly expenses are RM3,200.
+                    </h3>
+
+                    <!-- Optional Math Visual / Equation Container -->
+                    <div id="q-visual-box" class="mt-4 p-4 rounded-2xl bg-slate-900/90 border border-slate-800 text-center font-code text-base sm:text-lg text-teal-300 flex items-center justify-center min-h-[80px]">
+                        \[ \text{Net Surplus} = (\text{Active} + \text{Passive}) - \text{Expenses} \]
+                    </div>
+                </div>
+
+                <!-- Answer Choices (Multiple Choice Grid) -->
+                <div id="q-options-container" class="grid grid-cols-1 sm:grid-cols-2 gap-3.5 pt-2">
+                    <!-- Dynamic option buttons injected via JS -->
+                </div>
+
+                <!-- Feedback & Solution Walkthrough Box (Appears after answer) -->
+                <div id="feedback-box" class="hidden rounded-2xl p-5 border transition-all animate-fade-in">
+                    <div class="flex items-center gap-2.5 font-tech text-base sm:text-lg font-black mb-2" id="feedback-header">
+                        <!-- Injected icon & message -->
+                    </div>
+                    <div class="text-xs sm:text-sm text-slate-300 leading-relaxed font-medium space-y-2" id="feedback-explanation">
+                        <!-- Injected step-by-step mathematical reasoning -->
+                    </div>
+                    <div class="mt-4 pt-3 border-t border-white/10 flex justify-end">
+                        <button id="btn-next-question" class="btn-bounce px-6 py-3 rounded-xl font-tech font-black text-sm bg-cye-500 hover:bg-cye-400 text-slate-950 flex items-center gap-2">
+                            <span>CONTINUE</span>
+                            <span>➔</span>
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- =====================================================================
+             SCREEN 4: MISSION COMPLETE & RESULTS
+             ===================================================================== -->
+        <section id="screen-results" class="hidden w-full max-w-2xl glass-card rounded-3xl p-6 sm:p-10 flex flex-col items-center text-center animate-fade-in">
+            <!-- Victory Trophy & Star Rating -->
+            <div class="text-5xl sm:text-6xl mb-2 animate-bounce">🏆</div>
+            <h2 class="font-tech text-3xl sm:text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-cye-400 via-teal-300 to-amber-300 mb-1">
+                MISSION COMPLETE!
+            </h2>
+            <p class="text-slate-400 text-sm font-medium mb-6">Cadet performance evaluation summary</p>
+
+            <!-- Star Rating Display -->
+            <div class="flex items-center justify-center gap-2 text-3xl sm:text-4xl mb-8" id="results-stars">
+                <span class="text-amber-400">⭐</span>
+                <span class="text-amber-400">⭐</span>
+                <span class="text-amber-400">⭐</span>
+            </div>
+
+            <!-- Stats Grid -->
+            <div class="w-full grid grid-cols-2 sm:grid-cols-4 gap-3 bg-slate-900/90 rounded-2xl p-4 sm:p-5 border border-slate-800 mb-8 text-left">
+                <!-- Player Name -->
+                <div class="p-2.5 rounded-xl bg-slate-800/60 border border-slate-700/50">
+                    <div class="text-[10px] text-slate-400 uppercase font-bold tracking-wider">Player</div>
+                    <div id="res-player-name" class="font-bold text-white text-sm sm:text-base truncate mt-0.5">Cadet</div>
+                </div>
+
+                <!-- Final Score -->
+                <div class="p-2.5 rounded-xl bg-slate-800/60 border border-slate-700/50">
+                    <div class="text-[10px] text-slate-400 uppercase font-bold tracking-wider">Final Score</div>
+                    <div id="res-final-score" class="font-tech font-black text-cye-400 text-sm sm:text-base mt-0.5">1,250</div>
+                </div>
+
+                <!-- Accuracy -->
+                <div class="p-2.5 rounded-xl bg-slate-800/60 border border-slate-700/50">
+                    <div class="text-[10px] text-slate-400 uppercase font-bold tracking-wider">Accuracy</div>
+                    <div id="res-accuracy" class="font-tech font-black text-teal-300 text-sm sm:text-base mt-0.5">100%</div>
+                </div>
+
+                <!-- Time Elapsed -->
+                <div class="p-2.5 rounded-xl bg-slate-800/60 border border-slate-700/50">
+                    <div class="text-[10px] text-slate-400 uppercase font-bold tracking-wider">Time</div>
+                    <div id="res-time-elapsed" class="font-code font-bold text-purple-300 text-sm sm:text-base mt-0.5">02:15</div>
+                </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="w-full flex flex-col sm:flex-row gap-3 justify-center">
+                <button id="btn-play-again" class="btn-bounce px-8 py-3.5 rounded-xl font-tech font-bold text-sm bg-cye-500 hover:bg-cye-400 text-slate-950 shadow-lg shadow-cye-500/20 flex items-center justify-center gap-2">
+                    <span>🔁</span>
+                    <span>PLAY AGAIN</span>
+                </button>
+                <a href="../" class="btn-bounce px-8 py-3.5 rounded-xl font-tech font-bold text-sm bg-slate-800 hover:bg-slate-700 text-white border border-slate-700 flex items-center justify-center gap-2">
+                    <span>🏠</span>
+                    <span>GAME LIBRARY</span>
+                </a>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- =========================================================================
+         MODALS & OVERLAYS
+         ========================================================================= -->
+
+    <!-- MODAL 1: FORMULA CHEAT-SHEET -->
+    <div id="modal-formulas" class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="glass-card max-w-lg w-full rounded-3xl p-6 sm:p-8 space-y-4 border border-cye-500/30">
+            <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+                <h3 class="font-tech text-lg font-bold text-cye-400 flex items-center gap-2">
+                    <span>📖</span>
+                    <span>FORMULA CHEAT SHEET</span>
+                </h3>
+                <button class="modal-close p-1.5 rounded-lg bg-slate-800 text-slate-400 hover:text-white transition">✕</button>
+            </div>
+            <div class="text-sm text-slate-300 space-y-3 font-medium max-h-[60vh] overflow-y-auto pr-2" id="formulas-content">
+                <div class="p-3 rounded-xl bg-slate-900/90 border border-slate-800">
+                    <div class="text-xs font-bold text-cye-400 uppercase">Cash Flow Formula</div>
+                    <div class="font-code text-teal-300 text-xs sm:text-sm mt-1">Net Cash Flow = Total Income - Total Expenses</div>
+                </div>
+                <div class="p-3 rounded-xl bg-slate-900/90 border border-slate-800">
+                    <div class="text-xs font-bold text-cye-400 uppercase">Asset & Liability Equation</div>
+                    <div class="font-code text-teal-300 text-xs sm:text-sm mt-1">Net Worth = Total Assets - Total Liabilities</div>
+                </div>
+                <div class="p-3 rounded-xl bg-slate-900/90 border border-slate-800">
+                    <div class="text-xs font-bold text-cye-400 uppercase">Simple Interest</div>
+                    <div class="font-code text-teal-300 text-xs sm:text-sm mt-1">I = P × r × t</div>
+                </div>
+            </div>
+            <button class="modal-close w-full py-3 rounded-xl bg-slate-800 hover:bg-slate-700 text-white font-bold text-sm transition">
+                Close Reference
+            </button>
+        </div>
+    </div>
+
+    <!-- MODAL 2: INTERACTIVE SCRATCHPAD -->
+    <div id="modal-scratchpad" class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="glass-card max-w-xl w-full rounded-3xl p-5 sm:p-6 space-y-3 border border-cye-500/30">
+            <div class="flex items-center justify-between border-b border-slate-800 pb-2">
+                <h3 class="font-tech text-base font-bold text-cye-400 flex items-center gap-2">
+                    <span>✏️</span>
+                    <span>SCRATCHPAD & CALCULATOR</span>
+                </h3>
+                <div class="flex items-center gap-2">
+                    <button id="btn-clear-canvas" class="px-2.5 py-1 rounded-lg bg-red-500/20 text-red-300 hover:bg-red-500/30 text-xs font-bold border border-red-500/30 transition">
+                        Clear
+                    </button>
+                    <button class="modal-close p-1.5 rounded-lg bg-slate-800 text-slate-400 hover:text-white transition">✕</button>
+                </div>
+            </div>
+            <p class="text-xs text-slate-400">Sketch notes or perform rough calculations below:</p>
+            
+            <!-- Drawing Canvas Area -->
+            <div class="w-full h-64 sm:h-80 bg-slate-950 rounded-2xl border border-slate-800 relative overflow-hidden">
+                <canvas id="scratch-canvas" class="w-full h-full cursor-crosshair"></canvas>
+            </div>
+
+            <button class="modal-close w-full py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-white font-bold text-xs transition">
+                Done
+            </button>
+        </div>
+    </div>
+
+    <!-- MODAL 3: PAUSE MENU -->
+    <div id="modal-pause" class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="glass-card max-w-sm w-full rounded-3xl p-6 sm:p-8 space-y-4 text-center border border-slate-700">
+            <div class="text-4xl">⏸️</div>
+            <h3 class="font-tech text-2xl font-black text-white">GAME PAUSED</h3>
+            <p class="text-slate-400 text-xs">Mission is currently suspended.</p>
+            <div class="space-y-2 pt-2">
+                <button id="btn-resume-game" class="btn-bounce w-full py-3 rounded-xl bg-cye-500 hover:bg-cye-400 text-slate-950 font-tech font-bold text-sm transition">
+                    RESUME MISSION
+                </button>
+                <button id="btn-restart-game" class="w-full py-3 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white font-bold text-xs border border-slate-700 transition">
+                    Restart Challenge
+                </button>
+                <a href="../" class="block w-full py-3 rounded-xl bg-slate-900 hover:bg-slate-800 text-slate-400 hover:text-slate-200 font-bold text-xs border border-slate-800 transition">
+                    Exit to Library
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- =========================================================================
+         GAME LOGIC & ENGINE JAVASCRIPT
+         ========================================================================= -->
+    <script>
+        /* =========================================================================
+           1. CUSTOMIZE YOUR GAME DATA HERE
+           (Update metadata, questions, and curriculum tags for your new game!)
+           ========================================================================= */
+        const GAME_CONFIG = {
+            title: "FINANCIAL QUEST",
+            subtitle: "Master Form 4 Chapter 10: Consumer Mathematics & Financial Planning",
+            icon: "⚡",
+            form: "FORM 4",
+            chapter: "Chapter 10 • Financial Management",
+            difficulty: "⭐ Medium",
+            timeEst: "⏱️ 10–15 min",
+            missionBrief: "Solve tactical financial management questions, balance income vs expenses, calculate net cash flow, and avoid debt traps to earn maximum agent stars!",
+            totalLives: 3,
+            pointsPerCorrect: 100,
+            streakMultiplierBonus: 25,
+            
+            // Formula Sheet Items (Rendered in Cheat-Sheet Modal)
+            formulas: [
+                { title: "Net Cash Flow", code: "Net Cash Flow = Total Income - Total Expenses" },
+                { title: "Net Worth", code: "Net Worth = Total Assets - Total Liabilities" },
+                { title: "Active vs Passive Income", code: "Active = Salary/Commission | Passive = Rental/Dividends" },
+                { title: "Emergency Fund Goal", code: "Emergency Fund = 3 to 6 months of living expenses" }
+            ],
+
+            // Questions Database (Add, edit, or randomize questions here)
+            questions: [
+                {
+                    category: "Cash Flow",
+                    prompt: "A student earns RM3,500 active salary, RM300 dividends, and spends RM2,600 on monthly expenses. What is their monthly net cash flow?",
+                    visual: "Total Income = RM3,500 + RM300 | Expenses = RM2,600",
+                    hint: "Add all income sources first, then subtract total expenses.",
+                    options: [
+                        { label: "+RM1,200 (Surplus)", isCorrect: true },
+                        { label: "+RM900 (Surplus)", isCorrect: false },
+                        { label: "-RM1,200 (Deficit)", isCorrect: false },
+                        { label: "+RM6,400 (Total)", isCorrect: false }
+                    ],
+                    explanation: "Total Income = RM3,500 + RM300 = RM3,800. Net Cash Flow = RM3,800 - RM2,600 = +RM1,200 (Positive Cash Surplus)."
+                },
+                {
+                    category: "Net Worth",
+                    prompt: "If an agent owns assets valued at RM150,000 and has car & study loan liabilities of RM45,000, what is their Net Worth?",
+                    visual: "Net Worth = Total Assets - Total Liabilities",
+                    hint: "Subtract the total debt liabilities from the total value of assets.",
+                    options: [
+                        { label: "RM195,000", isCorrect: false },
+                        { label: "RM105,000", isCorrect: true },
+                        { label: "RM150,000", isCorrect: false },
+                        { label: "RM45,000", isCorrect: false }
+                    ],
+                    explanation: "Net Worth = Total Assets (RM150,000) - Total Liabilities (RM45,000) = RM105,000."
+                },
+                {
+                    category: "SMART Goals",
+                    prompt: "Which component of the SMART financial goal framework ensures a target has an exact completion deadline?",
+                    visual: "S - M - A - R - [ ? ]",
+                    hint: "T stands for a schedule or deadline constraint.",
+                    options: [
+                        { label: "Specific", isCorrect: false },
+                        { label: "Measurable", isCorrect: false },
+                        { label: "Time-bound", isCorrect: true },
+                        { label: "Realistic", isCorrect: false }
+                    ],
+                    explanation: "T in SMART stands for 'Time-bound', meaning the financial goal has a clear and realistic deadline."
+                },
+                {
+                    category: "Emergency Fund",
+                    prompt: "If your monthly essential living expenses are RM2,500, what is the recommended 6-month emergency fund amount?",
+                    visual: "Emergency Fund = Monthly Expenses × 6 Months",
+                    hint: "Multiply the monthly expense requirement by 6.",
+                    options: [
+                        { label: "RM7,500", isCorrect: false },
+                        { label: "RM12,500", isCorrect: false },
+                        { label: "RM15,000", isCorrect: true },
+                        { label: "RM30,000", isCorrect: false }
+                    ],
+                    explanation: "Recommended Emergency Fund = RM2,500 × 6 months = RM15,000."
+                },
+                {
+                    category: "Expense Classification",
+                    prompt: "Which of the following is considered a 'Fixed Expense' in personal financial management?",
+                    visual: "Fixed Expenses vs Variable Expenses",
+                    hint: "Fixed expenses are obligatory payments that do not change every month.",
+                    options: [
+                        { label: "Monthly House Rental / Loan Installment", isCorrect: true },
+                        { label: "Weekend Grocery Shopping", isCorrect: false },
+                        { label: "Electric & Water Utilities Bill", isCorrect: false },
+                        { label: "Dining Out with Friends", isCorrect: false }
+                    ],
+                    explanation: "House rental or mortgage installments are Fixed Expenses because the payment amount is constant every month."
+                }
+            ]
+        };
+
+        /* =========================================================================
+           2. PROCEDURAL SOUND SYNTHESIZER (Web Audio API - Zero Asset Dependencies)
+           ========================================================================= */
+        class SoundFX {
+            constructor() {
+                this.ctx = null;
+                this.enabled = true;
+            }
+
+            init() {
+                if (!this.ctx) {
+                    const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+                    if (AudioContextClass) this.ctx = new AudioContextClass();
+                }
+                if (this.ctx && this.ctx.state === 'suspended') {
+                    this.ctx.resume();
+                }
+            }
+
+            playClick() {
+                if (!this.enabled || !this.ctx) return;
+                try {
+                    const osc = this.ctx.createOscillator();
+                    const gain = this.ctx.createGain();
+                    osc.connect(gain);
+                    gain.connect(this.ctx.destination);
+                    osc.type = 'sine';
+                    osc.frequency.setValueAtTime(600, this.ctx.currentTime);
+                    osc.frequency.exponentialRampToValueAtTime(300, this.ctx.currentTime + 0.05);
+                    gain.gain.setValueAtTime(0.12, this.ctx.currentTime);
+                    gain.gain.linearRampToValueAtTime(0.01, this.ctx.currentTime + 0.05);
+                    osc.start();
+                    osc.stop(this.ctx.currentTime + 0.05);
+                } catch(e) {}
+            }
+
+            playSuccess() {
+                if (!this.enabled || !this.ctx) return;
+                try {
+                    const now = this.ctx.currentTime;
+                    [523.25, 659.25, 783.99, 1046.50].forEach((freq, idx) => {
+                        const osc = this.ctx.createOscillator();
+                        const gain = this.ctx.createGain();
+                        osc.connect(gain);
+                        gain.connect(this.ctx.destination);
+                        osc.type = 'triangle';
+                        osc.frequency.value = freq;
+                        gain.gain.setValueAtTime(0.18, now + idx * 0.07);
+                        gain.gain.linearRampToValueAtTime(0.01, now + idx * 0.07 + 0.18);
+                        osc.start(now + idx * 0.07);
+                        osc.stop(now + idx * 0.07 + 0.18);
+                    });
+                } catch(e) {}
+            }
+
+            playError() {
+                if (!this.enabled || !this.ctx) return;
+                try {
+                    const now = this.ctx.currentTime;
+                    [220, 185].forEach((freq, idx) => {
+                        const osc = this.ctx.createOscillator();
+                        const gain = this.ctx.createGain();
+                        osc.connect(gain);
+                        gain.connect(this.ctx.destination);
+                        osc.type = 'sawtooth';
+                        osc.frequency.value = freq;
+                        gain.gain.setValueAtTime(0.2, now + idx * 0.12);
+                        gain.gain.linearRampToValueAtTime(0.01, now + idx * 0.12 + 0.2);
+                        osc.start(now + idx * 0.12);
+                        osc.stop(now + idx * 0.12 + 0.2);
+                    });
+                } catch(e) {}
+            }
+
+            playFanfare() {
+                if (!this.enabled || !this.ctx) return;
+                try {
+                    const notes = [440, 554, 659, 880, 880, 880, 1108];
+                    const times = [0, 0.12, 0.24, 0.36, 0.55, 0.70, 0.88];
+                    const durations = [0.1, 0.1, 0.1, 0.16, 0.12, 0.12, 0.45];
+                    const now = this.ctx.currentTime;
+                    notes.forEach((f, i) => {
+                        const osc = this.ctx.createOscillator();
+                        const gain = this.ctx.createGain();
+                        osc.connect(gain);
+                        gain.connect(this.ctx.destination);
+                        osc.type = 'triangle';
+                        osc.frequency.value = f;
+                        gain.gain.setValueAtTime(0.25, now + times[i]);
+                        gain.gain.linearRampToValueAtTime(0.01, now + times[i] + durations[i]);
+                        osc.start(now + times[i]);
+                        osc.stop(now + times[i] + durations[i]);
+                    });
+                } catch(e) {}
+            }
+        }
+
+        /* =========================================================================
+           3. CONFETTI BURST GENERATOR (Canvas Particle System)
+           ========================================================================= */
+        class ConfettiManager {
+            constructor(canvasId) {
+                this.canvas = document.getElementById(canvasId);
+                this.ctx = this.canvas ? this.canvas.getContext('2d') : null;
+                this.particles = [];
+                this.animId = null;
+                this.resize();
+                window.addEventListener('resize', () => this.resize());
+            }
+
+            resize() {
+                if (!this.canvas) return;
+                this.canvas.width = window.innerWidth;
+                this.canvas.height = window.innerHeight;
+            }
+
+            burst(count = 70) {
+                if (!this.canvas || !this.ctx) return;
+                const colors = ['#2dd4bf', '#14b8a6', '#8b5cf6', '#f59e0b', '#38bdf8', '#ef4444'];
+                const originX = this.canvas.width / 2;
+                const originY = this.canvas.height / 3;
+
+                for (let i = 0; i < count; i++) {
+                    const angle = Math.random() * Math.PI * 2;
+                    const speed = 4 + Math.random() * 12;
+                    this.particles.push({
+                        x: originX,
+                        y: originY,
+                        vx: Math.cos(angle) * speed,
+                        vy: Math.sin(angle) * speed - 3,
+                        color: colors[Math.floor(Math.random() * colors.length)],
+                        size: 5 + Math.random() * 7,
+                        rotation: Math.random() * 360,
+                        rotationSpeed: (Math.random() - 0.5) * 10,
+                        alpha: 1,
+                        decay: 0.012 + Math.random() * 0.01
+                    });
+                }
+
+                if (!this.animId) {
+                    this.loop();
+                }
+            }
+
+            loop() {
+                if (!this.ctx) return;
+                this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+
+                for (let i = this.particles.length - 1; i >= 0; i--) {
+                    const p = this.particles[i];
+                    p.x += p.vx;
+                    p.y += p.vy;
+                    p.vy += 0.25; // gravity
+                    p.rotation += p.rotationSpeed;
+                    p.alpha -= p.decay;
+
+                    if (p.alpha <= 0) {
+                        this.particles.splice(i, 1);
+                        continue;
+                    }
+
+                    this.ctx.save();
+                    this.ctx.globalAlpha = p.alpha;
+                    this.ctx.fillStyle = p.color;
+                    this.ctx.translate(p.x, p.y);
+                    this.ctx.rotate((p.rotation * Math.PI) / 180);
+                    this.ctx.fillRect(-p.size / 2, -p.size / 2, p.size, p.size);
+                    this.ctx.restore();
+                }
+
+                if (this.particles.length > 0) {
+                    this.animId = requestAnimationFrame(() => this.loop());
+                } else {
+                    this.animId = null;
+                }
+            }
+        }
+
+        /* =========================================================================
+           4. GAME STATE & CONTROLLER
+           ========================================================================= */
+        const sound = new SoundFX();
+        const confetti = new ConfettiManager('confetti-canvas');
+
+        const state = {
+            screen: 'briefing', // briefing | player_id | gameplay | results
+            playerName: 'Agent Cadet',
+            playerAvatar: '🚀',
+            currentQuestionIndex: 0,
+            score: 0,
+            lives: GAME_CONFIG.totalLives,
+            streak: 0,
+            maxStreak: 0,
+            correctCount: 0,
+            timerSeconds: 0,
+            timerInterval: null,
+            isPaused: false,
+            answeredCurrentQuestion: false
+        };
+
+        // DOM Element Lookups
+        const el = {
+            screenBriefing: document.getElementById('screen-briefing'),
+            screenPlayerId: document.getElementById('screen-player-id'),
+            screenGameplay: document.getElementById('screen-gameplay'),
+            screenResults: document.getElementById('screen-results'),
+
+            btnEnterMission: document.getElementById('btn-enter-mission'),
+            formPlayerId: document.getElementById('form-player-id'),
+            inputPlayerName: document.getElementById('input-player-name'),
+            avatarPickerGrid: document.getElementById('avatar-picker-grid'),
+
+            hudAvatar: document.getElementById('hud-avatar'),
+            hudPlayerName: document.getElementById('hud-player-name'),
+            hudScore: document.getElementById('hud-score'),
+            hudStreakVal: document.getElementById('hud-streak-val'),
+            hudTimer: document.getElementById('hud-timer'),
+            hudProgressText: document.getElementById('hud-progress-text'),
+            hudProgressBar: document.getElementById('hud-progress-bar'),
+            hudMobileProgressText: document.getElementById('hud-mobile-progress-text'),
+            hudMobileProgressBar: document.getElementById('hud-mobile-progress-bar'),
+            hudLivesContainer: document.getElementById('hud-lives-container'),
+
+            qCategoryTag: document.getElementById('q-category-tag'),
+            qNumberTag: document.getElementById('q-number-tag'),
+            qPrompt: document.getElementById('q-prompt'),
+            qVisualBox: document.getElementById('q-visual-box'),
+            qOptionsContainer: document.getElementById('q-options-container'),
+            btnHint: document.getElementById('btn-hint'),
+            hintBox: document.getElementById('hint-box'),
+            hintText: document.getElementById('hint-text'),
+            feedbackBox: document.getElementById('feedback-box'),
+            feedbackHeader: document.getElementById('feedback-header'),
+            feedbackExplanation: document.getElementById('feedback-explanation'),
+            btnNextQuestion: document.getElementById('btn-next-question'),
+
+            resPlayerName: document.getElementById('res-player-name'),
+            resFinalScore: document.getElementById('res-final-score'),
+            resAccuracy: document.getElementById('res-accuracy'),
+            resTimeElapsed: document.getElementById('res-time-elapsed'),
+            resultsStars: document.getElementById('results-stars'),
+            btnPlayAgain: document.getElementById('btn-play-again'),
+
+            btnSoundToggle: document.getElementById('btn-sound-toggle'),
+            iconSoundOn: document.getElementById('icon-sound-on'),
+            iconSoundOff: document.getElementById('icon-sound-off'),
+            btnFormulas: document.getElementById('btn-formulas'),
+            modalFormulas: document.getElementById('modal-formulas'),
+            formulasContent: document.getElementById('formulas-content'),
+            btnScratchpad: document.getElementById('btn-scratchpad'),
+            modalScratchpad: document.getElementById('modal-scratchpad'),
+            btnPauseGame: document.getElementById('btn-pause-game'),
+            modalPause: document.getElementById('modal-pause'),
+            btnResumeGame: document.getElementById('btn-resume-game'),
+            btnRestartGame: document.getElementById('btn-restart-game')
+        };
+
+        /* Initialize UI with Game Config */
+        function initMetadata() {
+            document.title = `${GAME_CONFIG.title} — CYE MathVerse`;
+            document.getElementById('game-brand-title').textContent = GAME_CONFIG.title;
+            document.getElementById('game-title').textContent = GAME_CONFIG.title;
+            document.getElementById('game-subtitle').textContent = GAME_CONFIG.subtitle;
+            document.getElementById('game-icon').textContent = GAME_CONFIG.icon;
+            document.getElementById('badge-form').textContent = GAME_CONFIG.form;
+            document.getElementById('badge-chapter').textContent = GAME_CONFIG.chapter;
+            document.getElementById('badge-difficulty').textContent = GAME_CONFIG.difficulty;
+            document.getElementById('badge-time').textContent = GAME_CONFIG.timeEst;
+            document.getElementById('mission-description').textContent = GAME_CONFIG.missionBrief;
+
+            // Render Formulas in Cheat Sheet Modal
+            if (el.formulasContent && GAME_CONFIG.formulas) {
+                el.formulasContent.innerHTML = GAME_CONFIG.formulas.map(f => `
+                    <div class="p-3 rounded-xl bg-slate-900/90 border border-slate-800">
+                        <div class="text-xs font-bold text-cye-400 uppercase">${f.title}</div>
+                        <div class="font-code text-teal-300 text-xs sm:text-sm mt-1">${f.code}</div>
+                    </div>
+                `).join('');
+            }
+        }
+
+        /* Screen Switcher Helper */
+        function showScreen(screenId) {
+            [el.screenBriefing, el.screenPlayerId, el.screenGameplay, el.screenResults].forEach(s => {
+                if (s) s.classList.add('hidden');
+            });
+            if (screenId === 'briefing') el.screenBriefing.classList.remove('hidden');
+            if (screenId === 'player_id') el.screenPlayerId.classList.remove('hidden');
+            if (screenId === 'gameplay') el.screenGameplay.classList.remove('hidden');
+            if (screenId === 'results') el.screenResults.classList.remove('hidden');
+            state.screen = screenId;
+        }
+
+        /* Avatar Picker Listener */
+        el.avatarPickerGrid.querySelectorAll('.avatar-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                sound.init();
+                sound.playClick();
+                el.avatarPickerGrid.querySelectorAll('.avatar-btn').forEach(b => {
+                    b.classList.remove('border-cye-500');
+                    b.classList.add('border-transparent');
+                });
+                btn.classList.remove('border-transparent');
+                btn.classList.add('border-cye-500');
+                state.playerAvatar = btn.getAttribute('data-avatar');
+            });
+        });
+
+        /* Step 1 -> Step 2 */
+        el.btnEnterMission.addEventListener('click', () => {
+            sound.init();
+            sound.playClick();
+            showScreen('player_id');
+            el.inputPlayerName.focus();
+        });
+
+        /* Step 2 -> Gameplay Start */
+        el.formPlayerId.addEventListener('submit', (e) => {
+            e.preventDefault();
+            sound.init();
+            sound.playClick();
+            const nameVal = el.inputPlayerName.value.trim();
+            if (nameVal) state.playerName = nameVal;
+
+            // Update HUD
+            el.hudAvatar.textContent = state.playerAvatar;
+            el.hudPlayerName.textContent = state.playerName;
+
+            startGameplay();
+        });
+
+        /* Start / Reset Gameplay */
+        function startGameplay() {
+            state.currentQuestionIndex = 0;
+            state.score = 0;
+            state.lives = GAME_CONFIG.totalLives;
+            state.streak = 0;
+            state.maxStreak = 0;
+            state.correctCount = 0;
+            state.timerSeconds = 0;
+            state.isPaused = false;
+
+            updateHUD();
+            showScreen('gameplay');
+            loadQuestion(0);
+            startTimer();
+        }
+
+        /* Timer Handler */
+        function startTimer() {
+            if (state.timerInterval) clearInterval(state.timerInterval);
+            state.timerInterval = setInterval(() => {
+                if (!state.isPaused && state.screen === 'gameplay') {
+                    state.timerSeconds++;
+                    const mins = String(Math.floor(state.timerSeconds / 60)).padStart(2, '0');
+                    const secs = String(state.timerSeconds % 60).padStart(2, '0');
+                    el.hudTimer.textContent = `${mins}:${secs}`;
+                }
+            }, 1000);
+        }
+
+        /* Render Current Question */
+        function loadQuestion(idx) {
+            state.answeredCurrentQuestion = false;
+            const q = GAME_CONFIG.questions[idx];
+            if (!q) {
+                endMission();
+                return;
+            }
+
+            // Update tags & prompt
+            el.qCategoryTag.textContent = q.category || 'Challenge';
+            el.qNumberTag.textContent = `Question #${idx + 1} of ${GAME_CONFIG.questions.length}`;
+            el.qPrompt.textContent = q.prompt;
+
+            // Visual box
+            if (q.visual) {
+                el.qVisualBox.textContent = q.visual;
+                el.qVisualBox.classList.remove('hidden');
+            } else {
+                el.qVisualBox.classList.add('hidden');
+            }
+
+            // Reset hint
+            el.hintText.textContent = q.hint || "Analyze the problem carefully.";
+            el.hintBox.classList.add('hidden');
+
+            // Reset feedback
+            el.feedbackBox.classList.add('hidden');
+
+            // Render Options
+            el.qOptionsContainer.innerHTML = '';
+            q.options.forEach((opt, optIdx) => {
+                const btn = document.createElement('button');
+                btn.className = `btn-bounce w-full text-left p-4 sm:p-5 rounded-2xl bg-slate-900/90 hover:bg-slate-800/90 border-2 border-slate-800 hover:border-cye-500/50 text-slate-200 font-semibold text-sm sm:text-base transition flex items-center justify-between group`;
+                btn.innerHTML = `
+                    <span class="flex items-center gap-3">
+                        <span class="w-8 h-8 rounded-xl bg-slate-800 group-hover:bg-cye-500/20 text-slate-300 group-hover:text-cye-300 flex items-center justify-center font-bold text-xs border border-slate-700">
+                            ${String.fromCharCode(65 + optIdx)}
+                        </span>
+                        <span>${opt.label}</span>
+                    </span>
+                    <span class="text-slate-600 group-hover:text-cye-400 font-bold text-sm">➔</span>
+                `;
+                btn.addEventListener('click', () => handleAnswer(opt, btn, q));
+                el.qOptionsContainer.appendChild(btn);
+            });
+
+            updateProgressBars();
+        }
+
+        /* Handle User Option Click */
+        function handleAnswer(selectedOpt, btnElement, questionData) {
+            if (state.answeredCurrentQuestion) return;
+            state.answeredCurrentQuestion = true;
+
+            // Disable all option buttons
+            const optionButtons = el.qOptionsContainer.querySelectorAll('button');
+            optionButtons.forEach(b => {
+                b.disabled = true;
+                b.classList.remove('btn-bounce', 'hover:border-cye-500/50');
+            });
+
+            if (selectedOpt.isCorrect) {
+                // Correct Flow
+                sound.playSuccess();
+                confetti.burst(35);
+                state.streak++;
+                if (state.streak > state.maxStreak) state.maxStreak = state.streak;
+                state.correctCount++;
+
+                const streakBonus = (state.streak - 1) * GAME_CONFIG.streakMultiplierBonus;
+                const earnedPoints = GAME_CONFIG.pointsPerCorrect + streakBonus;
+                state.score += earnedPoints;
+
+                // Visual button highlight
+                btnElement.classList.add('border-emerald-500', 'bg-emerald-950/40', 'text-emerald-200');
+
+                // Feedback UI
+                el.feedbackBox.className = 'rounded-2xl p-5 border border-emerald-500/40 bg-emerald-950/30 text-emerald-100 animate-fade-in';
+                el.feedbackHeader.innerHTML = `<span class="text-emerald-400">✓ EXCELLENT WORK!</span> <span class="text-xs bg-emerald-500/20 text-emerald-300 px-2 py-0.5 rounded font-bold">+${earnedPoints} PTS</span>`;
+                el.feedbackExplanation.innerHTML = `<p>${questionData.explanation}</p>`;
+            } else {
+                // Incorrect Flow
+                sound.playError();
+                state.streak = 0;
+                state.lives--;
+
+                // Visual button highlight
+                btnElement.classList.add('border-red-500', 'bg-red-950/40', 'text-red-200');
+
+                // Highlight the actual correct answer
+                questionData.options.forEach((opt, idx) => {
+                    if (opt.isCorrect && optionButtons[idx]) {
+                        optionButtons[idx].classList.add('border-emerald-500/60', 'bg-emerald-950/20');
+                    }
+                });
+
+                // Feedback UI
+                el.feedbackBox.className = 'rounded-2xl p-5 border border-red-500/40 bg-red-950/30 text-red-100 animate-fade-in';
+                el.feedbackHeader.innerHTML = `<span class="text-red-400">✗ INCORRECT SOLUTION</span> <span class="text-xs bg-red-500/20 text-red-300 px-2 py-0.5 rounded font-bold">-1 LIFE</span>`;
+                el.feedbackExplanation.innerHTML = `<p>${questionData.explanation}</p>`;
+            }
+
+            updateHUD();
+            el.feedbackBox.classList.remove('hidden');
+
+            // Check Game Over by Lives
+            if (state.lives <= 0) {
+                el.btnNextQuestion.innerHTML = `<span>SEE FINAL EVALUATION</span> ➔`;
+            }
+        }
+
+        /* Next Question Button Listener */
+        el.btnNextQuestion.addEventListener('click', () => {
+            sound.playClick();
+            if (state.lives <= 0) {
+                endMission();
+                return;
+            }
+
+            state.currentQuestionIndex++;
+            if (state.currentQuestionIndex < GAME_CONFIG.questions.length) {
+                loadQuestion(state.currentQuestionIndex);
+            } else {
+                endMission();
+            }
+        });
+
+        /* Toggle Hint Drawer */
+        el.btnHint.addEventListener('click', () => {
+            sound.playClick();
+            el.hintBox.classList.toggle('hidden');
+        });
+
+        /* Update HUD UI elements */
+        function updateHUD() {
+            el.hudScore.textContent = state.score.toLocaleString();
+            el.hudStreakVal.textContent = `x${Math.max(1, state.streak)}`;
+
+            // Render Lives Hearts
+            el.hudLivesContainer.innerHTML = '';
+            for (let i = 0; i < GAME_CONFIG.totalLives; i++) {
+                const heart = document.createElement('span');
+                heart.textContent = i < state.lives ? '❤️' : '🖤';
+                heart.className = i < state.lives ? 'text-red-500' : 'text-slate-600 opacity-60';
+                el.hudLivesContainer.appendChild(heart);
+            }
+        }
+
+        function updateProgressBars() {
+            const total = GAME_CONFIG.questions.length;
+            const current = state.currentQuestionIndex + 1;
+            const pct = Math.round((current / total) * 100);
+
+            el.hudProgressText.textContent = `Challenge ${current} / ${total}`;
+            el.hudProgressBar.style.width = `${pct}%`;
+            el.hudMobileProgressText.textContent = `Challenge ${current} / ${total}`;
+            el.hudMobileProgressBar.style.width = `${pct}%`;
+        }
+
+        /* End Mission & Show Results */
+        function endMission() {
+            if (state.timerInterval) clearInterval(state.timerInterval);
+            sound.playFanfare();
+            confetti.burst(100);
+
+            const totalQ = GAME_CONFIG.questions.length;
+            const accuracyPct = Math.round((state.correctCount / totalQ) * 100);
+
+            // Populate Results Card
+            el.resPlayerName.textContent = `${state.playerAvatar} ${state.playerName}`;
+            el.resFinalScore.textContent = state.score.toLocaleString();
+            el.resAccuracy.textContent = `${accuracyPct}% (${state.correctCount}/${totalQ})`;
+
+            const mins = String(Math.floor(state.timerSeconds / 60)).padStart(2, '0');
+            const secs = String(state.timerSeconds % 60).padStart(2, '0');
+            el.resTimeElapsed.textContent = `${mins}:${secs}`;
+
+            // Calculate Stars
+            let starsHtml = '';
+            if (accuracyPct >= 80 && state.lives > 0) {
+                starsHtml = '<span class="text-amber-400">⭐</span><span class="text-amber-400">⭐</span><span class="text-amber-400">⭐</span>';
+            } else if (accuracyPct >= 50) {
+                starsHtml = '<span class="text-amber-400">⭐</span><span class="text-amber-400">⭐</span><span class="text-slate-600">☆</span>';
+            } else {
+                starsHtml = '<span class="text-amber-400">⭐</span><span class="text-slate-600">☆</span><span class="text-slate-600">☆</span>';
+            }
+            el.resultsStars.innerHTML = starsHtml;
+
+            // Save High Score in LocalStorage
+            try {
+                const storageKey = `CYE_HIGHSCORE_${GAME_CONFIG.title.replace(/\s+/g, '_')}`;
+                const prev = parseInt(localStorage.getItem(storageKey) || '0', 10);
+                if (state.score > prev) {
+                    localStorage.setItem(storageKey, state.score.toString());
+                }
+            } catch(e) {}
+
+            showScreen('results');
+        }
+
+        /* Play Again Button Listener */
+        el.btnPlayAgain.addEventListener('click', () => {
+            sound.playClick();
+            startGameplay();
+        });
+
+        /* =========================================================================
+           5. MODALS & SCRATCHPAD CANVAS
+           ========================================================================= */
+        // Formulas Modal
+        el.btnFormulas.addEventListener('click', () => {
+            sound.playClick();
+            el.modalFormulas.classList.remove('hidden');
+        });
+
+        // Scratchpad Modal & Drawing Setup
+        const scratchCanvas = document.getElementById('scratch-canvas');
+        const scratchCtx = scratchCanvas ? scratchCanvas.getContext('2d') : null;
+        let isDrawing = false;
+
+        function resizeScratchCanvas() {
+            if (!scratchCanvas) return;
+            scratchCanvas.width = scratchCanvas.offsetWidth;
+            scratchCanvas.height = scratchCanvas.offsetHeight;
+            if (scratchCtx) {
+                scratchCtx.strokeStyle = '#2dd4bf';
+                scratchCtx.lineWidth = 2.5;
+                scratchCtx.lineCap = 'round';
+                scratchCtx.lineJoin = 'round';
+            }
+        }
+
+        el.btnScratchpad.addEventListener('click', () => {
+            sound.playClick();
+            el.modalScratchpad.classList.remove('hidden');
+            setTimeout(resizeScratchCanvas, 50);
+        });
+
+        document.getElementById('btn-clear-canvas')?.addEventListener('click', () => {
+            if (scratchCtx && scratchCanvas) {
+                scratchCtx.clearRect(0, 0, scratchCanvas.width, scratchCanvas.height);
+            }
+        });
+
+        if (scratchCanvas) {
+            function getPos(e) {
+                const rect = scratchCanvas.getBoundingClientRect();
+                const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+                const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+                return { x: clientX - rect.left, y: clientY - rect.top };
+            }
+
+            function startDraw(e) {
+                isDrawing = true;
+                const pos = getPos(e);
+                if (scratchCtx) {
+                    scratchCtx.beginPath();
+                    scratchCtx.moveTo(pos.x, pos.y);
+                }
+            }
+
+            function moveDraw(e) {
+                if (!isDrawing || !scratchCtx) return;
+                const pos = getPos(e);
+                scratchCtx.lineTo(pos.x, pos.y);
+                scratchCtx.stroke();
+            }
+
+            function stopDraw() { isDrawing = false; }
+
+            scratchCanvas.addEventListener('mousedown', startDraw);
+            scratchCanvas.addEventListener('mousemove', moveDraw);
+            window.addEventListener('mouseup', stopDraw);
+
+            scratchCanvas.addEventListener('touchstart', (e) => { e.preventDefault(); startDraw(e); }, { passive: false });
+            scratchCanvas.addEventListener('touchmove', (e) => { e.preventDefault(); moveDraw(e); }, { passive: false });
+            scratchCanvas.addEventListener('touchend', stopDraw);
+        }
+
+        // Pause Modal
+        el.btnPauseGame.addEventListener('click', () => {
+            sound.playClick();
+            state.isPaused = true;
+            el.modalPause.classList.remove('hidden');
+        });
+
+        el.btnResumeGame.addEventListener('click', () => {
+            sound.playClick();
+            state.isPaused = false;
+            el.modalPause.classList.add('hidden');
+        });
+
+        el.btnRestartGame.addEventListener('click', () => {
+            sound.playClick();
+            el.modalPause.classList.add('hidden');
+            startGameplay();
+        });
+
+        // Close Any Modal Buttons
+        document.querySelectorAll('.modal-close').forEach(btn => {
+            btn.addEventListener('click', () => {
+                sound.playClick();
+                el.modalFormulas.classList.add('hidden');
+                el.modalScratchpad.classList.add('hidden');
+                el.modalPause.classList.add('hidden');
+            });
+        });
+
+        // Sound Toggle Button
+        el.btnSoundToggle.addEventListener('click', () => {
+            sound.init();
+            sound.enabled = !sound.enabled;
+            if (sound.enabled) {
+                el.iconSoundOn.classList.remove('hidden');
+                el.iconSoundOff.classList.add('hidden');
+                sound.playClick();
+            } else {
+                el.iconSoundOn.classList.add('hidden');
+                el.iconSoundOff.classList.remove('hidden');
+            }
+        });
+
+        // Keyboard Shortcut: Numbers 1-4 for A-D, Space for Next, Esc for Pause
+        window.addEventListener('keydown', (e) => {
+            if (state.screen === 'gameplay' && !state.isPaused) {
+                if (['1', '2', '3', '4'].includes(e.key) && !state.answeredCurrentQuestion) {
+                    const idx = parseInt(e.key, 10) - 1;
+                    const buttons = el.qOptionsContainer.querySelectorAll('button');
+                    if (buttons[idx]) buttons[idx].click();
+                } else if (e.key === ' ' || e.key === 'Enter') {
+                    if (state.answeredCurrentQuestion && !el.feedbackBox.classList.contains('hidden')) {
+                        el.btnNextQuestion.click();
+                    }
+                } else if (e.key === 'Escape') {
+                    el.btnPauseGame.click();
+                }
+            }
+        });
+
+        // Boot
+        initMetadata();
+    </script>
+</body>
+</html>

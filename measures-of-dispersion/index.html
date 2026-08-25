@@ -1,0 +1,1772 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>CYE MathVerse — Dispersion Protocol (Form 4 Chapter 8)</title>
+
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@500;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- KaTeX for Professional Mathematical Typesetting -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+
+    <!-- Custom Tailwind Configuration -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Plus Jakarta Sans', 'sans-serif'],
+                        tech: ['Orbitron', 'sans-serif'],
+                        code: ['JetBrains Mono', 'monospace'],
+                    },
+                    colors: {
+                        cye: {
+                            50: '#f0fdfa',
+                            100: '#ccfbf1',
+                            400: '#2dd4bf',
+                            500: '#14b8a6', // Primary Teal
+                            600: '#0d9488',
+                            700: '#0f766e',
+                            800: '#115e59',
+                            900: '#134e4a',
+                            dark: '#070b14',
+                            surface: '#0d1527',
+                            card: '#131f38',
+                            cyan: '#00f2fe',
+                            accent: '#8b5cf6', // Violet
+                            gold: '#f59e0b',
+                            emerald: '#10b981',
+                            danger: '#ef4444',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        :root {
+            --glow-cyan: rgba(0, 242, 254, 0.4);
+            --glow-teal: rgba(20, 184, 166, 0.4);
+            --glow-violet: rgba(139, 92, 246, 0.4);
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: #070b14;
+            color: #f1f5f9;
+            touch-action: manipulation;
+            user-select: none;
+            -webkit-user-select: none;
+        }
+
+        .font-tech { font-family: 'Orbitron', sans-serif; }
+        .font-code { font-family: 'JetBrains Mono', monospace; }
+
+        /* KaTeX custom sizing & contrast */
+        .katex {
+            font-size: 1.08em;
+            color: #e2e8f0;
+        }
+        .katex-display {
+            margin: 0.5em 0;
+        }
+
+        /* Glassmorphic UI styling */
+        .glass-panel {
+            background: rgba(13, 21, 39, 0.86);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(0, 242, 254, 0.18);
+        }
+
+        .glass-card {
+            background: rgba(19, 31, 56, 0.90);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            border: 1px solid rgba(45, 212, 191, 0.22);
+            box-shadow: 0 12px 35px rgba(0, 0, 0, 0.55), 0 0 25px rgba(0, 242, 254, 0.09);
+        }
+
+        .glow-cyan {
+            box-shadow: 0 0 22px var(--glow-cyan);
+        }
+        .glow-teal {
+            box-shadow: 0 0 22px var(--glow-teal);
+        }
+        .glow-violet {
+            box-shadow: 0 0 22px var(--glow-violet);
+        }
+
+        /* Ambient animated background grid */
+        .cyber-grid {
+            background-image: 
+                linear-gradient(to right, rgba(0, 242, 254, 0.04) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(0, 242, 254, 0.04) 1px, transparent 1px);
+            background-size: 32px 32px;
+        }
+
+        /* Button Hover & Active Animations */
+        .btn-bounce {
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .btn-bounce:hover {
+            transform: translateY(-2px);
+        }
+        .btn-bounce:active {
+            transform: translateY(1px);
+        }
+
+        /* Option cards */
+        .option-card {
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .option-card:hover:not(.disabled) {
+            transform: translateY(-2px);
+            border-color: #00f2fe;
+            background-color: rgba(0, 242, 254, 0.08);
+        }
+        .option-card.correct {
+            border-color: #10b981 !important;
+            background-color: rgba(16, 185, 129, 0.18) !important;
+            box-shadow: 0 0 20px rgba(16, 185, 129, 0.35);
+        }
+        .option-card.incorrect {
+            border-color: #ef4444 !important;
+            background-color: rgba(239, 68, 68, 0.18) !important;
+            box-shadow: 0 0 20px rgba(239, 68, 68, 0.35);
+        }
+
+        /* Confetti Overlay Canvas */
+        #confetti-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none;
+            z-index: 9999;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: rgba(7, 11, 20, 0.6); }
+        ::-webkit-scrollbar-thumb { background: #1e293b; border-radius: 3px; }
+        ::-webkit-scrollbar-thumb:hover { background: #334155; }
+    </style>
+</head>
+<body class="cyber-grid min-h-screen flex flex-col justify-between p-3 sm:p-5">
+
+    <!-- Confetti Effects Canvas -->
+    <canvas id="confetti-canvas"></canvas>
+
+    <!-- =========================================================================
+         TOP NAVIGATION & HEADER (Global)
+         ========================================================================= -->
+    <header class="glass-panel w-full max-w-5xl mx-auto rounded-2xl px-4 py-3 flex items-center justify-between z-20">
+        <!-- Back to Library & Branding -->
+        <div class="flex items-center gap-3">
+            <a href="../" class="flex items-center gap-2 text-slate-400 hover:text-white transition px-2.5 py-1.5 rounded-lg hover:bg-white/5 text-xs sm:text-sm font-semibold">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+                </svg>
+                <span>Game Library</span>
+            </a>
+            <span class="text-slate-600 hidden sm:inline">|</span>
+            <div class="flex items-center gap-2">
+                <span class="w-2.5 h-2.5 rounded-full bg-cye-cyan animate-pulse"></span>
+                <span id="game-brand-title" class="font-tech text-xs sm:text-sm font-bold tracking-wider text-cye-cyan">DISPERSION PROTOCOL</span>
+            </div>
+        </div>
+
+        <!-- Global Header Controls -->
+        <div class="flex items-center gap-2">
+            <!-- Interactive Visualizer Modal Trigger -->
+            <button id="btn-visualizer" class="p-2 rounded-xl bg-slate-800/80 hover:bg-slate-700 text-cyan-300 hover:text-white border border-cyan-500/30 transition flex items-center gap-1 text-xs font-bold px-2.5" title="Interactive Box Plot Visualizer">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-cyan-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                </svg>
+                <span class="hidden sm:inline">Lab Sandbox</span>
+            </button>
+
+            <!-- Formula Reference Modal Trigger -->
+            <button id="btn-formulas" class="p-2 rounded-xl bg-slate-800/80 hover:bg-slate-700 text-slate-300 hover:text-white border border-slate-700 transition" title="Formulas & Reference">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+                </svg>
+            </button>
+
+            <!-- Scratchpad / Drawing Modal Trigger -->
+            <button id="btn-scratchpad" class="p-2 rounded-xl bg-slate-800/80 hover:bg-slate-700 text-slate-300 hover:text-white border border-slate-700 transition" title="Interactive Scratchpad">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
+                </svg>
+            </button>
+
+            <!-- Audio Sound Toggle -->
+            <button id="btn-sound-toggle" class="p-2 rounded-xl bg-slate-800/80 hover:bg-slate-700 text-slate-300 hover:text-white border border-slate-700 transition" title="Toggle Sound">
+                <svg id="icon-sound-on" xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z" />
+                </svg>
+                <svg id="icon-sound-off" xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 hidden text-red-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z" />
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M17 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2" />
+                </svg>
+            </button>
+        </div>
+    </header>
+
+    <!-- =========================================================================
+         MAIN APPLICATION CONTAINER (Screen Switcher)
+         ========================================================================= -->
+    <main class="flex-grow flex items-center justify-center my-4 sm:my-6 w-full max-w-5xl mx-auto px-2">
+
+        <!-- =====================================================================
+             SCREEN 1: OPENING & MISSION BRIEFING
+             ===================================================================== -->
+        <section id="screen-briefing" class="w-full max-w-3xl glass-card rounded-3xl p-6 sm:p-10 flex flex-col items-center text-center animate-fade-in math-render">
+            <!-- Syllabus Tags & Badges -->
+            <div class="flex flex-wrap items-center justify-center gap-2 mb-4">
+                <span class="px-3 py-1 rounded-full bg-cyan-500/20 text-cyan-300 border border-cyan-500/30 text-xs font-black tracking-wider uppercase">
+                    FORM 4
+                </span>
+                <span class="px-3 py-1 rounded-full bg-cye-500/20 text-cye-300 border border-cye-500/30 text-xs font-bold">
+                    Chapter 8 • Measures of Dispersion for Ungrouped Data
+                </span>
+                <span class="px-3 py-1 rounded-full bg-amber-500/20 text-amber-300 border border-amber-500/30 text-xs font-bold">
+                    ⭐⭐ Medium-Hard
+                </span>
+                <span class="px-3 py-1 rounded-full bg-purple-500/20 text-purple-300 border border-purple-500/30 text-xs font-bold">
+                    ⏱️ 12–18 min
+                </span>
+            </div>
+
+            <!-- Game Title & Subtitle -->
+            <div class="mb-6">
+                <div class="text-5xl sm:text-6xl mb-3">📊</div>
+                <h1 class="font-tech text-3xl sm:text-5xl font-black tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-cye-cyan via-teal-300 to-cye-accent">
+                    DISPERSION PROTOCOL
+                </h1>
+                <p class="text-slate-400 text-sm sm:text-base mt-2 max-w-xl mx-auto font-medium">
+                    Quantum Data Laboratory • Statistical Anomaly Detection & Telemetry Forensics
+                </p>
+            </div>
+
+            <!-- Mission Briefing Panel -->
+            <div class="w-full bg-slate-900/80 rounded-2xl p-5 sm:p-6 border border-slate-800 text-left mb-8 space-y-4">
+                <div class="flex items-center gap-2 text-cye-cyan font-bold text-sm tracking-wide uppercase">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                    <span>Mission Objective</span>
+                </div>
+                <p class="text-slate-300 text-sm sm:text-base leading-relaxed">
+                    Welcome, Lead Data Analyst! Rogue statistical noise and anomalies are threatening the quantum core. Your mission is to analyze ungrouped telemetry streams, compute ranges, quartiles, interquartile ranges ($IQR$), variance ($\sigma^2$), standard deviation ($\sigma$), box plot distributions, and detect sensor outliers using the $1.5 \times IQR$ protocol.
+                </p>
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-2 border-t border-slate-800 text-xs text-slate-400">
+                    <div class="flex items-center gap-2">
+                        <span class="text-cye-cyan font-black text-base">📈</span> 
+                        <span>Range, Quartiles &amp; $IQR$</span>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <span class="text-cye-accent font-black text-base">🔬</span> 
+                        <span>Variance ($\sigma^2$) &amp; Std Dev ($\sigma$)</span>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <span class="text-amber-400 font-black text-base">🎯</span> 
+                        <span>Box Plots, Outliers &amp; Consistency</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Action Button -->
+            <button id="btn-enter-mission" class="btn-bounce w-full sm:w-auto px-10 py-4 rounded-2xl font-tech font-black text-base sm:text-lg bg-gradient-to-r from-cye-cyan to-cye-500 hover:from-teal-300 hover:to-cyan-400 text-slate-950 shadow-lg shadow-cyan-500/25 flex items-center justify-center gap-3">
+                <span>INITIALIZE MISSION</span>
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                </svg>
+            </button>
+        </section>
+
+        <!-- =====================================================================
+             SCREEN 2: PLAYER IDENTIFICATION & AVATAR
+             ===================================================================== -->
+        <section id="screen-player-id" class="hidden w-full max-w-xl glass-card rounded-3xl p-6 sm:p-10 flex flex-col items-center text-center animate-fade-in">
+            <div class="w-16 h-16 rounded-2xl bg-cyan-500/20 text-cyan-300 border border-cyan-500/30 flex items-center justify-center text-3xl mb-4">
+                🔬
+            </div>
+            <h2 class="font-tech text-2xl sm:text-3xl font-black text-white mb-2">ANALYST PROFILE</h2>
+            <p class="text-slate-400 text-sm mb-6">Enter your name and select your specialized forensic avatar.</p>
+
+            <form id="form-player-id" class="w-full space-y-6">
+                <!-- Name Input -->
+                <div class="text-left">
+                    <label for="input-player-name" class="block text-xs font-bold uppercase tracking-wider text-slate-300 mb-2">
+                        Analyst / Cadet Name
+                    </label>
+                    <input 
+                        type="text" 
+                        id="input-player-name" 
+                        maxlength="20" 
+                        placeholder="e.g. Agent Gauss" 
+                        required
+                        class="w-full px-4 py-3.5 rounded-xl bg-slate-900/90 border border-slate-700 text-white placeholder-slate-500 focus:outline-none focus:border-cye-cyan focus:ring-2 focus:ring-cye-cyan/20 font-bold text-base transition"
+                    >
+                </div>
+
+                <!-- Avatar Selection Grid -->
+                <div class="text-left">
+                    <label class="block text-xs font-bold uppercase tracking-wider text-slate-300 mb-2">
+                        Select Character Avatar
+                    </label>
+                    <div class="grid grid-cols-6 gap-2" id="avatar-picker-grid">
+                        <button type="button" class="avatar-btn p-3 rounded-xl bg-slate-900/80 border border-slate-700 hover:border-cye-cyan text-2xl flex items-center justify-center transition selected" data-avatar="🔬">🔬</button>
+                        <button type="button" class="avatar-btn p-3 rounded-xl bg-slate-900/80 border border-slate-700 hover:border-cye-cyan text-2xl flex items-center justify-center transition" data-avatar="⚡">⚡</button>
+                        <button type="button" class="avatar-btn p-3 rounded-xl bg-slate-900/80 border border-slate-700 hover:border-cye-cyan text-2xl flex items-center justify-center transition" data-avatar="🛰️">🛰️</button>
+                        <button type="button" class="avatar-btn p-3 rounded-xl bg-slate-900/80 border border-slate-700 hover:border-cye-cyan text-2xl flex items-center justify-center transition" data-avatar="🦉">🦉</button>
+                        <button type="button" class="avatar-btn p-3 rounded-xl bg-slate-900/80 border border-slate-700 hover:border-cye-cyan text-2xl flex items-center justify-center transition" data-avatar="🤖">🤖</button>
+                        <button type="button" class="avatar-btn p-3 rounded-xl bg-slate-900/80 border border-slate-700 hover:border-cye-cyan text-2xl flex items-center justify-center transition" data-avatar="🚀">🚀</button>
+                    </div>
+                </div>
+
+                <!-- Submit Button -->
+                <button type="submit" class="btn-bounce w-full py-4 rounded-xl font-tech font-bold text-base bg-gradient-to-r from-cye-cyan to-cye-500 hover:from-teal-300 hover:to-cyan-400 text-slate-950 shadow-lg shadow-cyan-500/25 transition">
+                    LAUNCH INVESTIGATION ➔
+                </button>
+            </form>
+        </section>
+
+        <!-- =====================================================================
+             SCREEN 3: INTERACTIVE GAMEPLAY LOOP
+             ===================================================================== -->
+        <section id="screen-gameplay" class="hidden w-full max-w-4xl flex flex-col gap-4 animate-fade-in">
+            
+            <!-- Dynamic HUD Header -->
+            <div class="glass-panel rounded-2xl p-4 flex flex-wrap items-center justify-between gap-3 shadow-md">
+                <!-- Left: Profile & Lives -->
+                <div class="flex items-center gap-3">
+                    <div class="w-11 h-11 rounded-xl bg-cyan-500/20 border border-cyan-500/30 flex items-center justify-center text-2xl" id="hud-avatar">
+                        🔬
+                    </div>
+                    <div>
+                        <div class="text-xs font-bold text-slate-400" id="hud-player-name">Agent Gauss</div>
+                        <!-- Lives Hearts -->
+                        <div class="flex items-center gap-1 text-base mt-0.5" id="hud-lives-container">
+                            <span class="heart text-red-500 animate-pulse">❤️</span>
+                            <span class="heart text-red-500 animate-pulse">❤️</span>
+                            <span class="heart text-red-500 animate-pulse">❤️</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Center: Progress & Timer -->
+                <div class="flex flex-col items-center flex-grow max-w-xs mx-auto">
+                    <div class="flex items-center justify-between w-full text-xs font-bold text-slate-400 mb-1.5">
+                        <span id="hud-question-counter">Stage 1 / 10</span>
+                        <span class="font-code text-cyan-300 flex items-center gap-1">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                            <span id="hud-timer">00:00</span>
+                        </span>
+                    </div>
+                    <!-- Progress Bar -->
+                    <div class="w-full h-2.5 bg-slate-900 rounded-full overflow-hidden border border-slate-700">
+                        <div id="hud-progress-bar" class="h-full bg-gradient-to-r from-cye-cyan to-cye-500 transition-all duration-300 w-0"></div>
+                    </div>
+                </div>
+
+                <!-- Right: Score & Streak -->
+                <div class="flex items-center gap-3 text-right">
+                    <div>
+                        <div class="text-[10px] font-bold uppercase tracking-wider text-slate-400">Score</div>
+                        <div class="font-tech text-lg font-black text-white" id="hud-score">0</div>
+                    </div>
+                    <div class="px-2.5 py-1 rounded-xl bg-purple-500/20 border border-purple-500/30 text-purple-300 font-tech font-bold text-xs flex items-center gap-1" id="hud-streak-badge">
+                        <span>🔥</span>
+                        <span id="hud-streak-text">1x</span>
+                    </div>
+                    <button id="btn-pause-game" class="p-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700" title="Pause Game">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 9v6m4-6v6m7-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Question & Challenge Card -->
+            <div class="glass-card rounded-3xl p-5 sm:p-7 flex flex-col gap-5">
+                
+                <!-- Category Pill & Hint Trigger -->
+                <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+                    <span id="question-category" class="px-3 py-1 rounded-full bg-cye-500/20 text-cye-300 border border-cye-500/30 text-xs font-black uppercase tracking-wider">
+                        Stage 1 • Range & Dispersion
+                    </span>
+                    <button id="btn-show-hint" class="flex items-center gap-1 text-xs font-bold text-amber-400 hover:text-amber-300 transition bg-amber-500/10 hover:bg-amber-500/20 px-3 py-1 rounded-lg border border-amber-500/20">
+                        <span>💡</span>
+                        <span>Hint</span>
+                    </button>
+                </div>
+
+                <!-- Question Prompt -->
+                <h3 id="question-prompt" class="text-base sm:text-lg md:text-xl font-bold text-white leading-relaxed math-render">
+                    Analyzing raw telemetry streams...
+                </h3>
+
+                <!-- Question Visual / Data Container -->
+                <div id="question-visual-container" class="w-full bg-slate-950/90 rounded-2xl p-4 sm:p-5 border border-slate-800 flex flex-col items-center justify-center text-sm sm:text-base text-cyan-300 overflow-x-auto math-render">
+                    <!-- Dynamic math formula or data plot inserted via JS -->
+                </div>
+
+                <!-- Tactical Hint Banner (Initially Hidden) -->
+                <div id="hint-banner" class="hidden bg-amber-950/40 border border-amber-500/30 rounded-xl p-3.5 text-xs sm:text-sm text-amber-200 flex items-start gap-2.5 animate-fade-in math-render">
+                    <span class="text-base">💡</span>
+                    <div id="hint-text" class="flex-grow">Tactical hint explanation...</div>
+                </div>
+
+                <!-- Multiple Choice Options Grid -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1" id="options-container">
+                    <!-- Option buttons dynamically generated -->
+                </div>
+
+                <!-- Feedback & Step-by-Step Solution Banner -->
+                <div id="feedback-panel" class="hidden rounded-2xl p-5 border flex flex-col gap-3 animate-fade-in math-render">
+                    <div class="flex items-center gap-2 font-tech font-black text-sm uppercase tracking-wide" id="feedback-title">
+                        <!-- Correct / Incorrect Header -->
+                    </div>
+                    <div id="feedback-explanation" class="text-xs sm:text-sm text-slate-300 leading-relaxed font-sans">
+                        <!-- Step-by-step math explanation -->
+                    </div>
+                    <div class="pt-2 flex justify-end">
+                        <button id="btn-next-question" class="btn-bounce px-6 py-2.5 rounded-xl font-tech font-bold text-xs bg-cye-cyan hover:bg-teal-300 text-slate-950 transition flex items-center gap-2">
+                            <span>NEXT STAGE</span>
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- =====================================================================
+             SCREEN 4: MISSION EVALUATION & DEBRIEFING (Summary)
+             ===================================================================== -->
+        <section id="screen-summary" class="hidden w-full max-w-3xl glass-card rounded-3xl p-6 sm:p-10 flex flex-col items-center text-center animate-fade-in">
+            <!-- Final Star Rating Header -->
+            <div class="flex items-center justify-center gap-2 text-4xl sm:text-5xl mb-3" id="summary-stars">
+                ⭐ ⭐ ⭐
+            </div>
+            
+            <h2 class="font-tech text-2xl sm:text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-cye-cyan via-teal-300 to-cye-accent mb-1" id="summary-headline">
+                MISSION ACCOMPLISHED!
+            </h2>
+            <div class="text-sm font-bold text-slate-400 mb-6" id="summary-rank">
+                Rank: Senior Dispersion Master
+            </div>
+
+            <!-- Stats Matrix -->
+            <div class="w-full grid grid-cols-2 sm:grid-cols-4 gap-3 mb-6 text-center">
+                <div class="bg-slate-900/80 rounded-2xl p-3.5 border border-slate-800">
+                    <div class="text-[10px] font-bold uppercase text-slate-400">Analyst</div>
+                    <div class="font-bold text-sm text-cyan-300 truncate mt-0.5" id="summary-player">Agent Gauss</div>
+                </div>
+                <div class="bg-slate-900/80 rounded-2xl p-3.5 border border-slate-800">
+                    <div class="text-[10px] font-bold uppercase text-slate-400">Total Score</div>
+                    <div class="font-tech font-black text-lg text-white mt-0.5" id="summary-score">0</div>
+                </div>
+                <div class="bg-slate-900/80 rounded-2xl p-3.5 border border-slate-800">
+                    <div class="text-[10px] font-bold uppercase text-slate-400">Accuracy</div>
+                    <div class="font-tech font-black text-lg text-emerald-400 mt-0.5" id="summary-accuracy">100%</div>
+                </div>
+                <div class="bg-slate-900/80 rounded-2xl p-3.5 border border-slate-800">
+                    <div class="text-[10px] font-bold uppercase text-slate-400">Duration</div>
+                    <div class="font-code font-bold text-base text-purple-300 mt-0.5" id="summary-time">00:00</div>
+                </div>
+            </div>
+
+            <!-- High Scores & Review Accordion -->
+            <div class="w-full bg-slate-900/60 rounded-2xl p-4 border border-slate-800 mb-6 text-left">
+                <div class="flex items-center justify-between mb-2">
+                    <span class="text-xs font-bold uppercase tracking-wider text-slate-400 flex items-center gap-1.5">
+                        <span>🏆</span>
+                        <span>Local Anomaly Lab Records</span>
+                    </span>
+                    <span class="text-[11px] text-cyan-400 font-bold" id="summary-best-record">High Score: 0</span>
+                </div>
+                <div class="text-xs text-slate-400 leading-relaxed">
+                    Performance recorded in local storage. All measures of dispersion computed successfully according to KSSM SPM criteria.
+                </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="flex flex-wrap items-center justify-center gap-3 w-full">
+                <button id="btn-play-again" class="btn-bounce flex-1 min-w-[160px] py-3.5 rounded-xl font-tech font-bold text-sm bg-gradient-to-r from-cye-cyan to-cye-500 hover:from-teal-300 hover:to-cyan-400 text-slate-950 shadow-lg shadow-cyan-500/25 transition">
+                    PLAY AGAIN 🔄
+                </button>
+                <a href="../" class="btn-bounce flex-1 min-w-[160px] py-3.5 rounded-xl font-tech font-bold text-sm bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 text-center transition">
+                    GAME LIBRARY 🏠
+                </a>
+            </div>
+        </section>
+    </main>
+
+    <!-- =========================================================================
+         MODALS: FORMULAS, SCRATCHPAD, VISUALIZER, PAUSE
+         ========================================================================= -->
+
+    <!-- MODAL 1: FORMULAS CHEAT SHEET -->
+    <div id="modal-formulas" class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="glass-card max-w-2xl w-full rounded-3xl p-6 sm:p-8 space-y-4 max-h-[90vh] overflow-y-auto border border-cyan-500/30">
+            <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+                <div class="flex items-center gap-2 text-cyan-400 font-tech font-bold text-lg">
+                    <span>📑</span>
+                    <span>DISPERSION FORMULA MATRIX</span>
+                </div>
+                <button class="modal-close p-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-400 hover:text-white transition">
+                    ✕
+                </button>
+            </div>
+
+            <div class="space-y-3.5 text-xs sm:text-sm text-slate-300 math-render" id="formula-list-container">
+                <!-- Formulas rendered via JS -->
+            </div>
+
+            <button class="modal-close w-full py-3 rounded-xl bg-slate-800 hover:bg-slate-700 text-white font-bold text-xs transition">
+                Close Matrix Reference
+            </button>
+        </div>
+    </div>
+
+    <!-- MODAL 2: INTERACTIVE SCRATCHPAD -->
+    <div id="modal-scratchpad" class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="glass-card max-w-2xl w-full rounded-3xl p-5 sm:p-7 space-y-3 border border-slate-700 flex flex-col">
+            <div class="flex items-center justify-between border-b border-slate-800 pb-2">
+                <div class="flex items-center gap-2 text-cye-400 font-tech font-bold text-sm">
+                    <span>✏️</span>
+                    <span>CALCULATION SCRATCHPAD</span>
+                </div>
+                <button class="modal-close p-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-400 hover:text-white transition">
+                    ✕
+                </button>
+            </div>
+
+            <!-- Canvas Drawing Area -->
+            <div class="w-full bg-slate-950 rounded-xl border border-slate-800 overflow-hidden relative touch-none" style="height: 320px;">
+                <canvas id="scratchpad-canvas" class="w-full h-full cursor-crosshair"></canvas>
+            </div>
+
+            <!-- Controls Toolbar -->
+            <div class="flex flex-wrap items-center justify-between gap-2 pt-1">
+                <div class="flex items-center gap-2">
+                    <button id="btn-draw-pen" class="px-3 py-1.5 rounded-lg bg-cye-500/20 text-cye-300 border border-cye-500/40 text-xs font-bold">Pen</button>
+                    <button id="btn-draw-eraser" class="px-3 py-1.5 rounded-lg bg-slate-800 text-slate-400 border border-slate-700 text-xs font-bold">Eraser</button>
+                    <div class="flex items-center gap-1.5 ml-2">
+                        <button class="color-dot w-5 h-5 rounded-full bg-cyan-400 ring-2 ring-white" data-color="#22d3ee"></button>
+                        <button class="color-dot w-5 h-5 rounded-full bg-emerald-400" data-color="#34d399"></button>
+                        <button class="color-dot w-5 h-5 rounded-full bg-amber-400" data-color="#fbbf24"></button>
+                        <button class="color-dot w-5 h-5 rounded-full bg-red-400" data-color="#f87171"></button>
+                        <button class="color-dot w-5 h-5 rounded-full bg-white" data-color="#ffffff"></button>
+                    </div>
+                </div>
+                <div class="flex items-center gap-2">
+                    <button id="btn-clear-scratchpad" class="px-3 py-1.5 rounded-lg bg-red-500/20 hover:bg-red-500/30 text-red-300 border border-red-500/30 text-xs font-bold transition">
+                        Clear Canvas
+                    </button>
+                    <button class="modal-close px-4 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-white text-xs font-bold transition">
+                        Done
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL 3: INTERACTIVE LAB SANDBOX & BOX PLOT VISUALIZER -->
+    <div id="modal-visualizer" class="fixed inset-0 bg-slate-950/85 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
+        <div class="glass-card max-w-3xl w-full rounded-3xl p-6 sm:p-8 space-y-4 max-h-[92vh] overflow-y-auto border border-cyan-500/40">
+            <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+                <div class="flex items-center gap-2 text-cyan-400 font-tech font-bold text-lg">
+                    <span>🔬</span>
+                    <span>INTERACTIVE STATISTICAL LAB SANDBOX</span>
+                </div>
+                <button class="modal-close p-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-400 hover:text-white transition">
+                    ✕
+                </button>
+            </div>
+
+            <p class="text-xs text-slate-400 leading-relaxed math-render">
+                Test any ungrouped dataset below to observe live real-time calculations of $\text{Min}$, $Q_1$, $\text{Median } (Q_2)$, $Q_3$, $\text{Max}$, $IQR$, Outliers, Variance ($\sigma^2$), Standard Deviation ($\sigma$), and dynamic Box Plot rendering!
+            </p>
+
+            <!-- Custom Data Input Bar -->
+            <div class="flex flex-col sm:flex-row gap-2">
+                <input 
+                    type="text" 
+                    id="sandbox-input" 
+                    value="12, 18, 22, 25, 29, 34, 38, 42, 50, 75" 
+                    placeholder="Enter comma separated numbers e.g. 10, 15, 20, 25, 30" 
+                    class="flex-grow px-4 py-2.5 rounded-xl bg-slate-900 border border-slate-700 text-cyan-300 font-code text-xs sm:text-sm focus:outline-none focus:border-cyan-400"
+                >
+                <button id="btn-sandbox-calculate" class="btn-bounce px-5 py-2.5 rounded-xl bg-cye-cyan hover:bg-teal-300 text-slate-950 font-tech font-bold text-xs">
+                    ANALYZE DATA
+                </button>
+            </div>
+
+            <!-- Dynamic Box Plot Canvas / SVG -->
+            <div class="w-full bg-slate-950/90 rounded-2xl p-4 border border-slate-800 flex flex-col items-center">
+                <div class="text-[11px] font-bold uppercase tracking-wider text-slate-400 mb-2 w-full text-left">
+                    Live 5-Number Summary &amp; Box Plot
+                </div>
+                <div id="sandbox-plot-container" class="w-full h-40 flex items-center justify-center">
+                    <!-- SVG Box Plot drawn here -->
+                </div>
+            </div>
+
+            <!-- Live Metrics Grid -->
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-2.5 text-center text-xs math-render" id="sandbox-metrics-grid">
+                <!-- Filled dynamically -->
+            </div>
+
+            <!-- Transformation Live Simulator -->
+            <div class="bg-slate-900/80 rounded-2xl p-4 border border-slate-800 space-y-2">
+                <div class="text-xs font-bold text-cyan-300 flex items-center gap-1.5">
+                    <span>⚡</span>
+                    <span>Live Data Transformation Tester</span>
+                </div>
+                <p class="text-[11px] text-slate-400">
+                    Apply mathematical operations to all values and observe how dispersion measures respond:
+                </p>
+                <div class="flex flex-wrap gap-2 pt-1 math-render">
+                    <button class="btn-transform px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-bold border border-slate-700" data-op="add5">Add $+5$ to all ($x+5$)</button>
+                    <button class="btn-transform px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-bold border border-slate-700" data-op="mul2">Multiply $\times 2$ ($2x$)</button>
+                    <button class="btn-transform px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-bold border border-slate-700" data-op="div2">Divide by $2$ ($x/2$)</button>
+                    <button class="btn-transform px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-red-300 text-xs font-bold border border-slate-700" data-op="reset">Reset Default</button>
+                </div>
+            </div>
+
+            <button class="modal-close w-full py-3 rounded-xl bg-slate-800 hover:bg-slate-700 text-white font-bold text-xs transition">
+                Return to Mission
+            </button>
+        </div>
+    </div>
+
+    <!-- MODAL 4: PAUSE MENU -->
+    <div id="modal-pause" class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="glass-card max-w-sm w-full rounded-3xl p-6 sm:p-8 space-y-4 text-center border border-slate-700">
+            <div class="text-4xl">⏸️</div>
+            <h3 class="font-tech text-2xl font-black text-white">MISSION PAUSED</h3>
+            <p class="text-slate-400 text-xs">Dispersion investigation is temporarily suspended.</p>
+            <div class="space-y-2 pt-2">
+                <button id="btn-resume-game" class="btn-bounce w-full py-3 rounded-xl bg-cye-cyan hover:bg-teal-300 text-slate-950 font-tech font-bold text-sm transition">
+                    RESUME PROTOCOL
+                </button>
+                <button id="btn-restart-game" class="w-full py-3 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white font-bold text-xs border border-slate-700 transition">
+                    Restart Challenge
+                </button>
+                <a href="../" class="block w-full py-3 rounded-xl bg-slate-900 hover:bg-slate-800 text-slate-400 hover:text-slate-200 font-bold text-xs border border-slate-800 transition">
+                    Exit to Library
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- =========================================================================
+         GAME LOGIC & ENGINE JAVASCRIPT
+         ========================================================================= -->
+    <script>
+        /* =========================================================================
+           0. MATHEMATICAL TYPESETTING HELPER (KaTeX Auto-Renderer)
+           ========================================================================= */
+        function triggerMathRender(container) {
+            const target = container || document.body;
+            if (window.renderMathInElement) {
+                try {
+                    window.renderMathInElement(target, {
+                        delimiters: [
+                            { left: '$$', right: '$$', display: true },
+                            { left: '$', right: '$', display: false },
+                            { left: '\\(', right: '\\)', display: false },
+                            { left: '\\[', right: '\\]', display: true }
+                        ],
+                        throwOnError: false
+                    });
+                } catch(e) {
+                    console.warn("KaTeX render notice:", e);
+                }
+            }
+        }
+
+        /* =========================================================================
+           1. GAME CONFIGURATION & QUESTIONS DATABASE (KSSM SPM Form 4 Chapter 8)
+           ========================================================================= */
+        const GAME_CONFIG = {
+            title: "DISPERSION PROTOCOL",
+            subtitle: "Form 4 Chapter 8: Measures of Dispersion for Ungrouped Data",
+            icon: "📊",
+            form: "FORM 4",
+            chapter: "Chapter 8 • Measures of Dispersion",
+            difficulty: "⭐⭐ Medium-Hard",
+            timeEst: "⏱️ 12–18 min",
+            missionBrief: "Solve tactical dispersion challenges, decode stem-and-leaf plots, compute variance and standard deviation, inspect box plots, filter outliers, and compare data consistency!",
+            totalLives: 3,
+            pointsPerCorrect: 100,
+            streakMultiplierBonus: 25,
+
+            // Formula Matrix Cheat-Sheet (Typeset with KaTeX)
+            formulas: [
+                {
+                    title: "1. Range (Julat)",
+                    math: "$$\\text{Range} = \\text{Maximum Value} - \\text{Minimum Value}$$",
+                    desc: "Measures the overall spread between the extreme values of the dataset. Highly sensitive to extreme outliers."
+                },
+                {
+                    title: "2. Quartiles & Interquartile Range (IQR)",
+                    math: "$$\\text{IQR} = Q_3 - Q_1$$",
+                    desc: "$Q_1 = \\text{Lower Quartile (25th percentile)}$, $Q_2 = \\text{Median (50th percentile)}$, $Q_3 = \\text{Upper Quartile (75th percentile)}$. The Interquartile Range measures the spread of the middle 50% of data and is resistant to outliers."
+                },
+                {
+                    title: "3. Variance (\\sigma^2) for Ungrouped Data",
+                    math: "$$\\sigma^2 = \\frac{\\sum x^2}{N} - \\bar{x}^2 \\quad \\text{or} \\quad \\sigma^2 = \\frac{\\sum (x - \\bar{x})^2}{N}$$",
+                    desc: "For frequency distribution tables: $$\\sigma^2 = \\frac{\\sum f x^2}{\\sum f} - \\bar{x}^2 \\quad \\text{where } \\bar{x} = \\frac{\\sum fx}{\\sum f}$$"
+                },
+                {
+                    title: "4. Standard Deviation (\\sigma)",
+                    math: "$$\\sigma = \\sqrt{\\sigma^2} = \\sqrt{\\frac{\\sum x^2}{N} - \\bar{x}^2}$$",
+                    desc: "Measures average dispersion around the mean. A smaller $\\sigma$ indicates higher consistency and reliability."
+                },
+                {
+                    title: "5. Outlier Detection Rule (1.5 \\times IQR)",
+                    math: "$$\\text{Lower Fence} = Q_1 - 1.5(\\text{IQR}), \\quad \\text{Upper Fence} = Q_3 + 1.5(\\text{IQR})$$",
+                    desc: "Any data reading $x < \\text{Lower Fence}$ or $x > \\text{Upper Fence}$ is an Outlier (Pencilan)."
+                },
+                {
+                    title: "6. Effect of Data Transformation on Dispersion",
+                    math: "$$\\begin{aligned} x \\pm k &\\implies \\text{Range, IQR, } \\sigma^2, \\sigma \\text{ remain UNCHANGED} \\\\ k \\cdot x &\\implies \\text{Range} \\times k, \\quad \\text{IQR} \\times k, \\quad \\sigma \\times k, \\quad \\sigma^2 \\times k^2 \\\\ \\frac{x}{k} &\\implies \\frac{\\text{Range}}{k}, \\quad \\frac{\\text{IQR}}{k}, \\quad \\frac{\\sigma}{k}, \\quad \\frac{\\sigma^2}{k^2} \\end{aligned}$$",
+                    desc: "Adding or subtracting a constant shifts all data points equally but does NOT alter the spread/dispersion!"
+                }
+            ],
+
+            // 10 Progressive KSSM Questions
+            questions: [
+                {
+                    category: "Stage 1 • Range Calculation",
+                    prompt: "A weather probe recorded atmospheric temperature readings: $[ 14, 28, 19, 35, 12, 41, 22 ]\\text{ }^\\circ\\text{C}$. What is the **Range** of these temperature readings?",
+                    visual: "$$\\text{Ordered Data Set: } \\{ 12, 14, 19, 22, 28, 35, 41 \\} \\quad (N = 7)$$",
+                    hint: "Identify the maximum value and minimum value, then compute $\\text{Range} = \\text{Max} - \\text{Min}$.",
+                    options: [
+                        { label: "$29\\text{ }^\\circ\\text{C}$", isCorrect: true },
+                        { label: "$27\\text{ }^\\circ\\text{C}$", isCorrect: false },
+                        { label: "$33\\text{ }^\\circ\\text{C}$", isCorrect: false },
+                        { label: "$41\\text{ }^\\circ\\text{C}$", isCorrect: false }
+                    ],
+                    explanation: "<div class='space-y-1'><div>1. Arrange data in ascending order: $[ 12, 14, 19, 22, 28, 35, 41 ]$</div><div>2. $\\text{Minimum} = 12\\text{ }^\\circ\\text{C}, \\quad \\text{Maximum} = 41\\text{ }^\\circ\\text{C}$</div><div>3. $\\text{Range} = \\text{Maximum} - \\text{Minimum} = 41 - 12 = 29\\text{ }^\\circ\\text{C}$</div></div>"
+                },
+                {
+                    category: "Stage 2 • Quartiles & IQR",
+                    prompt: "Given the sorted telemetry dataset: $[ 11, 13, 15, 18, 20, 24, 28, 30, 35 ]$. Find the **Interquartile Range ($IQR$)**.",
+                    visual: "$$\\text{Values: } 11, \\; 13, \\; 15, \\; 18, \\; \\mathbf{[20]}, \\; 24, \\; 28, \\; 30, \\; 35 \\quad (N = 9)$$",
+                    hint: "Median ($Q_2$) is the 5th value ($20$). Find $Q_1$ from the lower half and $Q_3$ from the upper half, then compute $Q_3 - Q_1$.",
+                    options: [
+                        { label: "$\\text{IQR} = 15$", isCorrect: true },
+                        { label: "$\\text{IQR} = 14$", isCorrect: false },
+                        { label: "$\\text{IQR} = 17$", isCorrect: false },
+                        { label: "$\\text{IQR} = 24$", isCorrect: false }
+                    ],
+                    explanation: "<div class='space-y-1.5'><div>1. For $N = 9$, Median ($Q_2$) is the 5th value: $Q_2 = 20$</div><div>2. Lower half: $[11, 13, 15, 18] \\implies Q_1 = \\frac{13 + 15}{2} = 14$</div><div>3. Upper half: $[24, 28, 30, 35] \\implies Q_3 = \\frac{28 + 30}{2} = 29$</div><div>4. $\\text{Interquartile Range (IQR)} = Q_3 - Q_1 = 29 - 14 = 15$</div></div>"
+                },
+                {
+                    category: "Stage 3 • Stem-and-Leaf Analysis",
+                    prompt: "The stem-and-leaf plot displays $12$ server latency readings (ms) with $\\text{Key: } 2 \\mid 4 = 24\\text{ ms}$. What is the **Interquartile Range ($IQR$)**?",
+                    visual: "$$\\begin{array}{c|l} \\textbf{Stem} & \\textbf{Leaf} \\\\ \\hline 1 & 8, \\; 9 \\\\ 2 & 1, \\; 3, \\; 5, \\; 8 \\\\ 3 & 0, \\; 2, \\; 4, \\; 7 \\\\ 4 & 1, \\; 6 \\end{array} \\qquad \\text{Key: } 3 \\mid 2 = 32\\text{ ms} \\quad (N = 12)$$",
+                    hint: "List the 12 ordered values. Find $Q_1$ from the first 6 values and $Q_3$ from the last 6 values.",
+                    options: [
+                        { label: "$13.5\\text{ ms}$", isCorrect: true },
+                        { label: "$15.0\\text{ ms}$", isCorrect: false },
+                        { label: "$12.0\\text{ ms}$", isCorrect: false },
+                        { label: "$17.5\\text{ ms}$", isCorrect: false }
+                    ],
+                    explanation: "<div class='space-y-1.5'><div>1. Ordered values: $[ 18, 19, 21, 23, 25, 28, 30, 32, 34, 37, 41, 46 ]$</div><div>2. Lower half (first 6): $[18, 19, \\mathbf{21, 23}, 25, 28] \\implies Q_1 = \\frac{21 + 23}{2} = 22\\text{ ms}$</div><div>3. Upper half (last 6): $[30, 32, \\mathbf{34, 37}, 41, 46] \\implies Q_3 = \\frac{34 + 37}{2} = 35.5\\text{ ms}$</div><div>4. $\\text{IQR} = Q_3 - Q_1 = 35.5 - 22 = 13.5\\text{ ms}$</div></div>"
+                },
+                {
+                    category: "Stage 4 • Variance & Standard Deviation",
+                    prompt: "For the sensor sample $[ 3, 5, 7, 8, 12 ]$, calculate the **Variance ($\\sigma^2$)** and **Standard Deviation ($\\sigma$)**.",
+                    visual: "$$N = 5 \\quad \\big| \\quad \\sum x = 35 \\quad \\big| \\quad \\sum x^2 = 3^2 + 5^2 + 7^2 + 8^2 + 12^2 = 291$$",
+                    hint: "Mean $\\bar{x} = \\frac{35}{5} = 7$. Use formula $\\sigma^2 = \\frac{\\sum x^2}{N} - \\bar{x}^2$, then $\\sigma = \\sqrt{\\sigma^2}$.",
+                    options: [
+                        { label: "$\\sigma^2 = 9.20, \\quad \\sigma = 3.03$", isCorrect: true },
+                        { label: "$\\sigma^2 = 8.40, \\quad \\sigma = 2.90$", isCorrect: false },
+                        { label: "$\\sigma^2 = 12.50, \\quad \\sigma = 3.54$", isCorrect: false },
+                        { label: "$\\sigma^2 = 6.80, \\quad \\sigma = 2.61$", isCorrect: false }
+                    ],
+                    explanation: "<div class='space-y-1.5'><div>1. Mean: $\\bar{x} = \\frac{\\sum x}{N} = \\frac{35}{5} = 7$</div><div>2. Sum of Squares: $\\sum x^2 = 9 + 25 + 49 + 64 + 144 = 291$</div><div>3. Variance: $\\sigma^2 = \\frac{\\sum x^2}{N} - \\bar{x}^2 = \\frac{291}{5} - 7^2 = 58.2 - 49 = 9.20$</div><div>4. Standard Deviation: $\\sigma = \\sqrt{9.20} \\approx 3.03$</div></div>"
+                },
+                {
+                    category: "Stage 5 • Frequency Table Dispersion",
+                    prompt: "A drone flight test recorded scores: Score $x = [2, 4, 6, 8]$ with frequencies $f = [3, 5, 8, 4]$. What is the **Standard Deviation ($\\sigma$)**?",
+                    visual: "$$\\begin{array}{|c|c|c|c|} \\hline \\text{Score } (x) & \\text{Frequency } (f) & fx & fx^2 \\\\ \\hline 2 & 3 & 6 & 12 \\\\ 4 & 5 & 20 & 80 \\\\ 6 & 8 & 48 & 288 \\\\ 8 & 4 & 32 & 256 \\\\ \\hline \\textbf{Total} & \\sum f = 20 & \\sum fx = 106 & \\sum fx^2 = 636 \\\\ \\hline \\end{array}$$",
+                    hint: "Mean $\\bar{x} = \\frac{106}{20} = 5.3$. Use $\\sigma = \\sqrt{\\frac{\\sum fx^2}{\\sum f} - \\bar{x}^2}$.",
+                    options: [
+                        { label: "$\\sigma = 1.93$", isCorrect: true },
+                        { label: "$\\sigma = 2.45$", isCorrect: false },
+                        { label: "$\\sigma = 3.71$", isCorrect: false },
+                        { label: "$\\sigma = 1.48$", isCorrect: false }
+                    ],
+                    explanation: "<div class='space-y-1.5'><div>1. Mean: $\\bar{x} = \\frac{\\sum fx}{\\sum f} = \\frac{106}{20} = 5.3$</div><div>2. Variance: $\\sigma^2 = \\frac{\\sum fx^2}{\\sum f} - \\bar{x}^2 = \\frac{636}{20} - (5.3)^2 = 31.8 - 28.09 = 3.71$</div><div>3. Standard Deviation: $\\sigma = \\sqrt{3.71} \\approx 1.93$</div></div>"
+                },
+                {
+                    category: "Stage 6 • Box Plot & Skewness",
+                    prompt: "A Box Plot for download speeds has: $\\text{Min} = 15\\text{ Mbps}$, $Q_1 = 30\\text{ Mbps}$, $\\text{Median } (Q_2) = 45\\text{ Mbps}$, $Q_3 = 70\\text{ Mbps}$, $\\text{Max} = 95\\text{ Mbps}$. What is the **$IQR$** and distribution **skewness**?",
+                    visual: "$$\\text{Min: } 15 \\;\\text{---}\\; [\\; Q_1: 30 \\;\\text{--}\\; Q_2: 45 \\;\\text{----}\\; Q_3: 70 \\;] \\;\\text{---}\\; \\text{Max: } 95$$ $$\\text{Left Box: } (Q_2 - Q_1 = 15) \\quad < \\quad \\text{Right Box: } (Q_3 - Q_2 = 25)$$",
+                    hint: "$IQR = Q_3 - Q_1$. Check whether $(Q_3 - Q_2)$ or $(Q_2 - Q_1)$ is larger to determine skewness.",
+                    options: [
+                        { label: "$\\text{IQR} = 40\\text{ Mbps}, \\quad \\text{Skewed to the Right (Positive Skew)}$", isCorrect: true },
+                        { label: "$\\text{IQR} = 40\\text{ Mbps}, \\quad \\text{Symmetrical Distribution}$", isCorrect: false },
+                        { label: "$\\text{IQR} = 80\\text{ Mbps}, \\quad \\text{Skewed to the Left (Negative Skew)}$", isCorrect: false },
+                        { label: "$\\text{IQR} = 25\\text{ Mbps}, \\quad \\text{Skewed to the Right (Positive Skew)}$", isCorrect: false }
+                    ],
+                    explanation: "<div class='space-y-1.5'><div>1. $\\text{IQR} = Q_3 - Q_1 = 70 - 30 = 40\\text{ Mbps}$</div><div>2. Right spread: $Q_3 - Q_2 = 70 - 45 = 25$, Left spread: $Q_2 - Q_1 = 45 - 30 = 15$</div><div>3. Since the right side of the median and right whisker are wider, the distribution is **Skewed to the Right (Positive Skew)**.</div></div>"
+                },
+                {
+                    category: "Stage 7 • Outlier Detection (1.5 × IQR Rule)",
+                    prompt: "A dataset has $Q_1 = 20$ and $Q_3 = 36$. An anomaly scan detects readings: $[ 12, 28, 35, 59, 64 ]$. Using the **$1.5 \\times IQR$** rule, which reading is an **Outlier (Pencilan)**?",
+                    visual: "$$Q_1 = 20, \\quad Q_3 = 36 \\implies \\text{IQR} = 16 \\implies 1.5 \\times \\text{IQR} = 24$$ $$\\text{Lower Fence} = Q_1 - 1.5(\\text{IQR}), \\quad \\text{Upper Fence} = Q_3 + 1.5(\\text{IQR})$$",
+                    hint: "Lower Fence $= 20 - 24 = -4$. Upper Fence $= 36 + 24 = 60$. Check which reading falls outside $[-4, 60]$.",
+                    options: [
+                        { label: "$64\\text{ is an Outlier (Exceeds Upper Fence } 60\\text{)}$", isCorrect: true },
+                        { label: "$59\\text{ is an Outlier (Exceeds } Q_3\\text{)}$", isCorrect: false },
+                        { label: "$12\\text{ is an Outlier (Below } Q_1\\text{)}$", isCorrect: false },
+                        { label: "No outliers exist in the dataset", isCorrect: false }
+                    ],
+                    explanation: "<div class='space-y-1.5'><div>1. $\\text{IQR} = Q_3 - Q_1 = 36 - 20 = 16$</div><div>2. $\\text{Upper Fence} = Q_3 + 1.5(\\text{IQR}) = 36 + 1.5(16) = 36 + 24 = 60$</div><div>3. $\\text{Lower Fence} = Q_1 - 1.5(\\text{IQR}) = 20 - 24 = -4$</div><div>4. Since $64 > 60$, the reading $64$ is an **Outlier (Pencilan)**.</div></div>"
+                },
+                {
+                    category: "Stage 8 • Data Transformation Effect",
+                    prompt: "A dataset has Standard Deviation $\\sigma = 6$ and Variance $\\sigma^2 = 36$. If every value is transformed by $y = 1.5x + 5$, what are the **new $\\sigma$** and **new $\\sigma^2$**?",
+                    visual: "$$\\text{Transformation: } y = 1.5x + 5 \\quad \\big| \\quad \\text{Original: } \\sigma = 6, \\quad \\sigma^2 = 36$$",
+                    hint: "Adding $+5$ has NO effect on dispersion. Standard deviation is multiplied by $1.5$, and variance is multiplied by $(1.5)^2$.",
+                    options: [
+                        { label: "$\\text{New } \\sigma = 9, \\quad \\text{New } \\sigma^2 = 81$", isCorrect: true },
+                        { label: "$\\text{New } \\sigma = 14, \\quad \\text{New } \\sigma^2 = 41$", isCorrect: false },
+                        { label: "$\\text{New } \\sigma = 9, \\quad \\text{New } \\sigma^2 = 54$", isCorrect: false },
+                        { label: "$\\text{New } \\sigma = 6, \\quad \\text{New } \\sigma^2 = 36$", isCorrect: false }
+                    ],
+                    explanation: "<div class='space-y-1.5'><div>1. For linear transformation $y = ax + b$, the constant addition $b$ does NOT affect dispersion.</div><div>2. $\\text{New Standard Deviation} = |a| \\times \\sigma = 1.5 \\times 6 = 9$</div><div>3. $\\text{New Variance} = a^2 \\times \\sigma^2 = (1.5)^2 \\times 36 = 2.25 \\times 36 = 81$</div></div>"
+                },
+                {
+                    category: "Stage 9 • Consistency & Telemetry Analysis",
+                    prompt: "Two drone swarms have identical average battery flight times of $\\bar{x} = 120\\text{ min}$. Swarm Alpha has $\\sigma = 4.2\\text{ min}$, while Swarm Beta has $\\sigma = 10.8\\text{ min}$. Which swarm is **more consistent**?",
+                    visual: "$$\\begin{aligned} \\text{Swarm Alpha: } & \\bar{x} = 120\\text{ min}, \\quad \\sigma = 4.2\\text{ min} \\\\ \\text{Swarm Beta: } & \\bar{x} = 120\\text{ min}, \\quad \\sigma = 10.8\\text{ min} \\end{aligned}$$",
+                    hint: "In KSSM statistics, smaller standard deviation indicates data points are clustered tighter around the mean.",
+                    options: [
+                        { label: "Swarm Alpha, because its standard deviation is smaller $(\\sigma = 4.2 < 10.8)$", isCorrect: true },
+                        { label: "Swarm Beta, because its standard deviation is larger", isCorrect: false },
+                        { label: "Both are equally consistent because their means are identical", isCorrect: false },
+                        { label: "Consistency cannot be determined without sample size", isCorrect: false }
+                    ],
+                    explanation: "In SPM KSSM statistics, Standard Deviation measures dispersion/consistency. A smaller standard deviation ($\\sigma = 4.2\\text{ min}$ for Swarm Alpha) means its flight times are clustered closer to the mean, demonstrating higher consistency."
+                },
+                {
+                    category: "Stage 10 • SPM HOTS Master Challenge",
+                    prompt: "A sample of 6 test samples has $\\sum x = 60$ and $\\sum x^2 = 634$. If an extreme experimental anomaly ($x = 25$) is removed from a larger sample, which measure of dispersion changes the **LEAST**?",
+                    visual: "$$\\text{Measures: } \\big\\{ \\text{Range}, \\quad \\text{IQR}, \\quad \\text{Variance } (\\sigma^2), \\quad \\text{Standard Deviation } (\\sigma) \\big\\}$$",
+                    hint: "Which measure of dispersion evaluates only the middle $50\\%$ of data and ignores extremes?",
+                    options: [
+                        { label: "Interquartile Range ($IQR$)", isCorrect: true },
+                        { label: "Range", isCorrect: false },
+                        { label: "Variance ($\\sigma^2$)", isCorrect: false },
+                        { label: "Standard Deviation ($\\sigma$)", isCorrect: false }
+                    ],
+                    explanation: "Range, Variance ($\\sigma^2$), and Standard Deviation ($\\sigma$) all rely heavily on extreme boundary values. The Interquartile Range ($\\text{IQR} = Q_3 - Q_1$) only evaluates the middle $50\\%$ of the distribution, making it the most resistant measure of dispersion against extreme outliers."
+                }
+            ]
+        };
+
+        /* =========================================================================
+           2. PROCEDURAL SOUND SYNTHESIZER (Web Audio API - Zero Asset Dependencies)
+           ========================================================================= */
+        class SoundFX {
+            constructor() {
+                this.ctx = null;
+                this.enabled = true;
+            }
+
+            init() {
+                if (!this.ctx) {
+                    const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+                    if (AudioContextClass) this.ctx = new AudioContextClass();
+                }
+                if (this.ctx && this.ctx.state === 'suspended') {
+                    this.ctx.resume();
+                }
+            }
+
+            playClick() {
+                if (!this.enabled || !this.ctx) return;
+                try {
+                    const osc = this.ctx.createOscillator();
+                    const gain = this.ctx.createGain();
+                    osc.connect(gain);
+                    gain.connect(this.ctx.destination);
+                    osc.type = 'sine';
+                    osc.frequency.setValueAtTime(650, this.ctx.currentTime);
+                    osc.frequency.exponentialRampToValueAtTime(320, this.ctx.currentTime + 0.05);
+                    gain.gain.setValueAtTime(0.12, this.ctx.currentTime);
+                    gain.gain.linearRampToValueAtTime(0.01, this.ctx.currentTime + 0.05);
+                    osc.start();
+                    osc.stop(this.ctx.currentTime + 0.05);
+                } catch(e) {}
+            }
+
+            playSuccess() {
+                if (!this.enabled || !this.ctx) return;
+                try {
+                    const now = this.ctx.currentTime;
+                    [523.25, 659.25, 783.99, 1046.50].forEach((freq, idx) => {
+                        const osc = this.ctx.createOscillator();
+                        const gain = this.ctx.createGain();
+                        osc.connect(gain);
+                        gain.connect(this.ctx.destination);
+                        osc.type = 'triangle';
+                        osc.frequency.value = freq;
+                        gain.gain.setValueAtTime(0.18, now + idx * 0.07);
+                        gain.gain.linearRampToValueAtTime(0.01, now + idx * 0.07 + 0.18);
+                        osc.start(now + idx * 0.07);
+                        osc.stop(now + idx * 0.07 + 0.18);
+                    });
+                } catch(e) {}
+            }
+
+            playError() {
+                if (!this.enabled || !this.ctx) return;
+                try {
+                    const now = this.ctx.currentTime;
+                    [220, 175].forEach((freq, idx) => {
+                        const osc = this.ctx.createOscillator();
+                        const gain = this.ctx.createGain();
+                        osc.connect(gain);
+                        gain.connect(this.ctx.destination);
+                        osc.type = 'sawtooth';
+                        osc.frequency.value = freq;
+                        gain.gain.setValueAtTime(0.2, now + idx * 0.12);
+                        gain.gain.linearRampToValueAtTime(0.01, now + idx * 0.12 + 0.2);
+                        osc.start(now + idx * 0.12);
+                        osc.stop(now + idx * 0.12 + 0.2);
+                    });
+                } catch(e) {}
+            }
+
+            playFanfare() {
+                if (!this.enabled || !this.ctx) return;
+                try {
+                    const notes = [440, 554, 659, 880, 880, 880, 1108];
+                    const times = [0, 0.12, 0.24, 0.36, 0.55, 0.70, 0.88];
+                    const durations = [0.1, 0.1, 0.1, 0.16, 0.12, 0.12, 0.45];
+                    const now = this.ctx.currentTime;
+                    notes.forEach((f, i) => {
+                        const osc = this.ctx.createOscillator();
+                        const gain = this.ctx.createGain();
+                        osc.connect(gain);
+                        gain.connect(this.ctx.destination);
+                        osc.type = 'triangle';
+                        osc.frequency.value = f;
+                        gain.gain.setValueAtTime(0.25, now + times[i]);
+                        gain.gain.linearRampToValueAtTime(0.01, now + times[i] + durations[i]);
+                        osc.start(now + times[i]);
+                        osc.stop(now + times[i] + durations[i]);
+                    });
+                } catch(e) {}
+            }
+        }
+
+        /* =========================================================================
+           3. CONFETTI BURST GENERATOR (Canvas Particle System)
+           ========================================================================= */
+        class ConfettiManager {
+            constructor(canvasId) {
+                this.canvas = document.getElementById(canvasId);
+                this.ctx = this.canvas ? this.canvas.getContext('2d') : null;
+                this.particles = [];
+                this.animId = null;
+                this.resize();
+                window.addEventListener('resize', () => this.resize());
+            }
+
+            resize() {
+                if (!this.canvas) return;
+                this.canvas.width = window.innerWidth;
+                this.canvas.height = window.innerHeight;
+            }
+
+            burst(count = 70) {
+                if (!this.canvas || !this.ctx) return;
+                const colors = ['#00f2fe', '#14b8a6', '#8b5cf6', '#f59e0b', '#10b981', '#ef4444'];
+                const originX = this.canvas.width / 2;
+                const originY = this.canvas.height / 3;
+
+                for (let i = 0; i < count; i++) {
+                    const angle = Math.random() * Math.PI * 2;
+                    const speed = Math.random() * 8 + 3;
+                    this.particles.push({
+                        x: originX,
+                        y: originY,
+                        vx: Math.cos(angle) * speed,
+                        vy: Math.sin(angle) * speed - 2,
+                        size: Math.random() * 7 + 4,
+                        color: colors[Math.floor(Math.random() * colors.length)],
+                        rotation: Math.random() * 360,
+                        rotSpeed: (Math.random() - 0.5) * 12,
+                        alpha: 1,
+                        decay: Math.random() * 0.015 + 0.01
+                    });
+                }
+
+                if (!this.animId) this.animate();
+            }
+
+            animate() {
+                if (!this.ctx) return;
+                this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+
+                for (let i = this.particles.length - 1; i >= 0; i--) {
+                    const p = this.particles[i];
+                    p.x += p.vx;
+                    p.y += p.vy;
+                    p.vy += 0.2; // Gravity
+                    p.rotation += p.rotSpeed;
+                    p.alpha -= p.decay;
+
+                    if (p.alpha <= 0) {
+                        this.particles.splice(i, 1);
+                        continue;
+                    }
+
+                    this.ctx.save();
+                    this.ctx.globalAlpha = p.alpha;
+                    this.ctx.translate(p.x, p.y);
+                    this.ctx.rotate((p.rotation * Math.PI) / 180);
+                    this.ctx.fillStyle = p.color;
+                    this.ctx.fillRect(-p.size / 2, -p.size / 2, p.size, p.size);
+                    this.ctx.restore();
+                }
+
+                if (this.particles.length > 0) {
+                    this.animId = requestAnimationFrame(() => this.animate());
+                } else {
+                    this.animId = null;
+                }
+            }
+        }
+
+        /* =========================================================================
+           4. INTERACTIVE SCRATCHPAD MANAGER
+           ========================================================================= */
+        class ScratchpadManager {
+            constructor(canvasId) {
+                this.canvas = document.getElementById(canvasId);
+                this.ctx = this.canvas ? this.canvas.getContext('2d') : null;
+                this.drawing = false;
+                this.currentColor = '#22d3ee';
+                this.currentMode = 'pen';
+                this.lineWidth = 3;
+
+                if (this.canvas) {
+                    this.initEvents();
+                    this.resize();
+                }
+            }
+
+            resize() {
+                if (!this.canvas) return;
+                const rect = this.canvas.parentElement.getBoundingClientRect();
+                this.canvas.width = rect.width;
+                this.canvas.height = rect.height;
+                this.clear();
+            }
+
+            clear() {
+                if (!this.ctx) return;
+                this.ctx.fillStyle = '#030712';
+                this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
+            }
+
+            initEvents() {
+                const start = (e) => {
+                    this.drawing = true;
+                    const pos = this.getPos(e);
+                    this.ctx.beginPath();
+                    this.ctx.moveTo(pos.x, pos.y);
+                };
+
+                const move = (e) => {
+                    if (!this.drawing) return;
+                    e.preventDefault();
+                    const pos = this.getPos(e);
+                    this.ctx.lineTo(pos.x, pos.y);
+                    this.ctx.strokeStyle = this.currentMode === 'eraser' ? '#030712' : this.currentColor;
+                    this.ctx.lineWidth = this.currentMode === 'eraser' ? 18 : this.lineWidth;
+                    this.ctx.lineCap = 'round';
+                    this.ctx.lineJoin = 'round';
+                    this.ctx.stroke();
+                };
+
+                const stop = () => {
+                    this.drawing = false;
+                };
+
+                this.canvas.addEventListener('mousedown', start);
+                this.canvas.addEventListener('mousemove', move);
+                window.addEventListener('mouseup', stop);
+
+                this.canvas.addEventListener('touchstart', start, { passive: false });
+                this.canvas.addEventListener('touchmove', move, { passive: false });
+                window.addEventListener('touchend', stop);
+            }
+
+            getPos(e) {
+                const rect = this.canvas.getBoundingClientRect();
+                const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+                const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+                return {
+                    x: clientX - rect.left,
+                    y: clientY - rect.top
+                };
+            }
+        }
+
+        /* =========================================================================
+           5. STATISTICAL LAB SANDBOX & BOX PLOT ENGINE
+           ========================================================================= */
+        class StatSandbox {
+            constructor() {
+                this.input = document.getElementById('sandbox-input');
+                this.plotContainer = document.getElementById('sandbox-plot-container');
+                this.metricsGrid = document.getElementById('sandbox-metrics-grid');
+                this.btnCalculate = document.getElementById('btn-sandbox-calculate');
+                this.defaultData = [12, 18, 22, 25, 29, 34, 38, 42, 50, 75];
+
+                if (this.btnCalculate) {
+                    this.btnCalculate.addEventListener('click', () => this.analyze());
+                }
+
+                // Transformation buttons
+                document.querySelectorAll('.btn-transform').forEach(btn => {
+                    btn.addEventListener('click', (e) => {
+                        const op = e.currentTarget.dataset.op;
+                        this.transform(op);
+                    });
+                });
+            }
+
+            parseData() {
+                if (!this.input) return [];
+                const raw = this.input.value.split(',')
+                    .map(x => parseFloat(x.trim()))
+                    .filter(x => !isNaN(x));
+                return raw.sort((a, b) => a - b);
+            }
+
+            analyze() {
+                const data = this.parseData();
+                if (data.length < 4) {
+                    alert('Please enter at least 4 numbers to construct a valid statistical distribution.');
+                    return;
+                }
+
+                const stats = this.computeStats(data);
+                this.renderMetrics(stats);
+                this.renderBoxPlot(stats, data);
+                triggerMathRender(this.metricsGrid);
+            }
+
+            computeStats(arr) {
+                const N = arr.length;
+                const min = arr[0];
+                const max = arr[N - 1];
+                const sum = arr.reduce((a, b) => a + b, 0);
+                const mean = sum / N;
+
+                // Median Q2
+                const mid = Math.floor(N / 2);
+                let q2 = 0;
+                let lowerHalf = [];
+                let upperHalf = [];
+
+                if (N % 2 === 1) {
+                    q2 = arr[mid];
+                    lowerHalf = arr.slice(0, mid);
+                    upperHalf = arr.slice(mid + 1);
+                } else {
+                    q2 = (arr[mid - 1] + arr[mid]) / 2;
+                    lowerHalf = arr.slice(0, mid);
+                    upperHalf = arr.slice(mid);
+                }
+
+                // Q1 & Q3
+                const getMedian = (half) => {
+                    const hLen = half.length;
+                    const hMid = Math.floor(hLen / 2);
+                    if (hLen % 2 === 1) return half[hMid];
+                    return (half[hMid - 1] + half[hMid]) / 2;
+                };
+
+                const q1 = getMedian(lowerHalf);
+                const q3 = getMedian(upperHalf);
+                const iqr = q3 - q1;
+                const range = max - min;
+
+                // Variance & Std Dev
+                const sumSq = arr.reduce((a, b) => a + (b * b), 0);
+                const variance = (sumSq / N) - (mean * mean);
+                const stdDev = Math.sqrt(Math.max(0, variance));
+
+                // Outliers (1.5 IQR)
+                const lowerFence = q1 - 1.5 * iqr;
+                const upperFence = q3 + 1.5 * iqr;
+                const outliers = arr.filter(x => x < lowerFence || x > upperFence);
+
+                return {
+                    N, min, max, mean, q1, q2, q3, iqr, range,
+                    variance, stdDev, lowerFence, upperFence, outliers
+                };
+            }
+
+            renderMetrics(s) {
+                if (!this.metricsGrid) return;
+                this.metricsGrid.innerHTML = `
+                    <div class="bg-slate-900/80 p-2.5 rounded-xl border border-slate-800">
+                        <div class="text-[10px] text-slate-400 uppercase font-bold">Count ($N$) / Mean ($\\bar{x}$)</div>
+                        <div class="font-bold text-cyan-300 text-sm mt-0.5">$N = ${s.N}$, $\\bar{x} = ${s.mean.toFixed(2)}$</div>
+                    </div>
+                    <div class="bg-slate-900/80 p-2.5 rounded-xl border border-slate-800">
+                        <div class="text-[10px] text-slate-400 uppercase font-bold">Min / $Q_1$ (25%)</div>
+                        <div class="font-bold text-teal-300 text-sm mt-0.5">${s.min} | $Q_1 = ${s.q1.toFixed(1)}$</div>
+                    </div>
+                    <div class="bg-slate-900/80 p-2.5 rounded-xl border border-slate-800">
+                        <div class="text-[10px] text-slate-400 uppercase font-bold">Median ($Q_2$) / $Q_3$ (75%)</div>
+                        <div class="font-bold text-purple-300 text-sm mt-0.5">$Q_2 = ${s.q2.toFixed(1)}$ | $Q_3 = ${s.q3.toFixed(1)}$</div>
+                    </div>
+                    <div class="bg-slate-900/80 p-2.5 rounded-xl border border-slate-800">
+                        <div class="text-[10px] text-slate-400 uppercase font-bold">Max / Range</div>
+                        <div class="font-bold text-amber-300 text-sm mt-0.5">${s.max} | Range $= ${s.range.toFixed(1)}$</div>
+                    </div>
+                    <div class="bg-slate-900/80 p-2.5 rounded-xl border border-slate-800">
+                        <div class="text-[10px] text-slate-400 uppercase font-bold">Interquartile Range ($IQR$)</div>
+                        <div class="font-bold text-emerald-400 text-sm mt-0.5">$\\text{IQR} = ${s.iqr.toFixed(1)}$</div>
+                    </div>
+                    <div class="bg-slate-900/80 p-2.5 rounded-xl border border-slate-800">
+                        <div class="text-[10px] text-slate-400 uppercase font-bold">Variance ($\\sigma^2$)</div>
+                        <div class="font-bold text-cyan-400 text-sm mt-0.5">$\\sigma^2 = ${s.variance.toFixed(2)}$</div>
+                    </div>
+                    <div class="bg-slate-900/80 p-2.5 rounded-xl border border-slate-800">
+                        <div class="text-[10px] text-slate-400 uppercase font-bold">Std Dev ($\\sigma$)</div>
+                        <div class="font-bold text-violet-400 text-sm mt-0.5">$\\sigma = ${s.stdDev.toFixed(2)}$</div>
+                    </div>
+                    <div class="bg-slate-900/80 p-2.5 rounded-xl border border-slate-800">
+                        <div class="text-[10px] text-slate-400 uppercase font-bold">Outliers ($1.5 \\times IQR$)</div>
+                        <div class="font-bold ${s.outliers.length > 0 ? 'text-red-400 font-black' : 'text-slate-400'} text-sm mt-0.5">
+                            ${s.outliers.length > 0 ? s.outliers.join(', ') : 'None'}
+                        </div>
+                    </div>
+                `;
+            }
+
+            renderBoxPlot(s, data) {
+                if (!this.plotContainer) return;
+                const w = 550;
+                const h = 110;
+                const pad = 40;
+                const span = Math.max(1, s.max - s.min);
+                
+                const scale = (val) => pad + ((val - s.min) / span) * (w - 2 * pad);
+
+                const minX = scale(s.min);
+                const q1X = scale(s.q1);
+                const q2X = scale(s.q2);
+                const q3X = scale(s.q3);
+                const maxX = scale(s.max);
+                const boxY = 32;
+                const boxH = 36;
+                const midY = boxY + boxH / 2;
+
+                let pointsSvg = data.map(d => {
+                    const cx = scale(d);
+                    const isOutlier = s.outliers.includes(d);
+                    return `<circle cx="${cx}" cy="${midY}" r="${isOutlier ? 5 : 3}" fill="${isOutlier ? '#ef4444' : '#00f2fe'}" opacity="0.8" />`;
+                }).join('');
+
+                this.plotContainer.innerHTML = `
+                    <svg viewBox="0 0 ${w} ${h}" class="w-full h-full">
+                        <!-- Number Line Axis -->
+                        <line x1="${pad}" y1="85" x2="${w - pad}" y2="85" stroke="#334155" stroke-width="2" />
+                        
+                        <!-- Axis labels -->
+                        <text x="${minX}" y="100" fill="#94a3b8" font-size="10" font-family="monospace" text-anchor="middle">Min: ${s.min}</text>
+                        <text x="${q1X}" y="100" fill="#2dd4bf" font-size="10" font-family="monospace" text-anchor="middle">Q₁: ${s.q1.toFixed(1)}</text>
+                        <text x="${q2X}" y="100" fill="#a855f7" font-size="10" font-family="monospace" text-anchor="middle">Q₂: ${s.q2.toFixed(1)}</text>
+                        <text x="${q3X}" y="100" fill="#f59e0b" font-size="10" font-family="monospace" text-anchor="middle">Q₃: ${s.q3.toFixed(1)}</text>
+                        <text x="${maxX}" y="100" fill="#94a3b8" font-size="10" font-family="monospace" text-anchor="middle">Max: ${s.max}</text>
+
+                        <!-- Left Whisker -->
+                        <line x1="${minX}" y1="${midY}" x2="${q1X}" y2="${midY}" stroke="#00f2fe" stroke-width="2" stroke-dasharray="3,3" />
+                        <line x1="${minX}" y1="${boxY + 6}" x2="${minX}" y2="${boxY + boxH - 6}" stroke="#00f2fe" stroke-width="2" />
+
+                        <!-- Right Whisker -->
+                        <line x1="${q3X}" y1="${midY}" x2="${maxX}" y2="${midY}" stroke="#00f2fe" stroke-width="2" stroke-dasharray="3,3" />
+                        <line x1="${maxX}" y1="${boxY + 6}" x2="${maxX}" y2="${boxY + boxH - 6}" stroke="#00f2fe" stroke-width="2" />
+
+                        <!-- Interquartile Box -->
+                        <rect x="${q1X}" y="${boxY}" width="${Math.max(2, q3X - q1X)}" height="${boxH}" fill="rgba(0, 242, 254, 0.15)" stroke="#00f2fe" stroke-width="2" rx="4" />
+
+                        <!-- Median Line -->
+                        <line x1="${q2X}" y1="${boxY}" x2="${q2X}" y2="${boxY + boxH}" stroke="#a855f7" stroke-width="3" />
+
+                        <!-- Data Points Overlay -->
+                        ${pointsSvg}
+                    </svg>
+                `;
+            }
+
+            transform(op) {
+                let data = this.parseData();
+                if (data.length === 0) data = [...this.defaultData];
+
+                if (op === 'add5') {
+                    data = data.map(x => x + 5);
+                } else if (op === 'mul2') {
+                    data = data.map(x => x * 2);
+                } else if (op === 'div2') {
+                    data = data.map(x => parseFloat((x / 2).toFixed(1)));
+                } else if (op === 'reset') {
+                    data = [...this.defaultData];
+                }
+
+                if (this.input) {
+                    this.input.value = data.join(', ');
+                    this.analyze();
+                }
+            }
+        }
+
+        /* =========================================================================
+           6. CORE GAME STATE CONTROLLER
+           ========================================================================= */
+        class GameEngine {
+            constructor() {
+                this.sound = new SoundFX();
+                this.confetti = new ConfettiManager('confetti-canvas');
+                this.scratchpad = new ScratchpadManager('scratchpad-canvas');
+                this.sandbox = new StatSandbox();
+
+                this.playerName = 'Agent Gauss';
+                this.playerAvatar = '🔬';
+                this.currentQuestionIdx = 0;
+                this.score = 0;
+                this.streak = 0;
+                this.maxStreak = 0;
+                this.lives = GAME_CONFIG.totalLives;
+                this.timerSeconds = 0;
+                this.timerInterval = null;
+                this.isPaused = false;
+                this.answered = false;
+                this.correctCount = 0;
+
+                this.initDOM();
+                this.initModals();
+                this.initSoundToggle();
+                this.renderFormulasList();
+                
+                // Initial Math Render
+                triggerMathRender(document.body);
+            }
+
+            initDOM() {
+                // Screen Elements
+                this.screenBriefing = document.getElementById('screen-briefing');
+                this.screenPlayerId = document.getElementById('screen-player-id');
+                this.screenGameplay = document.getElementById('screen-gameplay');
+                this.screenSummary = document.getElementById('screen-summary');
+
+                // Buttons
+                document.getElementById('btn-enter-mission').addEventListener('click', () => {
+                    this.sound.init();
+                    this.sound.playClick();
+                    this.showScreen(this.screenPlayerId);
+                });
+
+                document.getElementById('form-player-id').addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    this.sound.playClick();
+                    const nameInput = document.getElementById('input-player-name');
+                    if (nameInput.value.trim()) {
+                        this.playerName = nameInput.value.trim();
+                    }
+                    this.startGame();
+                });
+
+                // Avatar Picker
+                document.querySelectorAll('.avatar-btn').forEach(btn => {
+                    btn.addEventListener('click', (e) => {
+                        this.sound.playClick();
+                        document.querySelectorAll('.avatar-btn').forEach(b => b.classList.remove('selected', 'border-cye-cyan', 'bg-cyan-500/20'));
+                        btn.classList.add('selected', 'border-cye-cyan', 'bg-cyan-500/20');
+                        this.playerAvatar = btn.dataset.avatar;
+                    });
+                });
+
+                // In-Game Buttons
+                document.getElementById('btn-show-hint').addEventListener('click', () => {
+                    this.sound.playClick();
+                    const banner = document.getElementById('hint-banner');
+                    banner.classList.toggle('hidden');
+                    triggerMathRender(banner);
+                });
+
+                document.getElementById('btn-next-question').addEventListener('click', () => {
+                    this.sound.playClick();
+                    this.nextQuestion();
+                });
+
+                document.getElementById('btn-play-again').addEventListener('click', () => {
+                    this.sound.playClick();
+                    this.startGame();
+                });
+
+                // Scratchpad tool toggles
+                document.getElementById('btn-draw-pen').addEventListener('click', () => {
+                    this.scratchpad.currentMode = 'pen';
+                    document.getElementById('btn-draw-pen').className = 'px-3 py-1.5 rounded-lg bg-cye-500/20 text-cye-300 border border-cye-500/40 text-xs font-bold';
+                    document.getElementById('btn-draw-eraser').className = 'px-3 py-1.5 rounded-lg bg-slate-800 text-slate-400 border border-slate-700 text-xs font-bold';
+                });
+
+                document.getElementById('btn-draw-eraser').addEventListener('click', () => {
+                    this.scratchpad.currentMode = 'eraser';
+                    document.getElementById('btn-draw-eraser').className = 'px-3 py-1.5 rounded-lg bg-red-500/20 text-red-300 border border-red-500/40 text-xs font-bold';
+                    document.getElementById('btn-draw-pen').className = 'px-3 py-1.5 rounded-lg bg-slate-800 text-slate-400 border border-slate-700 text-xs font-bold';
+                });
+
+                document.querySelectorAll('.color-dot').forEach(dot => {
+                    dot.addEventListener('click', (e) => {
+                        this.scratchpad.currentColor = e.target.dataset.color;
+                        document.querySelectorAll('.color-dot').forEach(d => d.classList.remove('ring-2', 'ring-white'));
+                        e.target.classList.add('ring-2', 'ring-white');
+                    });
+                });
+
+                document.getElementById('btn-clear-scratchpad').addEventListener('click', () => {
+                    this.scratchpad.clear();
+                });
+            }
+
+            initModals() {
+                const openModal = (modalId) => {
+                    this.sound.init();
+                    this.sound.playClick();
+                    const el = document.getElementById(modalId);
+                    el.classList.remove('hidden');
+                    if (modalId === 'modal-scratchpad') {
+                        setTimeout(() => this.scratchpad.resize(), 50);
+                    }
+                    if (modalId === 'modal-visualizer') {
+                        setTimeout(() => this.sandbox.analyze(), 50);
+                    }
+                    triggerMathRender(el);
+                };
+
+                const closeModal = (modal) => {
+                    this.sound.playClick();
+                    modal.classList.add('hidden');
+                };
+
+                document.getElementById('btn-formulas').addEventListener('click', () => openModal('modal-formulas'));
+                document.getElementById('btn-scratchpad').addEventListener('click', () => openModal('modal-scratchpad'));
+                document.getElementById('btn-visualizer').addEventListener('click', () => openModal('modal-visualizer'));
+
+                document.getElementById('btn-pause-game').addEventListener('click', () => {
+                    this.isPaused = true;
+                    openModal('modal-pause');
+                });
+
+                document.getElementById('btn-resume-game').addEventListener('click', () => {
+                    this.isPaused = false;
+                    document.getElementById('modal-pause').classList.add('hidden');
+                });
+
+                document.getElementById('btn-restart-game').addEventListener('click', () => {
+                    this.isPaused = false;
+                    document.getElementById('modal-pause').classList.add('hidden');
+                    this.startGame();
+                });
+
+                document.querySelectorAll('.modal-close').forEach(btn => {
+                    btn.addEventListener('click', (e) => {
+                        const modal = e.target.closest('.fixed');
+                        if (modal) closeModal(modal);
+                    });
+                });
+            }
+
+            initSoundToggle() {
+                const btn = document.getElementById('btn-sound-toggle');
+                const onIcon = document.getElementById('icon-sound-on');
+                const offIcon = document.getElementById('icon-sound-off');
+
+                btn.addEventListener('click', () => {
+                    this.sound.init();
+                    this.sound.enabled = !this.sound.enabled;
+                    if (this.sound.enabled) {
+                        onIcon.classList.remove('hidden');
+                        offIcon.classList.add('hidden');
+                        this.sound.playClick();
+                    } else {
+                        onIcon.classList.add('hidden');
+                        offIcon.classList.remove('hidden');
+                    }
+                });
+            }
+
+            renderFormulasList() {
+                const listContainer = document.getElementById('formula-list-container');
+                if (!listContainer) return;
+
+                listContainer.innerHTML = GAME_CONFIG.formulas.map(f => `
+                    <div class="bg-slate-900/90 rounded-2xl p-4 border border-slate-800 space-y-2">
+                        <div class="text-xs font-bold text-cyan-300 uppercase tracking-wide">${f.title}</div>
+                        <div class="text-white bg-slate-950 px-3 py-2.5 rounded-xl border border-cyan-500/20 text-center overflow-x-auto">${f.math}</div>
+                        <p class="text-xs text-slate-400 leading-relaxed">${f.desc}</p>
+                    </div>
+                `).join('');
+
+                triggerMathRender(listContainer);
+            }
+
+            showScreen(target) {
+                [this.screenBriefing, this.screenPlayerId, this.screenGameplay, this.screenSummary].forEach(s => {
+                    s.classList.add('hidden');
+                });
+                target.classList.remove('hidden');
+                triggerMathRender(target);
+            }
+
+            startGame() {
+                this.currentQuestionIdx = 0;
+                this.score = 0;
+                this.streak = 0;
+                this.maxStreak = 0;
+                this.lives = GAME_CONFIG.totalLives;
+                this.timerSeconds = 0;
+                this.answered = false;
+                this.correctCount = 0;
+
+                // Set HUD Profile
+                document.getElementById('hud-player-name').innerText = this.playerName;
+                document.getElementById('hud-avatar').innerText = this.playerAvatar;
+
+                this.updateHUD();
+                this.startTimer();
+                this.showScreen(this.screenGameplay);
+                this.renderQuestion();
+            }
+
+            startTimer() {
+                clearInterval(this.timerInterval);
+                this.timerInterval = setInterval(() => {
+                    if (!this.isPaused) {
+                        this.timerSeconds++;
+                        const mins = String(Math.floor(this.timerSeconds / 60)).padStart(2, '0');
+                        const secs = String(this.timerSeconds % 60).padStart(2, '0');
+                        document.getElementById('hud-timer').innerText = `${mins}:${secs}`;
+                    }
+                }, 1000);
+            }
+
+            updateHUD() {
+                document.getElementById('hud-score').innerText = this.score;
+                
+                // Lives Hearts
+                const hearts = '❤️'.repeat(Math.max(0, this.lives)) + '🖤'.repeat(Math.max(0, GAME_CONFIG.totalLives - this.lives));
+                document.getElementById('hud-lives-container').innerHTML = hearts;
+
+                // Streak Multiplier
+                const multiplier = 1 + (this.streak * 0.25);
+                document.getElementById('hud-streak-text').innerText = `${multiplier.toFixed(2)}x (${this.streak}🔥)`;
+
+                // Progress Bar
+                const total = GAME_CONFIG.questions.length;
+                const current = this.currentQuestionIdx + 1;
+                document.getElementById('hud-question-counter').innerText = `Stage ${current} / ${total}`;
+                const pct = ((this.currentQuestionIdx) / total) * 100;
+                document.getElementById('hud-progress-bar').style.width = `${pct}%`;
+            }
+
+            renderQuestion() {
+                this.answered = false;
+                const q = GAME_CONFIG.questions[this.currentQuestionIdx];
+
+                document.getElementById('question-category').innerText = q.category;
+                document.getElementById('question-prompt').innerHTML = q.prompt;
+                
+                // Render Visual Container
+                const visualEl = document.getElementById('question-visual-container');
+                visualEl.innerHTML = `<div>${q.visual}</div>`;
+
+                // Hide hint & feedback
+                document.getElementById('hint-banner').classList.add('hidden');
+                document.getElementById('hint-text').innerHTML = q.hint;
+                document.getElementById('feedback-panel').classList.add('hidden');
+
+                // Render Options Grid
+                const optContainer = document.getElementById('options-container');
+                optContainer.innerHTML = '';
+
+                q.options.forEach((opt, idx) => {
+                    const btn = document.createElement('button');
+                    btn.className = 'option-card w-full p-4 rounded-2xl bg-slate-900/90 border border-slate-800 text-left text-slate-200 font-bold text-sm sm:text-base flex items-center justify-between gap-2 shadow-sm math-render';
+                    btn.innerHTML = `
+                        <div class="flex items-center gap-3">
+                            <span class="w-7 h-7 rounded-lg bg-slate-800 text-cyan-300 flex items-center justify-center text-xs font-mono font-black shrink-0">${String.fromCharCode(65 + idx)}</span>
+                            <span class="option-label">${opt.label}</span>
+                        </div>
+                        <span class="indicator text-base shrink-0"></span>
+                    `;
+                    btn.addEventListener('click', () => this.handleAnswer(opt, btn));
+                    optContainer.appendChild(btn);
+                });
+
+                triggerMathRender(this.screenGameplay);
+            }
+
+            handleAnswer(selectedOpt, btnElement) {
+                if (this.answered) return;
+                this.answered = true;
+
+                const q = GAME_CONFIG.questions[this.currentQuestionIdx];
+                const allButtons = document.querySelectorAll('.option-card');
+                allButtons.forEach(b => b.classList.add('disabled'));
+
+                const feedbackPanel = document.getElementById('feedback-panel');
+                const feedbackTitle = document.getElementById('feedback-title');
+                const feedbackExplanation = document.getElementById('feedback-explanation');
+
+                if (selectedOpt.isCorrect) {
+                    // Correct!
+                    this.sound.playSuccess();
+                    btnElement.classList.add('correct');
+                    btnElement.querySelector('.indicator').innerText = '✓';
+
+                    this.correctCount++;
+                    this.streak++;
+                    if (this.streak > this.maxStreak) this.maxStreak = this.streak;
+
+                    const multiplier = 1 + (this.streak - 1) * 0.25;
+                    const pts = Math.round(GAME_CONFIG.pointsPerCorrect * multiplier);
+                    this.score += pts;
+
+                    if (this.streak >= 3) this.confetti.burst(30);
+
+                    feedbackPanel.className = 'rounded-2xl p-5 border border-emerald-500/40 bg-emerald-950/30 flex flex-col gap-3 animate-fade-in math-render';
+                    feedbackTitle.innerHTML = `<span class="text-emerald-400">✓ TELEMETRY VERIFIED (+${pts} PTS)</span>`;
+                } else {
+                    // Incorrect
+                    this.sound.playError();
+                    btnElement.classList.add('incorrect');
+                    btnElement.querySelector('.indicator').innerText = '✗';
+
+                    // Highlight the correct option
+                    allButtons.forEach((b, i) => {
+                        if (q.options[i].isCorrect) {
+                            b.classList.add('correct');
+                            b.querySelector('.indicator').innerText = '✓';
+                        }
+                    });
+
+                    this.streak = 0;
+                    this.lives--;
+
+                    feedbackPanel.className = 'rounded-2xl p-5 border border-red-500/40 bg-red-950/30 flex flex-col gap-3 animate-fade-in math-render';
+                    feedbackTitle.innerHTML = `<span class="text-red-400">✗ CALCULATION ANOMALY DETECTED (-1 LIFE)</span>`;
+                }
+
+                feedbackExplanation.innerHTML = q.explanation;
+                feedbackPanel.classList.remove('hidden');
+                this.updateHUD();
+
+                triggerMathRender(feedbackPanel);
+
+                if (this.lives <= 0) {
+                    document.getElementById('btn-next-question').innerText = 'VIEW DEBRIEFING';
+                }
+            }
+
+            nextQuestion() {
+                if (this.lives <= 0 || this.currentQuestionIdx >= GAME_CONFIG.questions.length - 1) {
+                    this.finishGame();
+                } else {
+                    this.currentQuestionIdx++;
+                    this.renderQuestion();
+                    this.updateHUD();
+                }
+            }
+
+            finishGame() {
+                clearInterval(this.timerInterval);
+                this.sound.playFanfare();
+                this.confetti.burst(100);
+
+                const totalQ = GAME_CONFIG.questions.length;
+                const accuracy = Math.round((this.correctCount / totalQ) * 100);
+
+                // Determine Stars
+                let stars = '⭐';
+                let rank = 'Cadet Analyst';
+                if (accuracy >= 80 && this.lives > 0) {
+                    stars = '⭐⭐⭐';
+                    rank = 'Grand Dispersion Specialist 🏆';
+                } else if (accuracy >= 50) {
+                    stars = '⭐⭐';
+                    rank = 'Senior Statistical Officer 🔬';
+                }
+
+                // Fill Summary Screen
+                document.getElementById('summary-stars').innerText = stars;
+                document.getElementById('summary-player').innerText = this.playerName;
+                document.getElementById('summary-rank').innerText = `Rank: ${rank}`;
+                document.getElementById('summary-score').innerText = this.score;
+                document.getElementById('summary-accuracy').innerText = `${accuracy}% (${this.correctCount}/${totalQ})`;
+                
+                const mins = String(Math.floor(this.timerSeconds / 60)).padStart(2, '0');
+                const secs = String(this.timerSeconds % 60).padStart(2, '0');
+                document.getElementById('summary-time').innerText = `${mins}:${secs}`;
+
+                // LocalStorage High Score Persistence
+                const storageKey = 'cye_dispersion_highscore';
+                const currentBest = parseInt(localStorage.getItem(storageKey) || '0', 10);
+                if (this.score > currentBest) {
+                    localStorage.setItem(storageKey, this.score.toString());
+                    document.getElementById('summary-best-record').innerText = `New Record: ${this.score} pts!`;
+                } else {
+                    document.getElementById('summary-best-record').innerText = `High Score: ${currentBest} pts`;
+                }
+
+                this.showScreen(this.screenSummary);
+            }
+        }
+
+        // Initialize Game on Load & ensure KaTeX triggers when ready
+        window.addEventListener('DOMContentLoaded', () => {
+            window.dispersionGame = new GameEngine();
+            // Retry math render after script defer loads
+            setTimeout(() => triggerMathRender(document.body), 100);
+            setTimeout(() => triggerMathRender(document.body), 500);
+        });
+    </script>
+</body>
+</html>

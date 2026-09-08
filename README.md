@@ -25,6 +25,9 @@ CYE-MathVerse/
 ├── financial-hero/            # 💰 Form 4: Financial Management 2D Adventure
 │   └── index.html
 │
+├── measures-of-dispersion/    # 📊 Form 4: Measures of Dispersion Quantum Data Lab
+│   └── index.html
+│
 ├── math-csi-cyber-heist/      # 🔐 Form 4 & 5: Cyber Detective Math Mystery
 │   └── index.html
 │
@@ -231,6 +234,7 @@ https://cye-mathverse.netlify.app/
 │
 ├── /                         ➔ index.html (Game Library)
 ├── /financial-hero/          ➔ financial-hero/index.html
+├── /measures-of-dispersion/  ➔ measures-of-dispersion/index.html
 ├── /math-csi-cyber-heist/    ➔ math-csi-cyber-heist/index.html
 ├── /salary-tax-tycoon/       ➔ salary-tax-tycoon/index.html
 ├── /galactic-defense/        ➔ galactic-defense/index.html

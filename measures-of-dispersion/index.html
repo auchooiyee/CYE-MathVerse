@@ -763,8 +763,8 @@
                     visual: "$$\\text{Ordered Data Set: } \\{ 12, 14, 19, 22, 28, 35, 41 \\} \\quad (N = 7)$$",
                     hint: "Identify the maximum value and minimum value, then compute $\\text{Range} = \\text{Max} - \\text{Min}$.",
                     options: [
-                        { label: "$29\\text{ }^\\circ\\text{C}$", isCorrect: true },
                         { label: "$27\\text{ }^\\circ\\text{C}$", isCorrect: false },
+                        { label: "$29\\text{ }^\\circ\\text{C}$", isCorrect: true },
                         { label: "$33\\text{ }^\\circ\\text{C}$", isCorrect: false },
                         { label: "$41\\text{ }^\\circ\\text{C}$", isCorrect: false }
                     ],
@@ -776,9 +776,9 @@
                     visual: "$$\\text{Values: } 11, \\; 13, \\; 15, \\; 18, \\; \\mathbf{[20]}, \\; 24, \\; 28, \\; 30, \\; 35 \\quad (N = 9)$$",
                     hint: "Median ($Q_2$) is the 5th value ($20$). Find $Q_1$ from the lower half and $Q_3$ from the upper half, then compute $Q_3 - Q_1$.",
                     options: [
-                        { label: "$\\text{IQR} = 15$", isCorrect: true },
                         { label: "$\\text{IQR} = 14$", isCorrect: false },
                         { label: "$\\text{IQR} = 17$", isCorrect: false },
+                        { label: "$\\text{IQR} = 15$", isCorrect: true },
                         { label: "$\\text{IQR} = 24$", isCorrect: false }
                     ],
                     explanation: "<div class='space-y-1.5'><div>1. For $N = 9$, Median ($Q_2$) is the 5th value: $Q_2 = 20$</div><div>2. Lower half: $[11, 13, 15, 18] \\implies Q_1 = \\frac{13 + 15}{2} = 14$</div><div>3. Upper half: $[24, 28, 30, 35] \\implies Q_3 = \\frac{28 + 30}{2} = 29$</div><div>4. $\\text{Interquartile Range (IQR)} = Q_3 - Q_1 = 29 - 14 = 15$</div></div>"
@@ -789,10 +789,10 @@
                     visual: "$$\\begin{array}{c|l} \\textbf{Stem} & \\textbf{Leaf} \\\\ \\hline 1 & 8, \\; 9 \\\\ 2 & 1, \\; 3, \\; 5, \\; 8 \\\\ 3 & 0, \\; 2, \\; 4, \\; 7 \\\\ 4 & 1, \\; 6 \\end{array} \\qquad \\text{Key: } 3 \\mid 2 = 32\\text{ ms} \\quad (N = 12)$$",
                     hint: "List the 12 ordered values. Find $Q_1$ from the first 6 values and $Q_3$ from the last 6 values.",
                     options: [
-                        { label: "$13.5\\text{ ms}$", isCorrect: true },
                         { label: "$15.0\\text{ ms}$", isCorrect: false },
                         { label: "$12.0\\text{ ms}$", isCorrect: false },
-                        { label: "$17.5\\text{ ms}$", isCorrect: false }
+                        { label: "$17.5\\text{ ms}$", isCorrect: false },
+                        { label: "$13.5\\text{ ms}$", isCorrect: true }
                     ],
                     explanation: "<div class='space-y-1.5'><div>1. Ordered values: $[ 18, 19, 21, 23, 25, 28, 30, 32, 34, 37, 41, 46 ]$</div><div>2. Lower half (first 6): $[18, 19, \\mathbf{21, 23}, 25, 28] \\implies Q_1 = \\frac{21 + 23}{2} = 22\\text{ ms}$</div><div>3. Upper half (last 6): $[30, 32, \\mathbf{34, 37}, 41, 46] \\implies Q_3 = \\frac{34 + 37}{2} = 35.5\\text{ ms}$</div><div>4. $\\text{IQR} = Q_3 - Q_1 = 35.5 - 22 = 13.5\\text{ ms}$</div></div>"
                 },
@@ -802,8 +802,8 @@
                     visual: "$$N = 5 \\quad \\big| \\quad \\sum x = 35 \\quad \\big| \\quad \\sum x^2 = 3^2 + 5^2 + 7^2 + 8^2 + 12^2 = 291$$",
                     hint: "Mean $\\bar{x} = \\frac{35}{5} = 7$. Use formula $\\sigma^2 = \\frac{\\sum x^2}{N} - \\bar{x}^2$, then $\\sigma = \\sqrt{\\sigma^2}$.",
                     options: [
-                        { label: "$\\sigma^2 = 9.20, \\quad \\sigma = 3.03$", isCorrect: true },
                         { label: "$\\sigma^2 = 8.40, \\quad \\sigma = 2.90$", isCorrect: false },
+                        { label: "$\\sigma^2 = 9.20, \\quad \\sigma = 3.03$", isCorrect: true },
                         { label: "$\\sigma^2 = 12.50, \\quad \\sigma = 3.54$", isCorrect: false },
                         { label: "$\\sigma^2 = 6.80, \\quad \\sigma = 2.61$", isCorrect: false }
                     ],
@@ -828,9 +828,9 @@
                     visual: "$$\\text{Min: } 15 \\;\\text{---}\\; [\\; Q_1: 30 \\;\\text{--}\\; Q_2: 45 \\;\\text{----}\\; Q_3: 70 \\;] \\;\\text{---}\\; \\text{Max: } 95$$ $$\\text{Left Box: } (Q_2 - Q_1 = 15) \\quad < \\quad \\text{Right Box: } (Q_3 - Q_2 = 25)$$",
                     hint: "$IQR = Q_3 - Q_1$. Check whether $(Q_3 - Q_2)$ or $(Q_2 - Q_1)$ is larger to determine skewness.",
                     options: [
-                        { label: "$\\text{IQR} = 40\\text{ Mbps}, \\quad \\text{Skewed to the Right (Positive Skew)}$", isCorrect: true },
                         { label: "$\\text{IQR} = 40\\text{ Mbps}, \\quad \\text{Symmetrical Distribution}$", isCorrect: false },
                         { label: "$\\text{IQR} = 80\\text{ Mbps}, \\quad \\text{Skewed to the Left (Negative Skew)}$", isCorrect: false },
+                        { label: "$\\text{IQR} = 40\\text{ Mbps}, \\quad \\text{Skewed to the Right (Positive Skew)}$", isCorrect: true },
                         { label: "$\\text{IQR} = 25\\text{ Mbps}, \\quad \\text{Skewed to the Right (Positive Skew)}$", isCorrect: false }
                     ],
                     explanation: "<div class='space-y-1.5'><div>1. $\\text{IQR} = Q_3 - Q_1 = 70 - 30 = 40\\text{ Mbps}$</div><div>2. Right spread: $Q_3 - Q_2 = 70 - 45 = 25$, Left spread: $Q_2 - Q_1 = 45 - 30 = 15$</div><div>3. Since the right side of the median and right whisker are wider, the distribution is **Skewed to the Right (Positive Skew)**.</div></div>"
@@ -841,8 +841,8 @@
                     visual: "$$Q_1 = 20, \\quad Q_3 = 36 \\implies \\text{IQR} = 16 \\implies 1.5 \\times \\text{IQR} = 24$$ $$\\text{Lower Fence} = Q_1 - 1.5(\\text{IQR}), \\quad \\text{Upper Fence} = Q_3 + 1.5(\\text{IQR})$$",
                     hint: "Lower Fence $= 20 - 24 = -4$. Upper Fence $= 36 + 24 = 60$. Check which reading falls outside $[-4, 60]$.",
                     options: [
-                        { label: "$64\\text{ is an Outlier (Exceeds Upper Fence } 60\\text{)}$", isCorrect: true },
                         { label: "$59\\text{ is an Outlier (Exceeds } Q_3\\text{)}$", isCorrect: false },
+                        { label: "$64\\text{ is an Outlier (Exceeds Upper Fence } 60\\text{)}$", isCorrect: true },
                         { label: "$12\\text{ is an Outlier (Below } Q_1\\text{)}$", isCorrect: false },
                         { label: "No outliers exist in the dataset", isCorrect: false }
                     ],
@@ -854,10 +854,10 @@
                     visual: "$$\\text{Transformation: } y = 1.5x + 5 \\quad \\big| \\quad \\text{Original: } \\sigma = 6, \\quad \\sigma^2 = 36$$",
                     hint: "Adding $+5$ has NO effect on dispersion. Standard deviation is multiplied by $1.5$, and variance is multiplied by $(1.5)^2$.",
                     options: [
-                        { label: "$\\text{New } \\sigma = 9, \\quad \\text{New } \\sigma^2 = 81$", isCorrect: true },
                         { label: "$\\text{New } \\sigma = 14, \\quad \\text{New } \\sigma^2 = 41$", isCorrect: false },
                         { label: "$\\text{New } \\sigma = 9, \\quad \\text{New } \\sigma^2 = 54$", isCorrect: false },
-                        { label: "$\\text{New } \\sigma = 6, \\quad \\text{New } \\sigma^2 = 36$", isCorrect: false }
+                        { label: "$\\text{New } \\sigma = 6, \\quad \\text{New } \\sigma^2 = 36$", isCorrect: false },
+                        { label: "$\\text{New } \\sigma = 9, \\quad \\text{New } \\sigma^2 = 81$", isCorrect: true }
                     ],
                     explanation: "<div class='space-y-1.5'><div>1. For linear transformation $y = ax + b$, the constant addition $b$ does NOT affect dispersion.</div><div>2. $\\text{New Standard Deviation} = |a| \\times \\sigma = 1.5 \\times 6 = 9$</div><div>3. $\\text{New Variance} = a^2 \\times \\sigma^2 = (1.5)^2 \\times 36 = 2.25 \\times 36 = 81$</div></div>"
                 },
@@ -867,8 +867,8 @@
                     visual: "$$\\begin{aligned} \\text{Swarm Alpha: } & \\bar{x} = 120\\text{ min}, \\quad \\sigma = 4.2\\text{ min} \\\\ \\text{Swarm Beta: } & \\bar{x} = 120\\text{ min}, \\quad \\sigma = 10.8\\text{ min} \\end{aligned}$$",
                     hint: "In KSSM statistics, smaller standard deviation indicates data points are clustered tighter around the mean.",
                     options: [
-                        { label: "Swarm Alpha, because its standard deviation is smaller $(\\sigma = 4.2 < 10.8)$", isCorrect: true },
                         { label: "Swarm Beta, because its standard deviation is larger", isCorrect: false },
+                        { label: "Swarm Alpha, because its standard deviation is smaller $(\\sigma = 4.2 < 10.8)$", isCorrect: true },
                         { label: "Both are equally consistent because their means are identical", isCorrect: false },
                         { label: "Consistency cannot be determined without sample size", isCorrect: false }
                     ],
@@ -880,9 +880,9 @@
                     visual: "$$\\text{Measures: } \\big\\{ \\text{Range}, \\quad \\text{IQR}, \\quad \\text{Variance } (\\sigma^2), \\quad \\text{Standard Deviation } (\\sigma) \\big\\}$$",
                     hint: "Which measure of dispersion evaluates only the middle $50\\%$ of data and ignores extremes?",
                     options: [
-                        { label: "Interquartile Range ($IQR$)", isCorrect: true },
                         { label: "Range", isCorrect: false },
                         { label: "Variance ($\\sigma^2$)", isCorrect: false },
+                        { label: "Interquartile Range ($IQR$)", isCorrect: true },
                         { label: "Standard Deviation ($\\sigma$)", isCorrect: false }
                     ],
                     explanation: "Range, Variance ($\\sigma^2$), and Standard Deviation ($\\sigma$) all rely heavily on extreme boundary values. The Interquartile Range ($\\text{IQR} = Q_3 - Q_1$) only evaluates the middle $50\\%$ of the distribution, making it the most resistant measure of dispersion against extreme outliers."
@@ -1623,13 +1623,21 @@
                 document.getElementById('hint-text').innerHTML = q.hint;
                 document.getElementById('feedback-panel').classList.add('hidden');
 
-                // Render Options Grid
+                // Render Options Grid (dynamically shuffled so correct answer position is randomized)
                 const optContainer = document.getElementById('options-container');
                 optContainer.innerHTML = '';
 
-                q.options.forEach((opt, idx) => {
+                // Fisher-Yates shuffle to randomize answer positions
+                const shuffledOptions = [...q.options];
+                for (let i = shuffledOptions.length - 1; i > 0; i--) {
+                    const j = Math.floor(Math.random() * (i + 1));
+                    [shuffledOptions[i], shuffledOptions[j]] = [shuffledOptions[j], shuffledOptions[i]];
+                }
+
+                shuffledOptions.forEach((opt, idx) => {
                     const btn = document.createElement('button');
                     btn.className = 'option-card w-full p-4 rounded-2xl bg-slate-900/90 border border-slate-800 text-left text-slate-200 font-bold text-sm sm:text-base flex items-center justify-between gap-2 shadow-sm math-render';
+                    btn.dataset.correct = opt.isCorrect ? 'true' : 'false';
                     btn.innerHTML = `
                         <div class="flex items-center gap-3">
                             <span class="w-7 h-7 rounded-lg bg-slate-800 text-cyan-300 flex items-center justify-center text-xs font-mono font-black shrink-0">${String.fromCharCode(65 + idx)}</span>
@@ -1681,8 +1689,8 @@
                     btnElement.querySelector('.indicator').innerText = '✗';
 
                     // Highlight the correct option
-                    allButtons.forEach((b, i) => {
-                        if (q.options[i].isCorrect) {
+                    allButtons.forEach((b) => {
+                        if (b.dataset.correct === 'true') {
                             b.classList.add('correct');
                             b.querySelector('.indicator').innerText = '✓';
                         }

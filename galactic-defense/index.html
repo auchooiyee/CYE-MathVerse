@@ -32,14 +32,28 @@
             background-color: var(--space-dark);
             color: #f8fafc;
             min-height: 100vh;
+            min-height: 100dvh;
             display: flex;
-            justify-content: center;
+            flex-direction: column;
+            justify-content: flex-start;
             align-items: center;
-            padding: 12px;
+            padding: 8px;
             background-image: 
                 radial-gradient(circle at 10% 20%, rgba(0, 242, 254, 0.1) 0%, transparent 40%),
                 radial-gradient(circle at 90% 80%, rgba(168, 85, 247, 0.1) 0%, transparent 40%),
                 radial-gradient(circle at 50% 50%, rgba(0, 255, 135, 0.05) 0%, transparent 50%);
+        }
+
+        @media (min-width: 640px) {
+            body {
+                padding: 16px;
+            }
+        }
+
+        @media (min-width: 1024px) and (min-height: 850px) {
+            body {
+                justify-content: center;
+            }
         }
 
         .font-orbitron { font-family: 'Orbitron', sans-serif; }
@@ -51,39 +65,72 @@
             background: rgba(11, 19, 41, 0.96);
             backdrop-filter: blur(20px);
             border: 1px solid rgba(0, 242, 254, 0.35);
-            border-radius: 20px;
+            border-radius: 14px;
             box-shadow: 0 20px 50px rgba(0, 0, 0, 0.85), 0 0 35px rgba(0, 242, 254, 0.18);
             overflow: hidden;
             display: flex;
             flex-direction: column;
+            margin: 0 auto;
+        }
+
+        @media (min-width: 640px) {
+            .game-frame {
+                border-radius: 20px;
+            }
         }
 
         .screen {
             display: none;
             flex-direction: column;
-            padding: 24px;
-            gap: 18px;
-            max-height: 88vh;
-            overflow-y: auto;
+            padding: 12px;
+            gap: 12px;
+            width: 100%;
+        }
+
+        @media (min-width: 640px) {
+            .screen {
+                padding: 20px;
+                gap: 16px;
+            }
+        }
+
+        @media (min-width: 1024px) {
+            .screen {
+                padding: 24px;
+                gap: 18px;
+            }
         }
 
         .screen.active {
             display: flex;
         }
 
-        /* Option buttons with larger, clear text */
+        /* CRITICAL: Never squish screen sections */
+        .screen > * {
+            flex-shrink: 0;
+        }
+
+        /* Option buttons with responsive text and padding */
         .opt-btn {
             background: #0d1836;
             border: 1.5px solid #1e293b;
-            padding: 14px 16px;
-            border-radius: 12px;
+            padding: 10px 12px;
+            border-radius: 10px;
             color: #cbd5e1;
             cursor: pointer;
             text-align: center;
             font-weight: 700;
-            font-size: 0.95rem;
+            font-size: 0.85rem;
             transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
             user-select: none;
+        }
+
+        @media (min-width: 640px) {
+            .opt-btn {
+                padding: 14px 16px;
+                border-radius: 12px;
+                font-size: 0.95rem;
+            }
         }
 
         .opt-btn:hover {
@@ -181,52 +228,52 @@
         <!-- =========================================================================
              TOP NAVIGATION & HUD BAR
              ========================================================================= -->
-        <header class="bg-slate-950/95 px-4 py-3.5 border-b border-slate-800 flex flex-wrap justify-between items-center gap-3">
-            <div class="flex items-center space-x-3">
-                <div class="w-11 h-11 rounded-xl bg-gradient-to-tr from-cyan-500 via-teal-400 to-indigo-600 flex items-center justify-center text-slate-950 text-2xl font-black shadow-lg">
+        <header class="bg-slate-950/95 px-3 sm:px-4 py-2.5 sm:py-3.5 border-b border-slate-800 flex flex-wrap justify-between items-center gap-2.5 sm:gap-3 shrink-0">
+            <div class="flex items-center space-x-2.5 sm:space-x-3">
+                <div class="w-9 h-9 sm:w-11 sm:h-11 rounded-xl bg-gradient-to-tr from-cyan-500 via-teal-400 to-indigo-600 flex items-center justify-center text-slate-950 text-xl sm:text-2xl font-black shadow-lg shrink-0">
                     🚀
                 </div>
                 <div>
-                    <div class="flex items-center space-x-2">
-                        <h1 class="font-orbitron text-sm md:text-base font-black text-cyan-400 tracking-wider">GALACTIC DEFENSE</h1>
-                        <span class="bg-cyan-500/20 text-cyan-300 text-xs font-bold px-2.5 py-0.5 rounded border border-cyan-500/30">Form 4 KSSM</span>
+                    <div class="flex items-center space-x-1.5 sm:space-x-2">
+                        <h1 class="font-orbitron text-xs sm:text-sm md:text-base font-black text-cyan-400 tracking-wider">GALACTIC DEFENSE</h1>
+                        <span class="bg-cyan-500/20 text-cyan-300 text-[10px] sm:text-xs font-bold px-1.5 sm:px-2.5 py-0.5 rounded border border-cyan-500/30">Form 4 KSSM</span>
                     </div>
-                    <p class="text-xs text-slate-400 font-mono">Astro-Math Space Command</p>
+                    <p class="text-[10px] sm:text-xs text-slate-400 font-mono">Astro-Math Space Command</p>
                 </div>
             </div>
 
             <!-- Stats Bar -->
-            <div class="flex items-center space-x-3 md:space-x-4 text-sm">
-                <div class="bg-slate-900 px-3 py-1.5 rounded-lg border border-slate-800 flex items-center space-x-2">
-                    <span class="text-slate-400 text-xs font-semibold">CADET:</span>
-                    <span id="hud-cadet" class="font-orbitron text-cyan-300 font-bold text-xs md:text-sm">StarNova-7</span>
+            <div class="flex items-center space-x-1.5 sm:space-x-3 md:space-x-4 text-xs sm:text-sm">
+                <div class="bg-slate-900 px-2 py-1 sm:px-3 sm:py-1.5 rounded-lg border border-slate-800 flex items-center space-x-1.5">
+                    <span class="text-slate-400 text-[10px] sm:text-xs font-semibold">CADET:</span>
+                    <span id="hud-cadet" class="font-orbitron text-cyan-300 font-bold text-xs md:text-sm max-w-[85px] sm:max-w-none truncate">StarNova-7</span>
                 </div>
-                <div class="bg-slate-900 px-3 py-1.5 rounded-lg border border-slate-800 flex items-center space-x-1.5">
-                    <span class="text-amber-400 text-base">⭐</span>
-                    <span id="hud-credits" class="font-mono text-amber-300 font-bold text-sm">0</span>
+                <div class="bg-slate-900 px-2 py-1 sm:px-3 sm:py-1.5 rounded-lg border border-slate-800 flex items-center space-x-1">
+                    <span class="text-amber-400 text-sm sm:text-base">⭐</span>
+                    <span id="hud-credits" class="font-mono text-amber-300 font-bold text-xs sm:text-sm">0</span>
                 </div>
-                <div class="bg-slate-900 px-3 py-1.5 rounded-lg border border-slate-800 flex items-center space-x-1.5">
-                    <span class="text-purple-400 text-base">💎</span>
-                    <span id="hud-crystals" class="font-mono text-purple-300 font-bold text-sm">0</span>
+                <div class="bg-slate-900 px-2 py-1 sm:px-3 sm:py-1.5 rounded-lg border border-slate-800 flex items-center space-x-1">
+                    <span class="text-purple-400 text-sm sm:text-base">💎</span>
+                    <span id="hud-crystals" class="font-mono text-purple-300 font-bold text-xs sm:text-sm">0</span>
                 </div>
-                <div class="bg-slate-900 px-3 py-1.5 rounded-lg border border-slate-800 flex items-center space-x-1.5">
-                    <span class="text-emerald-400 font-bold text-xs">SCORE:</span>
-                    <span id="hud-score" class="font-mono text-emerald-300 font-bold text-sm">0</span>
+                <div class="bg-slate-900 px-2 py-1 sm:px-3 sm:py-1.5 rounded-lg border border-slate-800 flex items-center space-x-1">
+                    <span class="text-emerald-400 font-bold text-[10px] sm:text-xs">SCORE:</span>
+                    <span id="hud-score" class="font-mono text-emerald-300 font-bold text-xs sm:text-sm">0</span>
                 </div>
             </div>
 
             <!-- Utility Buttons -->
-            <div class="flex items-center space-x-2">
-                <button id="btn-map-toggle" title="Sector Map" class="px-3 py-2 rounded-lg bg-indigo-950/80 hover:bg-indigo-900 border border-indigo-500/40 text-indigo-300 text-xs md:text-sm font-bold transition cursor-pointer">
+            <div class="flex items-center space-x-1.5 sm:space-x-2">
+                <button id="btn-map-toggle" title="Sector Map" class="px-2 sm:px-3 py-1.5 sm:py-2 rounded-lg bg-indigo-950/80 hover:bg-indigo-900 border border-indigo-500/40 text-indigo-300 text-xs md:text-sm font-bold transition cursor-pointer">
                     🗺️ <span class="hidden sm:inline">Map</span>
                 </button>
-                <button id="btn-hangar-toggle" title="Ship Hangar" class="px-3 py-2 rounded-lg bg-amber-950/80 hover:bg-amber-900 border border-amber-500/40 text-amber-300 text-xs md:text-sm font-bold transition cursor-pointer">
+                <button id="btn-hangar-toggle" title="Ship Hangar" class="px-2 sm:px-3 py-1.5 sm:py-2 rounded-lg bg-amber-950/80 hover:bg-amber-900 border border-amber-500/40 text-amber-300 text-xs md:text-sm font-bold transition cursor-pointer">
                     🛠️ <span class="hidden sm:inline">Hangar</span>
                 </button>
-                <button id="btn-codex-toggle" title="Formula Codex (M)" class="px-3 py-2 rounded-lg bg-cyan-950/80 hover:bg-cyan-900 border border-cyan-500/40 text-cyan-300 text-xs md:text-sm font-bold transition cursor-pointer">
+                <button id="btn-codex-toggle" title="Formula Codex (M)" class="px-2 sm:px-3 py-1.5 sm:py-2 rounded-lg bg-cyan-950/80 hover:bg-cyan-900 border border-cyan-500/40 text-cyan-300 text-xs md:text-sm font-bold transition cursor-pointer">
                     📖 <span class="hidden sm:inline">Codex</span>
                 </button>
-                <button id="btn-audio-toggle" title="Toggle Sound" class="w-9 h-9 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 flex items-center justify-center text-sm transition cursor-pointer">
+                <button id="btn-audio-toggle" title="Toggle Sound" class="w-8 h-8 sm:w-9 sm:h-9 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 flex items-center justify-center text-xs sm:text-sm transition cursor-pointer">
                     🔊
                 </button>
             </div>
@@ -235,24 +282,24 @@
         <!-- =========================================================================
              SCREEN 1: TITLE & CADET BRIEFING
              ========================================================================= -->
-        <div id="screen-title" class="screen active text-center p-6 md:p-10 space-y-6">
-            <div class="max-w-xl mx-auto space-y-3">
-                <div class="inline-block p-4 rounded-2xl bg-cyan-500/10 border border-cyan-500/30 mb-1 animate-pulse">
-                    <span class="text-6xl">🛸</span>
+        <div id="screen-title" class="screen active text-center p-3 sm:p-6 md:p-10 space-y-4 sm:space-y-6">
+            <div class="max-w-xl mx-auto space-y-2.5 sm:space-y-3">
+                <div class="inline-block p-3 sm:p-4 rounded-2xl bg-cyan-500/10 border border-cyan-500/30 mb-1 animate-pulse">
+                    <span class="text-4xl sm:text-6xl">🛸</span>
                 </div>
-                <h2 class="font-orbitron text-3xl md:text-5xl font-black text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-teal-300 to-amber-400">
+                <h2 class="font-orbitron text-2xl sm:text-3xl md:text-5xl font-black text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-teal-300 to-amber-400">
                     ASTRO-MATH ACADEMY
                 </h2>
-                <p class="text-sm md:text-base text-slate-300 leading-relaxed">
+                <p class="text-xs sm:text-sm md:text-base text-slate-300 leading-relaxed">
                     Welcome to the 22nd Century United Earth Defense Fleet! Cosmic cyber-asteroids and rogue alien motherships are invading our solar system. Master <strong class="text-cyan-300">Quadratic Trajectories, Linear Inequality Shields, Motion Graphs, Number Bases, and Network Theory</strong> to defend Earth!
                 </p>
             </div>
 
             <!-- Call Sign Input -->
-            <div class="max-w-md mx-auto space-y-3 bg-slate-900/90 p-6 rounded-2xl border border-slate-800 shadow-xl">
-                <label class="block text-sm font-bold text-slate-300 text-left font-orbitron">CADET CALL SIGN:</label>
-                <input type="text" id="input-cadet-name" placeholder="Enter Call Sign (e.g. StarNova-7)" class="w-full px-4 py-3.5 bg-slate-950 border border-slate-700 rounded-xl text-center text-cyan-300 font-bold focus:border-cyan-400 focus:outline-none font-mono text-base">
-                <button class="font-orbitron w-full py-4 rounded-xl bg-gradient-to-r from-cyan-500 via-teal-500 to-emerald-500 hover:from-cyan-400 hover:to-emerald-400 text-slate-950 font-black text-sm uppercase tracking-wider transition transform hover:scale-[1.02] shadow-xl cursor-pointer" onclick="startCampaign()">
+            <div class="max-w-md mx-auto space-y-3 bg-slate-900/90 p-4 sm:p-6 rounded-2xl border border-slate-800 shadow-xl">
+                <label class="block text-xs sm:text-sm font-bold text-slate-300 text-left font-orbitron">CADET CALL SIGN:</label>
+                <input type="text" id="input-cadet-name" placeholder="Enter Call Sign (e.g. StarNova-7)" class="w-full px-3.5 py-3 sm:py-3.5 bg-slate-950 border border-slate-700 rounded-xl text-center text-cyan-300 font-bold focus:border-cyan-400 focus:outline-none font-mono text-sm sm:text-base">
+                <button class="font-orbitron w-full py-3.5 sm:py-4 rounded-xl bg-gradient-to-r from-cyan-500 via-teal-500 to-emerald-500 hover:from-cyan-400 hover:to-emerald-400 text-slate-950 font-black text-xs sm:text-sm uppercase tracking-wider transition transform hover:scale-[1.02] shadow-xl cursor-pointer" onclick="startCampaign()">
                     Launch Defense Fleet 🚀
                 </button>
             </div>
@@ -377,44 +424,62 @@
         <!-- =========================================================================
              SCREEN 3: ACTIVE MISSION ARENA
              ========================================================================= -->
-        <div id="screen-arena" class="screen space-y-4">
+        <div id="screen-arena" class="screen space-y-3 sm:space-y-4">
             <!-- Mission Header Info -->
-            <div class="flex flex-wrap justify-between items-center bg-slate-950 p-4 rounded-xl border border-slate-800 gap-3">
+            <div class="flex flex-wrap justify-between items-center bg-slate-950 p-3 sm:p-4 rounded-xl border border-slate-800 gap-2 sm:gap-3 shrink-0">
                 <div>
-                    <span id="arena-chapter-tag" class="text-xs font-bold text-cyan-400 uppercase tracking-wider font-orbitron">Chapter 1: Quadratic Functions</span>
-                    <h3 id="arena-title" class="text-base md:text-lg font-bold text-slate-100">Mission 1: Parabola Projectile Cannon</h3>
+                    <span id="arena-chapter-tag" class="text-[10px] sm:text-xs font-bold text-cyan-400 uppercase tracking-wider font-orbitron">Chapter 1: Quadratic Functions</span>
+                    <h3 id="arena-title" class="text-sm sm:text-base md:text-lg font-bold text-slate-100">Mission 1: Parabola Projectile Cannon</h3>
                 </div>
-                <div class="flex items-center space-x-3 text-sm">
-                    <div class="bg-slate-900 px-3 py-1.5 rounded-lg border border-slate-800">
-                        <span class="text-slate-400 text-xs">TIME:</span>
+                <div class="flex items-center space-x-2 sm:space-x-3 text-xs sm:text-sm">
+                    <div class="bg-slate-900 px-2.5 py-1 sm:px-3 sm:py-1.5 rounded-lg border border-slate-800">
+                        <span class="text-slate-400 text-[10px] sm:text-xs">TIME:</span>
                         <span id="arena-timer" class="font-mono text-amber-400 font-bold ml-1">00:00</span>
                     </div>
-                    <div class="bg-slate-900 px-3 py-1.5 rounded-lg border border-slate-800">
-                        <span class="text-slate-400 text-xs">SHIELDS:</span>
+                    <div class="bg-slate-900 px-2.5 py-1 sm:px-3 sm:py-1.5 rounded-lg border border-slate-800">
+                        <span class="text-slate-400 text-[10px] sm:text-xs">SHIELDS:</span>
                         <span id="arena-shields" class="font-mono text-emerald-400 font-bold ml-1">100%</span>
                     </div>
                 </div>
             </div>
 
             <!-- Clear Interactive Canvas Area -->
-            <div class="bg-slate-950 p-3 rounded-2xl border border-slate-800 flex flex-col items-center justify-center relative overflow-hidden shadow-inner">
-                <canvas id="arena-canvas" width="760" height="260" class="w-full max-w-3xl h-[230px] md:h-[250px] object-contain rounded-xl"></canvas>
+            <div class="bg-slate-950 p-2.5 sm:p-4 rounded-xl sm:rounded-2xl border border-slate-800 flex flex-col items-center justify-center relative overflow-hidden shadow-inner shrink-0 w-full">
+                <!-- Canvas Toolbar: Title + Enlarge button -->
+                <div class="w-full flex justify-between items-center mb-1.5 px-0.5 sm:px-1">
+                    <span class="text-[10px] sm:text-xs font-mono text-cyan-400 font-bold flex items-center gap-1.5">
+                        <span class="w-2 h-2 rounded-full bg-cyan-400 animate-pulse"></span>
+                        MISSION TELEMETRY RADAR
+                    </span>
+                    <button type="button" onclick="openDiagramModal()" class="px-2.5 py-1 rounded-lg bg-cyan-950/90 hover:bg-cyan-900 border border-cyan-500/40 text-cyan-300 text-xs font-bold transition flex items-center gap-1 cursor-pointer">
+                        🔍 <span class="hidden sm:inline">Enlarge</span> Graph
+                    </button>
+                </div>
+
+                <!-- Interactive Canvas Container -->
+                <div class="w-full flex justify-center items-center cursor-pointer group relative overflow-x-auto" onclick="openDiagramModal()" title="Click/Tap to enlarge diagram">
+                    <canvas id="arena-canvas" width="760" height="260" class="w-full max-w-3xl h-auto aspect-[760/260] object-contain rounded-lg sm:rounded-xl block"></canvas>
+                    <div class="absolute bottom-2 right-2 bg-slate-900/80 backdrop-blur border border-slate-700 text-slate-300 text-[10px] px-2 py-0.5 rounded opacity-80 group-hover:opacity-100 transition sm:hidden">
+                        Tap to zoom 🔍
+                    </div>
+                </div>
+
                 <div id="canvas-caption" class="text-xs md:text-sm text-slate-300 mt-2 font-mono text-center">Simulating real-time flight trajectory...</div>
             </div>
 
             <!-- Mission Interactive Controls & Questions Container -->
-            <div id="arena-questions" class="space-y-4">
+            <div id="arena-questions" class="space-y-3 sm:space-y-4 shrink-0">
                 <!-- Dynamically Populated Per Mission with clean options -->
             </div>
 
             <!-- Interactive Feedback & Step-by-Step Explanation Banner -->
-            <div id="arena-feedback" class="feedback-banner"></div>
+            <div id="arena-feedback" class="feedback-banner shrink-0"></div>
 
-            <div class="flex justify-between items-center pt-2">
-                <button class="font-orbitron px-5 py-3 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs md:text-sm font-bold cursor-pointer" onclick="showScreen('screen-map')">
+            <div class="flex justify-between items-center pt-2 shrink-0 pb-2">
+                <button class="font-orbitron px-4 sm:px-5 py-2.5 sm:py-3 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs md:text-sm font-bold cursor-pointer" onclick="showScreen('screen-map')">
                     ← Sector Map
                 </button>
-                <button id="arena-submit-btn" class="font-orbitron px-8 py-3.5 rounded-xl bg-gradient-to-r from-cyan-500 to-teal-400 hover:from-cyan-400 hover:to-teal-300 text-slate-950 font-black text-sm uppercase tracking-wider transition transform hover:scale-105 shadow-lg cursor-pointer" onclick="evaluateCurrentMission()">
+                <button id="arena-submit-btn" class="font-orbitron px-5 sm:px-8 py-3 sm:py-3.5 rounded-xl bg-gradient-to-r from-cyan-500 to-teal-400 hover:from-cyan-400 hover:to-teal-300 text-slate-950 font-black text-xs sm:text-sm uppercase tracking-wider transition transform hover:scale-105 shadow-lg cursor-pointer" onclick="evaluateCurrentMission()">
                     Execute Fire Command 💥
                 </button>
             </div>
@@ -495,19 +560,19 @@
         <!-- =========================================================================
              SCREEN 5: MISSION DEBRIEFING & VICTORY
              ========================================================================= -->
-        <div id="screen-victory" class="screen text-center p-6 md:p-8 space-y-5">
-            <div class="inline-block p-4 rounded-2xl bg-emerald-500/10 border border-emerald-500/30 animate-bounce">
-                <span class="text-6xl">🎖️</span>
+        <div id="screen-victory" class="screen text-center p-3 sm:p-6 md:p-8 space-y-4 sm:space-y-5">
+            <div class="inline-block p-3 sm:p-4 rounded-2xl bg-emerald-500/10 border border-emerald-500/30 animate-bounce">
+                <span class="text-4xl sm:text-6xl">🎖️</span>
             </div>
 
             <div class="space-y-1">
-                <h2 class="font-orbitron text-2xl md:text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 via-teal-300 to-amber-300">
+                <h2 class="font-orbitron text-xl sm:text-2xl md:text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 via-teal-300 to-amber-300">
                     MISSION ACCOMPLISHED!
                 </h2>
-                <p id="vic-subtext" class="text-sm md:text-base text-slate-300">Sector defense secured with mathematical precision.</p>
+                <p id="vic-subtext" class="text-xs sm:text-sm md:text-base text-slate-300">Sector defense secured with mathematical precision.</p>
             </div>
 
-            <div class="bg-slate-950/90 border border-slate-800 rounded-2xl p-6 max-w-lg mx-auto text-left space-y-3.5 shadow-2xl">
+            <div class="bg-slate-950/90 border border-slate-800 rounded-2xl p-4 sm:p-6 max-w-lg mx-auto text-left space-y-3 sm:space-y-3.5 shadow-2xl">
                 <div class="flex justify-between items-center border-b border-slate-800 pb-2.5">
                     <span class="text-slate-400 text-sm">Rating Earned:</span>
                     <span id="vic-stars" class="font-mono font-bold text-amber-400 text-lg">⭐⭐⭐</span>
@@ -605,8 +670,36 @@
     </div>
 
     <!-- =========================================================================
-         GAME LOGIC & ENGINE JAVASCRIPT
+         HIGH-DEFINITION ENLARGED DIAGRAM MODAL (Mobile & Laptop Zoom)
          ========================================================================= -->
+    <div id="modal-diagram" class="hidden fixed inset-0 bg-slate-950/90 backdrop-blur-md flex items-center justify-center p-2 sm:p-4 z-50" onclick="if(event.target===this)closeDiagramModal()">
+        <div class="bg-slate-900 border border-cyan-500/50 rounded-2xl max-w-4xl w-full p-3 sm:p-5 shadow-2xl flex flex-col max-h-[94vh]">
+            <div class="flex justify-between items-center border-b border-slate-800 pb-2.5 mb-2 shrink-0">
+                <div class="flex items-center space-x-2">
+                    <span class="text-xl">🔭</span>
+                    <div>
+                        <h3 id="modal-diagram-title" class="font-orbitron text-xs sm:text-base font-bold text-cyan-400">MISSION TACTICAL RADAR</h3>
+                        <p id="modal-diagram-sub" class="text-[10px] sm:text-xs text-slate-400 font-mono">High-Definition Telemetry & Coordinate Grid</p>
+                    </div>
+                </div>
+                <button onclick="closeDiagramModal()" class="w-8 h-8 sm:w-9 sm:h-9 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-400 hover:text-white flex items-center justify-center font-bold cursor-pointer text-sm sm:text-base">
+                    ✕
+                </button>
+            </div>
+
+            <!-- Scrollable diagram area for handphone pinch/pan -->
+            <div class="overflow-auto flex-1 flex flex-col items-center justify-center bg-slate-950 rounded-xl p-2 sm:p-4 border border-slate-800 min-h-0">
+                <canvas id="modal-canvas" width="760" height="260" class="w-full max-w-3xl min-w-[320px] sm:min-w-[550px] md:min-w-[720px] h-auto aspect-[760/260] object-contain rounded-lg block"></canvas>
+            </div>
+
+            <div class="mt-2.5 flex flex-wrap justify-between items-center gap-2 shrink-0">
+                <span id="modal-diagram-caption" class="text-xs text-slate-300 font-mono"></span>
+                <button onclick="closeDiagramModal()" class="font-orbitron px-4 py-2 rounded-xl bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-bold text-xs uppercase tracking-wider transition cursor-pointer">
+                    Back to Mission ➔
+                </button>
+            </div>
+        </div>
+    </div>
     <script>
         /* ==========================================================================
            AUDIO SYNTHESIZER (Web Audio API)
@@ -1122,7 +1215,11 @@
         /* ==========================================================================
            CLEAR & HIGH-CONTRAST CANVAS RENDERERS
            ========================================================================== */
-        function getCanvasCtx() {
+        function getCanvasCtx(targetCanvas, targetCtx) {
+            if (targetCanvas && targetCtx) {
+                targetCtx.clearRect(0, 0, targetCanvas.width, targetCanvas.height);
+                return { canvas: targetCanvas, ctx: targetCtx };
+            }
             const canvas = document.getElementById('arena-canvas');
             if (!canvas) return null;
             const ctx = canvas.getContext('2d');
@@ -1131,8 +1228,8 @@
         }
 
         // Mission 1: Clear Parabola Trajectory
-        function drawParabolaMission() {
-            const obj = getCanvasCtx();
+        function drawParabolaMission(targetCanvas, targetCtx) {
+            const obj = getCanvasCtx(targetCanvas, targetCtx);
             if (!obj) return;
             const { canvas, ctx } = obj;
 
@@ -1142,8 +1239,8 @@
             const scaleX = 58, scaleY = 16;
 
             // Coordinate Axes with Clear Arrows
-            ctx.strokeStyle = '#475569';
-            ctx.lineWidth = 2;
+            ctx.strokeStyle = '#64748b';
+            ctx.lineWidth = 2.5;
             ctx.beginPath();
             // X-Axis
             ctx.moveTo(ox - 20, oy);
@@ -1155,36 +1252,39 @@
 
             // X-Axis Ticks & Numbers
             ctx.fillStyle = '#94a3b8';
-            ctx.font = 'bold 13px JetBrains Mono';
+            ctx.font = 'bold 14px JetBrains Mono';
             ctx.textAlign = 'center';
             for (let x = 0; x <= 10; x += 2) {
                 const px = ox + x * scaleX;
                 ctx.beginPath();
-                ctx.moveTo(px, oy - 4);
-                ctx.lineTo(px, oy + 4);
+                ctx.moveTo(px, oy - 5);
+                ctx.lineTo(px, oy + 5);
                 ctx.stroke();
-                ctx.fillText(x, px, oy + 20);
+                ctx.fillText(x, px, oy + 22);
             }
             ctx.fillStyle = '#38bdf8';
-            ctx.fillText('x (Distance Units)', ox + 9 * scaleX, oy + 36);
+            ctx.font = 'bold 13px Orbitron';
+            ctx.fillText('x (Distance Units)', ox + 9 * scaleX, oy + 38);
 
             // Y-Axis Ticks & Numbers
             ctx.textAlign = 'right';
             ctx.fillStyle = '#94a3b8';
+            ctx.font = 'bold 14px JetBrains Mono';
             for (let y = 0; y <= 10; y += 3) {
                 const py = oy - y * scaleY;
                 ctx.beginPath();
-                ctx.moveTo(ox - 4, py);
-                ctx.lineTo(ox + 4, py);
+                ctx.moveTo(ox - 5, py);
+                ctx.lineTo(ox + 5, py);
                 ctx.stroke();
-                ctx.fillText(y, ox - 10, py + 4);
+                ctx.fillText(y, ox - 10, py + 5);
             }
             ctx.fillStyle = '#38bdf8';
-            ctx.fillText('y (Height Units)', ox + 35, 24);
+            ctx.font = 'bold 13px Orbitron';
+            ctx.fillText('y (Height Units)', ox + 45, 24);
 
             // Parabola Trajectory Arc: y = -(x-2)(x-8) = -x^2 + 10x - 16
             ctx.strokeStyle = '#00f2fe';
-            ctx.lineWidth = 3.5;
+            ctx.lineWidth = 4;
             ctx.beginPath();
             for (let x = 0; x <= 10; x += 0.05) {
                 const y = -(x - 2) * (x - 8);
@@ -1205,14 +1305,14 @@
             ctx.arc(ox, oy, 8, 0, Math.PI * 2);
             ctx.fill();
             ctx.fillStyle = '#05d5b3';
-            ctx.font = 'bold 11px Orbitron';
+            ctx.font = 'bold 12px Orbitron';
             ctx.textAlign = 'center';
             ctx.fillText('CANNON', ox, oy - 14);
         }
 
         // Mission 2: Clear Number Base Decoder
-        function drawBaseDecoderCanvas() {
-            const obj = getCanvasCtx();
+        function drawBaseDecoderCanvas(targetCanvas, targetCtx) {
+            const obj = getCanvasCtx(targetCanvas, targetCtx);
             if (!obj) return;
             const { canvas, ctx } = obj;
             drawStars(ctx, canvas.width, canvas.height);
@@ -1238,7 +1338,7 @@
             ctx.fill();
             ctx.stroke();
             ctx.fillStyle = '#38bdf8';
-            ctx.font = 'bold 14px JetBrains Mono';
+            ctx.font = 'bold 15px JetBrains Mono';
             ctx.fillText('SIGNAL ALPHA:  101101₂  ➔  Convert to Base 10', canvas.width / 2, 105);
 
             // Signal Beta Card
@@ -1248,13 +1348,13 @@
             ctx.fill();
             ctx.stroke();
             ctx.fillStyle = '#05d5b3';
-            ctx.font = 'bold 14px JetBrains Mono';
+            ctx.font = 'bold 15px JetBrains Mono';
             ctx.fillText('SIGNAL BETA:   65₈      ➔  Convert to Base 10', canvas.width / 2, 170);
         }
 
         // Mission 3: Clear Coordinate Plane & Inequality Lines
-        function drawInequalityGridCanvas() {
-            const obj = getCanvasCtx();
+        function drawInequalityGridCanvas(targetCanvas, targetCtx) {
+            const obj = getCanvasCtx(targetCanvas, targetCtx);
             if (!obj) return;
             const { canvas, ctx } = obj;
             drawStars(ctx, canvas.width, canvas.height);
@@ -1263,7 +1363,7 @@
             const scale = 24;
 
             // Grid lines
-            ctx.strokeStyle = '#1e293b';
+            ctx.strokeStyle = '#334155';
             ctx.lineWidth = 1;
             for (let i = -10; i <= 10; i++) {
                 ctx.beginPath();
@@ -1278,7 +1378,7 @@
 
             // Main Axes
             ctx.strokeStyle = '#64748b';
-            ctx.lineWidth = 2;
+            ctx.lineWidth = 2.5;
             ctx.beginPath();
             ctx.moveTo(ox - 10 * scale, oy);
             ctx.lineTo(ox + 10 * scale, oy);
@@ -1288,18 +1388,18 @@
 
             // Numerical Axis Labels
             ctx.fillStyle = '#94a3b8';
-            ctx.font = 'bold 11px JetBrains Mono';
+            ctx.font = 'bold 13px JetBrains Mono';
             ctx.textAlign = 'center';
             for (let x = -6; x <= 6; x += 2) {
-                if (x !== 0) ctx.fillText(x, ox + x * scale, oy + 16);
+                if (x !== 0) ctx.fillText(x, ox + x * scale, oy + 18);
             }
             ctx.textAlign = 'right';
             for (let y = -4; y <= 4; y += 2) {
-                if (y !== 0) ctx.fillText(y, ox - 6, oy - y * scale + 4);
+                if (y !== 0) ctx.fillText(y, ox - 8, oy - y * scale + 5);
             }
 
             // Shaded Feasible Forcefield Region
-            ctx.fillStyle = 'rgba(0, 242, 254, 0.2)';
+            ctx.fillStyle = 'rgba(0, 242, 254, 0.22)';
             ctx.beginPath();
             ctx.moveTo(ox + 0 * scale, oy - 2 * scale);
             ctx.lineTo(ox + 3 * scale, oy - 5 * scale);
@@ -1310,34 +1410,46 @@
 
             // Solid Line y = 2x + 4
             ctx.strokeStyle = '#ffb703';
-            ctx.lineWidth = 2.5;
+            ctx.lineWidth = 3;
             ctx.beginPath();
             ctx.moveTo(ox - 4 * scale, oy - (-4) * scale);
             ctx.lineTo(ox + 2 * scale, oy - 8 * scale);
             ctx.stroke();
 
+            // Label y = 2x + 4
+            ctx.fillStyle = '#ffb703';
+            ctx.font = 'bold 12px JetBrains Mono';
+            ctx.textAlign = 'left';
+            ctx.fillText('y = 2x + 4', ox - 4 * scale + 5, oy - (-3) * scale);
+
             // Solid Line x + y = 2
             ctx.strokeStyle = '#a855f7';
-            ctx.lineWidth = 2.5;
+            ctx.lineWidth = 3;
             ctx.beginPath();
             ctx.moveTo(ox - 2 * scale, oy - 4 * scale);
             ctx.lineTo(ox + 6 * scale, oy - (-4) * scale);
             ctx.stroke();
 
+            // Label x + y = 2
+            ctx.fillStyle = '#c084fc';
+            ctx.font = 'bold 12px JetBrains Mono';
+            ctx.textAlign = 'left';
+            ctx.fillText('x + y = 2', ox + 4 * scale, oy - (-2) * scale);
+
             // Test Colony Pod (2, 3)
             ctx.fillStyle = '#00ff87';
             ctx.beginPath();
-            ctx.arc(ox + 2 * scale, oy - 3 * scale, 7, 0, Math.PI * 2);
+            ctx.arc(ox + 2 * scale, oy - 3 * scale, 8, 0, Math.PI * 2);
             ctx.fill();
             ctx.fillStyle = '#ffffff';
-            ctx.font = 'bold 12px JetBrains Mono';
+            ctx.font = 'bold 13px JetBrains Mono';
             ctx.textAlign = 'left';
-            ctx.fillText('Colony Pod (2, 3)', ox + 2 * scale + 10, oy - 3 * scale - 4);
+            ctx.fillText('Colony Pod (2, 3)', ox + 2 * scale + 12, oy - 3 * scale - 4);
         }
 
-        // Mission 4: Clear Speed-Time Motion Graph (No clipped text, proper ticks)
-        function drawMotionCanvas() {
-            const obj = getCanvasCtx();
+        // Mission 4: Clear Speed-Time Motion Graph
+        function drawMotionCanvas(targetCanvas, targetCtx) {
+            const obj = getCanvasCtx(targetCanvas, targetCtx);
             if (!obj) return;
             const { canvas, ctx } = obj;
             drawStars(ctx, canvas.width, canvas.height);
@@ -1346,8 +1458,8 @@
             const sx = 28, sy = 4.8;
 
             // Grid & Axes
-            ctx.strokeStyle = '#475569';
-            ctx.lineWidth = 2;
+            ctx.strokeStyle = '#64748b';
+            ctx.lineWidth = 2.5;
             ctx.beginPath();
             // Horizontal Time Axis
             ctx.moveTo(ox - 10, oy);
@@ -1359,39 +1471,39 @@
 
             // Time Axis Ticks: 0, 5, 10, 15, 20
             ctx.fillStyle = '#94a3b8';
-            ctx.font = 'bold 12px JetBrains Mono';
+            ctx.font = 'bold 13px JetBrains Mono';
             ctx.textAlign = 'center';
             [0, 5, 10, 15, 20].forEach(t => {
                 const px = ox + t * sx;
                 ctx.beginPath();
-                ctx.moveTo(px, oy - 4);
-                ctx.lineTo(px, oy + 4);
+                ctx.moveTo(px, oy - 5);
+                ctx.lineTo(px, oy + 5);
                 ctx.stroke();
                 ctx.fillText(t + 's', px, oy + 22);
             });
             ctx.fillStyle = '#38bdf8';
-            ctx.font = 'bold 13px Orbitron';
+            ctx.font = 'bold 14px Orbitron';
             ctx.fillText('Time t (seconds)', ox + 10 * sx, oy + 44);
 
             // Speed Axis Ticks: 0, 10, 20, 30
             ctx.textAlign = 'right';
             ctx.fillStyle = '#94a3b8';
-            ctx.font = 'bold 12px JetBrains Mono';
+            ctx.font = 'bold 13px JetBrains Mono';
             [0, 10, 20, 30].forEach(v => {
                 const py = oy - v * sy;
                 ctx.beginPath();
-                ctx.moveTo(ox - 4, py);
-                ctx.lineTo(ox + 4, py);
+                ctx.moveTo(ox - 5, py);
+                ctx.lineTo(ox + 5, py);
                 ctx.stroke();
-                ctx.fillText(v, ox - 10, py + 4);
+                ctx.fillText(v, ox - 10, py + 5);
             });
             ctx.fillStyle = '#38bdf8';
-            ctx.font = 'bold 13px Orbitron';
+            ctx.font = 'bold 14px Orbitron';
             ctx.textAlign = 'left';
             ctx.fillText('Speed v (km/s)', 15, 25);
 
             // Projection Guidelines (Dashed)
-            ctx.strokeStyle = '#334155';
+            ctx.strokeStyle = '#475569';
             ctx.lineWidth = 1.5;
             ctx.setLineDash([4, 4]);
             // (5, 30) down to 5s and left to 30
@@ -1419,7 +1531,7 @@
 
             // Motion Velocity Curve
             ctx.strokeStyle = '#c084fc';
-            ctx.lineWidth = 3.5;
+            ctx.lineWidth = 4;
             ctx.beginPath();
             ctx.moveTo(ox, oy);
             ctx.lineTo(ox + 5 * sx, oy - 30 * sy);
@@ -1434,8 +1546,8 @@
         }
 
         // Mission 5: Clear Graph Theory Subnet
-        function drawNetworkGraphCanvas() {
-            const obj = getCanvasCtx();
+        function drawNetworkGraphCanvas(targetCanvas, targetCtx) {
+            const obj = getCanvasCtx(targetCanvas, targetCtx);
             if (!obj) return;
             const { canvas, ctx } = obj;
             drawStars(ctx, canvas.width, canvas.height);
@@ -1453,8 +1565,8 @@
             ];
 
             // Edges (7 Cables)
-            ctx.strokeStyle = '#475569';
-            ctx.lineWidth = 2.5;
+            ctx.strokeStyle = '#64748b';
+            ctx.lineWidth = 3;
             edges.forEach(([u, v]) => {
                 ctx.beginPath();
                 ctx.moveTo(nodes[u].x, nodes[u].y);
@@ -1468,25 +1580,25 @@
                 ctx.strokeStyle = '#00f2fe';
                 ctx.lineWidth = 2.5;
                 ctx.beginPath();
-                ctx.arc(n.x, n.y, 20, 0, Math.PI * 2);
+                ctx.arc(n.x, n.y, 22, 0, Math.PI * 2);
                 ctx.fill();
                 ctx.stroke();
 
                 ctx.fillStyle = '#ffffff';
-                ctx.font = 'bold 11px Orbitron';
+                ctx.font = 'bold 12px Orbitron';
                 ctx.textAlign = 'center';
                 ctx.fillText(n.name, n.x, n.y + 4);
             });
 
             ctx.fillStyle = '#ffb703';
-            ctx.font = 'bold 13px JetBrains Mono';
+            ctx.font = 'bold 14px JetBrains Mono';
             ctx.textAlign = 'center';
             ctx.fillText('Network Parameters: Vertices V = 5, Total Edges E = 7', canvas.width / 2, 245);
         }
 
         // Mission 6: Clear Probability Shield Venn Diagram
-        function drawProbabilityShieldCanvas() {
-            const obj = getCanvasCtx();
+        function drawProbabilityShieldCanvas(targetCanvas, targetCtx) {
+            const obj = getCanvasCtx(targetCanvas, targetCtx);
             if (!obj) return;
             const { canvas, ctx } = obj;
             drawStars(ctx, canvas.width, canvas.height);
@@ -1497,7 +1609,7 @@
             // Shield Core A Circle
             ctx.fillStyle = 'rgba(0, 242, 254, 0.15)';
             ctx.strokeStyle = '#00f2fe';
-            ctx.lineWidth = 3;
+            ctx.lineWidth = 3.5;
             ctx.beginPath();
             ctx.arc(cx - 55, cy, radius, 0, Math.PI * 2);
             ctx.fill();
@@ -1506,6 +1618,7 @@
             // Shield Core B Circle
             ctx.fillStyle = 'rgba(255, 71, 126, 0.15)';
             ctx.strokeStyle = '#ff477e';
+            ctx.lineWidth = 3.5;
             ctx.beginPath();
             ctx.arc(cx + 55, cy, radius, 0, Math.PI * 2);
             ctx.fill();
@@ -1513,21 +1626,22 @@
 
             // Labels
             ctx.fillStyle = '#38bdf8';
-            ctx.font = 'bold 13px Orbitron';
+            ctx.font = 'bold 14px Orbitron';
             ctx.textAlign = 'center';
             ctx.fillText('Generator A: P(A) = 4/5', cx - 110, cy - 20);
 
             ctx.fillStyle = '#fda4af';
+            ctx.font = 'bold 14px Orbitron';
             ctx.fillText('Generator B: P(B) = 2/3', cx + 110, cy - 20);
 
             ctx.fillStyle = '#00ff87';
-            ctx.font = 'bold 13px JetBrains Mono';
+            ctx.font = 'bold 14px JetBrains Mono';
             ctx.fillText('Intersection: P(A ∩ B)', cx, cy + 5);
         }
 
         // Mission 7: Clear Boss Fight Canvas
-        function drawBossFightCanvas() {
-            const obj = getCanvasCtx();
+        function drawBossFightCanvas(targetCanvas, targetCtx) {
+            const obj = getCanvasCtx(targetCanvas, targetCtx);
             if (!obj) return;
             const { canvas, ctx } = obj;
             drawStars(ctx, canvas.width, canvas.height);
@@ -1543,11 +1657,11 @@
             ctx.fillText('MOTHERSHIP REACTOR ALTITUDE FUNCTION:', canvas.width / 2, 125);
 
             ctx.fillStyle = '#00f2fe';
-            ctx.font = 'bold 18px JetBrains Mono';
+            ctx.font = 'bold 19px JetBrains Mono';
             ctx.fillText('h = −5t² + 40t + 20', canvas.width / 2, 160);
 
-            ctx.fillStyle = '#94a3b8';
-            ctx.font = '12px JetBrains Mono';
+            ctx.fillStyle = '#cbd5e1';
+            ctx.font = 'bold 13px JetBrains Mono';
             ctx.fillText('Where h = altitude in km, t = flight time in seconds', canvas.width / 2, 195);
         }
 
@@ -1570,7 +1684,7 @@
             ctx.arc(x, y, 12, 0, Math.PI * 2);
             ctx.fill();
             ctx.fillStyle = '#fda4af';
-            ctx.font = 'bold 12px JetBrains Mono';
+            ctx.font = 'bold 13px JetBrains Mono';
             ctx.textAlign = 'center';
             ctx.fillText(label, x, y + 26);
         }
@@ -1581,9 +1695,28 @@
             ctx.arc(x, y, 6, 0, Math.PI * 2);
             ctx.fill();
             ctx.fillStyle = '#ffb703';
-            ctx.font = 'bold 12px JetBrains Mono';
+            ctx.font = 'bold 13px JetBrains Mono';
             ctx.textAlign = 'center';
             ctx.fillText(label, x, y - 10);
+        }
+
+        // Enlarged Diagram Modal Controls
+        function openDiagramModal() {
+            const mNum = gameState.currentMission;
+            const cfg = missionConfigs[mNum];
+            if (!cfg) return;
+            document.getElementById('modal-diagram-title').innerText = cfg.title;
+            document.getElementById('modal-diagram-caption').innerText = cfg.caption;
+            const modalCanvas = document.getElementById('modal-canvas');
+            const modalCtx = modalCanvas.getContext('2d');
+            if (cfg.renderCanvas) {
+                cfg.renderCanvas(modalCanvas, modalCtx);
+            }
+            document.getElementById('modal-diagram').classList.remove('hidden');
+        }
+
+        function closeDiagramModal() {
+            document.getElementById('modal-diagram').classList.add('hidden');
         }
 
         // Header Triggers & Hotkeys
@@ -1603,6 +1736,16 @@
             }
             if (e.key === 'Escape') {
                 document.getElementById('modal-codex').classList.add('hidden');
+                closeDiagramModal();
+            }
+        });
+
+        // Window resize & orientation change handler
+        window.addEventListener('resize', () => {
+            const arena = document.getElementById('screen-arena');
+            if (arena && arena.classList.contains('active')) {
+                const cfg = missionConfigs[gameState.currentMission];
+                if (cfg && cfg.renderCanvas) cfg.renderCanvas();
             }
         });
     </script>

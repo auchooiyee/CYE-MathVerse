@@ -25,6 +25,9 @@ CYE-MathVerse/
 ├── financial-hero/            # 💰 Form 4: Financial Management 2D Adventure
 │   └── index.html
 │
+├── financial-survival-tycoon/ # 🎲 Form 4: Ch 10 Financial Mgmt & Ch 9 Probability (2-4P Tycoon)
+│   └── index.html
+│
 ├── measures-of-dispersion/    # 📊 Form 4: Measures of Dispersion Quantum Data Lab
 │   └── index.html
 │
@@ -234,6 +237,7 @@ https://cye-mathverse.netlify.app/
 │
 ├── /                         ➔ index.html (Game Library)
 ├── /financial-hero/          ➔ financial-hero/index.html
+├── /financial-survival-tycoon/ ➔ financial-survival-tycoon/index.html
 ├── /measures-of-dispersion/  ➔ measures-of-dispersion/index.html
 ├── /math-csi-cyber-heist/    ➔ math-csi-cyber-heist/index.html
 ├── /salary-tax-tycoon/       ➔ salary-tax-tycoon/index.html

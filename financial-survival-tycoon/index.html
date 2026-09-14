@@ -1,0 +1,2554 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Financial Survival Tycoon — Form 4 Ch 10 &amp; Ch 9 | CYE-MathVerse</title>
+
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@500;700;800&display=swap" rel="stylesheet">
+
+    <!-- KaTeX for crisp mathematical formulas -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+
+    <!-- Canvas Confetti for celebrations -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+    <!-- Custom Tailwind Configuration -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Plus Jakarta Sans', 'sans-serif'],
+                        tech: ['Orbitron', 'sans-serif'],
+                        code: ['JetBrains Mono', 'monospace'],
+                    },
+                    colors: {
+                        tycoon: {
+                            50: '#f0fdf4',
+                            100: '#dcfce7',
+                            400: '#4ade80',
+                            500: '#22c55e',
+                            600: '#16a34a',
+                            dark: '#070b14',
+                            surface: '#0d1527',
+                            card: '#131f38',
+                            border: 'rgba(255, 255, 255, 0.08)',
+                            gold: '#f59e0b',
+                            cyan: '#06b6d4',
+                            purple: '#a855f7',
+                            danger: '#ef4444',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background: 
+                radial-gradient(circle at 10% 10%, rgba(99, 102, 241, 0.28) 0%, transparent 40%),
+                radial-gradient(circle at 90% 12%, rgba(236, 72, 153, 0.25) 0%, transparent 42%),
+                radial-gradient(circle at 50% 45%, rgba(16, 185, 129, 0.18) 0%, transparent 50%),
+                radial-gradient(circle at 85% 85%, rgba(245, 158, 11, 0.22) 0%, transparent 40%),
+                radial-gradient(circle at 12% 88%, rgba(6, 182, 212, 0.25) 0%, transparent 40%),
+                linear-gradient(150deg, #131d36 0%, #171b3e 35%, #0f2438 70%, #151a36 100%);
+            background-attachment: fixed;
+            color: #f8fafc;
+            min-height: 100vh;
+            touch-action: manipulation;
+            user-select: none;
+            -webkit-user-select: none;
+            overflow-x: hidden;
+        }
+
+        .font-tech { font-family: 'Orbitron', sans-serif; }
+        .font-code { font-family: 'JetBrains Mono', monospace; }
+
+        /* Glowing accents */
+        .glow-green  { box-shadow: 0 0 25px rgba(34, 197, 94, 0.5); }
+        .glow-gold   { box-shadow: 0 0 25px rgba(245, 158, 11, 0.5); }
+        .glow-cyan   { box-shadow: 0 0 25px rgba(6, 182, 212, 0.5); }
+        .glow-purple { box-shadow: 0 0 25px rgba(168, 85, 247, 0.5); }
+        .glow-rose   { box-shadow: 0 0 25px rgba(244, 63, 94, 0.5); }
+
+        .glass-panel {
+            background: linear-gradient(135deg, rgba(22, 33, 62, 0.90) 0%, rgba(15, 23, 42, 0.95) 100%);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+        }
+
+        .glass-card {
+            background: linear-gradient(135deg, rgba(24, 37, 68, 0.92) 0%, rgba(17, 26, 49, 0.95) 100%);
+            backdrop-filter: blur(14px);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            box-shadow: 0 12px 28px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Luxury White 3D Acrylic Dice */
+        .dice-box {
+            perspective: 600px;
+            width: 62px;
+            height: 62px;
+        }
+        .dice-cube {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            transform-style: preserve-3d;
+            transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transform: rotateX(-15deg) rotateY(25deg);
+            background: linear-gradient(145deg, #ffffff 0%, #f1f5f9 60%, #e2e8f0 100%);
+            border: 1px solid #cbd5e1;
+            border-radius: 16px;
+            box-shadow: 
+                inset 0 2px 4px rgba(255, 255, 255, 0.95),
+                inset 0 -3px 4px rgba(0, 0, 0, 0.15),
+                0 10px 22px rgba(0, 0, 0, 0.45);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            user-select: none;
+        }
+        .dice-cube.rolling {
+            animation: diceRollAnim 0.7s infinite linear;
+        }
+        @keyframes diceRollAnim {
+            0% { transform: rotateX(0deg) rotateY(0deg) rotateZ(0deg) scale(0.95); }
+            50% { transform: rotateX(360deg) rotateY(540deg) rotateZ(180deg) scale(1.1); }
+            100% { transform: rotateX(720deg) rotateY(1080deg) rotateZ(360deg) scale(0.95); }
+        }
+
+        /* Monopoly-Style Colorful Tile Property Banners */
+        .tile-banner-emerald { background: linear-gradient(90deg, #10b981 0%, #059669 100%); }
+        .tile-banner-cyan    { background: linear-gradient(90deg, #06b6d4 0%, #0284c7 100%); }
+        .tile-banner-red     { background: linear-gradient(90deg, #f43f5e 0%, #e11d48 100%); }
+        .tile-banner-purple  { background: linear-gradient(90deg, #a855f7 0%, #7c3aed 100%); }
+        .tile-banner-amber   { background: linear-gradient(90deg, #f59e0b 0%, #d97706 100%); }
+        .tile-banner-lime    { background: linear-gradient(90deg, #84cc16 0%, #10b981 100%); }
+
+        /* Board grid tile styles */
+        .board-tile {
+            background: linear-gradient(180deg, rgba(30, 41, 74, 0.95) 0%, rgba(18, 26, 48, 0.98) 100%);
+            border: 1.5px solid rgba(255, 255, 255, 0.12);
+            transition: all 0.25s cubic-bezier(0.2, 0.8, 0.2, 1);
+        }
+        .board-tile:hover {
+            transform: translateY(-2px);
+            border-color: rgba(255, 255, 255, 0.35);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+        }
+        .tile-active {
+            border-color: #38bdf8 !important;
+            box-shadow: 0 0 28px rgba(56, 189, 248, 0.65), 0 0 10px rgba(255, 255, 255, 0.8) !important;
+            transform: scale(1.04) !important;
+            z-index: 20;
+        }
+
+        /* Pulse animation for active player */
+        @keyframes turnPulse {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.7); }
+            50% { box-shadow: 0 0 0 12px rgba(34, 197, 94, 0); }
+        }
+        .active-turn-pulse {
+            animation: turnPulse 2.2s infinite;
+        }
+
+        /* Lively Player Pawn Token */
+        .player-pawn {
+            width: 22px;
+            height: 22px;
+            border-radius: 9999px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 2px solid #ffffff;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5), inset 0 1px 2px rgba(255, 255, 255, 0.8);
+            font-size: 11px;
+            transition: all 0.25s ease;
+        }
+        .player-pawn:hover {
+            transform: scale(1.3) translateY(-2px);
+            z-index: 30;
+        }
+
+        /* Scrollbars */
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: rgba(0, 0, 0, 0.25); }
+        ::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.22); border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: rgba(255, 255, 255, 0.38); }
+
+        /* KaTeX formula typography & contrast */
+        .katex {
+            font-size: 1.08em;
+            color: #38bdf8 !important;
+        }
+        .katex-display {
+            margin: 0.35em 0;
+            overflow-x: auto;
+            overflow-y: hidden;
+            color: #38bdf8 !important;
+        }
+        .katex-html {
+            white-space: normal;
+        }
+    </style>
+</head>
+<body class="flex flex-col min-h-screen text-slate-100">
+
+    <!-- TOP NAVIGATION & STATUS BAR -->
+    <header class="w-full bg-slate-900/80 border-b border-indigo-500/20 backdrop-blur-md sticky top-0 z-40 px-4 py-2.5 shadow-lg shadow-indigo-950/20">
+        <div class="max-w-7xl mx-auto flex items-center justify-between gap-3">
+            <!-- Brand & Return Link -->
+            <div class="flex items-center gap-3">
+                <a href="../" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-800/90 hover:bg-slate-700 text-slate-200 hover:text-white text-xs font-bold transition border border-slate-700 shadow-sm" title="Return to CYE-MathVerse Game Portal">
+                    <span>⬅</span>
+                    <span class="hidden sm:inline font-tech text-cyan-300">CYE-MathVerse</span>
+                </a>
+                <div>
+                    <div class="flex items-center gap-2">
+                        <span class="text-2xl animate-bounce">🎲</span>
+                        <h1 class="text-sm sm:text-base font-black tracking-tight text-white font-tech flex items-center gap-1.5">
+                            FINANCIAL SURVIVAL <span class="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 via-teal-300 to-cyan-400 font-extrabold">TYCOON</span>
+                        </h1>
+                    </div>
+                    <p class="text-[10px] text-slate-300 font-medium hidden md:block flex items-center gap-1">
+                        <span class="text-emerald-400 font-bold">Form 4 Ch 10</span> (Financial Management) &amp; <span class="text-cyan-300 font-bold">Ch 9</span> (Probability of Combined Events)
+                    </p>
+                </div>
+            </div>
+
+            <!-- Header Controls: Sound, Formulas, Rules, Restart -->
+            <div class="flex items-center gap-2">
+                <button id="btn-cheat-sheet" class="inline-flex items-center gap-1.5 px-2.5 sm:px-3.5 py-1.5 rounded-xl bg-gradient-to-r from-indigo-900/90 to-purple-900/90 hover:from-indigo-800 hover:to-purple-800 text-indigo-200 text-xs font-bold border border-indigo-500/40 transition shadow-sm hover:shadow-indigo-500/20">
+                    <span>📐</span>
+                    <span class="hidden sm:inline">Formula Sheet</span>
+                </button>
+                <button id="btn-rules" class="inline-flex items-center gap-1.5 px-2.5 sm:px-3.5 py-1.5 rounded-xl bg-gradient-to-r from-amber-950/80 to-yellow-950/80 hover:from-amber-900 hover:to-yellow-900 text-amber-200 text-xs font-bold border border-amber-500/40 transition shadow-sm">
+                    <span>📖</span>
+                    <span class="hidden sm:inline">Rules &amp; Guide</span>
+                </button>
+                <button id="btn-sound-toggle" class="p-2 rounded-xl bg-emerald-950/80 hover:bg-emerald-900 text-emerald-300 text-xs font-bold border border-emerald-500/40 transition shadow-sm" title="Toggle Sound">
+                    <span id="sound-icon">🔊</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- MAIN APP CONTAINER -->
+    <main id="app" class="flex-grow max-w-7xl w-full mx-auto p-3 sm:p-5 flex flex-col">
+
+        <!-- SCREEN 1: LOBBY & SETUP -->
+        <section id="screen-setup" class="flex-grow flex flex-col items-center justify-center py-6 px-2">
+            <div class="glass-panel w-full max-w-3xl rounded-3xl p-6 sm:p-10 border border-indigo-500/30 shadow-2xl relative overflow-hidden">
+                <!-- Decorative Vibrant Glows -->
+                <div class="absolute -top-24 -right-24 w-72 h-72 bg-emerald-500/20 rounded-full blur-3xl pointer-events-none"></div>
+                <div class="absolute -bottom-24 -left-24 w-72 h-72 bg-pink-500/20 rounded-full blur-3xl pointer-events-none"></div>
+                <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-cyan-500/10 rounded-full blur-3xl pointer-events-none"></div>
+
+                <div class="text-center mb-8 relative">
+                    <div class="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-gradient-to-r from-emerald-950/80 via-teal-950/80 to-cyan-950/80 border border-emerald-400/40 text-emerald-300 text-xs font-black tracking-wider uppercase mb-3 shadow-sm">
+                        <span>✨ KSSM Form 4 Mathematics Hybrid Strategy</span>
+                    </div>
+                    <h2 class="text-2xl sm:text-4xl font-black font-tech tracking-tight text-white mb-2">
+                        FINANCIAL SURVIVAL <span class="text-transparent bg-clip-text bg-gradient-to-r from-amber-400 via-emerald-400 to-teal-300">TYCOON</span>
+                    </h2>
+                    <p class="text-slate-200 text-xs sm:text-sm max-w-lg mx-auto leading-relaxed">
+                        Balance monthly cash flows using the <strong class="text-emerald-300 font-black">SMART</strong> financial model, hedge risk against <strong class="text-cyan-300 font-black">Combined Event Probabilities</strong> \(P(A \cap B)\) and \(P(A \cup B)\), and conquer the board to achieve Financial Freedom!
+                    </p>
+                </div>
+
+                <!-- Setup Step 1: Select Player Count -->
+                <div class="mb-7">
+                    <label class="block text-xs font-black text-slate-300 uppercase tracking-wider mb-3">
+                        1. Select Number of Players (2–4)
+                    </label>
+                    <div class="grid grid-cols-3 gap-3">
+                        <button type="button" data-players="2" class="btn-player-count py-3.5 rounded-2xl border-2 border-emerald-400 bg-gradient-to-b from-emerald-950/80 to-slate-900 text-emerald-300 font-black text-sm transition flex flex-col items-center gap-1 shadow-lg shadow-emerald-950/50 hover:brightness-110">
+                            <span class="text-2xl">👥</span>
+                            <span>2 Players</span>
+                            <span class="text-[10px] text-emerald-300 font-bold">Duel Mode</span>
+                        </button>
+                        <button type="button" data-players="3" class="btn-player-count py-3.5 rounded-2xl border border-cyan-500/40 bg-gradient-to-b from-cyan-950/50 to-slate-900 text-slate-200 font-black text-sm hover:border-cyan-400 hover:text-cyan-300 transition flex flex-col items-center gap-1">
+                            <span class="text-2xl">👥👤</span>
+                            <span>3 Players</span>
+                            <span class="text-[10px] text-slate-400 font-normal">Trio Clash</span>
+                        </button>
+                        <button type="button" data-players="4" class="btn-player-count py-3.5 rounded-2xl border border-purple-500/40 bg-gradient-to-b from-purple-950/50 to-slate-900 text-slate-200 font-black text-sm hover:border-purple-400 hover:text-purple-300 transition flex flex-col items-center gap-1">
+                            <span class="text-2xl">👨‍👩‍👧‍👦</span>
+                            <span>4 Players</span>
+                            <span class="text-[10px] text-slate-400 font-normal">Full Tycoon</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Setup Step 2: Player Profiles -->
+                <div class="mb-7">
+                    <div class="flex items-center justify-between mb-3">
+                        <label class="text-xs font-black text-slate-300 uppercase tracking-wider">
+                            2. Player Rosters &amp; Controllers
+                        </label>
+                        <span class="text-[11px] text-cyan-300 font-bold">Play locally with friends or vs Smart AI Bots</span>
+                    </div>
+                    <div id="player-config-list" class="space-y-3">
+                        <!-- Populated by JS -->
+                    </div>
+                </div>
+
+                <!-- Setup Step 3: Game Goal / Duration -->
+                <div class="mb-8">
+                    <label class="block text-xs font-black text-slate-300 uppercase tracking-wider mb-3">
+                        3. Win Condition &amp; Duration
+                    </label>
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                        <label class="cursor-pointer">
+                            <input type="radio" name="game-mode" value="sprint" checked class="peer sr-only">
+                            <div class="p-3.5 rounded-2xl border border-slate-700 peer-checked:border-emerald-400 peer-checked:bg-emerald-950/50 peer-checked:ring-2 peer-checked:ring-emerald-500/40 bg-slate-900/60 transition shadow-sm">
+                                <div class="text-xs font-black text-white flex items-center justify-between mb-1">
+                                    <span class="text-emerald-400">⚡ 12-Month Sprint</span>
+                                    <span class="text-[10px] text-emerald-300 font-code font-bold">12 Turns</span>
+                                </div>
+                                <p class="text-[11px] text-slate-300 leading-snug">Highest Net Worth after 12 months with active emergency reserves wins.</p>
+                            </div>
+                        </label>
+                        <label class="cursor-pointer">
+                            <input type="radio" name="game-mode" value="freedom" class="peer sr-only">
+                            <div class="p-3.5 rounded-2xl border border-slate-700 peer-checked:border-amber-400 peer-checked:bg-amber-950/50 peer-checked:ring-2 peer-checked:ring-amber-500/40 bg-slate-900/60 transition shadow-sm">
+                                <div class="text-xs font-black text-white flex items-center justify-between mb-1">
+                                    <span class="text-amber-400">🏆 Financial Freedom</span>
+                                    <span class="text-[10px] text-amber-300 font-code font-bold">First to Goal</span>
+                                </div>
+                                <p class="text-[11px] text-slate-300 leading-snug">First to reach Passive Income &ge; Expenses + RM 60k Net Worth wins instantly.</p>
+                            </div>
+                        </label>
+                        <label class="cursor-pointer">
+                            <input type="radio" name="game-mode" value="marathon" class="peer sr-only">
+                            <div class="p-3.5 rounded-2xl border border-slate-700 peer-checked:border-cyan-400 peer-checked:bg-cyan-950/50 peer-checked:ring-2 peer-checked:ring-cyan-500/40 bg-slate-900/60 transition shadow-sm">
+                                <div class="text-xs font-black text-white flex items-center justify-between mb-1">
+                                    <span class="text-cyan-400">📅 24-Month Marathon</span>
+                                    <span class="text-[10px] text-cyan-300 font-code font-bold">24 Turns</span>
+                                </div>
+                                <p class="text-[11px] text-slate-300 leading-snug">Extended 2-year financial strategy simulation with market cycles.</p>
+                            </div>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Launch Button -->
+                <button id="btn-start-game" class="w-full py-4 px-6 rounded-2xl bg-gradient-to-r from-emerald-400 via-teal-400 to-cyan-400 hover:from-emerald-300 hover:via-teal-300 hover:to-cyan-300 text-slate-950 font-black text-base font-tech tracking-wide shadow-xl shadow-teal-950/50 transition transform hover:-translate-y-0.5 active:translate-y-0 active:scale-[0.99] flex items-center justify-center gap-2">
+                    <span class="text-xl">🚀</span>
+                    <span>ENTER TYCOON SIMULATION</span>
+                    <span class="text-xl">➔</span>
+                </button>
+            </div>
+        </section>
+
+        <!-- SCREEN 2: MAIN GAMEPLAY DASHBOARD & BOARD -->
+        <section id="screen-game" class="hidden flex-grow flex flex-col gap-4">
+
+            <!-- Top Game Status Banner -->
+            <div class="glass-panel rounded-2xl p-3 sm:p-4 flex flex-wrap items-center justify-between gap-3 border border-indigo-500/30 shadow-md">
+                <!-- Turn & Month Indicator -->
+                <div class="flex items-center gap-3">
+                    <div class="flex flex-col">
+                        <span class="text-[10px] uppercase tracking-wider font-bold text-slate-300 font-tech">TIMELINE</span>
+                        <div class="flex items-center gap-2">
+                            <span id="display-round-month" class="text-lg sm:text-xl font-black font-tech text-white">Month 1 / 12</span>
+                            <span id="display-mode-badge" class="px-2 py-0.5 rounded-md bg-gradient-to-r from-emerald-500 to-teal-500 text-slate-950 text-[10px] font-black uppercase shadow-sm">Sprint</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Current Active Player Banner -->
+                <div id="active-player-banner" class="flex items-center gap-3 px-4 py-2 rounded-xl bg-gradient-to-r from-slate-900/90 to-indigo-950/70 border border-emerald-400/60 shadow-inner">
+                    <div id="active-player-avatar" class="w-10 h-10 rounded-xl bg-gradient-to-br from-emerald-500/30 to-teal-500/30 border-2 border-emerald-400 flex items-center justify-center text-2xl shadow-sm">
+                        🦊
+                    </div>
+                    <div>
+                        <div class="flex items-center gap-1.5">
+                            <span class="text-[10px] text-emerald-300 font-black uppercase tracking-wider">CURRENT TURN:</span>
+                            <span id="active-player-controller-tag" class="text-[9px] px-1.5 py-0.2 rounded bg-indigo-950 text-indigo-200 border border-indigo-500/30 font-bold">HUMAN</span>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <span id="active-player-name" class="font-black text-sm sm:text-base text-white">Player 1</span>
+                            <span class="text-xs text-slate-400">•</span>
+                            <span id="active-player-career" class="text-xs font-semibold text-emerald-200">Software Engineer</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Fast Stats / Quick Actions -->
+                <div class="flex items-center gap-2">
+                    <button id="btn-view-all-ledgers" class="px-3 py-2 rounded-xl bg-slate-800/90 hover:bg-slate-700 text-cyan-200 text-xs font-bold border border-cyan-500/30 transition flex items-center gap-1.5 shadow-sm">
+                        <span>📊</span>
+                        <span class="hidden sm:inline">All Ledgers</span>
+                    </button>
+                    <button id="btn-restart-game" class="px-3 py-2 rounded-xl bg-slate-800/90 hover:bg-red-950 hover:text-red-300 text-slate-300 text-xs font-bold border border-slate-700 transition" title="Restart Game">
+                        <span>🔄</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Main Interactive Play Area (Board + Control Deck) -->
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-4 flex-grow">
+
+                <!-- LEFT / CENTER: THE 20-TILE MONOPOLY/LIFE CIRCUIT BOARD (Cols 1-8) -->
+                <div class="lg:col-span-8 flex flex-col gap-3">
+                    <div class="glass-card rounded-2xl p-3 sm:p-4 border border-indigo-500/30 flex flex-col relative overflow-hidden shadow-2xl min-h-[460px]">
+                        <!-- Board Header -->
+                        <div class="flex items-center justify-between mb-2 px-1">
+                            <div class="flex items-center gap-2 text-xs font-black font-tech">
+                                <span class="text-transparent bg-clip-text bg-gradient-to-r from-amber-300 via-emerald-300 to-cyan-300 font-extrabold">🗺️ FINANCIAL HIGHWAY CIRCUIT</span>
+                                <span class="text-slate-500">•</span>
+                                <span class="px-2 py-0.5 rounded-full bg-emerald-950/70 border border-emerald-500/40 text-emerald-300 font-bold text-[10px]">20 TILES</span>
+                            </div>
+                            <div class="text-[11px] text-slate-300 font-mono flex items-center gap-1">
+                                🎲 <span>Sample Space:</span> <span class="text-cyan-300 font-bold font-code">n(S) = 36</span>
+                            </div>
+                        </div>
+
+                        <!-- Responsive 20-Tile Grid Perimeter -->
+                        <div id="board-container" class="relative flex-grow grid grid-cols-6 grid-rows-6 gap-1.5 sm:gap-2 p-2 bg-slate-950/80 rounded-2xl border-2 border-indigo-500/30 shadow-2xl">
+                            <!-- 20 Outer Tiles rendered by JavaScript -->
+
+                            <!-- BOARD CENTER STAGE: Dice, Action Call, Probability Insight -->
+                            <div class="col-start-2 col-span-4 row-start-2 row-span-4 bg-gradient-to-br from-slate-900/95 via-indigo-950/40 to-slate-900/95 rounded-2xl border-2 border-indigo-400/30 p-3 sm:p-5 flex flex-col items-center justify-center text-center shadow-2xl relative overflow-hidden">
+                                
+                                <!-- Center Stage Background Subtle Glowing Aura -->
+                                <div class="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(56,189,248,0.12)_0%,rgba(168,85,247,0.08)_45%,transparent_75%)] pointer-events-none"></div>
+
+                                <!-- Dice Rolling & Probability Display Area -->
+                                <div id="center-content-default" class="flex flex-col items-center justify-center w-full z-10">
+                                    <!-- Luxury White 3D Acrylic Casino Dice Pair -->
+                                    <div class="flex items-center gap-4 sm:gap-6 mb-3">
+                                        <div class="dice-box">
+                                            <div id="dice-1" class="dice-cube text-rose-600 font-black text-3xl font-mono">
+                                                ⚀
+                                            </div>
+                                        </div>
+                                        <div class="dice-box">
+                                            <div id="dice-2" class="dice-cube text-blue-600 font-black text-3xl font-mono">
+                                                ⚁
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Probability Calculation HUD for the current roll -->
+                                    <div id="roll-probability-badge" class="mb-3 px-4 py-1.5 rounded-full bg-gradient-to-r from-indigo-950/80 via-slate-900/90 to-purple-950/80 border border-indigo-400/40 text-xs font-code text-slate-200 shadow-inner">
+                                        Roll Sum: <span id="dice-sum-display" class="font-bold text-amber-300">Ready</span> | <span id="dice-prob-display" class="text-cyan-300 font-semibold">P(Roll) = ?</span>
+                                    </div>
+
+                                    <!-- Main Action Button / Status -->
+                                    <div id="action-prompt-box" class="w-full max-w-xs">
+                                        <button id="btn-roll-dice" class="w-full py-3.5 px-4 rounded-xl bg-gradient-to-r from-amber-400 via-emerald-400 to-teal-400 hover:from-amber-300 hover:via-emerald-300 hover:to-teal-300 text-slate-950 font-black text-sm font-tech tracking-wider shadow-xl shadow-emerald-950/50 transition transform hover:-translate-y-0.5 active:translate-y-0 active:scale-95 flex items-center justify-center gap-2">
+                                            <span class="text-lg">🎲</span>
+                                            <span>ROLL 2 DICE</span>
+                                        </button>
+                                        <div id="ai-turn-indicator" class="hidden py-3 px-4 rounded-xl bg-slate-800/90 border border-cyan-500/40 text-cyan-200 text-xs font-bold animate-pulse shadow-md">
+                                            🤖 AI is calculating probability &amp; rolling...
+                                        </div>
+                                    </div>
+
+                                    <!-- Current tile description hint -->
+                                    <p id="board-center-status" class="mt-3 text-[11px] sm:text-xs text-slate-300 max-w-xs line-clamp-2">
+                                        It's <span id="status-player-name" class="text-emerald-300 font-bold">Player 1</span>'s turn to roll!
+                                    </p>
+                                </div>
+
+                                <!-- Center Event Action Preview (shown when event is pending) -->
+                                <div id="center-content-event" class="hidden flex-col items-center justify-center w-full z-10 space-y-2">
+                                    <div id="center-event-icon" class="text-4xl animate-bounce">⚠️</div>
+                                    <h3 id="center-event-title" class="text-sm sm:text-base font-black text-white font-tech">Tile Event</h3>
+                                    <p id="center-event-desc" class="text-xs text-slate-200 max-w-sm"></p>
+                                    <button id="btn-resolve-tile" class="mt-2 py-2.5 px-6 rounded-xl bg-gradient-to-r from-emerald-400 to-teal-400 hover:from-emerald-300 hover:to-teal-300 text-slate-950 text-xs font-black font-tech transition shadow-lg shadow-emerald-950/40">
+                                        CONTINUE ➔
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Board Footer Legend -->
+                        <div class="mt-3 pt-2.5 border-t border-slate-700/60 flex flex-wrap items-center justify-between gap-2 text-[10px] text-slate-300">
+                            <div class="flex flex-wrap items-center gap-2 sm:gap-3 font-semibold">
+                                <span class="flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-full bg-emerald-400 shadow-sm shadow-emerald-500/50"></span> Payday</span>
+                                <span class="flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-full bg-cyan-400 shadow-sm shadow-cyan-500/50"></span> Opportunity</span>
+                                <span class="flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-full bg-rose-500 shadow-sm shadow-rose-500/50"></span> Hazard (Ch 9)</span>
+                                <span class="flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-full bg-purple-400 shadow-sm shadow-purple-500/50"></span> Math Checkpoint</span>
+                                <span class="flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-full bg-amber-400 shadow-sm shadow-amber-500/50"></span> Insurance</span>
+                            </div>
+                            <div class="font-code text-cyan-300 font-bold">
+                                Pass Payday = Monthly Cash Reconciliation
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- RECENT ACTION LOG TICKER -->
+                    <div class="glass-card rounded-xl p-3 border border-indigo-500/20 shadow-md">
+                        <div class="flex items-center justify-between mb-1.5">
+                            <span class="text-[10px] font-black uppercase tracking-wider text-emerald-300 font-tech flex items-center gap-1.5">
+                                <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
+                                LIVE FINANCIAL FEED
+                            </span>
+                            <span class="text-[10px] text-slate-400 font-medium">Audited by Form 4 Math</span>
+                        </div>
+                        <div id="game-event-log" class="space-y-1 max-h-24 overflow-y-auto font-code text-xs text-slate-200 pr-1">
+                            <!-- Dynamic log items -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- RIGHT: ACTIVE PLAYER FINANCIAL HUD & STANDINGS (Cols 9-12) -->
+                <div class="lg:col-span-4 flex flex-col gap-4">
+                    
+                    <!-- 1. ACTIVE PLAYER BALANCE SHEET & SMART HEALTH -->
+                    <div class="glass-card rounded-2xl p-4 border border-emerald-500/30 shadow-xl flex flex-col">
+                        <div class="flex items-center justify-between pb-3 border-b border-slate-700/60 bg-gradient-to-r from-emerald-500/10 to-transparent -mx-4 -mt-4 px-4 pt-4 rounded-t-2xl">
+                            <div>
+                                <span class="text-[10px] uppercase tracking-wider font-black text-emerald-400 font-tech flex items-center gap-1">
+                                    <span>💳</span> FINANCIAL BALANCE SHEET
+                                </span>
+                                <h3 id="hud-player-name" class="text-base font-black text-white">Player 1</h3>
+                            </div>
+                            <div class="text-right">
+                                <span class="text-[10px] text-slate-300 uppercase tracking-wider font-bold">NET WORTH</span>
+                                <div id="hud-net-worth" class="text-base sm:text-lg font-black font-code text-emerald-400">RM 0</div>
+                            </div>
+                        </div>
+
+                        <!-- Financial Freedom Gauge (Form 4 Ch 10) -->
+                        <div class="my-3 p-3 rounded-xl bg-gradient-to-r from-slate-900/90 to-indigo-950/60 border border-slate-700/80 shadow-inner">
+                            <div class="flex items-center justify-between text-xs mb-1 font-bold">
+                                <span class="text-slate-200">Financial Freedom Meter</span>
+                                <span id="hud-freedom-percent" class="text-cyan-300 font-code font-black">0%</span>
+                            </div>
+                            <div class="w-full h-3 rounded-full bg-slate-950 overflow-hidden relative shadow-inner">
+                                <div id="hud-freedom-bar" class="h-full bg-gradient-to-r from-emerald-400 via-teal-300 to-cyan-400 transition-all duration-500 rounded-full shadow-sm" style="width: 0%"></div>
+                            </div>
+                            <div class="flex justify-between text-[10px] text-slate-300 mt-1.5 font-medium">
+                                <span>Passive Income: <strong id="hud-passive-income" class="text-emerald-300 font-bold">RM 0/mo</strong></span>
+                                <span>Target: <strong id="hud-freedom-target" class="text-slate-200 font-bold">RM 2,500/mo</strong></span>
+                            </div>
+                        </div>
+
+                        <!-- Asset & Liability Breakdown Matrix (4 Colorful Distinct Cards) -->
+                        <div class="grid grid-cols-2 gap-2.5 text-xs mb-3">
+                            <div class="p-2.5 rounded-xl bg-gradient-to-br from-emerald-950/70 via-slate-900 to-slate-900 border border-emerald-500/40 shadow-sm">
+                                <span class="text-[10px] text-emerald-300 font-bold uppercase flex items-center gap-1">
+                                    <span>💵</span> Liquid Cash
+                                </span>
+                                <div id="hud-cash" class="text-sm font-black font-code text-emerald-200 mt-0.5">RM 3,500</div>
+                            </div>
+                            <div class="p-2.5 rounded-xl bg-gradient-to-br from-cyan-950/70 via-slate-900 to-slate-900 border border-cyan-500/40 shadow-sm">
+                                <span class="text-[10px] text-cyan-300 font-bold uppercase flex items-center gap-1">
+                                    <span>🛡️</span> Emergency Fund
+                                </span>
+                                <div id="hud-emergency-fund" class="text-sm font-black font-code text-cyan-200 mt-0.5">RM 0</div>
+                                <span id="hud-emergency-months" class="text-[9px] text-cyan-300 font-bold">(0.0 mos buffer)</span>
+                            </div>
+                            <div class="p-2.5 rounded-xl bg-gradient-to-br from-purple-950/70 via-slate-900 to-slate-900 border border-purple-500/40 shadow-sm">
+                                <span class="text-[10px] text-purple-300 font-bold uppercase flex items-center gap-1">
+                                    <span>📈</span> Investments
+                                </span>
+                                <div id="hud-investments" class="text-sm font-black font-code text-purple-200 mt-0.5">RM 0</div>
+                            </div>
+                            <div class="p-2.5 rounded-xl bg-gradient-to-br from-rose-950/70 via-slate-900 to-slate-900 border border-rose-500/40 shadow-sm">
+                                <span class="text-[10px] text-rose-300 font-bold uppercase flex items-center gap-1">
+                                    <span>💳</span> Liabilities (Debt)
+                                </span>
+                                <div id="hud-liabilities" class="text-sm font-black font-code text-rose-300 mt-0.5">RM 15,000</div>
+                            </div>
+                        </div>
+
+                        <!-- Monthly Cash Flow Calculation (Formula: Income - Expenses) -->
+                        <div class="p-2.5 rounded-xl bg-gradient-to-r from-emerald-950/60 to-teal-950/50 border border-emerald-500/30 text-xs shadow-sm">
+                            <div class="flex items-center justify-between mb-1">
+                                <span class="text-[10px] font-bold uppercase text-emerald-300">Monthly Net Cash Flow</span>
+                                <span id="hud-net-cash-flow" class="font-code font-black text-emerald-200 text-sm">+RM 1,200</span>
+                            </div>
+                            <div class="text-[10px] text-slate-300 flex justify-between font-code">
+                                <span>Income: <span id="hud-total-income" class="text-white font-bold">RM 3,500</span></span>
+                                <span>Expenses: <span id="hud-total-expenses" class="text-rose-300 font-bold">RM 2,300</span></span>
+                            </div>
+                        </div>
+
+                        <!-- Insurance Shield Indicators -->
+                        <div class="mt-3 pt-2.5 border-t border-slate-700/60 flex items-center justify-between text-xs">
+                            <span class="text-[10px] font-bold uppercase text-slate-300">Risk Shields (Ch 9 Hedge):</span>
+                            <div class="flex items-center gap-1.5" id="hud-insurance-badges">
+                                <span class="px-2 py-0.5 rounded-md text-[10px] bg-slate-800 text-slate-400 font-bold" title="Medical Card Shield">🏥 Med</span>
+                                <span class="px-2 py-0.5 rounded-md text-[10px] bg-slate-800 text-slate-400 font-bold" title="Asset Protection Shield">🛡️ Asset</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 2. ALL PLAYERS MINI-LEADERBOARD -->
+                    <div class="glass-card rounded-2xl p-4 border border-amber-500/30 shadow-xl flex-grow flex flex-col">
+                        <div class="flex items-center justify-between pb-2 mb-2 border-b border-slate-700/60 bg-gradient-to-r from-amber-500/10 to-transparent -mx-4 -mt-4 px-4 pt-4 rounded-t-2xl">
+                            <span class="text-[10px] uppercase tracking-wider font-black text-amber-300 font-tech flex items-center gap-1">
+                                <span>🏆</span> TYCOON LEADERBOARD
+                            </span>
+                            <span class="text-[10px] text-amber-200/80 font-bold">Ranked by Net Worth</span>
+                        </div>
+                        <div id="leaderboard-list" class="space-y-2 flex-grow overflow-y-auto">
+                            <!-- Populated dynamically -->
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+        </section>
+
+    </main>
+
+    <!-- MODAL 1: SMART FINANCIAL ALLOCATION (TRIGGERED ON PAYDAY) -->
+    <div id="modal-payday" class="fixed inset-0 bg-black/80 backdrop-blur-md z-50 flex items-center justify-center p-3 hidden">
+        <div class="glass-panel max-w-xl w-full rounded-3xl p-5 sm:p-7 border border-emerald-400/50 shadow-2xl relative overflow-hidden">
+            <!-- Header with vibrant emerald gradient banner -->
+            <div class="flex items-center justify-between pb-3 border-b border-emerald-500/30 bg-gradient-to-r from-emerald-500/20 via-teal-500/20 to-transparent -mx-5 -mt-5 sm:-mx-7 sm:-mt-7 p-5 sm:p-7 rounded-t-3xl mb-4">
+                <div class="flex items-center gap-2.5">
+                    <span class="text-3xl animate-bounce">💰</span>
+                    <div>
+                        <h3 class="text-lg sm:text-xl font-black font-tech text-white">PAYDAY &amp; SMART ALLOCATION</h3>
+                        <p class="text-xs text-emerald-300 font-bold">Form 4 Chapter 10: Financial Planning</p>
+                    </div>
+                </div>
+                <span id="payday-player-avatar" class="text-3xl p-2 rounded-2xl bg-emerald-950/80 border border-emerald-400/50 shadow-md">🦊</span>
+            </div>
+
+            <!-- Payday Income Summary -->
+            <div class="bg-gradient-to-br from-slate-900/95 via-emerald-950/20 to-slate-900/95 rounded-2xl p-4 border border-emerald-500/30 mb-4 space-y-2 text-xs shadow-inner">
+                <div class="flex justify-between">
+                    <span class="text-slate-300">Active Salary:</span>
+                    <span id="payday-active-salary" class="font-code font-bold text-emerald-300">RM 3,500</span>
+                </div>
+                <div class="flex justify-between">
+                    <span class="text-slate-300">Passive Income (Investments):</span>
+                    <span id="payday-passive-income" class="font-code font-bold text-teal-300">+RM 0</span>
+                </div>
+                <div class="flex justify-between">
+                    <span class="text-slate-300">Fixed Living Expenses (Rent, Utilities, Food):</span>
+                    <span id="payday-expenses" class="font-code font-bold text-rose-300">-RM 2,000</span>
+                </div>
+                <div class="flex justify-between">
+                    <span class="text-slate-300">Debt Minimum Payment:</span>
+                    <span id="payday-debt-min" class="font-code font-bold text-rose-300">-RM 300</span>
+                </div>
+                <div class="pt-2 border-t border-slate-700/80 flex justify-between font-bold text-sm">
+                    <span class="text-emerald-300">Net Monthly Surplus Available to Allocate:</span>
+                    <span id="payday-surplus" class="font-code font-black text-amber-300">RM 1,200</span>
+                </div>
+            </div>
+
+            <!-- Interactive SMART Allocation Controls -->
+            <div class="space-y-3 mb-5 text-xs">
+                <p class="text-slate-200 font-medium">
+                    Allocate your surplus according to the SMART model (Emergency buffer &rarr; Wealth generation &rarr; Debt clearance):
+                </p>
+
+                <!-- 1. Emergency Fund Slider -->
+                <div class="p-3 rounded-xl bg-gradient-to-r from-cyan-950/60 to-slate-900/90 border border-cyan-500/40 shadow-sm">
+                    <div class="flex justify-between mb-1">
+                        <span class="font-bold text-cyan-300">🛡️ Emergency Fund (Liquid Reserve)</span>
+                        <span id="alloc-emergency-val" class="font-code font-bold text-cyan-200">RM 400</span>
+                    </div>
+                    <input type="range" id="slider-alloc-emergency" min="0" max="1200" step="50" value="400" class="w-full accent-cyan-400 cursor-pointer">
+                    <span class="text-[10px] text-slate-300">Recommended: 3 to 6 months of living expenses (Buffer against Ch 9 hazards).</span>
+                </div>
+
+                <!-- 2. Investments Slider -->
+                <div class="p-3 rounded-xl bg-gradient-to-r from-purple-950/60 to-slate-900/90 border border-purple-500/40 shadow-sm">
+                    <div class="flex justify-between mb-1">
+                        <span class="font-bold text-purple-300">📈 Investments (Unit Trusts / Stocks)</span>
+                        <span id="alloc-invest-val" class="font-code font-bold text-purple-200">RM 500</span>
+                    </div>
+                    <input type="range" id="slider-alloc-invest" min="0" max="1200" step="50" value="500" class="w-full accent-purple-400 cursor-pointer">
+                    <span class="text-[10px] text-slate-300">Compounding growth: \(A = P(1 + \frac{r}{n})^{nt}\). Generates passive income.</span>
+                </div>
+
+                <!-- 3. Debt Payoff Slider -->
+                <div class="p-3 rounded-xl bg-gradient-to-r from-emerald-950/60 to-slate-900/90 border border-emerald-500/40 shadow-sm">
+                    <div class="flex justify-between mb-1">
+                        <span class="font-bold text-emerald-300">💳 Extra Debt Clearance</span>
+                        <span id="alloc-debt-val" class="font-code font-bold text-emerald-200">RM 300</span>
+                    </div>
+                    <input type="range" id="slider-alloc-debt" min="0" max="1200" step="50" value="300" class="w-full accent-emerald-400 cursor-pointer">
+                    <span class="text-[10px] text-slate-300">Reduces high compounding interest charges and boosts net worth.</span>
+                </div>
+
+                <!-- Allocation Balance Tracker -->
+                <div class="flex justify-between items-center text-xs px-1 font-bold">
+                    <span class="text-slate-300">Remaining to Cash Savings:</span>
+                    <span id="alloc-remaining-cash" class="font-code font-bold text-white">RM 0</span>
+                </div>
+            </div>
+
+            <!-- Submit Payday Plan Button -->
+            <button id="btn-confirm-payday" class="w-full py-3.5 rounded-xl bg-gradient-to-r from-amber-400 via-emerald-400 to-teal-400 hover:from-amber-300 hover:via-emerald-300 hover:to-teal-300 text-slate-950 font-black text-sm font-tech tracking-wide transition shadow-xl shadow-emerald-950/50">
+                CONFIRM SMART FINANCIAL ALLOCATION ➔
+            </button>
+        </div>
+    </div>
+
+    <!-- MODAL 2: PROBABILITY HAZARD / COMBINED EVENT (FORM 4 CH 9) -->
+    <div id="modal-hazard" class="fixed inset-0 bg-black/80 backdrop-blur-md z-50 flex items-center justify-center p-3 hidden">
+        <div class="glass-panel max-w-xl w-full rounded-3xl p-5 sm:p-7 border border-rose-500/50 shadow-2xl relative overflow-hidden">
+            <!-- Header with vibrant rose gradient banner -->
+            <div class="flex items-center gap-3 pb-3 border-b border-rose-500/30 bg-gradient-to-r from-rose-500/25 via-red-500/20 to-transparent -mx-5 -mt-5 sm:-mx-7 sm:-mt-7 p-5 sm:p-7 rounded-t-3xl mb-4">
+                <div class="w-12 h-12 rounded-2xl bg-rose-950/90 border-2 border-rose-500/60 flex items-center justify-center text-2xl shadow-md animate-pulse">
+                    ⚡
+                </div>
+                <div>
+                    <h3 class="text-lg font-black font-tech text-white">RANDOM RISK HAZARD</h3>
+                    <p class="text-xs text-rose-300 font-bold">Form 4 Chapter 9: Combined Probability Events</p>
+                </div>
+            </div>
+
+            <!-- Event Narrative -->
+            <div class="bg-gradient-to-br from-slate-900/95 via-rose-950/20 to-slate-900/95 rounded-2xl p-4 border border-rose-500/30 mb-4 shadow-sm">
+                <h4 id="hazard-title" class="text-sm font-black text-white mb-1">Medical Emergency &amp; Work Interruption</h4>
+                <p id="hazard-story" class="text-xs text-slate-200 leading-relaxed mb-3">
+                    A severe monsoon storm leads to a traffic accident and medical hospital bill.
+                </p>
+
+                <!-- Probability Math Scenario Box -->
+                <div class="p-3 rounded-xl bg-slate-950/80 border border-rose-500/30 font-code text-xs space-y-1.5 shadow-inner">
+                    <div class="text-emerald-400 font-bold" id="hazard-prob-rule">
+                        Rule: Independent Events \(P(A \cap B) = P(A) \times P(B)\)
+                    </div>
+                    <div class="text-slate-200" id="hazard-math-details">
+                        Event A: Heavy Storm \(P(A) = 0.40\) | Event B: Water Leak \(P(B) = 0.25\)
+                    </div>
+                    <div class="text-cyan-300 font-bold" id="hazard-math-target">
+                        Target Calculation: Find \(P(A \cap B)\)
+                    </div>
+                </div>
+            </div>
+
+            <!-- Mathematical Decision Question -->
+            <div class="p-4 rounded-2xl bg-slate-900/80 border border-slate-700/80 mb-4 shadow-sm">
+                <p id="hazard-question" class="text-xs font-bold text-white mb-3">
+                    Solve the combined event probability to activate emergency mitigation:
+                </p>
+                <div id="hazard-options-container" class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                    <!-- Dynamic option buttons -->
+                </div>
+                <!-- Feedback Box -->
+                <div id="hazard-feedback" class="hidden mt-3 p-2.5 rounded-xl text-xs font-code"></div>
+            </div>
+
+            <!-- Loss or Mitigation Summary -->
+            <div class="flex items-center justify-between text-xs px-1 mb-4">
+                <span class="text-slate-300">Potential Damage: <strong id="hazard-damage-amt" class="text-rose-400 font-code font-bold">RM 1,500</strong></span>
+                <span id="hazard-insurance-status" class="text-emerald-400 font-bold">🛡️ Insurance Active</span>
+            </div>
+
+            <button id="btn-hazard-continue" class="hidden w-full py-3 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-400 hover:to-teal-400 text-slate-950 font-black text-xs font-tech transition shadow-lg shadow-emerald-950/40">
+                PROCEED WITH OUTCOME ➔
+            </button>
+        </div>
+    </div>
+
+    <!-- MODAL 3: MATH CHECKPOINT / FINANCIAL EXAM (FORM 4 CH 9 & 10) -->
+    <div id="modal-quiz" class="fixed inset-0 bg-black/80 backdrop-blur-md z-50 flex items-center justify-center p-3 hidden">
+        <div class="glass-panel max-w-xl w-full rounded-3xl p-5 sm:p-7 border border-purple-500/50 shadow-2xl relative overflow-hidden">
+            <!-- Header with vibrant purple gradient banner -->
+            <div class="flex items-center justify-between pb-3 border-b border-purple-500/30 bg-gradient-to-r from-purple-500/25 via-fuchsia-500/20 to-transparent -mx-5 -mt-5 sm:-mx-7 sm:-mt-7 p-5 sm:p-7 rounded-t-3xl mb-4">
+                <div class="flex items-center gap-3">
+                    <div class="w-11 h-11 rounded-2xl bg-purple-950/90 border-2 border-purple-500/60 flex items-center justify-center text-2xl shadow-md">
+                        🧮
+                    </div>
+                    <div>
+                        <h3 class="text-base sm:text-lg font-black font-tech text-white">MATH CHECKPOINT</h3>
+                        <p class="text-xs text-purple-300 font-bold">Form 4 SPM Math Challenge</p>
+                    </div>
+                </div>
+                <span class="px-3 py-1 rounded-full bg-gradient-to-r from-purple-950 to-pink-950 text-pink-300 border border-purple-500/50 text-xs font-bold shadow-sm">
+                    +RM 500 Bonus
+                </span>
+            </div>
+
+            <!-- Question Box -->
+            <div class="bg-gradient-to-br from-slate-900/95 via-purple-950/20 to-slate-900/95 rounded-2xl p-4 border border-purple-500/30 mb-4 shadow-sm">
+                <span id="quiz-topic-tag" class="text-[10px] uppercase font-bold text-purple-400 tracking-wider font-tech">Chapter 10 • Financial Management</span>
+                <p id="quiz-question-text" class="text-xs sm:text-sm font-semibold text-slate-100 mt-1.5 leading-relaxed">
+                    Question text goes here...
+                </p>
+                <div id="quiz-formula-hint" class="mt-2.5 p-2 rounded-lg bg-slate-950/90 border border-purple-500/30 text-xs font-code text-cyan-300">
+                    Formula reference...
+                </div>
+            </div>
+
+            <!-- Quiz Options -->
+            <div id="quiz-options-grid" class="space-y-2 mb-4">
+                <!-- Buttons -->
+            </div>
+
+            <!-- Quiz Explanation / Feedback -->
+            <div id="quiz-feedback-box" class="hidden p-3 rounded-xl mb-4 text-xs font-code leading-relaxed"></div>
+
+            <button id="btn-quiz-continue" class="hidden w-full py-3 rounded-xl bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-500 hover:to-pink-500 text-white font-bold text-xs font-tech transition shadow-lg shadow-purple-950/40">
+                CONTINUE TURN ➔
+            </button>
+        </div>
+    </div>
+
+    <!-- MODAL 4: OPPORTUNITY & INVESTMENT MARKET -->
+    <div id="modal-opportunity" class="fixed inset-0 bg-black/80 backdrop-blur-md z-50 flex items-center justify-center p-3 hidden">
+        <div class="glass-panel max-w-xl w-full rounded-3xl p-5 sm:p-7 border border-cyan-500/50 shadow-2xl relative overflow-hidden">
+            <!-- Header with vibrant cyan gradient banner -->
+            <div class="flex items-center gap-3 pb-3 border-b border-cyan-500/30 bg-gradient-to-r from-cyan-500/25 via-sky-500/20 to-transparent -mx-5 -mt-5 sm:-mx-7 sm:-mt-7 p-5 sm:p-7 rounded-t-3xl mb-4">
+                <div class="w-11 h-11 rounded-2xl bg-cyan-950/90 border-2 border-cyan-500/60 flex items-center justify-center text-2xl shadow-md">
+                    📈
+                </div>
+                <div>
+                    <h3 class="text-base sm:text-lg font-black font-tech text-white">INVESTMENT OPPORTUNITY</h3>
+                    <p class="text-xs text-cyan-300 font-bold">Build Compound Assets &amp; Passive Cash Flow</p>
+                </div>
+            </div>
+
+            <p class="text-xs text-slate-200 mb-4">
+                Select an asset class to acquire. High-yield investments carry market probability risk:
+            </p>
+
+            <div class="space-y-2.5 mb-5" id="opportunity-cards-container">
+                <!-- 3 Investment options populated by JS -->
+            </div>
+
+            <div class="flex justify-end gap-2">
+                <button id="btn-skip-opportunity" class="py-2.5 px-4 rounded-xl bg-slate-800/90 hover:bg-slate-700 text-slate-300 text-xs font-bold transition border border-slate-700">
+                    Pass / Keep Cash
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL 5: INSURANCE & PROTECTION AGENCY -->
+    <div id="modal-insurance" class="fixed inset-0 bg-black/80 backdrop-blur-md z-50 flex items-center justify-center p-3 hidden">
+        <div class="glass-panel max-w-lg w-full rounded-3xl p-5 sm:p-7 border border-amber-500/50 shadow-2xl relative overflow-hidden">
+            <!-- Header with golden amber gradient banner -->
+            <div class="flex items-center gap-3 pb-3 border-b border-amber-500/30 bg-gradient-to-r from-amber-500/25 via-yellow-500/20 to-transparent -mx-5 -mt-5 sm:-mx-7 sm:-mt-7 p-5 sm:p-7 rounded-t-3xl mb-4">
+                <div class="w-11 h-11 rounded-2xl bg-amber-950/90 border-2 border-amber-500/60 flex items-center justify-center text-2xl shadow-md">
+                    🛡️
+                </div>
+                <div>
+                    <h3 class="text-base sm:text-lg font-black font-tech text-white">RISK PROTECTION AGENCY</h3>
+                    <p class="text-xs text-amber-300 font-bold">Hedging Against Probability Shocks</p>
+                </div>
+            </div>
+
+            <p class="text-xs text-slate-200 mb-4">
+                In Form 4 Chapter 10, insurance is an essential risk management tool that prevents debt traps when unexpected combined events occur.
+            </p>
+
+            <div class="space-y-3 mb-5">
+                <div class="p-3.5 rounded-2xl bg-gradient-to-r from-emerald-950/40 to-slate-900 border border-emerald-500/40 flex items-center justify-between shadow-sm">
+                    <div>
+                        <div class="text-xs font-bold text-white flex items-center gap-1.5">
+                            <span>🏥 Comprehensive Medical Shield</span>
+                            <span class="text-[9px] px-1.5 py-0.2 rounded bg-emerald-950 text-emerald-300 font-bold border border-emerald-500/30">100% Bill Waiver</span>
+                        </div>
+                        <p class="text-[11px] text-slate-300 mt-0.5">Protects against high-cost health hazards &amp; hospitalizations.</p>
+                    </div>
+                    <button id="btn-buy-med-insurance" class="py-2 px-3 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-400 hover:to-teal-400 text-slate-950 text-xs font-black transition shadow-sm">
+                        RM 300 / mo
+                    </button>
+                </div>
+
+                <div class="p-3.5 rounded-2xl bg-gradient-to-r from-cyan-950/40 to-slate-900 border border-cyan-500/40 flex items-center justify-between shadow-sm">
+                    <div>
+                        <div class="text-xs font-bold text-white flex items-center gap-1.5">
+                            <span>🛡️ Asset &amp; Liability Shield</span>
+                            <span class="text-[9px] px-1.5 py-0.2 rounded bg-cyan-950 text-cyan-300 font-bold border border-cyan-500/30">Property Defense</span>
+                        </div>
+                        <p class="text-[11px] text-slate-300 mt-0.5">Protects investments, rental properties, and vehicles against disasters.</p>
+                    </div>
+                    <button id="btn-buy-asset-insurance" class="py-2 px-3 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-cyan-400 hover:to-blue-400 text-slate-950 text-xs font-black transition shadow-sm">
+                        RM 250 / mo
+                    </button>
+                </div>
+            </div>
+
+            <div class="flex justify-end">
+                <button id="btn-close-insurance" class="py-2 px-4 rounded-xl bg-slate-800/90 hover:bg-slate-700 text-slate-200 text-xs font-bold transition border border-slate-700">
+                    Done / Close
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL 6: FORMULA REFERENCE CHEAT SHEET -->
+    <div id="modal-cheat-sheet" class="fixed inset-0 bg-black/80 backdrop-blur-md z-50 flex items-center justify-center p-3 hidden">
+        <div class="glass-panel max-w-2xl w-full rounded-3xl p-5 sm:p-7 border border-indigo-500/50 shadow-2xl relative max-h-[90vh] flex flex-col">
+            <div class="flex items-center justify-between pb-3 border-b border-slate-800 mb-4">
+                <div class="flex items-center gap-2">
+                    <span class="text-2xl">📐</span>
+                    <h3 class="text-lg font-black font-tech text-white">FORMULA CHEAT SHEET (FORM 4)</h3>
+                </div>
+                <button id="btn-close-cheat" class="text-slate-400 hover:text-white text-lg font-bold">✕</button>
+            </div>
+
+            <div class="overflow-y-auto space-y-4 pr-1 text-xs">
+                <!-- Chapter 10 Section -->
+                <div class="p-4 rounded-2xl bg-slate-900 border border-slate-800">
+                    <span class="text-[10px] font-black uppercase text-emerald-400 tracking-wider font-tech">CHAPTER 10 • FINANCIAL MANAGEMENT</span>
+                    <div class="space-y-2 mt-2">
+                        <div>
+                            <strong class="text-white">1. Net Cash Flow:</strong>
+                            <div class="font-code text-cyan-300 mt-0.5">\(\text{Net Cash Flow} = \text{Total Income} - \text{Total Expenses}\)</div>
+                            <p class="text-[11px] text-slate-400">Positive: surplus savings; Negative: cash deficit leading to high-interest debt.</p>
+                        </div>
+                        <div>
+                            <strong class="text-white">2. Net Worth:</strong>
+                            <div class="font-code text-cyan-300 mt-0.5">\(\text{Net Worth} = \text{Total Assets} - \text{Total Liabilities}\)</div>
+                        </div>
+                        <div>
+                            <strong class="text-white">3. Compound Interest Formula:</strong>
+                            <div class="font-code text-cyan-300 mt-0.5">\(A = P\left(1 + \frac{r}{n}\right)^{nt}\)</div>
+                            <p class="text-[11px] text-slate-400">\(P\) = principal, \(r\) = annual interest rate, \(n\) = compounding periods per year, \(t\) = years.</p>
+                        </div>
+                        <div>
+                            <strong class="text-white">4. Return on Investment (ROI):</strong>
+                            <div class="font-code text-cyan-300 mt-0.5">\(\text{ROI} = \frac{\text{Total Return}}{\text{Initial Investment}} \times 100\%\)</div>
+                        </div>
+                        <div>
+                            <strong class="text-white">5. Emergency Fund Rule:</strong>
+                            <p class="text-[11px] text-slate-400">Must equal <strong>3 to 6 months</strong> of fixed &amp; variable living expenses.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Chapter 9 Section -->
+                <div class="p-4 rounded-2xl bg-slate-900 border border-slate-800">
+                    <span class="text-[10px] font-black uppercase text-purple-400 tracking-wider font-tech">CHAPTER 9 • PROBABILITY OF COMBINED EVENTS</span>
+                    <div class="space-y-2 mt-2">
+                        <div>
+                            <strong class="text-white">1. Single Event Probability &amp; Complement:</strong>
+                            <div class="font-code text-purple-300 mt-0.5">\(P(A) = \frac{n(A)}{n(S)}, \quad P(A') = 1 - P(A)\)</div>
+                        </div>
+                        <div>
+                            <strong class="text-white">2. Independent Events (Multiplication Rule):</strong>
+                            <div class="font-code text-purple-300 mt-0.5">\(P(A \cap B) = P(A) \times P(B)\)</div>
+                            <p class="text-[11px] text-slate-400">Occurrence of Event A does not affect the probability of Event B.</p>
+                        </div>
+                        <div>
+                            <strong class="text-white">3. Dependent Events (Conditional Probability):</strong>
+                            <div class="font-code text-purple-300 mt-0.5">\(P(A \cap B) = P(A) \times P(B|A)\)</div>
+                        </div>
+                        <div>
+                            <strong class="text-white">4. Mutually Exclusive Events (Addition Rule):</strong>
+                            <div class="font-code text-purple-300 mt-0.5">\(P(A \cup B) = P(A) + P(B)\)</div>
+                            <p class="text-[11px] text-slate-400">Events cannot occur at the same time: \(P(A \cap B) = 0\).</p>
+                        </div>
+                        <div>
+                            <strong class="text-white">5. Non-Mutually Exclusive Events:</strong>
+                            <div class="font-code text-purple-300 mt-0.5">\(P(A \cup B) = P(A) + P(B) - P(A \cap B)\)</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL 7: GAME RULES & GUIDE -->
+    <div id="modal-rules" class="fixed inset-0 bg-black/80 backdrop-blur-md z-50 flex items-center justify-center p-3 hidden">
+        <div class="glass-panel max-w-xl w-full rounded-3xl p-5 sm:p-7 border border-slate-700 shadow-2xl relative max-h-[90vh] flex flex-col">
+            <div class="flex items-center justify-between pb-3 border-b border-slate-800 mb-4">
+                <h3 class="text-lg font-black font-tech text-white">📖 GAME RULES &amp; STRATEGY</h3>
+                <button id="btn-close-rules" class="text-slate-400 hover:text-white text-lg font-bold">✕</button>
+            </div>
+            <div class="overflow-y-auto space-y-3 text-xs text-slate-300 pr-1 leading-relaxed">
+                <p>
+                    <strong>🎯 Objective:</strong> Navigate life's financial road, overcome probability hazards, build positive cash flow, and achieve <strong>Financial Freedom</strong>!
+                </p>
+                <div class="p-3 rounded-xl bg-slate-900 border border-slate-800 space-y-1.5">
+                    <span class="text-emerald-400 font-bold">Key Milestones:</span>
+                    <div>1. <strong>Pass Payday:</strong> Collect active salary, pay living expenses, and allocate remaining surplus into your Emergency Fund, Investments, and Debt.</div>
+                    <div>2. <strong>Combined Risk Hazards:</strong> Solve Chapter 9 probability questions when landing on risk tiles to mitigate sudden losses!</div>
+                    <div>3. <strong>Math Checkpoints:</strong> Answer Form 4 questions correctly to receive direct cash bonuses and asset perks.</div>
+                    <div>4. <strong>Insurance:</strong> Buy coverage to hedge against catastrophic tail-risk events.</div>
+                </div>
+                <p>
+                    <strong>🏆 Winning:</strong> In Sprint mode, the player with the highest verified Net Worth after 12 months wins. In Financial Freedom mode, the first player whose passive income surpasses all expenses with a healthy 6-month buffer wins instantly!
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL 8: ALL LEDGERS MODAL -->
+    <div id="modal-all-ledgers" class="fixed inset-0 bg-black/80 backdrop-blur-md z-50 flex items-center justify-center p-3 hidden">
+        <div class="glass-panel max-w-3xl w-full rounded-3xl p-5 sm:p-7 border border-slate-700 shadow-2xl relative max-h-[90vh] flex flex-col">
+            <div class="flex items-center justify-between pb-3 border-b border-slate-800 mb-4">
+                <h3 class="text-lg font-black font-tech text-white">📊 ALL PLAYERS' BALANCE SHEETS</h3>
+                <button id="btn-close-ledgers" class="text-slate-400 hover:text-white text-lg font-bold">✕</button>
+            </div>
+            <div id="ledgers-cards-container" class="grid grid-cols-1 sm:grid-cols-2 gap-3 overflow-y-auto pr-1">
+                <!-- Dynamically populated cards -->
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL 9: VICTORY & GAME OVER REPORT CARD -->
+    <div id="modal-game-over" class="fixed inset-0 bg-black/90 backdrop-blur-lg z-50 flex items-center justify-center p-3 hidden">
+        <div class="glass-panel max-w-2xl w-full rounded-3xl p-6 sm:p-9 border border-emerald-500/60 shadow-2xl relative text-center">
+            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-950 border border-emerald-500/40 text-emerald-400 text-xs font-bold uppercase mb-3">
+                🏆 SIMULATION COMPLETE
+            </div>
+            <h2 id="victory-title" class="text-2xl sm:text-4xl font-black font-tech text-white mb-2">
+                FINANCIAL FREEDOM ACHIEVED!
+            </h2>
+            <p id="victory-subtitle" class="text-slate-300 text-xs sm:text-sm max-w-md mx-auto mb-6">
+                Congratulations to the victorious Tycoon for mastering Form 4 Financial Management and Risk Probability!
+            </p>
+
+            <!-- Winner Showcase -->
+            <div id="winner-showcase" class="p-5 rounded-2xl bg-gradient-to-br from-emerald-950/70 to-slate-900 border border-emerald-500/50 mb-6 text-left">
+                <!-- Populated by JS -->
+            </div>
+
+            <!-- Final Standings Table -->
+            <div class="bg-slate-900/80 rounded-2xl p-3 border border-slate-800 mb-6 max-h-48 overflow-y-auto">
+                <table class="w-full text-xs text-left">
+                    <thead>
+                        <tr class="text-[10px] text-slate-400 uppercase border-b border-slate-800">
+                            <th class="py-1 px-2">Rank</th>
+                            <th class="py-1 px-2">Player</th>
+                            <th class="py-1 px-2">Cash</th>
+                            <th class="py-1 px-2">Investments</th>
+                            <th class="py-1 px-2">Liabilities</th>
+                            <th class="py-1 px-2 text-right">Net Worth</th>
+                        </tr>
+                    </thead>
+                    <tbody id="final-standings-tbody">
+                        <!-- Populated by JS -->
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="flex flex-wrap items-center justify-center gap-3">
+                <button id="btn-play-again" class="py-3 px-6 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-400 hover:to-teal-400 text-slate-950 font-black text-xs font-tech tracking-wider transition shadow-lg">
+                    🔄 PLAY AGAIN
+                </button>
+                <a href="../" class="py-3 px-6 rounded-xl bg-slate-800 hover:bg-slate-700 text-white font-bold text-xs font-tech transition border border-slate-700">
+                    ⬅ BACK TO CYE-MATHVERSE
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- SOUND SYNTHESIZER & GAME ENGINE LOGIC -->
+    <script>
+        /* ==========================================================
+           AUDIO SYNTHESIZER (Web Audio API - Zero External Assets)
+           ========================================================== */
+        class SoundEngine {
+            constructor() {
+                this.ctx = null;
+                this.muted = false;
+            }
+
+            init() {
+                if (!this.ctx) {
+                    const AudioContext = window.AudioContext || window.webkitAudioContext;
+                    if (AudioContext) {
+                        this.ctx = new AudioContext();
+                    }
+                }
+                if (this.ctx && this.ctx.state === 'suspended') {
+                    this.ctx.resume();
+                }
+            }
+
+            playTone(freq, type = 'sine', duration = 0.15, gainVal = 0.15) {
+                if (this.muted) return;
+                this.init();
+                if (!this.ctx) return;
+
+                const osc = this.ctx.createOscillator();
+                const gain = this.ctx.createGain();
+                osc.type = type;
+                osc.frequency.setValueAtTime(freq, this.ctx.currentTime);
+
+                gain.gain.setValueAtTime(gainVal, this.ctx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.0001, this.ctx.currentTime + duration);
+
+                osc.connect(gain);
+                gain.connect(this.ctx.destination);
+
+                osc.start();
+                osc.stop(this.ctx.currentTime + duration);
+            }
+
+            diceRoll() {
+                if (this.muted) return;
+                for (let i = 0; i < 4; i++) {
+                    setTimeout(() => {
+                        this.playTone(180 + Math.random() * 120, 'square', 0.04, 0.08);
+                    }, i * 70);
+                }
+            }
+
+            tokenStep() {
+                this.playTone(320, 'triangle', 0.06, 0.1);
+            }
+
+            cashChime() {
+                if (this.muted) return;
+                this.init();
+                [523.25, 659.25, 783.99, 1046.50].forEach((freq, idx) => {
+                    setTimeout(() => this.playTone(freq, 'sine', 0.15, 0.12), idx * 70);
+                });
+            }
+
+            hazardAlert() {
+                if (this.muted) return;
+                this.init();
+                [220, 196, 174, 150].forEach((freq, idx) => {
+                    setTimeout(() => this.playTone(freq, 'sawtooth', 0.18, 0.15), idx * 90);
+                });
+            }
+
+            correctChime() {
+                if (this.muted) return;
+                this.init();
+                [587.33, 880, 1174.66].forEach((freq, idx) => {
+                    setTimeout(() => this.playTone(freq, 'sine', 0.18, 0.14), idx * 80);
+                });
+            }
+
+            errorTone() {
+                if (this.muted) return;
+                this.init();
+                this.playTone(160, 'sawtooth', 0.25, 0.2);
+            }
+
+            victoryFanfare() {
+                if (this.muted) return;
+                this.init();
+                const notes = [523.25, 659.25, 783.99, 1046.50, 1318.51];
+                notes.forEach((freq, idx) => {
+                    setTimeout(() => this.playTone(freq, 'triangle', 0.3, 0.2), idx * 120);
+                });
+            }
+        }
+
+        const audio = new SoundEngine();
+
+        /* ==========================================================
+           DATA & CONFIGURATION: CAREERS, TILES, QUESTIONS, HAZARDS
+           ========================================================== */
+        const CAREERS = [
+            { title: "Junior Software Engineer", salary: 4200, fixedExp: 1800, varExp: 600, debt: 18000, debtMin: 350, icon: "💻" },
+            { title: "Junior Medical Officer", salary: 4600, fixedExp: 2000, varExp: 700, debt: 25000, debtMin: 450, icon: "🩺" },
+            { title: "Digital Marketing Specialist", salary: 3600, fixedExp: 1600, varExp: 500, debt: 12000, debtMin: 250, icon: "📱" },
+            { title: "Creative Graphic Designer", salary: 3300, fixedExp: 1500, varExp: 450, debt: 10000, debtMin: 200, icon: "🎨" }
+        ];
+
+        const AVATARS = [
+            { icon: "🦊", name: "Swift Fox", color: "#f97316" },
+            { icon: "🤖", name: "Cyber Bot", color: "#06b6d4" },
+            { icon: "🚀", name: "Astro Tycoon", color: "#a855f7" },
+            { icon: "🦁", name: "Golden Lion", color: "#eab308" },
+            { icon: "🐱", name: "Quantum Cat", color: "#ec4899" },
+            { icon: "🦉", name: "Wise Owl", color: "#10b981" }
+        ];
+
+        // 20-tile circuit around a 6x6 perimeter (indices 0 to 19)
+        const BOARD_TILES = [
+            { id: 0,  type: "start",       name: "START / PAYDAY", icon: "💰", color: "emerald", desc: "Collect salary & reconcile SMART monthly budget." },
+            { id: 1,  type: "opportunity", name: "Unit Trust Hub", icon: "📈", color: "cyan",    desc: "Compound growth fund (Form 4 Ch 10 ROI)." },
+            { id: 2,  type: "hazard",      name: "Risk Hazard",   icon: "⚡", color: "red",     desc: "Combined Probability event test (Ch 9)." },
+            { id: 3,  type: "quiz",        name: "Math Checkpoint",icon: "🧮", color: "purple",  desc: "Solve SPM math challenge to gain +RM 500." },
+            { id: 4,  type: "insurance",   name: "Risk Shield",   icon: "🛡️", color: "amber",   desc: "Acquire insurance against hazard shocks." },
+            { id: 5,  type: "opportunity", name: "Blue-Chip Stocks",icon: "📊", color: "cyan",   desc: "Equities with dividend yield." },
+            
+            { id: 6,  type: "hazard",      name: "Medical Emergency",icon: "🏥", color: "red",   desc: "Combined probability health crisis." },
+            { id: 7,  type: "smart",       name: "SMART Review",  icon: "💡", color: "emerald", desc: "Review Emergency Fund readiness." },
+            { id: 8,  type: "quiz",        name: "Probability Lab",icon: "🎲", color: "purple",  desc: "Calculate sample space & event trees." },
+            { id: 9,  type: "opportunity", name: "REITs Real Estate",icon: "🏢", color: "cyan",  desc: "Steady passive monthly rental income." },
+            
+            { id: 10, type: "start",       name: "MID-YEAR PAYDAY",icon: "💵", color: "emerald", desc: "Mid-year bonus & SMART reallocation." },
+            { id: 11, type: "hazard",      name: "Market Crash",  icon: "📉", color: "red",     desc: "Dependent market volatility event." },
+            { id: 12, type: "insurance",   name: "Asset Defense", icon: "🛡️", color: "amber",   desc: "Comprehensive asset liability hedging." },
+            { id: 13, type: "opportunity", name: "Side Business", icon: "🚀", color: "cyan",    desc: "High ROI entrepreneurial venture." },
+            { id: 14, type: "quiz",        name: "Compound Formula",icon: "🧮", color: "purple", desc: "Calculate compound interest A = P(1+r/n)^nt." },
+            { id: 15, type: "hazard",      name: "Inflation Shock",icon: "⚠️", color: "red",     desc: "Sudden living cost surge; tests cash buffer." },
+
+            { id: 16, type: "debt_relief", name: "Debt Refinance",icon: "🏦", color: "emerald", desc: "Accelerate loan payoff to increase cash flow." },
+            { id: 17, type: "quiz",        name: "SPM Math Trial",icon: "📝", color: "purple",  desc: "Solve combined probability question." },
+            { id: 18, type: "opportunity", name: "Dividend Fund", icon: "💎", color: "cyan",    desc: "Fixed quarterly dividend portfolio." },
+            { id: 19, type: "hazard",      name: "Vehicle Mishap",icon: "🚗", color: "red",     desc: "Non-mutually exclusive event calculation." }
+        ];
+
+        // Grid coordinate mapping for 20 outer tiles in a 6x6 grid (row, col)
+        const TILE_GRID_POSITIONS = [
+            { row: 1, col: 1 }, { row: 1, col: 2 }, { row: 1, col: 3 }, { row: 1, col: 4 }, { row: 1, col: 5 }, { row: 1, col: 6 },
+            { row: 2, col: 6 }, { row: 3, col: 6 }, { row: 4, col: 6 }, { row: 5, col: 6 },
+            { row: 6, col: 6 }, { row: 6, col: 5 }, { row: 6, col: 4 }, { row: 6, col: 3 }, { row: 6, col: 2 }, { row: 6, col: 1 },
+            { row: 5, col: 1 }, { row: 4, col: 1 }, { row: 3, col: 1 }, { row: 2, col: 1 }
+        ];
+
+        // Form 4 Chapter 9: Combined Probability Hazards
+        const HAZARD_SCENARIOS = [
+            {
+                title: "Monsoon Storm & Roof Damage",
+                story: "Severe rainfall triggers flood warnings. You must calculate the probability of both severe storm (Event A) and property water leak (Event B).",
+                rule: "Rule: Independent Events \\(P(A \\cap B) = P(A) \\times P(B)\\)",
+                mathDetails: "Event A: Heavy Storm \\(P(A) = 0.40\\) | Event B: Water Leak \\(P(B) = 0.25\\)",
+                mathTarget: "Target Calculation: Find \\(P(A \\cap B)\\)",
+                options: ["\\(0.65\\) (65%)", "\\(0.15\\) (15%)", "\\(0.10\\) (10%)", "\\(0.01\\) (1%)"],
+                correct: 2,
+                loss: 1400,
+                mitigation: "Correct calculation triggers local community assistance (damage reduced to RM 200)!"
+            },
+            {
+                title: "Sudden Medical Hospitalization",
+                story: "A severe viral infection requires private hospitalization. Calculate the probability of hospitalization (Event A) OR medical complication (Event B) where events overlap.",
+                rule: "Rule: Non-Mutually Exclusive Events \\(P(A \\cup B) = P(A) + P(B) - P(A \\cap B)\\)",
+                mathDetails: "\\(P(A) = 0.35\\), \\(P(B) = 0.20\\), and \\(P(A \\cap B) = 0.05\\)",
+                mathTarget: "Target Calculation: Find \\(P(A \\cup B)\\)",
+                options: ["\\(0.55\\) (55%)", "\\(0.50\\) (50%)", "\\(0.60\\) (60%)", "\\(0.07\\) (7%)"],
+                correct: 1,
+                loss: 2000,
+                mitigation: "Correct calculation allows exact insurance claim filing (bill fully covered)!"
+            },
+            {
+                title: "Tech Market Correction & Crypto Dip",
+                story: "Central bank interest rate hikes shake speculative tech markets. What is the probability of tech correction (Event A) AND subsequent crypto selloff (Event B)?",
+                rule: "Rule: Dependent Events \\(P(A \\cap B) = P(A) \\times P(B|A)\\)",
+                mathDetails: "\\(P(A) = 0.60\\) and conditional probability \\(P(B|A) = 0.50\\)",
+                mathTarget: "Target Calculation: Find \\(P(A \\cap B)\\)",
+                options: ["\\(1.10\\) (110%)", "\\(0.11\\) (11%)", "\\(0.50\\) (50%)", "\\(0.30\\) (30%)"],
+                correct: 3,
+                loss: 1600,
+                mitigation: "Correct risk calculation hedges your portfolio before the crash!"
+            },
+            {
+                title: "Vehicle Engine Overheat on Highway",
+                story: "A defective radiator hose bursts on a long road trip. Calculate the complement probability that NO breakdown occurs given breakdown probability \\(P(A) = 0.15\\).",
+                rule: "Rule: Complement of Event A \\(P(A') = 1 - P(A)\\)",
+                mathDetails: "Probability of breakdown \\(P(A) = 0.15\\)",
+                mathTarget: "Target Calculation: Find \\(P(A') = 1 - P(A)\\)",
+                options: ["\\(0.85\\) (85%)", "\\(0.15\\) (15%)", "\\(0.75\\) (75%)", "\\(0.95\\) (95%)"],
+                correct: 0,
+                loss: 1200,
+                mitigation: "Accurate risk estimation allowed proactive servicing!"
+            }
+        ];
+
+        // Form 4 Math Questions (Chapter 9 & Chapter 10 SPM-style)
+        const MATH_QUESTIONS = [
+            {
+                topic: "Chapter 10 • Financial Management",
+                question: "Hafiz invests RM 5,000 in a fixed deposit with an interest rate of 4% per annum compounded quarterly (every 3 months) for 2 years. Using the formula \\(A = P\\left(1 + \\frac{r}{n}\\right)^{nt}\\), what is the total accumulated sum?",
+                hint: "P = 5000, r = 0.04, n = 4, t = 2. \\(A = 5000(1 + 0.01)^8\\)",
+                options: ["RM 5,400.00", "RM 5,414.28", "RM 5,824.32", "RM 5,200.00"],
+                correct: 1,
+                explanation: "n = 4 quarters/year. \\(A = 5000 \\times (1.01)^8 \\approx 5000 \\times 1.082857 = \\text{RM } 5,414.28\\)."
+            },
+            {
+                topic: "Chapter 10 • Financial Management",
+                question: "Which of the following aligns with the 'SMART' financial planning criteria?",
+                hint: "SMART = Specific, Measurable, Attainable, Realistic, Time-bound.",
+                options: [
+                    "Try to become very rich as soon as possible",
+                    "Invest everything into speculative cryptocurrency",
+                    "Save RM 6,000 in an emergency fund within 12 months by saving RM 500/month",
+                    "Spend money freely and save whatever remains at the end of the year"
+                ],
+                correct: 2,
+                explanation: "Saving RM 6,000 within 12 months with a defined RM 500/month allocation is Specific, Measurable, Attainable, Realistic, and Time-bound."
+            },
+            {
+                topic: "Chapter 10 • Financial Management",
+                question: "Puan Sarah has a monthly active income of RM 4,500 and passive dividend income of RM 300. Her fixed expenses are RM 2,200 and variable expenses are RM 1,400. What is her Net Cash Flow?",
+                hint: "Net Cash Flow = (Total Income) - (Total Expenses)",
+                options: ["+RM 1,200 (Surplus)", "+RM 900", "-RM 300 (Deficit)", "+RM 1,500"],
+                correct: 0,
+                explanation: "Total Income = 4500 + 300 = RM 4,800. Total Expenses = 2200 + 1400 = RM 3,600. Net Cash Flow = 4800 - 3600 = +RM 1,200."
+            },
+            {
+                topic: "Chapter 9 • Probability of Combined Events",
+                question: "Two fair six-sided dice are rolled simultaneously. The sample space has \\(n(S) = 36\\). What is the probability of rolling a sum of 7?",
+                hint: "Favorable outcomes for sum 7: (1,6), (2,5), (3,4), (4,3), (5,2), (6,1).",
+                options: ["1/12 (8.3%)", "7/36 (19.4%)", "5/36 (13.9%)", "1/6 (16.7%)"],
+                correct: 3,
+                explanation: "There are 6 favorable outcomes out of 36 total. \\(P(\\text{sum } 7) = \\frac{6}{36} = \\frac{1}{6}\\)."
+            },
+            {
+                topic: "Chapter 9 • Probability of Combined Events",
+                question: "A card is drawn from a standard 52-card deck. Event A = drawing a King (4 cards). Event B = drawing a Heart (13 cards). Are events A and B mutually exclusive?",
+                hint: "Mutually exclusive means they cannot occur simultaneously. Can a card be King of Hearts?",
+                options: [
+                    "Yes, because Kings and Hearts are completely separate categories",
+                    "No, because the King of Hearts belongs to both events \\((A \\cap B \\neq \\emptyset)\\)",
+                    "Yes, because P(A ∩ B) = 0",
+                    "No, because all cards have equal probability"
+                ],
+                correct: 1,
+                explanation: "The King of Hearts is both a King and a Heart! Thus \\(P(A \\cap B) = \\frac{1}{52} \\neq 0\\), so they are non-mutually exclusive."
+            },
+            {
+                topic: "Chapter 9 • Probability of Combined Events",
+                question: "Bag X contains 3 red balls and 2 blue balls. Bag Y contains 4 red balls and 1 blue ball. One ball is picked at random from each bag. What is the probability of getting two red balls?",
+                hint: "Independent events: P(Red_X ∩ Red_Y) = P(Red_X) × P(Red_Y)",
+                options: ["7/10 (70%)", "12/25 (48%)", "3/5 (60%)", "1/5 (20%)"],
+                correct: 1,
+                explanation: "\\(P(R_X) = \\frac{3}{5}\\) and \\(P(R_Y) = \\frac{4}{5}\\). Since they are independent, \\(P(R_X \\cap R_Y) = \\frac{3}{5} \\times \\frac{4}{5} = \\frac{12}{25}\\)."
+            },
+            {
+                topic: "Chapter 10 • Financial Management",
+                question: "According to Malaysian financial planning standards, how large should an Emergency Fund be for a working adult?",
+                hint: "It must buffer against sudden job loss or major medical emergencies without accumulating debt.",
+                options: [
+                    "1 month of gross salary only",
+                    "At least 5 years of salary",
+                    "3 to 6 months of total monthly living expenses",
+                    "No emergency fund is needed if you have a credit card"
+                ],
+                correct: 2,
+                explanation: "Standard KSSM Form 4 financial guidelines mandate keeping 3 to 6 months of living expenses in liquid, low-risk accounts."
+            },
+            {
+                topic: "Chapter 10 • Financial Management",
+                question: "Farhan purchased 2,000 units of unit trust at RM 1.50 per unit. He received a dividend of RM 200 and sold all units at RM 1.80 per unit. Using \\(\\text{ROI} = \\frac{\\text{Total Return}}{\\text{Initial Capital}} \\times 100\\%\\), what is his ROI?",
+                hint: "Initial Capital = 2000 × 1.50 = RM 3,000. Total Return = RM 200 + (2000 × 0.30) = RM 800.",
+                options: ["20.00%", "26.67%", "30.00%", "15.50%"],
+                correct: 1,
+                explanation: "\\(\\text{Total Return} = 200 + 600 = \\text{RM } 800\\). \\(\\text{ROI} = \\frac{800}{3000} \\times 100\\% \\approx 26.67\\%\\)."
+            },
+            {
+                topic: "Chapter 9 • Probability of Combined Events",
+                question: "A box contains 4 red marbles and 6 green marbles. Two marbles are drawn at random one by one WITHOUT replacement. What is the probability that both marbles drawn are green?",
+                hint: "Dependent events: P(G1 ∩ G2) = P(G1) × P(G2|G1) = (6/10) × (5/9)",
+                options: ["9/25 (36.0%)", "3/5 (60.0%)", "1/3 (33.3%)", "2/5 (40.0%)"],
+                correct: 2,
+                explanation: "First green = \\(\\frac{6}{10}\\); second green = \\(\\frac{5}{9}\\). \\(P(G_1 \\cap G_2) = \\frac{6}{10} \\times \\frac{5}{9} = \\frac{30}{90} = \\frac{1}{3}\\)."
+            },
+            {
+                topic: "Chapter 9 • Probability of Combined Events",
+                question: "In a class of 30 students, 12 take Biology (Event A), 10 take Computer Science (Event B), and no student takes both subjects. What is the probability that a student takes Biology OR Computer Science?",
+                hint: "Mutually exclusive: P(A ∩ B) = 0, so P(A ∪ B) = P(A) + P(B)",
+                options: ["1/3 (33.3%)", "2/15 (13.3%)", "4/5 (80.0%)", "11/15 (73.3%)"],
+                correct: 3,
+                explanation: "Since events are mutually exclusive, \\(P(A \\cup B) = \\frac{12}{30} + \\frac{10}{30} = \\frac{22}{30} = \\frac{11}{15}\\)."
+            }
+        ];
+
+        /* ==========================================================
+           GAME ENGINE STATE & LOGIC
+           ========================================================== */
+        const gameState = {
+            numPlayers: 2,
+            mode: "sprint", // 'sprint' (12 turns), 'freedom', 'marathon' (24 turns)
+            maxMonths: 12,
+            currentMonth: 1,
+            activePlayerIndex: 0,
+            isRolling: false,
+            players: [],
+            pendingTileAction: null
+        };
+
+        /* ==========================================================
+           INITIALIZATION & MATHEMATICAL TYPESETTING (KaTeX)
+           ========================================================== */
+        function triggerMathRender(container) {
+            const target = container || document.body;
+            if (window.renderMathInElement) {
+                try {
+                    window.renderMathInElement(target, {
+                        delimiters: [
+                            { left: '$$', right: '$$', display: true },
+                            { left: '$', right: '$', display: false },
+                            { left: '\\(', right: '\\)', display: false },
+                            { left: '\\[', right: '\\]', display: true }
+                        ],
+                        ignoredTags: ["script", "noscript", "style", "textarea", "pre", "code"],
+                        throwOnError: false
+                    });
+                    return;
+                } catch (e) {
+                    console.warn("KaTeX render error:", e);
+                }
+            }
+            
+            // Retry if script tags are still initializing
+            let attempts = 0;
+            const timer = setInterval(() => {
+                attempts++;
+                if (window.renderMathInElement) {
+                    clearInterval(timer);
+                    triggerMathRender(target);
+                } else if (attempts > 8) {
+                    clearInterval(timer);
+                    cleanRawLatexFallback(target);
+                }
+            }, 150);
+        }
+
+        function cleanRawLatexFallback(target) {
+            if (!target) return;
+            const walker = document.createTreeWalker(target, NodeFilter.SHOW_TEXT, null, false);
+            let node;
+            const textNodes = [];
+            while (node = walker.nextNode()) {
+                if (node.nodeValue && (node.nodeValue.includes('\\(') || node.nodeValue.includes('\\['))) {
+                    textNodes.push(node);
+                }
+            }
+            textNodes.forEach(n => {
+                n.nodeValue = n.nodeValue
+                    .replace(/\\\(|\\\)|\\\[|\\\]/g, '')
+                    .replace(/\\cap/g, '∩')
+                    .replace(/\\cup/g, '∪')
+                    .replace(/\\times/g, '×')
+                    .replace(/\\approx/g, '≈')
+                    .replace(/\\neq/g, '≠')
+                    .replace(/\\frac\{([^}]+)\}\{([^}]+)\}/g, '($1/$2)')
+                    .replace(/\\left\(|\\right\)/g, '')
+                    .replace(/\\text\{([^}]+)\}/g, '$1')
+                    .replace(/\\quad/g, '  ');
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            renderPlayerSetup(gameState.numPlayers);
+            setupEventListeners();
+            renderBoardGrid();
+            triggerMathRender(document.body);
+        });
+
+        window.addEventListener('load', () => {
+            triggerMathRender(document.body);
+        });
+
+        function setupEventListeners() {
+            // Player count buttons
+            document.querySelectorAll('.btn-player-count').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    const count = parseInt(btn.dataset.players);
+                    gameState.numPlayers = count;
+                    document.querySelectorAll('.btn-player-count').forEach(b => {
+                        b.className = 'btn-player-count py-3.5 rounded-2xl border border-slate-700 bg-slate-900/60 text-slate-300 font-black text-sm transition flex flex-col items-center gap-1 hover:border-slate-500';
+                    });
+                    btn.className = 'btn-player-count py-3.5 rounded-2xl border-2 border-emerald-400 bg-gradient-to-b from-emerald-950/80 to-slate-900 text-emerald-300 font-black text-sm transition flex flex-col items-center gap-1 shadow-lg shadow-emerald-950/50 hover:brightness-110';
+                    renderPlayerSetup(count);
+                });
+            });
+
+            // Start Game Button
+            document.getElementById('btn-start-game').addEventListener('click', () => {
+                audio.init();
+                audio.playTone(440, 'triangle', 0.1);
+                initGameSession();
+            });
+
+            // Dice Roll Button
+            document.getElementById('btn-roll-dice').addEventListener('click', () => {
+                handleRollDice();
+            });
+
+            // Sound Toggle
+            document.getElementById('btn-sound-toggle').addEventListener('click', () => {
+                audio.muted = !audio.muted;
+                document.getElementById('sound-icon').textContent = audio.muted ? '🔇' : '🔊';
+            });
+
+            // Cheat sheet modal
+            document.getElementById('btn-cheat-sheet').addEventListener('click', () => {
+                document.getElementById('modal-cheat-sheet').classList.remove('hidden');
+                triggerMathRender(document.getElementById('modal-cheat-sheet'));
+            });
+            document.getElementById('btn-close-cheat').addEventListener('click', () => {
+                document.getElementById('modal-cheat-sheet').classList.add('hidden');
+            });
+
+            // Rules modal
+            document.getElementById('btn-rules').addEventListener('click', () => {
+                document.getElementById('modal-rules').classList.remove('hidden');
+            });
+            document.getElementById('btn-close-rules').addEventListener('click', () => {
+                document.getElementById('modal-rules').classList.add('hidden');
+            });
+
+            // All Ledgers modal
+            document.getElementById('btn-view-all-ledgers').addEventListener('click', () => {
+                openAllLedgersModal();
+            });
+            document.getElementById('btn-close-ledgers').addEventListener('click', () => {
+                document.getElementById('modal-all-ledgers').classList.add('hidden');
+            });
+
+            // Restart button
+            document.getElementById('btn-restart-game').addEventListener('click', () => {
+                if (confirm("Restart game simulation and return to lobby?")) {
+                    location.reload();
+                }
+            });
+
+            // Play again button
+            document.getElementById('btn-play-again').addEventListener('click', () => {
+                location.reload();
+            });
+
+            // Payday Sliders Sync
+            ['slider-alloc-emergency', 'slider-alloc-invest', 'slider-alloc-debt'].forEach(id => {
+                document.getElementById(id).addEventListener('input', updatePaydaySliderBalance);
+            });
+
+            document.getElementById('btn-confirm-payday').addEventListener('click', submitPaydayAllocation);
+            document.getElementById('btn-hazard-continue').addEventListener('click', completeHazardModal);
+            document.getElementById('btn-quiz-continue').addEventListener('click', completeQuizModal);
+            document.getElementById('btn-skip-opportunity').addEventListener('click', () => {
+                document.getElementById('modal-opportunity').classList.add('hidden');
+                advanceToNextTurn();
+            });
+            document.getElementById('btn-close-insurance').addEventListener('click', () => {
+                document.getElementById('modal-insurance').classList.add('hidden');
+                advanceToNextTurn();
+            });
+
+            document.getElementById('btn-buy-med-insurance').addEventListener('click', () => buyInsurance('med'));
+            document.getElementById('btn-buy-asset-insurance').addEventListener('click', () => buyInsurance('asset'));
+        }
+
+        /* ==========================================================
+           LOBBY SETUP RENDERING
+           ========================================================== */
+        function renderPlayerSetup(count) {
+            const container = document.getElementById('player-config-list');
+            container.innerHTML = '';
+
+            for (let i = 0; i < count; i++) {
+                const defaultAvatar = AVATARS[i % AVATARS.length];
+                const defaultCareer = CAREERS[i % CAREERS.length];
+                const isHuman = (i === 0);
+
+                const card = document.createElement('div');
+                card.className = "p-3.5 rounded-2xl bg-gradient-to-r from-slate-900/90 to-indigo-950/70 border border-slate-700/80 hover:border-slate-500 transition flex flex-wrap sm:flex-nowrap items-center justify-between gap-3 shadow-md";
+                card.innerHTML = `
+                    <div class="flex items-center gap-3">
+                        <div class="w-11 h-11 rounded-2xl border-2 flex items-center justify-center text-2xl shadow-md" style="background-color: ${defaultAvatar.color}22; border-color: ${defaultAvatar.color}" id="setup-avatar-icon-${i}">
+                            ${defaultAvatar.icon}
+                        </div>
+                        <div>
+                            <input type="text" id="player-name-${i}" value="Player ${i + 1}" class="bg-transparent font-black text-white text-sm focus:outline-none border-b border-transparent focus:border-emerald-400">
+                            <div class="text-[11px] text-slate-300 flex items-center gap-1.5 mt-0.5">
+                                <span>${defaultCareer.icon}</span>
+                                <span class="font-bold text-white">${defaultCareer.title}</span>
+                                <span class="text-emerald-300 font-code font-bold">(RM ${defaultCareer.salary.toLocaleString()}/mo)</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <select id="player-type-${i}" class="bg-slate-800/90 border border-indigo-500/40 rounded-xl px-3 py-1.5 text-xs text-slate-100 font-bold focus:outline-none shadow-sm">
+                            <option value="human" ${isHuman ? 'selected' : ''}>👤 Human Player</option>
+                            <option value="ai-easy" ${!isHuman ? 'selected' : ''}>🤖 Smart AI Bot</option>
+                        </select>
+                    </div>
+                `;
+                container.appendChild(card);
+            }
+        }
+
+        /* ==========================================================
+           START GAME & BUILD PLAYERS
+           ========================================================== */
+        function initGameSession() {
+            const mode = document.querySelector('input[name="game-mode"]:checked').value;
+            gameState.mode = mode;
+            gameState.maxMonths = (mode === 'sprint') ? 12 : (mode === 'marathon' ? 24 : 36);
+            gameState.currentMonth = 1;
+            gameState.activePlayerIndex = 0;
+            gameState.players = [];
+
+            for (let i = 0; i < gameState.numPlayers; i++) {
+                const nameInput = document.getElementById(`player-name-${i}`);
+                const name = nameInput ? nameInput.value.trim() : `Player ${i + 1}`;
+                const type = document.getElementById(`player-type-${i}`).value;
+                const career = CAREERS[i % CAREERS.length];
+                const avatar = AVATARS[i % AVATARS.length];
+
+                gameState.players.push({
+                    id: i,
+                    name: name || `Player ${i + 1}`,
+                    avatar: avatar.icon,
+                    color: avatar.color,
+                    isAI: (type !== 'human'),
+                    career: career,
+                    position: 0,
+                    cash: 3500,
+                    emergencyFund: 1500,
+                    investments: 0,
+                    passiveIncome: 0,
+                    liabilities: career.debt,
+                    insurance: { med: false, asset: false },
+                    smartGoalsAchieved: 0
+                });
+            }
+
+            // Transition Screens
+            document.getElementById('screen-setup').classList.add('hidden');
+            document.getElementById('screen-game').classList.remove('hidden');
+
+            updateHUD();
+            renderLeaderboard();
+            renderBoardGrid();
+            renderTokensOnBoard();
+            addLog(`🎲 Simulation initiated: ${gameState.numPlayers} Tycoons on the board. Mode: ${mode.toUpperCase()}.`);
+
+            // Start first turn
+            prepareTurn();
+        }
+
+        /* ==========================================================
+           20-TILE CIRCUIT BOARD RENDERER
+           ========================================================== */
+        function renderBoardGrid() {
+            const container = document.getElementById('board-container');
+            // Remove existing board tiles while keeping center stage
+            const existingTiles = container.querySelectorAll('.board-tile');
+            existingTiles.forEach(t => t.remove());
+
+            BOARD_TILES.forEach((tile, index) => {
+                const pos = TILE_GRID_POSITIONS[index];
+                const tileEl = document.createElement('div');
+                tileEl.id = `tile-${index}`;
+                tileEl.style.gridRow = pos.row;
+                tileEl.style.gridColumn = pos.col;
+
+                // Vibrant banners & border highlights
+                let bannerClass = "tile-banner-emerald";
+                let borderColor = "border-emerald-500/40";
+                if (tile.color === 'cyan') {
+                    bannerClass = "tile-banner-cyan";
+                    borderColor = "border-cyan-500/40";
+                } else if (tile.color === 'red') {
+                    bannerClass = "tile-banner-red";
+                    borderColor = "border-rose-500/40";
+                } else if (tile.color === 'purple') {
+                    bannerClass = "tile-banner-purple";
+                    borderColor = "border-purple-500/40";
+                } else if (tile.color === 'amber') {
+                    bannerClass = "tile-banner-amber";
+                    borderColor = "border-amber-500/40";
+                } else if (tile.color === 'lime') {
+                    bannerClass = "tile-banner-lime";
+                    borderColor = "border-lime-500/40";
+                }
+
+                tileEl.className = `board-tile rounded-xl ${borderColor} flex flex-col justify-between relative transition-all duration-300 overflow-hidden select-none cursor-pointer shadow-sm`;
+                tileEl.innerHTML = `
+                    <!-- Monopoly-Style Colorful Top Property Header -->
+                    <div class="${bannerClass} px-1.5 py-0.5 flex items-center justify-between text-[9px] font-black text-white shadow-xs">
+                        <span class="tracking-wider">#${index}</span>
+                        <span>${tile.icon}</span>
+                    </div>
+
+                    <!-- Tile Content Body -->
+                    <div class="p-1 sm:p-1.5 flex flex-col justify-between flex-grow bg-slate-900/60">
+                        <div class="text-[9px] sm:text-[10px] font-extrabold leading-tight text-white line-clamp-2 mt-0.5">
+                            ${tile.name}
+                        </div>
+                        
+                        <!-- Player tokens tray inside this tile -->
+                        <div id="tile-tokens-${index}" class="flex items-center gap-1 mt-1 min-h-[22px] flex-wrap"></div>
+                    </div>
+                `;
+                container.appendChild(tileEl);
+            });
+        }
+
+        function renderTokensOnBoard() {
+            // Clear all token containers
+            for (let i = 0; i < 20; i++) {
+                const c = document.getElementById(`tile-tokens-${i}`);
+                if (c) c.innerHTML = '';
+            }
+
+            // Place each player's token
+            gameState.players.forEach(player => {
+                const container = document.getElementById(`tile-tokens-${player.position}`);
+                if (container) {
+                    const token = document.createElement('div');
+                    token.className = "player-pawn transform hover:scale-125 transition-transform duration-200 cursor-pointer";
+                    token.style.backgroundColor = player.color;
+                    token.title = `${player.name} (${player.career.title})`;
+                    token.textContent = player.avatar;
+                    container.appendChild(token);
+                }
+            });
+        }
+
+        /* ==========================================================
+           TURN CYCLE & DICE ROLLING
+           ========================================================== */
+        function prepareTurn() {
+            const player = gameState.players[gameState.activePlayerIndex];
+
+            // Highlight board tile
+            document.querySelectorAll('[id^="tile-"]').forEach(el => el.classList.remove('tile-active'));
+            const curTile = document.getElementById(`tile-${player.position}`);
+            if (curTile) curTile.classList.add('tile-active');
+
+            updateHUD();
+
+            // Check if player is AI
+            const rollBtn = document.getElementById('btn-roll-dice');
+            const aiIndicator = document.getElementById('ai-turn-indicator');
+            const centerDefault = document.getElementById('center-content-default');
+            const centerEvent = document.getElementById('center-content-event');
+
+            centerDefault.classList.remove('hidden');
+            centerEvent.classList.add('hidden');
+
+            document.getElementById('status-player-name').textContent = player.name;
+            document.getElementById('board-center-status').textContent = `It's ${player.name}'s turn to roll!`;
+
+            if (player.isAI) {
+                rollBtn.classList.add('hidden');
+                aiIndicator.classList.remove('hidden');
+                setTimeout(() => {
+                    handleRollDice();
+                }, 1400);
+            } else {
+                rollBtn.classList.remove('hidden');
+                aiIndicator.classList.add('hidden');
+            }
+        }
+
+        function handleRollDice() {
+            if (gameState.isRolling) return;
+            gameState.isRolling = true;
+
+            const player = gameState.players[gameState.activePlayerIndex];
+            audio.diceRoll();
+
+            const d1El = document.getElementById('dice-1');
+            const d2El = document.getElementById('dice-2');
+            d1El.classList.add('rolling');
+            d2El.classList.add('rolling');
+
+            const roll1 = Math.floor(Math.random() * 6) + 1;
+            const roll2 = Math.floor(Math.random() * 6) + 1;
+            const sum = roll1 + roll2;
+
+            // Form 4 Chapter 9: Exact probability of rolling sum k out of 36
+            const ways = [0, 0, 1, 2, 3, 4, 5, 6, 5, 4, 3, 2, 1][sum];
+            const probPct = ((ways / 36) * 100).toFixed(1);
+
+            setTimeout(() => {
+                d1El.classList.remove('rolling');
+                d2El.classList.remove('rolling');
+
+                const diceFaces = ["", "⚀", "⚁", "⚂", "⚃", "⚄", "⚅"];
+                d1El.textContent = diceFaces[roll1];
+                d2El.textContent = diceFaces[roll2];
+
+                document.getElementById('dice-sum-display').textContent = `${sum} (${roll1} + ${roll2})`;
+                document.getElementById('dice-prob-display').innerHTML = `\\(P(${sum}) = \\frac{${ways}}{36}\\) (${probPct}%)`;
+                triggerMathRender(document.getElementById('roll-probability-badge'));
+
+                animateTokenMovement(player, sum);
+            }, 750);
+        }
+
+        function animateTokenMovement(player, steps) {
+            let stepsRemaining = steps;
+            let currentPos = player.position;
+
+            const moveStep = () => {
+                if (stepsRemaining > 0) {
+                    currentPos = (currentPos + 1) % 20;
+                    player.position = currentPos;
+                    stepsRemaining--;
+                    audio.tokenStep();
+                    renderTokensOnBoard();
+
+                    // Check if passed Payday (Tile 0) during move
+                    if (currentPos === 0 && stepsRemaining > 0) {
+                        addLog(`💰 ${player.name} passed Payday! Mid-stride cash bonus +RM 500.`);
+                        player.cash += 500;
+                        updateHUD();
+                    }
+
+                    setTimeout(moveStep, 160);
+                } else {
+                    gameState.isRolling = false;
+                    onLandedOnTile(player, currentPos);
+                }
+            };
+
+            moveStep();
+        }
+
+        /* ==========================================================
+           TILE LANDING LOGIC
+           ========================================================== */
+        function onLandedOnTile(player, tileIndex) {
+            const tile = BOARD_TILES[tileIndex];
+            addLog(`📍 ${player.name} landed on ${tile.name} (Tile #${tileIndex}).`);
+
+            // Check tile type
+            if (tile.type === 'start') {
+                handlePaydayEvent(player);
+            } else if (tile.type === 'hazard') {
+                handleHazardEvent(player);
+            } else if (tile.type === 'quiz') {
+                handleQuizEvent(player);
+            } else if (tile.type === 'opportunity') {
+                handleOpportunityEvent(player);
+            } else if (tile.type === 'insurance') {
+                handleInsuranceTile(player);
+            } else if (tile.type === 'smart') {
+                handleSmartMilestone(player);
+            } else if (tile.type === 'debt_relief') {
+                handleDebtRelief(player);
+            } else {
+                advanceToNextTurn();
+            }
+        }
+
+        /* ==========================================================
+           PAYDAY ALLOCATION MODAL (FORM 4 CHAPTER 10)
+           ========================================================== */
+        function handlePaydayEvent(player) {
+            audio.cashChime();
+            const salary = player.career.salary;
+            const passive = player.passiveIncome;
+            const livingExp = player.career.fixedExp + player.career.varExp;
+            const debtMin = Math.min(player.career.debtMin, player.liabilities);
+            const totalOutflow = livingExp + debtMin;
+            const netSurplus = Math.max(0, (salary + passive) - totalOutflow);
+
+            if (player.isAI) {
+                // Smart AI automated budgeting:
+                const targetEmerg = livingExp * 3;
+                let allocEmerg = 0;
+                let allocInvest = 0;
+                let allocDebt = 0;
+
+                if (player.emergencyFund < targetEmerg) {
+                    allocEmerg = Math.min(netSurplus, targetEmerg - player.emergencyFund);
+                }
+                const remainder = netSurplus - allocEmerg;
+                allocInvest = Math.floor(remainder * 0.6);
+                allocDebt = Math.min(player.liabilities, remainder - allocInvest);
+                const cashSavings = remainder - allocInvest - allocDebt;
+
+                player.cash += (salary + passive) - totalOutflow + cashSavings;
+                player.emergencyFund += allocEmerg;
+                player.investments += allocInvest;
+                player.passiveIncome += Math.floor(allocInvest * 0.08 / 12);
+                player.liabilities = Math.max(0, player.liabilities - allocDebt);
+
+                addLog(`🤖 AI ${player.name} allocated: Emerg +RM ${allocEmerg}, Invest +RM ${allocInvest}, Debt -RM ${allocDebt}.`);
+                updateHUD();
+                advanceToNextTurn();
+                return;
+            }
+
+            // Human player interactive Payday Modal
+            document.getElementById('payday-player-avatar').textContent = player.avatar;
+            document.getElementById('payday-active-salary').textContent = `RM ${salary.toLocaleString()}`;
+            document.getElementById('payday-passive-income').textContent = `+RM ${passive.toLocaleString()}`;
+            document.getElementById('payday-expenses').textContent = `-RM ${livingExp.toLocaleString()}`;
+            document.getElementById('payday-debt-min').textContent = `-RM ${debtMin.toLocaleString()}`;
+            document.getElementById('payday-surplus').textContent = `RM ${netSurplus.toLocaleString()}`;
+
+            // Configure sliders
+            const sEmerg = document.getElementById('slider-alloc-emergency');
+            const sInvest = document.getElementById('slider-alloc-invest');
+            const sDebt = document.getElementById('slider-alloc-debt');
+
+            sEmerg.max = netSurplus;
+            sInvest.max = netSurplus;
+            sDebt.max = netSurplus;
+
+            // Default balanced recommendation
+            const defEmerg = Math.min(netSurplus, Math.floor(netSurplus * 0.35 / 50) * 50);
+            const defInvest = Math.min(netSurplus - defEmerg, Math.floor(netSurplus * 0.45 / 50) * 50);
+            const defDebt = Math.min(player.liabilities, netSurplus - defEmerg - defInvest);
+
+            sEmerg.value = defEmerg;
+            sInvest.value = defInvest;
+            sDebt.value = defDebt;
+
+            updatePaydaySliderBalance();
+            document.getElementById('modal-payday').classList.remove('hidden');
+            triggerMathRender(document.getElementById('modal-payday'));
+        }
+
+        function updatePaydaySliderBalance() {
+            const player = gameState.players[gameState.activePlayerIndex];
+            const salary = player.career.salary;
+            const passive = player.passiveIncome;
+            const livingExp = player.career.fixedExp + player.career.varExp;
+            const debtMin = Math.min(player.career.debtMin, player.liabilities);
+            const netSurplus = Math.max(0, (salary + passive) - (livingExp + debtMin));
+
+            const valEmerg = parseInt(document.getElementById('slider-alloc-emergency').value) || 0;
+            const valInvest = parseInt(document.getElementById('slider-alloc-invest').value) || 0;
+            const valDebt = parseInt(document.getElementById('slider-alloc-debt').value) || 0;
+
+            document.getElementById('alloc-emergency-val').textContent = `RM ${valEmerg.toLocaleString()}`;
+            document.getElementById('alloc-invest-val').textContent = `RM ${valInvest.toLocaleString()}`;
+            document.getElementById('alloc-debt-val').textContent = `RM ${valDebt.toLocaleString()}`;
+
+            const totalAllocated = valEmerg + valInvest + valDebt;
+            const remaining = netSurplus - totalAllocated;
+
+            const remainingEl = document.getElementById('alloc-remaining-cash');
+            if (remaining >= 0) {
+                remainingEl.textContent = `RM ${remaining.toLocaleString()}`;
+                remainingEl.className = "font-code font-bold text-emerald-400";
+                document.getElementById('btn-confirm-payday').disabled = false;
+                document.getElementById('btn-confirm-payday').classList.remove('opacity-50', 'cursor-not-allowed');
+            } else {
+                remainingEl.textContent = `-RM ${Math.abs(remaining).toLocaleString()} (Over-allocated!)`;
+                remainingEl.className = "font-code font-bold text-red-400";
+                document.getElementById('btn-confirm-payday').disabled = true;
+                document.getElementById('btn-confirm-payday').classList.add('opacity-50', 'cursor-not-allowed');
+            }
+        }
+
+        function submitPaydayAllocation() {
+            const player = gameState.players[gameState.activePlayerIndex];
+            const salary = player.career.salary;
+            const passive = player.passiveIncome;
+            const livingExp = player.career.fixedExp + player.career.varExp;
+            const debtMin = Math.min(player.career.debtMin, player.liabilities);
+            const netSurplus = Math.max(0, (salary + passive) - (livingExp + debtMin));
+
+            const valEmerg = parseInt(document.getElementById('slider-alloc-emergency').value) || 0;
+            const valInvest = parseInt(document.getElementById('slider-alloc-invest').value) || 0;
+            const valDebt = parseInt(document.getElementById('slider-alloc-debt').value) || 0;
+            const cashSavings = Math.max(0, netSurplus - (valEmerg + valInvest + valDebt));
+
+            player.cash += cashSavings;
+            player.emergencyFund += valEmerg;
+            player.investments += valInvest;
+            player.passiveIncome += Math.floor(valInvest * 0.08 / 12);
+            player.liabilities = Math.max(0, player.liabilities - (debtMin + valDebt));
+
+            audio.cashChime();
+            addLog(`💼 Payday resolved for ${player.name}: Emerg +RM ${valEmerg}, Invest +RM ${valInvest}, Debt -RM ${debtMin + valDebt}.`);
+            document.getElementById('modal-payday').classList.add('hidden');
+            updateHUD();
+            advanceToNextTurn();
+        }
+
+        /* ==========================================================
+           SHUFFLE UTILITY: RANDOMIZE MULTIPLE CHOICE OPTIONS
+           ========================================================== */
+        function shuffleOptionsWithTracking(options, correctIndex) {
+            const correctText = options[correctIndex];
+            const shuffled = [...options];
+            for (let i = shuffled.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+            }
+            return {
+                shuffledOptions: shuffled,
+                newCorrectIndex: shuffled.indexOf(correctText)
+            };
+        }
+
+        /* ==========================================================
+           PROBABILITY HAZARD MODAL (FORM 4 CHAPTER 9)
+           ========================================================== */
+        function handleHazardEvent(player) {
+            audio.hazardAlert();
+            const rawScenario = HAZARD_SCENARIOS[Math.floor(Math.random() * HAZARD_SCENARIOS.length)];
+            const { shuffledOptions, newCorrectIndex } = shuffleOptionsWithTracking(rawScenario.options, rawScenario.correct);
+            const scenario = {
+                ...rawScenario,
+                options: shuffledOptions,
+                correct: newCorrectIndex
+            };
+            gameState.pendingHazard = { scenario, player };
+
+            if (player.isAI) {
+                const isCorrect = Math.random() < 0.75;
+                if (player.insurance.med || player.insurance.asset) {
+                    addLog(`🛡️ AI ${player.name}'s insurance fully absorbed hazard loss: ${scenario.title}.`);
+                } else if (isCorrect) {
+                    const reduced = Math.floor(scenario.loss * 0.2);
+                    player.cash = Math.max(0, player.cash - reduced);
+                    addLog(`🤖 AI ${player.name} solved combined probability! Loss mitigated to RM ${reduced}.`);
+                } else {
+                    player.cash = Math.max(0, player.cash - scenario.loss);
+                    addLog(`⚠️ AI ${player.name} suffered full hazard damage: -RM ${scenario.loss}.`);
+                }
+                updateHUD();
+                advanceToNextTurn();
+                return;
+            }
+
+            document.getElementById('hazard-title').textContent = scenario.title;
+            document.getElementById('hazard-story').textContent = scenario.story;
+            document.getElementById('hazard-prob-rule').innerHTML = scenario.rule;
+            document.getElementById('hazard-math-details').innerHTML = scenario.mathDetails;
+            document.getElementById('hazard-math-target').innerHTML = scenario.mathTarget;
+            document.getElementById('hazard-damage-amt').textContent = `RM ${scenario.loss.toLocaleString()}`;
+
+            const insEl = document.getElementById('hazard-insurance-status');
+            const hasIns = (player.insurance.med || player.insurance.asset);
+            insEl.textContent = hasIns ? "🛡️ Insurance Shield Active" : "⚠️ No Insurance Coverage";
+            insEl.className = hasIns ? "text-emerald-400 font-bold" : "text-amber-400 font-bold";
+
+            const optionsBox = document.getElementById('hazard-options-container');
+            optionsBox.innerHTML = '';
+            document.getElementById('hazard-feedback').classList.add('hidden');
+            document.getElementById('btn-hazard-continue').classList.add('hidden');
+
+            scenario.options.forEach((optText, optIdx) => {
+                const btn = document.createElement('button');
+                btn.className = "p-3 rounded-xl bg-slate-900 hover:bg-slate-800 border border-slate-700 text-left text-xs font-bold text-slate-200 transition";
+                btn.innerHTML = optText;
+                btn.onclick = () => checkHazardAnswer(optIdx, btn);
+                optionsBox.appendChild(btn);
+            });
+
+            document.getElementById('modal-hazard').classList.remove('hidden');
+            triggerMathRender(document.getElementById('modal-hazard'));
+        }
+
+        function checkHazardAnswer(selectedIdx, btnElement) {
+            const { scenario, player } = gameState.pendingHazard;
+            const isCorrect = (selectedIdx === scenario.correct);
+            const feedbackEl = document.getElementById('hazard-feedback');
+
+            document.querySelectorAll('#hazard-options-container button').forEach(b => b.disabled = true);
+
+            if (isCorrect) {
+                audio.correctChime();
+                btnElement.classList.add('border-emerald-500', 'bg-emerald-950/60', 'text-emerald-300');
+                feedbackEl.className = "p-3 rounded-xl text-xs font-code bg-emerald-950/70 border border-emerald-500/40 text-emerald-300";
+                feedbackEl.innerHTML = `✓ Correct Combined Probability! ${scenario.mitigation}`;
+                
+                const effectiveLoss = (player.insurance.med || player.insurance.asset) ? 0 : Math.floor(scenario.loss * 0.15);
+                deductFromPlayer(player, effectiveLoss);
+            } else {
+                audio.errorTone();
+                btnElement.classList.add('border-red-500', 'bg-red-950/60', 'text-red-300');
+                feedbackEl.className = "p-3 rounded-xl text-xs font-code bg-red-950/70 border border-red-500/40 text-red-300";
+                feedbackEl.innerHTML = `✗ Incorrect. The correct combined probability was: ${scenario.options[scenario.correct]}. Full damage applied!`;
+                
+                const effectiveLoss = (player.insurance.med || player.insurance.asset) ? 0 : scenario.loss;
+                deductFromPlayer(player, effectiveLoss);
+            }
+
+            feedbackEl.classList.remove('hidden');
+            document.getElementById('btn-hazard-continue').classList.remove('hidden');
+            triggerMathRender(feedbackEl);
+            updateHUD();
+        }
+
+        function deductFromPlayer(player, amount) {
+            if (amount <= 0) return;
+            if (player.emergencyFund >= amount) {
+                player.emergencyFund -= amount;
+                addLog(`🛡️ ${player.name} absorbed RM ${amount} loss using their Emergency Fund!`);
+            } else {
+                const remaining = amount - player.emergencyFund;
+                player.emergencyFund = 0;
+                player.cash = Math.max(0, player.cash - remaining);
+                addLog(`⚠️ ${player.name} emergency fund depleted! Paid RM ${amount} in damage.`);
+            }
+        }
+
+        function completeHazardModal() {
+            document.getElementById('modal-hazard').classList.add('hidden');
+            advanceToNextTurn();
+        }
+
+        /* ==========================================================
+           MATH CHECKPOINT (FORM 4 CHAPTER 9 & 10 QUESTIONS)
+           ========================================================== */
+        function handleQuizEvent(player) {
+            const rawQuestion = MATH_QUESTIONS[Math.floor(Math.random() * MATH_QUESTIONS.length)];
+            const { shuffledOptions, newCorrectIndex } = shuffleOptionsWithTracking(rawQuestion.options, rawQuestion.correct);
+            const questionObj = {
+                ...rawQuestion,
+                options: shuffledOptions,
+                correct: newCorrectIndex
+            };
+            gameState.pendingQuiz = { questionObj, player };
+
+            if (player.isAI) {
+                const correct = Math.random() < 0.70;
+                if (correct) {
+                    player.cash += 500;
+                    addLog(`🧮 AI ${player.name} correctly solved Math Checkpoint! (+RM 500 bonus).`);
+                } else {
+                    addLog(`🧮 AI ${player.name} missed Math Checkpoint.`);
+                }
+                updateHUD();
+                advanceToNextTurn();
+                return;
+            }
+
+            document.getElementById('quiz-topic-tag').textContent = questionObj.topic;
+            document.getElementById('quiz-question-text').innerHTML = questionObj.question;
+            document.getElementById('quiz-formula-hint').innerHTML = `Formula Hint: ${questionObj.hint}`;
+
+            const grid = document.getElementById('quiz-options-grid');
+            grid.innerHTML = '';
+            document.getElementById('quiz-feedback-box').classList.add('hidden');
+            document.getElementById('btn-quiz-continue').classList.add('hidden');
+
+            questionObj.options.forEach((optText, idx) => {
+                const btn = document.createElement('button');
+                btn.className = "w-full p-3 rounded-xl bg-slate-900 hover:bg-slate-800 border border-slate-700 text-left text-xs font-semibold text-slate-200 transition";
+                btn.innerHTML = optText;
+                btn.onclick = () => checkQuizAnswer(idx, btn);
+                grid.appendChild(btn);
+            });
+
+            document.getElementById('modal-quiz').classList.remove('hidden');
+            triggerMathRender(document.getElementById('modal-quiz'));
+        }
+
+        function checkQuizAnswer(selectedIdx, btnElement) {
+            const { questionObj, player } = gameState.pendingQuiz;
+            const isCorrect = (selectedIdx === questionObj.correct);
+            const feedbackBox = document.getElementById('quiz-feedback-box');
+
+            document.querySelectorAll('#quiz-options-grid button').forEach(b => b.disabled = true);
+
+            if (isCorrect) {
+                audio.correctChime();
+                btnElement.classList.add('border-emerald-500', 'bg-emerald-950/70', 'text-emerald-300');
+                feedbackBox.className = "p-3 rounded-xl mb-4 text-xs font-code bg-emerald-950/70 border border-emerald-500/40 text-emerald-300";
+                feedbackBox.innerHTML = `✓ Correct! +RM 500 SPM Math Bonus awarded!<br><span class="text-slate-300 mt-1 block">${questionObj.explanation}</span>`;
+                player.cash += 500;
+                addLog(`🎉 ${player.name} solved Math Checkpoint: +RM 500!`);
+            } else {
+                audio.errorTone();
+                btnElement.classList.add('border-red-500', 'bg-red-950/70', 'text-red-300');
+                feedbackBox.className = "p-3 rounded-xl mb-4 text-xs font-code bg-red-950/70 border border-red-500/40 text-red-300";
+                feedbackBox.innerHTML = `✗ Incorrect. Answer: ${questionObj.options[questionObj.correct]}<br><span class="text-slate-300 mt-1 block">${questionObj.explanation}</span>`;
+            }
+
+            feedbackBox.classList.remove('hidden');
+            document.getElementById('btn-quiz-continue').classList.remove('hidden');
+            triggerMathRender(feedbackBox);
+            updateHUD();
+        }
+
+        function completeQuizModal() {
+            document.getElementById('modal-quiz').classList.add('hidden');
+            advanceToNextTurn();
+        }
+
+        /* ==========================================================
+           OPPORTUNITY & INVESTMENT MARKET
+           ========================================================== */
+        function handleOpportunityEvent(player) {
+            const deals = [
+                { title: "High-Yield Unit Trust (Compound Growth)", cost: 1000, passive: 70, roi: "7.0% p.a.", risk: "Low", icon: "📈" },
+                { title: "Blue-Chip Dividend Equities", cost: 2000, passive: 180, roi: "9.0% p.a.", risk: "Medium", icon: "📊" },
+                { title: "REIT Commercial Property Share", cost: 3000, passive: 300, roi: "10.0% p.a.", risk: "Low-Med", icon: "🏢" }
+            ];
+
+            if (player.isAI) {
+                const affordable = deals.find(d => player.cash >= d.cost + 1000);
+                if (affordable) {
+                    player.cash -= affordable.cost;
+                    player.investments += affordable.cost;
+                    player.passiveIncome += Math.floor(affordable.passive / 12);
+                    addLog(`📈 AI ${player.name} invested RM ${affordable.cost} into ${affordable.title}.`);
+                }
+                updateHUD();
+                advanceToNextTurn();
+                return;
+            }
+
+            const container = document.getElementById('opportunity-cards-container');
+            container.innerHTML = '';
+
+            deals.forEach(deal => {
+                const canAfford = player.cash >= deal.cost;
+                const card = document.createElement('div');
+                card.className = "p-3.5 rounded-2xl bg-slate-900 border border-slate-800 flex items-center justify-between";
+                card.innerHTML = `
+                    <div>
+                        <div class="text-xs font-bold text-white flex items-center gap-1.5">
+                            <span>${deal.icon}</span>
+                            <span>${deal.title}</span>
+                        </div>
+                        <div class="text-[11px] text-slate-400 mt-0.5">
+                            Cost: <strong class="text-white font-code">RM ${deal.cost.toLocaleString()}</strong> | Est. Yield: <strong class="text-teal-400 font-code">${deal.roi}</strong>
+                        </div>
+                    </div>
+                    <button class="btn-buy-asset py-2 px-3.5 rounded-xl text-xs font-black transition ${canAfford ? 'bg-cyan-500 hover:bg-cyan-400 text-slate-950' : 'bg-slate-800 text-slate-500 cursor-not-allowed'}" ${canAfford ? '' : 'disabled'}>
+                        ${canAfford ? 'INVEST ➔' : 'Need Cash'}
+                    </button>
+                `;
+
+                if (canAfford) {
+                    card.querySelector('.btn-buy-asset').onclick = () => {
+                        player.cash -= deal.cost;
+                        player.investments += deal.cost;
+                        player.passiveIncome += Math.floor(deal.passive / 12);
+                        audio.cashChime();
+                        addLog(`📈 ${player.name} invested RM ${deal.cost} in ${deal.title}!`);
+                        document.getElementById('modal-opportunity').classList.add('hidden');
+                        updateHUD();
+                        advanceToNextTurn();
+                    };
+                }
+
+                container.appendChild(card);
+            });
+
+            document.getElementById('modal-opportunity').classList.remove('hidden');
+        }
+
+        /* ==========================================================
+           INSURANCE & PROTECTION TILE
+           ========================================================== */
+        function handleInsuranceTile(player) {
+            if (player.isAI) {
+                if (!player.insurance.med && player.cash >= 1000) {
+                    player.cash -= 300;
+                    player.insurance.med = true;
+                    addLog(`🛡️ AI ${player.name} activated Comprehensive Medical Shield.`);
+                }
+                updateHUD();
+                advanceToNextTurn();
+                return;
+            }
+
+            document.getElementById('modal-insurance').classList.remove('hidden');
+        }
+
+        function buyInsurance(type) {
+            const player = gameState.players[gameState.activePlayerIndex];
+            const cost = (type === 'med') ? 300 : 250;
+            if (player.cash >= cost) {
+                player.cash -= cost;
+                player.insurance[type] = true;
+                audio.cashChime();
+                addLog(`🛡️ ${player.name} purchased ${type === 'med' ? 'Medical' : 'Asset'} Insurance Shield!`);
+                updateHUD();
+                document.getElementById('modal-insurance').classList.add('hidden');
+                advanceToNextTurn();
+            } else {
+                audio.errorTone();
+                alert("Insufficient cash on hand to purchase policy!");
+            }
+        }
+
+        /* ==========================================================
+           SMART MILESTONE & DEBT RELIEF TILES
+           ========================================================== */
+        function handleSmartMilestone(player) {
+            const livingExp = player.career.fixedExp + player.career.varExp;
+            const monthsCovered = (player.emergencyFund / livingExp).toFixed(1);
+
+            if (monthsCovered >= 3.0) {
+                audio.victoryFanfare();
+                player.cash += 800;
+                player.smartGoalsAchieved++;
+                addLog(`🏆 SMART Milestone! ${player.name} has ${monthsCovered} mos emergency buffer (+RM 800 bonus)!`);
+            } else {
+                addLog(`💡 SMART Checkpoint: ${player.name} has ${monthsCovered} mos reserve. Target is 3–6 months!`);
+            }
+            updateHUD();
+            advanceToNextTurn();
+        }
+
+        function handleDebtRelief(player) {
+            if (player.liabilities > 0) {
+                const discount = Math.min(1000, player.liabilities);
+                player.liabilities -= discount;
+                audio.cashChime();
+                addLog(`🏦 Debt Relief Checkpoint: ${player.name}'s loan reduced by RM ${discount}!`);
+            } else {
+                player.cash += 500;
+                addLog(`🏦 Debt-Free Bonus! ${player.name} has zero liabilities (+RM 500 award).`);
+            }
+            updateHUD();
+            advanceToNextTurn();
+        }
+
+        /* ==========================================================
+           TURN ADVANCEMENT & WIN CONDITION CHECK
+           ========================================================== */
+        function advanceToNextTurn() {
+            if (checkGameEnd()) {
+                triggerGameOver();
+                return;
+            }
+
+            gameState.activePlayerIndex = (gameState.activePlayerIndex + 1) % gameState.players.length;
+
+            if (gameState.activePlayerIndex === 0) {
+                gameState.currentMonth++;
+                addLog(`📅 Calendar advanced to Month ${gameState.currentMonth} of ${gameState.maxMonths}.`);
+            }
+
+            prepareTurn();
+        }
+
+        function checkGameEnd() {
+            if (gameState.mode === 'freedom') {
+                for (let p of gameState.players) {
+                    const livingExp = p.career.fixedExp + p.career.varExp;
+                    const netWorth = (p.cash + p.emergencyFund + p.investments) - p.liabilities;
+                    if (p.passiveIncome >= livingExp && p.emergencyFund >= (livingExp * 6) && netWorth >= 60000) {
+                        gameState.winner = p;
+                        return true;
+                    }
+                }
+            }
+
+            if (gameState.currentMonth > gameState.maxMonths) {
+                let topPlayer = gameState.players[0];
+                let topNetWorth = -999999;
+                gameState.players.forEach(p => {
+                    const nw = (p.cash + p.emergencyFund + p.investments) - p.liabilities;
+                    if (nw > topNetWorth) {
+                        topNetWorth = nw;
+                        topPlayer = p;
+                    }
+                });
+                gameState.winner = topPlayer;
+                return true;
+            }
+
+            return false;
+        }
+
+        function triggerGameOver() {
+            audio.victoryFanfare();
+            if (window.confetti) {
+                confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 } });
+            }
+
+            const winner = gameState.winner;
+            const winNetWorth = (winner.cash + winner.emergencyFund + winner.investments) - winner.liabilities;
+
+            document.getElementById('victory-title').textContent = `${winner.name.toUpperCase()} WINS!`;
+            document.getElementById('victory-subtitle').textContent = `Achieved supreme financial standing in Form 4 Financial Management & Probability Strategy!`;
+
+            const showcase = document.getElementById('winner-showcase');
+            showcase.innerHTML = `
+                <div class="flex items-center gap-4">
+                    <div class="w-14 h-14 rounded-2xl bg-emerald-500/20 border-2 border-emerald-400 flex items-center justify-center text-3xl">
+                        ${winner.avatar}
+                    </div>
+                    <div>
+                        <div class="text-xs font-black uppercase text-emerald-400 font-tech">TYCOON GRANDMASTER</div>
+                        <h4 class="text-xl font-black text-white">${winner.name} (${winner.career.title})</h4>
+                        <div class="text-xs text-slate-300 font-code mt-0.5">
+                            Final Net Worth: <strong class="text-emerald-300">RM ${winNetWorth.toLocaleString()}</strong> | Passive: <strong class="text-teal-300">RM ${winner.passiveIncome.toLocaleString()}/mo</strong>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            const sorted = [...gameState.players].sort((a, b) => {
+                const nwA = (a.cash + a.emergencyFund + a.investments) - a.liabilities;
+                const nwB = (b.cash + b.emergencyFund + b.investments) - b.liabilities;
+                return nwB - nwA;
+            });
+
+            const tbody = document.getElementById('final-standings-tbody');
+            tbody.innerHTML = '';
+            sorted.forEach((p, rank) => {
+                const nw = (p.cash + p.emergencyFund + p.investments) - p.liabilities;
+                const tr = document.createElement('tr');
+                tr.className = "border-b border-slate-800/60 font-code";
+                tr.innerHTML = `
+                    <td class="py-2 px-2 font-bold">${rank === 0 ? '🥇 1st' : (rank === 1 ? '🥈 2nd' : (rank === 2 ? '🥉 3rd' : `${rank + 1}th`))}</td>
+                    <td class="py-2 px-2 font-bold text-white flex items-center gap-1.5">${p.avatar} ${p.name}</td>
+                    <td class="py-2 px-2 text-slate-300">RM ${p.cash.toLocaleString()}</td>
+                    <td class="py-2 px-2 text-purple-300">RM ${p.investments.toLocaleString()}</td>
+                    <td class="py-2 px-2 text-red-400">RM ${p.liabilities.toLocaleString()}</td>
+                    <td class="py-2 px-2 font-black text-emerald-400 text-right">RM ${nw.toLocaleString()}</td>
+                `;
+                tbody.appendChild(tr);
+            });
+
+            document.getElementById('modal-game-over').classList.remove('hidden');
+        }
+
+        /* ==========================================================
+           HUD & UI UPDATES
+           ========================================================== */
+        function updateHUD() {
+            const player = gameState.players[gameState.activePlayerIndex];
+            if (!player) return;
+
+            document.getElementById('display-round-month').textContent = `Month ${gameState.currentMonth} / ${gameState.maxMonths}`;
+            document.getElementById('display-mode-badge').textContent = gameState.mode.toUpperCase();
+
+            document.getElementById('active-player-avatar').textContent = player.avatar;
+            document.getElementById('active-player-avatar').style.borderColor = player.color;
+            document.getElementById('active-player-name').textContent = player.name;
+            document.getElementById('active-player-career').textContent = player.career.title;
+            document.getElementById('active-player-controller-tag').textContent = player.isAI ? "SMART AI" : "HUMAN";
+
+            const totalAssets = player.cash + player.emergencyFund + player.investments;
+            const netWorth = totalAssets - player.liabilities;
+            document.getElementById('hud-player-name').textContent = `${player.avatar} ${player.name}`;
+            document.getElementById('hud-net-worth').textContent = `RM ${netWorth.toLocaleString()}`;
+            document.getElementById('hud-net-worth').className = `text-base sm:text-lg font-black font-code ${netWorth >= 0 ? 'text-emerald-400' : 'text-red-400'}`;
+
+            document.getElementById('hud-cash').textContent = `RM ${player.cash.toLocaleString()}`;
+            document.getElementById('hud-emergency-fund').textContent = `RM ${player.emergencyFund.toLocaleString()}`;
+
+            const livingExp = player.career.fixedExp + player.career.varExp;
+            const bufferMos = (player.emergencyFund / livingExp).toFixed(1);
+            document.getElementById('hud-emergency-months').textContent = `(${bufferMos} mos buffer)`;
+
+            document.getElementById('hud-investments').textContent = `RM ${player.investments.toLocaleString()}`;
+            document.getElementById('hud-liabilities').textContent = `RM ${player.liabilities.toLocaleString()}`;
+
+            const totalIncome = player.career.salary + player.passiveIncome;
+            const debtMin = Math.min(player.career.debtMin, player.liabilities);
+            const totalExpenses = livingExp + debtMin;
+            const netCashFlow = totalIncome - totalExpenses;
+
+            document.getElementById('hud-total-income').textContent = `RM ${totalIncome.toLocaleString()}`;
+            document.getElementById('hud-total-expenses').textContent = `RM ${totalExpenses.toLocaleString()}`;
+            document.getElementById('hud-net-cash-flow').textContent = `${netCashFlow >= 0 ? '+' : ''}RM ${netCashFlow.toLocaleString()}`;
+            document.getElementById('hud-net-cash-flow').className = `font-code font-black text-sm ${netCashFlow >= 0 ? 'text-emerald-300' : 'text-red-400'}`;
+
+            const freedomRatio = Math.min(100, Math.floor((player.passiveIncome / livingExp) * 100));
+            document.getElementById('hud-freedom-percent').textContent = `${freedomRatio}%`;
+            document.getElementById('hud-freedom-bar').style.width = `${freedomRatio}%`;
+            document.getElementById('hud-passive-income').textContent = `RM ${player.passiveIncome.toLocaleString()}/mo`;
+            document.getElementById('hud-freedom-target').textContent = `RM ${livingExp.toLocaleString()}/mo`;
+
+            const badgeContainer = document.getElementById('hud-insurance-badges');
+            badgeContainer.innerHTML = `
+                <span class="px-1.5 py-0.5 rounded text-[10px] ${player.insurance.med ? 'bg-emerald-950 text-emerald-300 border border-emerald-500/40' : 'bg-slate-800 text-slate-500'}">🏥 Med</span>
+                <span class="px-1.5 py-0.5 rounded text-[10px] ${player.insurance.asset ? 'bg-cyan-950 text-cyan-300 border border-cyan-500/40' : 'bg-slate-800 text-slate-500'}">🛡️ Asset</span>
+            `;
+
+            renderLeaderboard();
+        }
+
+        function renderLeaderboard() {
+            const list = document.getElementById('leaderboard-list');
+            list.innerHTML = '';
+
+            const sorted = [...gameState.players].sort((a, b) => {
+                const nwA = (a.cash + a.emergencyFund + a.investments) - a.liabilities;
+                const nwB = (b.cash + b.emergencyFund + b.investments) - b.liabilities;
+                return nwB - nwA;
+            });
+
+            const rankMedals = ["🥇", "🥈", "🥉", "4️⃣"];
+            const rankBorders = [
+                "border-amber-400/80 bg-gradient-to-r from-amber-950/40 via-slate-900 to-slate-900",
+                "border-slate-400/60 bg-gradient-to-r from-slate-800/40 via-slate-900 to-slate-900",
+                "border-amber-700/60 bg-gradient-to-r from-amber-950/30 via-slate-900 to-slate-900",
+                "border-slate-700/60 bg-slate-900/40"
+            ];
+
+            sorted.forEach((p, idx) => {
+                const nw = (p.cash + p.emergencyFund + p.investments) - p.liabilities;
+                const isActive = (p.id === gameState.activePlayerIndex);
+
+                const item = document.createElement('div');
+                const medal = rankMedals[idx] || `#${idx + 1}`;
+                const rankClass = rankBorders[idx] || "border-slate-800 bg-slate-900/60";
+
+                item.className = `p-2.5 rounded-xl flex items-center justify-between text-xs transition border ${isActive ? 'ring-2 ring-emerald-400 border-emerald-400 bg-emerald-950/50 active-turn-pulse' : rankClass} shadow-sm`;
+                item.innerHTML = `
+                    <div class="flex items-center gap-2.5">
+                        <span class="text-base">${medal}</span>
+                        <div class="w-7 h-7 rounded-full flex items-center justify-center text-sm border-2 border-white shadow-sm" style="background-color: ${p.color}">
+                            ${p.avatar}
+                        </div>
+                        <div>
+                            <div class="font-bold text-white flex items-center gap-1.5">
+                                <span>${p.name}</span>
+                                ${p.isAI ? '<span class="text-[8px] px-1.5 py-0.2 rounded bg-indigo-950 text-cyan-300 font-mono border border-cyan-500/30">AI</span>' : ''}
+                            </div>
+                            <div class="text-[10px] text-emerald-300 font-code font-semibold">Pass: RM ${p.passiveIncome.toLocaleString()}/mo</div>
+                        </div>
+                    </div>
+                    <div class="text-right">
+                        <span class="text-[9px] text-slate-300 block font-bold">NET WORTH</span>
+                        <span class="font-black font-code ${nw >= 0 ? 'text-emerald-300' : 'text-rose-400'} text-xs sm:text-sm">RM ${nw.toLocaleString()}</span>
+                    </div>
+                `;
+                list.appendChild(item);
+            });
+        }
+
+        function openAllLedgersModal() {
+            const container = document.getElementById('ledgers-cards-container');
+            container.innerHTML = '';
+
+            gameState.players.forEach(p => {
+                const nw = (p.cash + p.emergencyFund + p.investments) - p.liabilities;
+                const livingExp = p.career.fixedExp + p.career.varExp;
+                const buffer = (p.emergencyFund / livingExp).toFixed(1);
+
+                const card = document.createElement('div');
+                card.className = "p-4 rounded-2xl bg-slate-900 border border-slate-800 text-xs space-y-2";
+                card.innerHTML = `
+                    <div class="flex items-center justify-between pb-2 border-b border-slate-800">
+                        <div class="flex items-center gap-2">
+                            <span class="text-2xl">${p.avatar}</span>
+                            <div>
+                                <h4 class="font-black text-white text-sm">${p.name}</h4>
+                                <span class="text-[10px] text-slate-400">${p.career.title}</span>
+                            </div>
+                        </div>
+                        <div class="text-right">
+                            <span class="text-[9px] text-slate-400 uppercase">Net Worth</span>
+                            <div class="font-black font-code text-sm ${nw >= 0 ? 'text-emerald-400' : 'text-red-400'}">RM ${nw.toLocaleString()}</div>
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-2 gap-2 text-[11px] font-code">
+                        <div>Cash: <strong class="text-white">RM ${p.cash.toLocaleString()}</strong></div>
+                        <div>Emerg: <strong class="text-cyan-300">RM ${p.emergencyFund.toLocaleString()}</strong> (${buffer}m)</div>
+                        <div>Invest: <strong class="text-purple-300">RM ${p.investments.toLocaleString()}</strong></div>
+                        <div>Debt: <strong class="text-red-400">RM ${p.liabilities.toLocaleString()}</strong></div>
+                    </div>
+                    <div class="pt-1 text-[10px] text-slate-400 flex justify-between border-t border-slate-800/60">
+                        <span>Passive: <strong class="text-teal-300">RM ${p.passiveIncome}/mo</strong></span>
+                        <span>Insurance: ${p.insurance.med ? '🏥 Med ' : ''}${p.insurance.asset ? '🛡️ Asset' : (p.insurance.med ? '' : 'None')}</span>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+
+            document.getElementById('modal-all-ledgers').classList.remove('hidden');
+        }
+
+        function addLog(msg) {
+            const logBox = document.getElementById('game-event-log');
+            const item = document.createElement('div');
+            item.className = "leading-tight py-0.5";
+            item.textContent = `• ${msg}`;
+            logBox.prepend(item);
+
+            while (logBox.children.length > 25) {
+                logBox.removeChild(logBox.lastChild);
+            }
+        }
+    </script>
+</body>
+</html>

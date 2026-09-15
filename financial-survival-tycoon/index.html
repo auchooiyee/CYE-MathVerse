@@ -97,38 +97,197 @@
             box-shadow: 0 12px 28px rgba(0, 0, 0, 0.3);
         }
 
-        /* Luxury White 3D Acrylic Dice */
+        :root {
+            --dice-size: 48px;
+            --dice-half: 24px;
+            --dice-pip: 8.5px;
+            --dice-ace: 13.5px;
+        }
+        @media (min-width: 640px) {
+            :root {
+                --dice-size: 60px;
+                --dice-half: 30px;
+                --dice-pip: 10.5px;
+                --dice-ace: 16.5px;
+            }
+        }
+        @media (min-width: 1024px) {
+            :root {
+                --dice-size: 66px;
+                --dice-half: 33px;
+                --dice-pip: 11.5px;
+                --dice-ace: 18.5px;
+            }
+        }
+
+        /* Authentic 3D Acrylic Casino Dice */
+        .dice-scene {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
         .dice-box {
-            perspective: 600px;
-            width: 62px;
-            height: 62px;
+            perspective: 650px;
+            width: var(--dice-size);
+            height: var(--dice-size);
+            position: relative;
         }
         .dice-cube {
             width: 100%;
             height: 100%;
             position: relative;
             transform-style: preserve-3d;
-            transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            transform: rotateX(-15deg) rotateY(25deg);
-            background: linear-gradient(145deg, #ffffff 0%, #f1f5f9 60%, #e2e8f0 100%);
-            border: 1px solid #cbd5e1;
-            border-radius: 16px;
-            box-shadow: 
-                inset 0 2px 4px rgba(255, 255, 255, 0.95),
-                inset 0 -3px 4px rgba(0, 0, 0, 0.15),
-                0 10px 22px rgba(0, 0, 0, 0.45);
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            transition: transform 0.85s cubic-bezier(0.18, 0.9, 0.28, 1.08);
             user-select: none;
+            will-change: transform;
         }
+        .dice-face {
+            position: absolute;
+            width: var(--dice-size);
+            height: var(--dice-size);
+            background: linear-gradient(145deg, #ffffff 0%, #f8fafc 40%, #e2e8f0 100%);
+            border: 1px solid #cbd5e1;
+            border-radius: calc(var(--dice-size) * 0.22);
+            box-shadow: 
+                inset 0 1.5px 2px rgba(255, 255, 255, 0.95),
+                inset 0 -2px 3px rgba(0, 0, 0, 0.12),
+                inset 0 0 1px 1px rgba(255, 255, 255, 0.7),
+                0 4px 10px rgba(0, 0, 0, 0.25);
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            grid-template-rows: repeat(3, 1fr);
+            padding: calc(var(--dice-size) * 0.11);
+            box-sizing: border-box;
+            backface-visibility: hidden;
+            -webkit-backface-visibility: hidden;
+        }
+
+        /* 3D Cube faces geometry (opposite faces sum to 7) */
+        .face-1 { transform: rotateY(0deg) translateZ(var(--dice-half)); }
+        .face-6 { transform: rotateY(180deg) translateZ(var(--dice-half)); }
+        .face-2 { transform: rotateY(90deg) translateZ(var(--dice-half)); }
+        .face-5 { transform: rotateY(-90deg) translateZ(var(--dice-half)); }
+        .face-3 { transform: rotateX(90deg) translateZ(var(--dice-half)); }
+        .face-4 { transform: rotateX(-90deg) translateZ(var(--dice-half)); }
+
+        /* Recessed Spherical Pips */
+        .pip {
+            display: block;
+            width: var(--dice-pip);
+            height: var(--dice-pip);
+            border-radius: 50%;
+            margin: auto;
+            background: radial-gradient(circle at 35% 35%, #334155 0%, #0f172a 70%, #020617 100%);
+            box-shadow: 
+                inset 0 1.5px 2px rgba(0, 0, 0, 0.8),
+                0 1px 1px rgba(255, 255, 255, 0.9);
+        }
+
+        /* Die 1: Crimson Red Ace */
+        .pip-ace-red {
+            width: var(--dice-ace) !important;
+            height: var(--dice-ace) !important;
+            background: radial-gradient(circle at 35% 35%, #ff4d6d 0%, #e11d48 60%, #881337 100%) !important;
+            box-shadow: 
+                inset 0 2px 3px rgba(0, 0, 0, 0.5),
+                0 1px 2px rgba(255, 255, 255, 0.9),
+                0 0 6px rgba(244, 63, 94, 0.35) !important;
+        }
+
+        /* Die 2: Sapphire Blue Ace */
+        .pip-ace-blue {
+            width: var(--dice-ace) !important;
+            height: var(--dice-ace) !important;
+            background: radial-gradient(circle at 35% 35%, #38bdf8 0%, #0284c7 60%, #075985 100%) !important;
+            box-shadow: 
+                inset 0 2px 3px rgba(0, 0, 0, 0.5),
+                0 1px 2px rgba(255, 255, 255, 0.9),
+                0 0 6px rgba(56, 189, 248, 0.35) !important;
+        }
+
+        /* Pip Grid Positions */
+        .face-1 .pip { grid-column: 2; grid-row: 2; }
+
+        .face-2 .pip:nth-child(1) { grid-column: 1; grid-row: 1; }
+        .face-2 .pip:nth-child(2) { grid-column: 3; grid-row: 3; }
+
+        .face-3 .pip:nth-child(1) { grid-column: 1; grid-row: 1; }
+        .face-3 .pip:nth-child(2) { grid-column: 2; grid-row: 2; }
+        .face-3 .pip:nth-child(3) { grid-column: 3; grid-row: 3; }
+
+        .face-4 .pip:nth-child(1) { grid-column: 1; grid-row: 1; }
+        .face-4 .pip:nth-child(2) { grid-column: 3; grid-row: 1; }
+        .face-4 .pip:nth-child(3) { grid-column: 1; grid-row: 3; }
+        .face-4 .pip:nth-child(4) { grid-column: 3; grid-row: 3; }
+
+        .face-5 .pip:nth-child(1) { grid-column: 1; grid-row: 1; }
+        .face-5 .pip:nth-child(2) { grid-column: 3; grid-row: 1; }
+        .face-5 .pip:nth-child(3) { grid-column: 2; grid-row: 2; }
+        .face-5 .pip:nth-child(4) { grid-column: 1; grid-row: 3; }
+        .face-5 .pip:nth-child(5) { grid-column: 3; grid-row: 3; }
+
+        .face-6 .pip:nth-child(1) { grid-column: 1; grid-row: 1; }
+        .face-6 .pip:nth-child(2) { grid-column: 1; grid-row: 2; }
+        .face-6 .pip:nth-child(3) { grid-column: 1; grid-row: 3; }
+        .face-6 .pip:nth-child(4) { grid-column: 3; grid-row: 1; }
+        .face-6 .pip:nth-child(5) { grid-column: 3; grid-row: 2; }
+        .face-6 .pip:nth-child(6) { grid-column: 3; grid-row: 3; }
+
+        /* Dynamic Contact Drop Shadow */
+        .dice-shadow {
+            width: calc(var(--dice-size) * 0.95);
+            height: 10px;
+            background: radial-gradient(ellipse at center, rgba(0, 0, 0, 0.6) 0%, rgba(0, 0, 0, 0.22) 45%, transparent 70%);
+            border-radius: 50%;
+            margin-top: 8px;
+            transition: all 0.3s ease;
+            filter: blur(2px);
+        }
+
+        /* 3D Tumbling Rolling Physics */
         .dice-cube.rolling {
-            animation: diceRollAnim 0.7s infinite linear;
+            animation: diceTumble 0.75s infinite linear;
         }
-        @keyframes diceRollAnim {
-            0% { transform: rotateX(0deg) rotateY(0deg) rotateZ(0deg) scale(0.95); }
-            50% { transform: rotateX(360deg) rotateY(540deg) rotateZ(180deg) scale(1.1); }
-            100% { transform: rotateX(720deg) rotateY(1080deg) rotateZ(360deg) scale(0.95); }
+        @keyframes diceTumble {
+            0%   { transform: rotateX(0deg) rotateY(0deg) rotateZ(0deg) scale(0.92); }
+            25%  { transform: rotateX(180deg) rotateY(90deg) rotateZ(45deg) scale(1.08); }
+            50%  { transform: rotateX(360deg) rotateY(180deg) rotateZ(90deg) scale(0.95); }
+            75%  { transform: rotateX(540deg) rotateY(270deg) rotateZ(135deg) scale(1.06); }
+            100% { transform: rotateX(720deg) rotateY(360deg) rotateZ(180deg) scale(0.92); }
+        }
+        .dice-cube.rolling + .dice-shadow {
+            animation: shadowTumble 0.75s infinite ease-in-out;
+        }
+        @keyframes shadowTumble {
+            0%, 50%, 100% { transform: scale(1); opacity: 0.6; }
+            25%, 75% { transform: scale(0.65); opacity: 0.25; }
+        }
+
+        /* Auto-adjust responsive board container */
+        #board-container {
+            aspect-ratio: 1 / 1;
+            width: 100%;
+            max-width: 660px;
+            margin: 0 auto;
+        }
+        .board-tile {
+            min-height: 52px;
+        }
+        @media (min-width: 640px) {
+            .board-tile {
+                min-height: 70px;
+            }
+        }
+        @media (min-width: 1024px) {
+            .board-tile {
+                min-height: 82px;
+            }
+        }
+
+        .katex {
+            font-size: 1.15em !important;
         }
 
         /* Monopoly-Style Colorful Tile Property Banners */
@@ -218,29 +377,29 @@
                     <span class="hidden sm:inline font-tech text-cyan-300">CYE-MathVerse</span>
                 </a>
                 <div>
-                    <div class="flex items-center gap-2">
-                        <span class="text-2xl animate-bounce">🎲</span>
-                        <h1 class="text-sm sm:text-base font-black tracking-tight text-white font-tech flex items-center gap-1.5">
+                    <div class="flex items-center gap-2.5">
+                        <span class="text-2xl sm:text-3xl animate-bounce">🎲</span>
+                        <h1 class="text-base sm:text-lg md:text-xl font-black tracking-tight text-white font-tech flex items-center gap-2">
                             FINANCIAL SURVIVAL <span class="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 via-teal-300 to-cyan-400 font-extrabold">TYCOON</span>
                         </h1>
                     </div>
-                    <p class="text-[10px] text-slate-300 font-medium hidden md:block flex items-center gap-1">
+                    <p class="text-xs text-slate-300 font-semibold hidden md:block flex items-center gap-1.5">
                         <span class="text-emerald-400 font-bold">Form 4 Ch 10</span> (Financial Management) &amp; <span class="text-cyan-300 font-bold">Ch 9</span> (Probability of Combined Events)
                     </p>
                 </div>
             </div>
 
             <!-- Header Controls: Sound, Formulas, Rules, Restart -->
-            <div class="flex items-center gap-2">
-                <button id="btn-cheat-sheet" class="inline-flex items-center gap-1.5 px-2.5 sm:px-3.5 py-1.5 rounded-xl bg-gradient-to-r from-indigo-900/90 to-purple-900/90 hover:from-indigo-800 hover:to-purple-800 text-indigo-200 text-xs font-bold border border-indigo-500/40 transition shadow-sm hover:shadow-indigo-500/20">
+            <div class="flex items-center gap-2.5">
+                <button id="btn-cheat-sheet" class="inline-flex items-center gap-1.5 px-3 sm:px-4 py-2 rounded-xl bg-gradient-to-r from-indigo-900/90 to-purple-900/90 hover:from-indigo-800 hover:to-purple-800 text-indigo-200 text-xs sm:text-sm font-bold border border-indigo-500/40 transition shadow-sm hover:shadow-indigo-500/20">
                     <span>📐</span>
                     <span class="hidden sm:inline">Formula Sheet</span>
                 </button>
-                <button id="btn-rules" class="inline-flex items-center gap-1.5 px-2.5 sm:px-3.5 py-1.5 rounded-xl bg-gradient-to-r from-amber-950/80 to-yellow-950/80 hover:from-amber-900 hover:to-yellow-900 text-amber-200 text-xs font-bold border border-amber-500/40 transition shadow-sm">
+                <button id="btn-rules" class="inline-flex items-center gap-1.5 px-3 sm:px-4 py-2 rounded-xl bg-gradient-to-r from-amber-950/80 to-yellow-950/80 hover:from-amber-900 hover:to-yellow-900 text-amber-200 text-xs sm:text-sm font-bold border border-amber-500/40 transition shadow-sm">
                     <span>📖</span>
                     <span class="hidden sm:inline">Rules &amp; Guide</span>
                 </button>
-                <button id="btn-sound-toggle" class="p-2 rounded-xl bg-emerald-950/80 hover:bg-emerald-900 text-emerald-300 text-xs font-bold border border-emerald-500/40 transition shadow-sm" title="Toggle Sound">
+                <button id="btn-sound-toggle" class="p-2.5 rounded-xl bg-emerald-950/80 hover:bg-emerald-900 text-emerald-300 text-xs font-bold border border-emerald-500/40 transition shadow-sm" title="Toggle Sound">
                     <span id="sound-icon">🔊</span>
                 </button>
             </div>
@@ -259,98 +418,98 @@
                 <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-cyan-500/10 rounded-full blur-3xl pointer-events-none"></div>
 
                 <div class="text-center mb-8 relative">
-                    <div class="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-gradient-to-r from-emerald-950/80 via-teal-950/80 to-cyan-950/80 border border-emerald-400/40 text-emerald-300 text-xs font-black tracking-wider uppercase mb-3 shadow-sm">
+                    <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-gradient-to-r from-emerald-950/80 via-teal-950/80 to-cyan-950/80 border border-emerald-400/40 text-emerald-300 text-xs sm:text-sm font-black tracking-wider uppercase mb-3 shadow-sm">
                         <span>✨ KSSM Form 4 Mathematics Hybrid Strategy</span>
                     </div>
-                    <h2 class="text-2xl sm:text-4xl font-black font-tech tracking-tight text-white mb-2">
+                    <h2 class="text-3xl sm:text-5xl font-black font-tech tracking-tight text-white mb-3">
                         FINANCIAL SURVIVAL <span class="text-transparent bg-clip-text bg-gradient-to-r from-amber-400 via-emerald-400 to-teal-300">TYCOON</span>
                     </h2>
-                    <p class="text-slate-200 text-xs sm:text-sm max-w-lg mx-auto leading-relaxed">
+                    <p class="text-slate-200 text-sm sm:text-base max-w-xl mx-auto leading-relaxed">
                         Balance monthly cash flows using the <strong class="text-emerald-300 font-black">SMART</strong> financial model, hedge risk against <strong class="text-cyan-300 font-black">Combined Event Probabilities</strong> \(P(A \cap B)\) and \(P(A \cup B)\), and conquer the board to achieve Financial Freedom!
                     </p>
                 </div>
 
                 <!-- Setup Step 1: Select Player Count -->
-                <div class="mb-7">
-                    <label class="block text-xs font-black text-slate-300 uppercase tracking-wider mb-3">
+                <div class="mb-8">
+                    <label class="block text-sm font-black text-slate-200 uppercase tracking-wider mb-3.5">
                         1. Select Number of Players (2–4)
                     </label>
-                    <div class="grid grid-cols-3 gap-3">
-                        <button type="button" data-players="2" class="btn-player-count py-3.5 rounded-2xl border-2 border-emerald-400 bg-gradient-to-b from-emerald-950/80 to-slate-900 text-emerald-300 font-black text-sm transition flex flex-col items-center gap-1 shadow-lg shadow-emerald-950/50 hover:brightness-110">
-                            <span class="text-2xl">👥</span>
+                    <div class="grid grid-cols-3 gap-3.5">
+                        <button type="button" data-players="2" class="btn-player-count py-4 rounded-2xl border-2 border-emerald-400 bg-gradient-to-b from-emerald-950/80 to-slate-900 text-emerald-300 font-black text-base sm:text-lg transition flex flex-col items-center gap-1 shadow-lg shadow-emerald-950/50 hover:brightness-110">
+                            <span class="text-3xl">👥</span>
                             <span>2 Players</span>
-                            <span class="text-[10px] text-emerald-300 font-bold">Duel Mode</span>
+                            <span class="text-xs text-emerald-300 font-bold">Duel Mode</span>
                         </button>
-                        <button type="button" data-players="3" class="btn-player-count py-3.5 rounded-2xl border border-cyan-500/40 bg-gradient-to-b from-cyan-950/50 to-slate-900 text-slate-200 font-black text-sm hover:border-cyan-400 hover:text-cyan-300 transition flex flex-col items-center gap-1">
-                            <span class="text-2xl">👥👤</span>
+                        <button type="button" data-players="3" class="btn-player-count py-4 rounded-2xl border border-cyan-500/40 bg-gradient-to-b from-cyan-950/50 to-slate-900 text-slate-200 font-black text-base sm:text-lg hover:border-cyan-400 hover:text-cyan-300 transition flex flex-col items-center gap-1">
+                            <span class="text-3xl">👥👤</span>
                             <span>3 Players</span>
-                            <span class="text-[10px] text-slate-400 font-normal">Trio Clash</span>
+                            <span class="text-xs text-slate-400 font-normal">Trio Clash</span>
                         </button>
-                        <button type="button" data-players="4" class="btn-player-count py-3.5 rounded-2xl border border-purple-500/40 bg-gradient-to-b from-purple-950/50 to-slate-900 text-slate-200 font-black text-sm hover:border-purple-400 hover:text-purple-300 transition flex flex-col items-center gap-1">
-                            <span class="text-2xl">👨‍👩‍👧‍👦</span>
+                        <button type="button" data-players="4" class="btn-player-count py-4 rounded-2xl border border-purple-500/40 bg-gradient-to-b from-purple-950/50 to-slate-900 text-slate-200 font-black text-base sm:text-lg hover:border-purple-400 hover:text-purple-300 transition flex flex-col items-center gap-1">
+                            <span class="text-3xl">👨‍👩‍👧‍👦</span>
                             <span>4 Players</span>
-                            <span class="text-[10px] text-slate-400 font-normal">Full Tycoon</span>
+                            <span class="text-xs text-slate-400 font-normal">Full Tycoon</span>
                         </button>
                     </div>
                 </div>
 
                 <!-- Setup Step 2: Player Profiles -->
-                <div class="mb-7">
-                    <div class="flex items-center justify-between mb-3">
-                        <label class="text-xs font-black text-slate-300 uppercase tracking-wider">
+                <div class="mb-8">
+                    <div class="flex items-center justify-between mb-3.5">
+                        <label class="text-sm font-black text-slate-200 uppercase tracking-wider">
                             2. Player Rosters &amp; Controllers
                         </label>
-                        <span class="text-[11px] text-cyan-300 font-bold">Play locally with friends or vs Smart AI Bots</span>
+                        <span class="text-xs sm:text-sm text-cyan-300 font-bold">Play locally with friends or vs Smart AI Bots</span>
                     </div>
-                    <div id="player-config-list" class="space-y-3">
+                    <div id="player-config-list" class="space-y-3.5">
                         <!-- Populated by JS -->
                     </div>
                 </div>
 
                 <!-- Setup Step 3: Game Goal / Duration -->
-                <div class="mb-8">
-                    <label class="block text-xs font-black text-slate-300 uppercase tracking-wider mb-3">
+                <div class="mb-9">
+                    <label class="block text-sm font-black text-slate-200 uppercase tracking-wider mb-3.5">
                         3. Win Condition &amp; Duration
                     </label>
-                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-3.5">
                         <label class="cursor-pointer">
                             <input type="radio" name="game-mode" value="sprint" checked class="peer sr-only">
-                            <div class="p-3.5 rounded-2xl border border-slate-700 peer-checked:border-emerald-400 peer-checked:bg-emerald-950/50 peer-checked:ring-2 peer-checked:ring-emerald-500/40 bg-slate-900/60 transition shadow-sm">
-                                <div class="text-xs font-black text-white flex items-center justify-between mb-1">
+                            <div class="p-4 rounded-2xl border border-slate-700 peer-checked:border-emerald-400 peer-checked:bg-emerald-950/50 peer-checked:ring-2 peer-checked:ring-emerald-500/40 bg-slate-900/60 transition shadow-sm">
+                                <div class="text-sm sm:text-base font-black text-white flex items-center justify-between mb-1.5">
                                     <span class="text-emerald-400">⚡ 12-Month Sprint</span>
-                                    <span class="text-[10px] text-emerald-300 font-code font-bold">12 Turns</span>
+                                    <span class="text-xs text-emerald-300 font-code font-bold">12 Turns</span>
                                 </div>
-                                <p class="text-[11px] text-slate-300 leading-snug">Highest Net Worth after 12 months with active emergency reserves wins.</p>
+                                <p class="text-xs sm:text-sm text-slate-200 leading-snug">Highest Net Worth after 12 months with active emergency reserves wins.</p>
                             </div>
                         </label>
                         <label class="cursor-pointer">
                             <input type="radio" name="game-mode" value="freedom" class="peer sr-only">
-                            <div class="p-3.5 rounded-2xl border border-slate-700 peer-checked:border-amber-400 peer-checked:bg-amber-950/50 peer-checked:ring-2 peer-checked:ring-amber-500/40 bg-slate-900/60 transition shadow-sm">
-                                <div class="text-xs font-black text-white flex items-center justify-between mb-1">
+                            <div class="p-4 rounded-2xl border border-slate-700 peer-checked:border-amber-400 peer-checked:bg-amber-950/50 peer-checked:ring-2 peer-checked:ring-amber-500/40 bg-slate-900/60 transition shadow-sm">
+                                <div class="text-sm sm:text-base font-black text-white flex items-center justify-between mb-1.5">
                                     <span class="text-amber-400">🏆 Financial Freedom</span>
-                                    <span class="text-[10px] text-amber-300 font-code font-bold">First to Goal</span>
+                                    <span class="text-xs text-amber-300 font-code font-bold">First to Goal</span>
                                 </div>
-                                <p class="text-[11px] text-slate-300 leading-snug">First to reach Passive Income &ge; Expenses + RM 60k Net Worth wins instantly.</p>
+                                <p class="text-xs sm:text-sm text-slate-200 leading-snug">First to reach Passive Income &ge; Expenses + RM 60k Net Worth wins instantly.</p>
                             </div>
                         </label>
                         <label class="cursor-pointer">
                             <input type="radio" name="game-mode" value="marathon" class="peer sr-only">
-                            <div class="p-3.5 rounded-2xl border border-slate-700 peer-checked:border-cyan-400 peer-checked:bg-cyan-950/50 peer-checked:ring-2 peer-checked:ring-cyan-500/40 bg-slate-900/60 transition shadow-sm">
-                                <div class="text-xs font-black text-white flex items-center justify-between mb-1">
+                            <div class="p-4 rounded-2xl border border-slate-700 peer-checked:border-cyan-400 peer-checked:bg-cyan-950/50 peer-checked:ring-2 peer-checked:ring-cyan-500/40 bg-slate-900/60 transition shadow-sm">
+                                <div class="text-sm sm:text-base font-black text-white flex items-center justify-between mb-1.5">
                                     <span class="text-cyan-400">📅 24-Month Marathon</span>
-                                    <span class="text-[10px] text-cyan-300 font-code font-bold">24 Turns</span>
+                                    <span class="text-xs text-cyan-300 font-code font-bold">24 Turns</span>
                                 </div>
-                                <p class="text-[11px] text-slate-300 leading-snug">Extended 2-year financial strategy simulation with market cycles.</p>
+                                <p class="text-xs sm:text-sm text-slate-200 leading-snug">Extended 2-year financial strategy simulation with market cycles.</p>
                             </div>
                         </label>
                     </div>
                 </div>
 
                 <!-- Launch Button -->
-                <button id="btn-start-game" class="w-full py-4 px-6 rounded-2xl bg-gradient-to-r from-emerald-400 via-teal-400 to-cyan-400 hover:from-emerald-300 hover:via-teal-300 hover:to-cyan-300 text-slate-950 font-black text-base font-tech tracking-wide shadow-xl shadow-teal-950/50 transition transform hover:-translate-y-0.5 active:translate-y-0 active:scale-[0.99] flex items-center justify-center gap-2">
-                    <span class="text-xl">🚀</span>
+                <button id="btn-start-game" class="w-full py-4 sm:py-5 px-6 rounded-2xl bg-gradient-to-r from-emerald-400 via-teal-400 to-cyan-400 hover:from-emerald-300 hover:via-teal-300 hover:to-cyan-300 text-slate-950 font-black text-base sm:text-xl font-tech tracking-wide shadow-2xl shadow-teal-950/60 transition transform hover:-translate-y-0.5 active:translate-y-0 active:scale-[0.99] flex items-center justify-center gap-2.5">
+                    <span class="text-2xl">🚀</span>
                     <span>ENTER TYCOON SIMULATION</span>
-                    <span class="text-xl">➔</span>
+                    <span class="text-2xl">➔</span>
                 </button>
             </div>
         </section>
@@ -359,43 +518,43 @@
         <section id="screen-game" class="hidden flex-grow flex flex-col gap-4">
 
             <!-- Top Game Status Banner -->
-            <div class="glass-panel rounded-2xl p-3 sm:p-4 flex flex-wrap items-center justify-between gap-3 border border-indigo-500/30 shadow-md">
+            <div class="glass-panel rounded-2xl p-3.5 sm:p-5 flex flex-wrap items-center justify-between gap-3 border border-indigo-500/30 shadow-md">
                 <!-- Turn & Month Indicator -->
                 <div class="flex items-center gap-3">
                     <div class="flex flex-col">
-                        <span class="text-[10px] uppercase tracking-wider font-bold text-slate-300 font-tech">TIMELINE</span>
-                        <div class="flex items-center gap-2">
-                            <span id="display-round-month" class="text-lg sm:text-xl font-black font-tech text-white">Month 1 / 12</span>
-                            <span id="display-mode-badge" class="px-2 py-0.5 rounded-md bg-gradient-to-r from-emerald-500 to-teal-500 text-slate-950 text-[10px] font-black uppercase shadow-sm">Sprint</span>
+                        <span class="text-xs uppercase tracking-wider font-bold text-slate-300 font-tech">TIMELINE</span>
+                        <div class="flex items-center gap-2 mt-0.5">
+                            <span id="display-round-month" class="text-xl sm:text-2xl font-black font-tech text-white">Month 1 / 12</span>
+                            <span id="display-mode-badge" class="px-2.5 py-1 rounded-lg bg-gradient-to-r from-emerald-500 to-teal-500 text-slate-950 text-xs font-black uppercase shadow-sm">Sprint</span>
                         </div>
                     </div>
                 </div>
 
                 <!-- Current Active Player Banner -->
-                <div id="active-player-banner" class="flex items-center gap-3 px-4 py-2 rounded-xl bg-gradient-to-r from-slate-900/90 to-indigo-950/70 border border-emerald-400/60 shadow-inner">
-                    <div id="active-player-avatar" class="w-10 h-10 rounded-xl bg-gradient-to-br from-emerald-500/30 to-teal-500/30 border-2 border-emerald-400 flex items-center justify-center text-2xl shadow-sm">
+                <div id="active-player-banner" class="flex items-center gap-3 px-4 sm:px-5 py-2.5 rounded-2xl bg-gradient-to-r from-slate-900/90 to-indigo-950/70 border border-emerald-400/60 shadow-inner">
+                    <div id="active-player-avatar" class="w-11 h-11 rounded-2xl bg-gradient-to-br from-emerald-500/30 to-teal-500/30 border-2 border-emerald-400 flex items-center justify-center text-2xl shadow-sm flex-shrink-0">
                         🦊
                     </div>
                     <div>
-                        <div class="flex items-center gap-1.5">
-                            <span class="text-[10px] text-emerald-300 font-black uppercase tracking-wider">CURRENT TURN:</span>
-                            <span id="active-player-controller-tag" class="text-[9px] px-1.5 py-0.2 rounded bg-indigo-950 text-indigo-200 border border-indigo-500/30 font-bold">HUMAN</span>
-                        </div>
                         <div class="flex items-center gap-2">
-                            <span id="active-player-name" class="font-black text-sm sm:text-base text-white">Player 1</span>
-                            <span class="text-xs text-slate-400">•</span>
-                            <span id="active-player-career" class="text-xs font-semibold text-emerald-200">Software Engineer</span>
+                            <span class="text-xs text-emerald-300 font-black uppercase tracking-wider">CURRENT TURN:</span>
+                            <span id="active-player-controller-tag" class="text-xs px-2 py-0.5 rounded-md bg-indigo-950 text-indigo-200 border border-indigo-500/30 font-bold">HUMAN</span>
+                        </div>
+                        <div class="flex items-center gap-2 mt-0.5">
+                            <span id="active-player-name" class="font-black text-base sm:text-lg text-white">Player 1</span>
+                            <span class="text-slate-400">•</span>
+                            <span id="active-player-career" class="text-xs sm:text-sm font-semibold text-emerald-200">Software Engineer</span>
                         </div>
                     </div>
                 </div>
 
                 <!-- Fast Stats / Quick Actions -->
-                <div class="flex items-center gap-2">
-                    <button id="btn-view-all-ledgers" class="px-3 py-2 rounded-xl bg-slate-800/90 hover:bg-slate-700 text-cyan-200 text-xs font-bold border border-cyan-500/30 transition flex items-center gap-1.5 shadow-sm">
+                <div class="flex items-center gap-2.5">
+                    <button id="btn-view-all-ledgers" class="px-3.5 sm:px-4 py-2.5 rounded-xl bg-slate-800/90 hover:bg-slate-700 text-cyan-200 text-xs sm:text-sm font-bold border border-cyan-500/30 transition flex items-center gap-2 shadow-sm">
                         <span>📊</span>
                         <span class="hidden sm:inline">All Ledgers</span>
                     </button>
-                    <button id="btn-restart-game" class="px-3 py-2 rounded-xl bg-slate-800/90 hover:bg-red-950 hover:text-red-300 text-slate-300 text-xs font-bold border border-slate-700 transition" title="Restart Game">
+                    <button id="btn-restart-game" class="px-3.5 py-2.5 rounded-xl bg-slate-800/90 hover:bg-red-950 hover:text-red-300 text-slate-300 text-xs sm:text-sm font-bold border border-slate-700 transition" title="Restart Game">
                         <span>🔄</span>
                     </button>
                 </div>
@@ -408,13 +567,13 @@
                 <div class="lg:col-span-8 flex flex-col gap-3">
                     <div class="glass-card rounded-2xl p-3 sm:p-4 border border-indigo-500/30 flex flex-col relative overflow-hidden shadow-2xl min-h-[460px]">
                         <!-- Board Header -->
-                        <div class="flex items-center justify-between mb-2 px-1">
-                            <div class="flex items-center gap-2 text-xs font-black font-tech">
+                        <div class="flex items-center justify-between mb-2.5 px-1">
+                            <div class="flex items-center gap-2 text-xs sm:text-sm md:text-base font-black font-tech">
                                 <span class="text-transparent bg-clip-text bg-gradient-to-r from-amber-300 via-emerald-300 to-cyan-300 font-extrabold">🗺️ FINANCIAL HIGHWAY CIRCUIT</span>
                                 <span class="text-slate-500">•</span>
-                                <span class="px-2 py-0.5 rounded-full bg-emerald-950/70 border border-emerald-500/40 text-emerald-300 font-bold text-[10px]">20 TILES</span>
+                                <span class="px-2.5 py-0.5 rounded-full bg-emerald-950/70 border border-emerald-500/40 text-emerald-300 font-bold text-xs">20 TILES</span>
                             </div>
-                            <div class="text-[11px] text-slate-300 font-mono flex items-center gap-1">
+                            <div class="text-xs sm:text-sm text-slate-200 font-mono flex items-center gap-1.5 font-bold">
                                 🎲 <span>Sample Space:</span> <span class="text-cyan-300 font-bold font-code">n(S) = 36</span>
                             </div>
                         </div>
@@ -431,38 +590,123 @@
 
                                 <!-- Dice Rolling & Probability Display Area -->
                                 <div id="center-content-default" class="flex flex-col items-center justify-center w-full z-10">
-                                    <!-- Luxury White 3D Acrylic Casino Dice Pair -->
-                                    <div class="flex items-center gap-4 sm:gap-6 mb-3">
-                                        <div class="dice-box">
-                                            <div id="dice-1" class="dice-cube text-rose-600 font-black text-3xl font-mono">
-                                                ⚀
+                                    <!-- Authentic 3D Acrylic Casino Dice Pair -->
+                                    <div class="flex items-center justify-center gap-6 sm:gap-8 mb-3 sm:mb-4">
+                                        <!-- Die 1 Scene -->
+                                        <div class="dice-scene">
+                                            <div class="dice-box">
+                                                <div id="dice-1" class="dice-cube" style="transform: rotateX(-12deg) rotateY(16deg) rotateZ(3deg);">
+                                                    <!-- Face 1 (Crimson Red Ace) -->
+                                                    <div class="dice-face face-1">
+                                                        <span class="pip pip-ace-red"></span>
+                                                    </div>
+                                                    <!-- Face 2 -->
+                                                    <div class="dice-face face-2">
+                                                        <span class="pip"></span>
+                                                        <span class="pip"></span>
+                                                    </div>
+                                                    <!-- Face 3 -->
+                                                    <div class="dice-face face-3">
+                                                        <span class="pip"></span>
+                                                        <span class="pip"></span>
+                                                        <span class="pip"></span>
+                                                    </div>
+                                                    <!-- Face 4 -->
+                                                    <div class="dice-face face-4">
+                                                        <span class="pip"></span>
+                                                        <span class="pip"></span>
+                                                        <span class="pip"></span>
+                                                        <span class="pip"></span>
+                                                    </div>
+                                                    <!-- Face 5 -->
+                                                    <div class="dice-face face-5">
+                                                        <span class="pip"></span>
+                                                        <span class="pip"></span>
+                                                        <span class="pip"></span>
+                                                        <span class="pip"></span>
+                                                        <span class="pip"></span>
+                                                    </div>
+                                                    <!-- Face 6 -->
+                                                    <div class="dice-face face-6">
+                                                        <span class="pip"></span>
+                                                        <span class="pip"></span>
+                                                        <span class="pip"></span>
+                                                        <span class="pip"></span>
+                                                        <span class="pip"></span>
+                                                        <span class="pip"></span>
+                                                    </div>
+                                                </div>
                                             </div>
+                                            <div class="dice-shadow"></div>
                                         </div>
-                                        <div class="dice-box">
-                                            <div id="dice-2" class="dice-cube text-blue-600 font-black text-3xl font-mono">
-                                                ⚁
+
+                                        <!-- Die 2 Scene -->
+                                        <div class="dice-scene">
+                                            <div class="dice-box">
+                                                <div id="dice-2" class="dice-cube" style="transform: rotateX(-12deg) rotateY(-16deg) rotateZ(-3deg);">
+                                                    <!-- Face 1 (Sapphire Blue Ace) -->
+                                                    <div class="dice-face face-1">
+                                                        <span class="pip pip-ace-blue"></span>
+                                                    </div>
+                                                    <!-- Face 2 -->
+                                                    <div class="dice-face face-2">
+                                                        <span class="pip"></span>
+                                                        <span class="pip"></span>
+                                                    </div>
+                                                    <!-- Face 3 -->
+                                                    <div class="dice-face face-3">
+                                                        <span class="pip"></span>
+                                                        <span class="pip"></span>
+                                                        <span class="pip"></span>
+                                                    </div>
+                                                    <!-- Face 4 -->
+                                                    <div class="dice-face face-4">
+                                                        <span class="pip"></span>
+                                                        <span class="pip"></span>
+                                                        <span class="pip"></span>
+                                                        <span class="pip"></span>
+                                                    </div>
+                                                    <!-- Face 5 -->
+                                                    <div class="dice-face face-5">
+                                                        <span class="pip"></span>
+                                                        <span class="pip"></span>
+                                                        <span class="pip"></span>
+                                                        <span class="pip"></span>
+                                                        <span class="pip"></span>
+                                                    </div>
+                                                    <!-- Face 6 -->
+                                                    <div class="dice-face face-6">
+                                                        <span class="pip"></span>
+                                                        <span class="pip"></span>
+                                                        <span class="pip"></span>
+                                                        <span class="pip"></span>
+                                                        <span class="pip"></span>
+                                                        <span class="pip"></span>
+                                                    </div>
+                                                </div>
                                             </div>
+                                            <div class="dice-shadow"></div>
                                         </div>
                                     </div>
 
                                     <!-- Probability Calculation HUD for the current roll -->
-                                    <div id="roll-probability-badge" class="mb-3 px-4 py-1.5 rounded-full bg-gradient-to-r from-indigo-950/80 via-slate-900/90 to-purple-950/80 border border-indigo-400/40 text-xs font-code text-slate-200 shadow-inner">
-                                        Roll Sum: <span id="dice-sum-display" class="font-bold text-amber-300">Ready</span> | <span id="dice-prob-display" class="text-cyan-300 font-semibold">P(Roll) = ?</span>
+                                    <div id="roll-probability-badge" class="mb-3 px-4 py-1.5 rounded-full bg-gradient-to-r from-indigo-950/90 via-slate-900 to-purple-950/90 border border-indigo-400/40 text-xs sm:text-sm font-code text-slate-200 shadow-inner">
+                                        Roll Sum: <span id="dice-sum-display" class="font-black text-amber-300">Ready</span> | <span id="dice-prob-display" class="text-cyan-300 font-bold">P(Roll) = ?</span>
                                     </div>
 
                                     <!-- Main Action Button / Status -->
-                                    <div id="action-prompt-box" class="w-full max-w-xs">
-                                        <button id="btn-roll-dice" class="w-full py-3.5 px-4 rounded-xl bg-gradient-to-r from-amber-400 via-emerald-400 to-teal-400 hover:from-amber-300 hover:via-emerald-300 hover:to-teal-300 text-slate-950 font-black text-sm font-tech tracking-wider shadow-xl shadow-emerald-950/50 transition transform hover:-translate-y-0.5 active:translate-y-0 active:scale-95 flex items-center justify-center gap-2">
-                                            <span class="text-lg">🎲</span>
+                                    <div id="action-prompt-box" class="w-full max-w-xs sm:max-w-sm">
+                                        <button id="btn-roll-dice" class="w-full py-3.5 sm:py-4 px-5 rounded-2xl bg-gradient-to-r from-amber-400 via-emerald-400 to-teal-400 hover:from-amber-300 hover:via-emerald-300 hover:to-teal-300 text-slate-950 font-black text-base sm:text-lg font-tech tracking-wider shadow-xl shadow-emerald-950/60 transition transform hover:-translate-y-0.5 active:translate-y-0 active:scale-95 flex items-center justify-center gap-2.5">
+                                            <span class="text-xl sm:text-2xl">🎲</span>
                                             <span>ROLL 2 DICE</span>
                                         </button>
-                                        <div id="ai-turn-indicator" class="hidden py-3 px-4 rounded-xl bg-slate-800/90 border border-cyan-500/40 text-cyan-200 text-xs font-bold animate-pulse shadow-md">
+                                        <div id="ai-turn-indicator" class="hidden py-3.5 px-4 rounded-xl bg-slate-800/90 border border-cyan-500/40 text-cyan-200 text-xs sm:text-sm font-bold animate-pulse shadow-md">
                                             🤖 AI is calculating probability &amp; rolling...
                                         </div>
                                     </div>
 
                                     <!-- Current tile description hint -->
-                                    <p id="board-center-status" class="mt-3 text-[11px] sm:text-xs text-slate-300 max-w-xs line-clamp-2">
+                                    <p id="board-center-status" class="mt-3 text-xs sm:text-sm text-slate-200 max-w-xs sm:max-w-sm line-clamp-2 font-semibold">
                                         It's <span id="status-player-name" class="text-emerald-300 font-bold">Player 1</span>'s turn to roll!
                                     </p>
                                 </div>
@@ -513,95 +757,95 @@
                 <div class="lg:col-span-4 flex flex-col gap-4">
                     
                     <!-- 1. ACTIVE PLAYER BALANCE SHEET & SMART HEALTH -->
-                    <div class="glass-card rounded-2xl p-4 border border-emerald-500/30 shadow-xl flex flex-col">
-                        <div class="flex items-center justify-between pb-3 border-b border-slate-700/60 bg-gradient-to-r from-emerald-500/10 to-transparent -mx-4 -mt-4 px-4 pt-4 rounded-t-2xl">
+                    <div class="glass-card rounded-2xl p-4 sm:p-5 border border-emerald-500/30 shadow-xl flex flex-col">
+                        <div class="flex items-center justify-between pb-3 border-b border-slate-700/60 bg-gradient-to-r from-emerald-500/10 to-transparent -mx-4 sm:-mx-5 -mt-4 sm:-mt-5 px-4 sm:px-5 pt-4 sm:pt-5 rounded-t-2xl">
                             <div>
-                                <span class="text-[10px] uppercase tracking-wider font-black text-emerald-400 font-tech flex items-center gap-1">
+                                <span class="text-xs sm:text-sm uppercase tracking-wider font-black text-emerald-400 font-tech flex items-center gap-1.5">
                                     <span>💳</span> FINANCIAL BALANCE SHEET
                                 </span>
-                                <h3 id="hud-player-name" class="text-base font-black text-white">Player 1</h3>
+                                <h3 id="hud-player-name" class="text-lg sm:text-xl font-black text-white mt-0.5">Player 1</h3>
                             </div>
                             <div class="text-right">
-                                <span class="text-[10px] text-slate-300 uppercase tracking-wider font-bold">NET WORTH</span>
-                                <div id="hud-net-worth" class="text-base sm:text-lg font-black font-code text-emerald-400">RM 0</div>
+                                <span class="text-xs text-slate-300 uppercase tracking-wider font-bold">NET WORTH</span>
+                                <div id="hud-net-worth" class="text-lg sm:text-2xl font-black font-code text-emerald-400">RM 0</div>
                             </div>
                         </div>
 
                         <!-- Financial Freedom Gauge (Form 4 Ch 10) -->
-                        <div class="my-3 p-3 rounded-xl bg-gradient-to-r from-slate-900/90 to-indigo-950/60 border border-slate-700/80 shadow-inner">
-                            <div class="flex items-center justify-between text-xs mb-1 font-bold">
-                                <span class="text-slate-200">Financial Freedom Meter</span>
-                                <span id="hud-freedom-percent" class="text-cyan-300 font-code font-black">0%</span>
+                        <div class="my-3.5 p-3.5 rounded-xl bg-gradient-to-r from-slate-900/90 to-indigo-950/60 border border-slate-700/80 shadow-inner">
+                            <div class="flex items-center justify-between text-xs sm:text-sm mb-1.5 font-bold">
+                                <span class="text-slate-100">Financial Freedom Meter</span>
+                                <span id="hud-freedom-percent" class="text-cyan-300 font-code font-black text-sm sm:text-base">0%</span>
                             </div>
-                            <div class="w-full h-3 rounded-full bg-slate-950 overflow-hidden relative shadow-inner">
+                            <div class="w-full h-3.5 rounded-full bg-slate-950 overflow-hidden relative shadow-inner">
                                 <div id="hud-freedom-bar" class="h-full bg-gradient-to-r from-emerald-400 via-teal-300 to-cyan-400 transition-all duration-500 rounded-full shadow-sm" style="width: 0%"></div>
                             </div>
-                            <div class="flex justify-between text-[10px] text-slate-300 mt-1.5 font-medium">
-                                <span>Passive Income: <strong id="hud-passive-income" class="text-emerald-300 font-bold">RM 0/mo</strong></span>
+                            <div class="flex justify-between text-xs sm:text-sm text-slate-300 mt-2 font-medium">
+                                <span>Passive: <strong id="hud-passive-income" class="text-emerald-300 font-bold">RM 0/mo</strong></span>
                                 <span>Target: <strong id="hud-freedom-target" class="text-slate-200 font-bold">RM 2,500/mo</strong></span>
                             </div>
                         </div>
 
                         <!-- Asset & Liability Breakdown Matrix (4 Colorful Distinct Cards) -->
-                        <div class="grid grid-cols-2 gap-2.5 text-xs mb-3">
-                            <div class="p-2.5 rounded-xl bg-gradient-to-br from-emerald-950/70 via-slate-900 to-slate-900 border border-emerald-500/40 shadow-sm">
-                                <span class="text-[10px] text-emerald-300 font-bold uppercase flex items-center gap-1">
+                        <div class="grid grid-cols-2 gap-3 text-xs sm:text-sm mb-3.5">
+                            <div class="p-3 rounded-xl bg-gradient-to-br from-emerald-950/70 via-slate-900 to-slate-900 border border-emerald-500/40 shadow-sm">
+                                <span class="text-xs text-emerald-300 font-bold uppercase flex items-center gap-1.5">
                                     <span>💵</span> Liquid Cash
                                 </span>
-                                <div id="hud-cash" class="text-sm font-black font-code text-emerald-200 mt-0.5">RM 3,500</div>
+                                <div id="hud-cash" class="text-base sm:text-lg font-black font-code text-emerald-200 mt-1">RM 3,500</div>
                             </div>
-                            <div class="p-2.5 rounded-xl bg-gradient-to-br from-cyan-950/70 via-slate-900 to-slate-900 border border-cyan-500/40 shadow-sm">
-                                <span class="text-[10px] text-cyan-300 font-bold uppercase flex items-center gap-1">
+                            <div class="p-3 rounded-xl bg-gradient-to-br from-cyan-950/70 via-slate-900 to-slate-900 border border-cyan-500/40 shadow-sm">
+                                <span class="text-xs text-cyan-300 font-bold uppercase flex items-center gap-1.5">
                                     <span>🛡️</span> Emergency Fund
                                 </span>
-                                <div id="hud-emergency-fund" class="text-sm font-black font-code text-cyan-200 mt-0.5">RM 0</div>
-                                <span id="hud-emergency-months" class="text-[9px] text-cyan-300 font-bold">(0.0 mos buffer)</span>
+                                <div id="hud-emergency-fund" class="text-base sm:text-lg font-black font-code text-cyan-200 mt-1">RM 0</div>
+                                <span id="hud-emergency-months" class="text-xs text-cyan-300 font-bold block mt-0.5">(0.0 mos buffer)</span>
                             </div>
-                            <div class="p-2.5 rounded-xl bg-gradient-to-br from-purple-950/70 via-slate-900 to-slate-900 border border-purple-500/40 shadow-sm">
-                                <span class="text-[10px] text-purple-300 font-bold uppercase flex items-center gap-1">
+                            <div class="p-3 rounded-xl bg-gradient-to-br from-purple-950/70 via-slate-900 to-slate-900 border border-purple-500/40 shadow-sm">
+                                <span class="text-xs text-purple-300 font-bold uppercase flex items-center gap-1.5">
                                     <span>📈</span> Investments
                                 </span>
-                                <div id="hud-investments" class="text-sm font-black font-code text-purple-200 mt-0.5">RM 0</div>
+                                <div id="hud-investments" class="text-base sm:text-lg font-black font-code text-purple-200 mt-1">RM 0</div>
                             </div>
-                            <div class="p-2.5 rounded-xl bg-gradient-to-br from-rose-950/70 via-slate-900 to-slate-900 border border-rose-500/40 shadow-sm">
-                                <span class="text-[10px] text-rose-300 font-bold uppercase flex items-center gap-1">
+                            <div class="p-3 rounded-xl bg-gradient-to-br from-rose-950/70 via-slate-900 to-slate-900 border border-rose-500/40 shadow-sm">
+                                <span class="text-xs text-rose-300 font-bold uppercase flex items-center gap-1.5">
                                     <span>💳</span> Liabilities (Debt)
                                 </span>
-                                <div id="hud-liabilities" class="text-sm font-black font-code text-rose-300 mt-0.5">RM 15,000</div>
+                                <div id="hud-liabilities" class="text-base sm:text-lg font-black font-code text-rose-300 mt-1">RM 15,000</div>
                             </div>
                         </div>
 
                         <!-- Monthly Cash Flow Calculation (Formula: Income - Expenses) -->
-                        <div class="p-2.5 rounded-xl bg-gradient-to-r from-emerald-950/60 to-teal-950/50 border border-emerald-500/30 text-xs shadow-sm">
-                            <div class="flex items-center justify-between mb-1">
-                                <span class="text-[10px] font-bold uppercase text-emerald-300">Monthly Net Cash Flow</span>
-                                <span id="hud-net-cash-flow" class="font-code font-black text-emerald-200 text-sm">+RM 1,200</span>
+                        <div class="p-3 rounded-xl bg-gradient-to-r from-emerald-950/60 to-teal-950/50 border border-emerald-500/30 text-xs sm:text-sm shadow-sm">
+                            <div class="flex items-center justify-between mb-1.5">
+                                <span class="text-xs sm:text-sm font-bold uppercase text-emerald-300">Monthly Net Cash Flow</span>
+                                <span id="hud-net-cash-flow" class="font-code font-black text-emerald-200 text-base sm:text-lg">+RM 1,200</span>
                             </div>
-                            <div class="text-[10px] text-slate-300 flex justify-between font-code">
+                            <div class="text-xs sm:text-sm text-slate-300 flex justify-between font-code font-semibold">
                                 <span>Income: <span id="hud-total-income" class="text-white font-bold">RM 3,500</span></span>
                                 <span>Expenses: <span id="hud-total-expenses" class="text-rose-300 font-bold">RM 2,300</span></span>
                             </div>
                         </div>
 
                         <!-- Insurance Shield Indicators -->
-                        <div class="mt-3 pt-2.5 border-t border-slate-700/60 flex items-center justify-between text-xs">
-                            <span class="text-[10px] font-bold uppercase text-slate-300">Risk Shields (Ch 9 Hedge):</span>
-                            <div class="flex items-center gap-1.5" id="hud-insurance-badges">
-                                <span class="px-2 py-0.5 rounded-md text-[10px] bg-slate-800 text-slate-400 font-bold" title="Medical Card Shield">🏥 Med</span>
-                                <span class="px-2 py-0.5 rounded-md text-[10px] bg-slate-800 text-slate-400 font-bold" title="Asset Protection Shield">🛡️ Asset</span>
+                        <div class="mt-3.5 pt-3 border-t border-slate-700/60 flex items-center justify-between text-xs sm:text-sm">
+                            <span class="text-xs sm:text-sm font-bold uppercase text-slate-300">Risk Shields (Ch 9 Hedge):</span>
+                            <div class="flex items-center gap-2" id="hud-insurance-badges">
+                                <span class="px-2.5 py-1 rounded-lg text-xs bg-slate-800 text-slate-400 font-bold" title="Medical Card Shield">🏥 Med</span>
+                                <span class="px-2.5 py-1 rounded-lg text-xs bg-slate-800 text-slate-400 font-bold" title="Asset Protection Shield">🛡️ Asset</span>
                             </div>
                         </div>
                     </div>
 
                     <!-- 2. ALL PLAYERS MINI-LEADERBOARD -->
-                    <div class="glass-card rounded-2xl p-4 border border-amber-500/30 shadow-xl flex-grow flex flex-col">
-                        <div class="flex items-center justify-between pb-2 mb-2 border-b border-slate-700/60 bg-gradient-to-r from-amber-500/10 to-transparent -mx-4 -mt-4 px-4 pt-4 rounded-t-2xl">
-                            <span class="text-[10px] uppercase tracking-wider font-black text-amber-300 font-tech flex items-center gap-1">
+                    <div class="glass-card rounded-2xl p-4 sm:p-5 border border-amber-500/30 shadow-xl flex-grow flex flex-col">
+                        <div class="flex items-center justify-between pb-3 mb-2 border-b border-slate-700/60 bg-gradient-to-r from-amber-500/10 to-transparent -mx-4 sm:-mx-5 -mt-4 sm:-mt-5 px-4 sm:px-5 pt-4 sm:pt-5 rounded-t-2xl">
+                            <span class="text-xs sm:text-sm uppercase tracking-wider font-black text-amber-300 font-tech flex items-center gap-1.5">
                                 <span>🏆</span> TYCOON LEADERBOARD
                             </span>
-                            <span class="text-[10px] text-amber-200/80 font-bold">Ranked by Net Worth</span>
+                            <span class="text-xs text-amber-200/90 font-bold">Ranked by Net Worth</span>
                         </div>
-                        <div id="leaderboard-list" class="space-y-2 flex-grow overflow-y-auto">
+                        <div id="leaderboard-list" class="space-y-2.5 flex-grow overflow-y-auto">
                             <!-- Populated dynamically -->
                         </div>
                     </div>
@@ -1428,6 +1672,8 @@
             renderPlayerSetup(gameState.numPlayers);
             setupEventListeners();
             renderBoardGrid();
+            setDiceFace(document.getElementById('dice-1'), 1, false);
+            setDiceFace(document.getElementById('dice-2'), 2, true);
             triggerMathRender(document.body);
         });
 
@@ -1538,15 +1784,15 @@
                 const isHuman = (i === 0);
 
                 const card = document.createElement('div');
-                card.className = "p-3.5 rounded-2xl bg-gradient-to-r from-slate-900/90 to-indigo-950/70 border border-slate-700/80 hover:border-slate-500 transition flex flex-wrap sm:flex-nowrap items-center justify-between gap-3 shadow-md";
+                card.className = "p-4 rounded-2xl bg-gradient-to-r from-slate-900/90 to-indigo-950/70 border border-slate-700/80 hover:border-slate-500 transition flex flex-wrap sm:flex-nowrap items-center justify-between gap-3 shadow-md";
                 card.innerHTML = `
-                    <div class="flex items-center gap-3">
-                        <div class="w-11 h-11 rounded-2xl border-2 flex items-center justify-center text-2xl shadow-md" style="background-color: ${defaultAvatar.color}22; border-color: ${defaultAvatar.color}" id="setup-avatar-icon-${i}">
+                    <div class="flex items-center gap-3.5">
+                        <div class="w-12 h-12 rounded-2xl border-2 flex items-center justify-center text-2xl shadow-md flex-shrink-0" style="background-color: ${defaultAvatar.color}22; border-color: ${defaultAvatar.color}" id="setup-avatar-icon-${i}">
                             ${defaultAvatar.icon}
                         </div>
                         <div>
-                            <input type="text" id="player-name-${i}" value="Player ${i + 1}" class="bg-transparent font-black text-white text-sm focus:outline-none border-b border-transparent focus:border-emerald-400">
-                            <div class="text-[11px] text-slate-300 flex items-center gap-1.5 mt-0.5">
+                            <input type="text" id="player-name-${i}" value="Player ${i + 1}" class="bg-transparent font-black text-white text-base sm:text-lg focus:outline-none border-b border-transparent focus:border-emerald-400">
+                            <div class="text-xs sm:text-sm text-slate-200 flex items-center gap-1.5 mt-0.5">
                                 <span>${defaultCareer.icon}</span>
                                 <span class="font-bold text-white">${defaultCareer.title}</span>
                                 <span class="text-emerald-300 font-code font-bold">(RM ${defaultCareer.salary.toLocaleString()}/mo)</span>
@@ -1554,7 +1800,7 @@
                         </div>
                     </div>
                     <div class="flex items-center gap-2">
-                        <select id="player-type-${i}" class="bg-slate-800/90 border border-indigo-500/40 rounded-xl px-3 py-1.5 text-xs text-slate-100 font-bold focus:outline-none shadow-sm">
+                        <select id="player-type-${i}" class="bg-slate-800/90 border border-indigo-500/40 rounded-xl px-3.5 py-2 text-xs sm:text-sm text-slate-100 font-bold focus:outline-none shadow-sm">
                             <option value="human" ${isHuman ? 'selected' : ''}>👤 Human Player</option>
                             <option value="ai-easy" ${!isHuman ? 'selected' : ''}>🤖 Smart AI Bot</option>
                         </select>
@@ -1608,6 +1854,8 @@
             renderLeaderboard();
             renderBoardGrid();
             renderTokensOnBoard();
+            setDiceFace(document.getElementById('dice-1'), 1, false);
+            setDiceFace(document.getElementById('dice-2'), 2, true);
             addLog(`🎲 Simulation initiated: ${gameState.numPlayers} Tycoons on the board. Mode: ${mode.toUpperCase()}.`);
 
             // Start first turn
@@ -1653,19 +1901,19 @@
                 tileEl.className = `board-tile rounded-xl ${borderColor} flex flex-col justify-between relative transition-all duration-300 overflow-hidden select-none cursor-pointer shadow-sm`;
                 tileEl.innerHTML = `
                     <!-- Monopoly-Style Colorful Top Property Header -->
-                    <div class="${bannerClass} px-1.5 py-0.5 flex items-center justify-between text-[9px] font-black text-white shadow-xs">
+                    <div class="${bannerClass} px-1.5 py-0.5 flex items-center justify-between text-[10px] sm:text-xs font-black text-white shadow-xs">
                         <span class="tracking-wider">#${index}</span>
-                        <span>${tile.icon}</span>
+                        <span class="text-xs sm:text-sm">${tile.icon}</span>
                     </div>
 
                     <!-- Tile Content Body -->
-                    <div class="p-1 sm:p-1.5 flex flex-col justify-between flex-grow bg-slate-900/60">
-                        <div class="text-[9px] sm:text-[10px] font-extrabold leading-tight text-white line-clamp-2 mt-0.5">
+                    <div class="p-1 sm:p-1.5 flex flex-col justify-between flex-grow bg-slate-900/70">
+                        <div class="text-[10px] sm:text-xs md:text-sm font-black leading-snug text-white line-clamp-2 mt-0.5">
                             ${tile.name}
                         </div>
                         
                         <!-- Player tokens tray inside this tile -->
-                        <div id="tile-tokens-${index}" class="flex items-center gap-1 mt-1 min-h-[22px] flex-wrap"></div>
+                        <div id="tile-tokens-${index}" class="flex items-center gap-1 mt-1 min-h-[24px] flex-wrap"></div>
                     </div>
                 `;
                 container.appendChild(tileEl);
@@ -1730,6 +1978,26 @@
             }
         }
 
+        /* 3D Realistic Casino Dice Orientation Mapping */
+        const DICE_3D_ROTATIONS = {
+            1: { x: 0, y: 0 },
+            2: { x: 0, y: -90 },
+            3: { x: -90, y: 0 },
+            4: { x: 90, y: 0 },
+            5: { x: 0, y: 90 },
+            6: { x: 0, y: 180 }
+        };
+
+        function setDiceFace(diceEl, faceVal, isSecond = false) {
+            if (!diceEl) return;
+            const rot = DICE_3D_ROTATIONS[faceVal] || DICE_3D_ROTATIONS[1];
+            // Isometric perspective tilt angles for rich 3D specular depth
+            const tiltX = -12;
+            const tiltY = isSecond ? -16 : 16;
+            const tiltZ = isSecond ? -3 : 3;
+            diceEl.style.transform = `rotateX(${rot.x + tiltX}deg) rotateY(${rot.y + tiltY}deg) rotateZ(${tiltZ}deg)`;
+        }
+
         function handleRollDice() {
             if (gameState.isRolling) return;
             gameState.isRolling = true;
@@ -1754,16 +2022,16 @@
                 d1El.classList.remove('rolling');
                 d2El.classList.remove('rolling');
 
-                const diceFaces = ["", "⚀", "⚁", "⚂", "⚃", "⚄", "⚅"];
-                d1El.textContent = diceFaces[roll1];
-                d2El.textContent = diceFaces[roll2];
+                // Smoothly settle on authentic 3D dice faces
+                setDiceFace(d1El, roll1, false);
+                setDiceFace(d2El, roll2, true);
 
                 document.getElementById('dice-sum-display').textContent = `${sum} (${roll1} + ${roll2})`;
                 document.getElementById('dice-prob-display').innerHTML = `\\(P(${sum}) = \\frac{${ways}}{36}\\) (${probPct}%)`;
                 triggerMathRender(document.getElementById('roll-probability-badge'));
 
                 animateTokenMovement(player, sum);
-            }, 750);
+            }, 800);
         }
 
         function animateTokenMovement(player, steps) {
@@ -2017,7 +2285,7 @@
 
             scenario.options.forEach((optText, optIdx) => {
                 const btn = document.createElement('button');
-                btn.className = "p-3 rounded-xl bg-slate-900 hover:bg-slate-800 border border-slate-700 text-left text-xs font-bold text-slate-200 transition";
+                btn.className = "p-3.5 sm:p-4 rounded-xl bg-slate-900 hover:bg-slate-800 border border-slate-700 text-left text-sm sm:text-base font-bold text-slate-100 transition shadow-sm";
                 btn.innerHTML = optText;
                 btn.onclick = () => checkHazardAnswer(optIdx, btn);
                 optionsBox.appendChild(btn);
@@ -2037,7 +2305,7 @@
             if (isCorrect) {
                 audio.correctChime();
                 btnElement.classList.add('border-emerald-500', 'bg-emerald-950/60', 'text-emerald-300');
-                feedbackEl.className = "p-3 rounded-xl text-xs font-code bg-emerald-950/70 border border-emerald-500/40 text-emerald-300";
+                feedbackEl.className = "p-3.5 rounded-xl text-xs sm:text-sm font-code bg-emerald-950/70 border border-emerald-500/40 text-emerald-300";
                 feedbackEl.innerHTML = `✓ Correct Combined Probability! ${scenario.mitigation}`;
                 
                 const effectiveLoss = (player.insurance.med || player.insurance.asset) ? 0 : Math.floor(scenario.loss * 0.15);
@@ -2045,7 +2313,7 @@
             } else {
                 audio.errorTone();
                 btnElement.classList.add('border-red-500', 'bg-red-950/60', 'text-red-300');
-                feedbackEl.className = "p-3 rounded-xl text-xs font-code bg-red-950/70 border border-red-500/40 text-red-300";
+                feedbackEl.className = "p-3.5 rounded-xl text-xs sm:text-sm font-code bg-red-950/70 border border-red-500/40 text-red-300";
                 feedbackEl.innerHTML = `✗ Incorrect. The correct combined probability was: ${scenario.options[scenario.correct]}. Full damage applied!`;
                 
                 const effectiveLoss = (player.insurance.med || player.insurance.asset) ? 0 : scenario.loss;
@@ -2113,7 +2381,7 @@
 
             questionObj.options.forEach((optText, idx) => {
                 const btn = document.createElement('button');
-                btn.className = "w-full p-3 rounded-xl bg-slate-900 hover:bg-slate-800 border border-slate-700 text-left text-xs font-semibold text-slate-200 transition";
+                btn.className = "w-full p-3.5 sm:p-4 rounded-xl bg-slate-900 hover:bg-slate-800 border border-slate-700 text-left text-sm sm:text-base font-bold text-slate-100 transition shadow-sm";
                 btn.innerHTML = optText;
                 btn.onclick = () => checkQuizAnswer(idx, btn);
                 grid.appendChild(btn);
@@ -2133,15 +2401,15 @@
             if (isCorrect) {
                 audio.correctChime();
                 btnElement.classList.add('border-emerald-500', 'bg-emerald-950/70', 'text-emerald-300');
-                feedbackBox.className = "p-3 rounded-xl mb-4 text-xs font-code bg-emerald-950/70 border border-emerald-500/40 text-emerald-300";
-                feedbackBox.innerHTML = `✓ Correct! +RM 500 SPM Math Bonus awarded!<br><span class="text-slate-300 mt-1 block">${questionObj.explanation}</span>`;
+                feedbackBox.className = "p-3.5 rounded-xl mb-4 text-xs sm:text-sm font-code bg-emerald-950/70 border border-emerald-500/40 text-emerald-300";
+                feedbackBox.innerHTML = `✓ Correct! +RM 500 SPM Math Bonus awarded!<br><span class="text-slate-200 mt-1.5 block">${questionObj.explanation}</span>`;
                 player.cash += 500;
                 addLog(`🎉 ${player.name} solved Math Checkpoint: +RM 500!`);
             } else {
                 audio.errorTone();
                 btnElement.classList.add('border-red-500', 'bg-red-950/70', 'text-red-300');
-                feedbackBox.className = "p-3 rounded-xl mb-4 text-xs font-code bg-red-950/70 border border-red-500/40 text-red-300";
-                feedbackBox.innerHTML = `✗ Incorrect. Answer: ${questionObj.options[questionObj.correct]}<br><span class="text-slate-300 mt-1 block">${questionObj.explanation}</span>`;
+                feedbackBox.className = "p-3.5 rounded-xl mb-4 text-xs sm:text-sm font-code bg-red-950/70 border border-red-500/40 text-red-300";
+                feedbackBox.innerHTML = `✗ Incorrect. Answer: ${questionObj.options[questionObj.correct]}<br><span class="text-slate-200 mt-1.5 block">${questionObj.explanation}</span>`;
             }
 
             feedbackBox.classList.remove('hidden');
@@ -2472,24 +2740,24 @@
                 const medal = rankMedals[idx] || `#${idx + 1}`;
                 const rankClass = rankBorders[idx] || "border-slate-800 bg-slate-900/60";
 
-                item.className = `p-2.5 rounded-xl flex items-center justify-between text-xs transition border ${isActive ? 'ring-2 ring-emerald-400 border-emerald-400 bg-emerald-950/50 active-turn-pulse' : rankClass} shadow-sm`;
+                item.className = `p-3 sm:p-3.5 rounded-xl flex items-center justify-between text-xs sm:text-sm transition border ${isActive ? 'ring-2 ring-emerald-400 border-emerald-400 bg-emerald-950/60 active-turn-pulse' : rankClass} shadow-sm`;
                 item.innerHTML = `
-                    <div class="flex items-center gap-2.5">
-                        <span class="text-base">${medal}</span>
-                        <div class="w-7 h-7 rounded-full flex items-center justify-center text-sm border-2 border-white shadow-sm" style="background-color: ${p.color}">
+                    <div class="flex items-center gap-3">
+                        <span class="text-base sm:text-lg">${medal}</span>
+                        <div class="w-8 h-8 rounded-full flex items-center justify-center text-base border-2 border-white shadow-sm flex-shrink-0" style="background-color: ${p.color}">
                             ${p.avatar}
                         </div>
                         <div>
-                            <div class="font-bold text-white flex items-center gap-1.5">
+                            <div class="font-black text-white text-sm sm:text-base flex items-center gap-1.5">
                                 <span>${p.name}</span>
-                                ${p.isAI ? '<span class="text-[8px] px-1.5 py-0.2 rounded bg-indigo-950 text-cyan-300 font-mono border border-cyan-500/30">AI</span>' : ''}
+                                ${p.isAI ? '<span class="text-[9px] px-1.5 py-0.5 rounded bg-indigo-950 text-cyan-300 font-mono font-bold border border-cyan-500/30">AI</span>' : ''}
                             </div>
-                            <div class="text-[10px] text-emerald-300 font-code font-semibold">Pass: RM ${p.passiveIncome.toLocaleString()}/mo</div>
+                            <div class="text-xs text-emerald-300 font-code font-bold">Pass: RM ${p.passiveIncome.toLocaleString()}/mo</div>
                         </div>
                     </div>
                     <div class="text-right">
-                        <span class="text-[9px] text-slate-300 block font-bold">NET WORTH</span>
-                        <span class="font-black font-code ${nw >= 0 ? 'text-emerald-300' : 'text-rose-400'} text-xs sm:text-sm">RM ${nw.toLocaleString()}</span>
+                        <span class="text-[10px] text-slate-300 block font-bold uppercase">NET WORTH</span>
+                        <span class="font-black font-code ${nw >= 0 ? 'text-emerald-300' : 'text-rose-400'} text-sm sm:text-base">RM ${nw.toLocaleString()}</span>
                     </div>
                 `;
                 list.appendChild(item);

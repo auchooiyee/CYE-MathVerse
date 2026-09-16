@@ -1,0 +1,2746 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Math Mama: Warung Matematik — Form 4 KSSM | CYE MathVerse</title>
+
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&family=Plus+Jakarta+Sans:wght@400;600;700;800;900&family=JetBrains+Mono:wght@600;800&family=Orbitron:wght@700;900&display=swap" rel="stylesheet">
+
+    <!-- Canvas Confetti -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+    <!-- KaTeX CDN for Authentic Mathematical Typography -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Plus Jakarta Sans', 'sans-serif'],
+                        cartoon: ['Fredoka', 'cursive', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
+                        tech: ['Orbitron', 'sans-serif'],
+                    },
+                    colors: {
+                        mama: {
+                            red: '#ef4444',
+                            pink: '#f43f5e',
+                            rose: '#fb7185',
+                            cream: '#fffbeb',
+                            gold: '#f59e0b',
+                            amber: '#d97706',
+                            teal: '#0d9488',
+                            dark: '#1e1b18',
+                            wood: '#78350f',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: #1a1614;
+            color: #f8fafc;
+            user-select: none;
+            -webkit-user-select: none;
+            touch-action: manipulation;
+        }
+
+        .font-cartoon { font-family: 'Fredoka', cursive, sans-serif; }
+        .font-tech { font-family: 'Orbitron', sans-serif; }
+        .font-mono { font-family: 'JetBrains Mono', monospace; }
+
+        /* Batik / Kopitiam Pattern Background */
+        .kopitiam-bg {
+            background-color: #1a1614;
+            background-image: 
+                radial-gradient(#d97706 1px, transparent 1px),
+                radial-gradient(#ef4444 1px, #1a1614 1px);
+            background-size: 40px 40px;
+            background-position: 0 0, 20px 20px;
+            background-opacity: 0.15;
+        }
+
+        /* Glass / Warung card styling */
+        .warung-panel {
+            background: rgba(36, 30, 26, 0.88);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 2px solid rgba(245, 158, 11, 0.25);
+            box-shadow: 0 12px 36px rgba(0, 0, 0, 0.45);
+        }
+
+        .warung-card {
+            background: rgba(46, 38, 33, 0.92);
+            border: 1px solid rgba(251, 191, 36, 0.3);
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .warung-card:hover {
+            transform: translateY(-4px);
+            border-color: #f59e0b;
+            box-shadow: 0 10px 25px -5px rgba(245, 158, 11, 0.3);
+        }
+
+        /* Button micro-interactions */
+        .btn-mama {
+            transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .btn-mama:hover {
+            transform: translateY(-2px);
+            filter: brightness(1.1);
+        }
+        .btn-mama:active {
+            transform: translateY(1px) scale(0.98);
+        }
+
+        /* Stove Flame Glow Animation */
+        @keyframes flamePulse {
+            0%, 100% { filter: drop-shadow(0 0 10px #f59e0b) drop-shadow(0 0 20px #ef4444); }
+            50% { filter: drop-shadow(0 0 18px #fbbf24) drop-shadow(0 0 35px #dc2626); }
+        }
+        .flame-anim {
+            animation: flamePulse 1.2s infinite ease-in-out;
+        }
+
+        /* Mama bobbing animation */
+        @keyframes mamaIdle {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-4px) rotate(1deg); }
+        }
+        .mama-idle {
+            animation: mamaIdle 2.5s infinite ease-in-out;
+        }
+
+        /* Custom scrollbar */
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: #1a1614; }
+        ::-webkit-scrollbar-thumb { background: #d97706; border-radius: 999px; }
+
+        /* KaTeX Math Styling */
+        .katex { font-size: 1.15em !important; color: inherit; }
+        .katex-display { margin: 0.25em 0 !important; }
+        .katex-html { white-space: normal; }
+    </style>
+</head>
+<body class="kopitiam-bg min-h-screen flex flex-col text-slate-100 antialiased overflow-x-hidden">
+
+    <!-- Top Navigation & Stats Bar -->
+    <header class="sticky top-0 z-40 bg-[#161210]/95 backdrop-blur-md border-b border-amber-900/60 shadow-lg px-3 sm:px-6 py-2.5">
+        <div class="max-w-6xl mx-auto flex items-center justify-between gap-2 sm:gap-4">
+            <!-- Left: Back to Portal & Title -->
+            <div class="flex items-center gap-2 sm:gap-3">
+                <a href="../index.html" class="p-2 rounded-xl bg-stone-800 hover:bg-stone-700 text-amber-400 text-xs font-bold flex items-center gap-1.5 transition border border-stone-700" title="Return to Portal">
+                    <span>🏠</span>
+                    <span class="hidden sm:inline" data-i18n="navPortal">Portal</span>
+                </a>
+                <div class="flex items-center gap-2">
+                    <span class="text-2xl sm:text-3xl animate-bounce">🍳</span>
+                    <div>
+                        <h1 class="font-cartoon text-lg sm:text-xl font-bold tracking-tight text-amber-300 leading-tight">
+                            MATH MAMA
+                        </h1>
+                        <p class="text-[10px] font-bold text-amber-500/80 tracking-widest uppercase hidden sm:block" data-i18n="appSubtitle">
+                            Math Kitchen • Form 4 KSSM / DLP
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Center/Right: Stats Display & Controls -->
+            <div class="flex items-center gap-2 sm:gap-3">
+                <!-- Coins -->
+                <div class="flex items-center gap-1 bg-amber-950/70 border border-amber-500/40 px-2.5 sm:px-3 py-1 rounded-full text-xs font-bold text-amber-300 shadow-inner">
+                    <span class="text-sm">🪙</span>
+                    <span>RM <span id="hud-coins">50.00</span></span>
+                </div>
+
+                <!-- Stars -->
+                <div class="flex items-center gap-1 bg-rose-950/70 border border-rose-500/40 px-2 sm:px-2.5 py-1 rounded-full text-xs font-bold text-rose-300 shadow-inner">
+                    <span>⭐</span>
+                    <span id="hud-stars">0</span>
+                </div>
+
+                <!-- Chef Rank Badge -->
+                <button onclick="openUpgradeShop()" class="hidden md:flex items-center gap-1.5 bg-stone-800 hover:bg-stone-700 border border-amber-500/50 px-3 py-1 rounded-full text-xs font-bold text-amber-200 transition">
+                    <span>👨‍🍳</span>
+                    <span id="hud-rank">Junior Chef</span>
+                </button>
+
+                <!-- Language Toggle Button (EN default / BM) -->
+                <button id="btn-lang" onclick="toggleLanguage()" class="px-2.5 py-1 rounded-xl bg-amber-500/20 hover:bg-amber-500/30 text-amber-300 text-xs font-bold border border-amber-500/40 transition flex items-center gap-1" title="Switch Language / Tukar Bahasa">
+                    <span id="lang-flag">🇬🇧</span>
+                    <span id="lang-label">EN</span>
+                </button>
+
+                <!-- Audio Mute Button -->
+                <button id="btn-audio" onclick="toggleAudio()" class="p-2 rounded-xl bg-stone-800 hover:bg-stone-700 text-amber-300 text-sm border border-stone-700 transition" title="Toggle Sound">
+                    <span id="audio-icon">🔊</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Dynamic Application Screen -->
+    <main class="flex-grow max-w-6xl w-full mx-auto p-3 sm:p-6 flex flex-col justify-center">
+
+        <!-- ============================================================= -->
+        <!-- VIEW 1: HOME & KITCHEN SELECTION (WARUNG OVERVIEW)            -->
+        <!-- ============================================================= -->
+        <section id="view-menu" class="flex flex-col gap-6">
+            
+            <!-- Hero Banner: Warung Status & Slogan -->
+            <div class="warung-panel rounded-3xl p-5 sm:p-8 relative overflow-hidden flex flex-col md:flex-row items-center justify-between gap-6">
+                <div class="flex flex-col items-center md:items-start text-center md:text-left z-10">
+                    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-500/20 border border-amber-500/40 text-amber-300 text-xs font-bold uppercase tracking-wider mb-2">
+                        <span>🔥</span> <span data-i18n="heroSlogan">"Cook. Calculate. Profit. Win!"</span>
+                    </div>
+                    <h2 class="font-cartoon text-3xl sm:text-4xl md:text-5xl font-extrabold text-white mb-2">
+                        <span data-i18n="kitchenTitlePrefix">Mama's</span> <span class="text-amber-400" id="stall-name-display">Umbrella Stall</span>
+                    </h2>
+                    <p class="text-sm sm:text-base text-stone-300 max-w-xl font-medium leading-relaxed mb-4" data-i18n="heroDescription">
+                        Master Form 4 KSSM Mathematics by cooking authentic Malaysian delicacies! Calculate ingredients, control quadratic stove parabolas, arrange coordinate plates, and build your culinary empire!
+                    </p>
+                    <div class="flex flex-wrap gap-2.5 justify-center md:justify-start">
+                        <button onclick="startMode('campaign')" class="btn-mama px-6 py-3 rounded-2xl bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-stone-950 font-cartoon text-lg font-bold shadow-lg shadow-amber-500/30 flex items-center gap-2">
+                            <span>🍳</span>
+                            <span data-i18n="btnStartCampaign">Start Cooking (Campaign)</span>
+                        </button>
+                        <button onclick="startMode('survival')" class="btn-mama px-5 py-3 rounded-2xl bg-gradient-to-r from-rose-600 to-red-700 hover:from-rose-500 hover:to-red-600 text-white font-cartoon text-base font-bold shadow-lg shadow-rose-600/30 flex items-center gap-2">
+                            <span>🔥</span>
+                            <span data-i18n="btnStartSurvival">SPM Survival Rush</span>
+                        </button>
+                        <button onclick="openUpgradeShop()" class="btn-mama px-4 py-3 rounded-2xl bg-stone-800 hover:bg-stone-700 text-amber-300 font-bold text-sm border border-amber-500/30 flex items-center gap-1.5">
+                            <span>🏪</span>
+                            <span data-i18n="btnUpgradeStall">Upgrade Kitchen</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Animated Mama Interactive Avatar Display -->
+                <div class="relative flex flex-col items-center justify-center p-3">
+                    <div id="mama-avatar-hero" class="mama-idle cursor-pointer" onclick="mamaPoke()">
+                        <div id="hero-mama-svg-container" class="w-40 h-40 sm:w-48 sm:h-48 drop-shadow-2xl"></div>
+                    </div>
+                    <div id="mama-quote-bubble" class="mt-2 bg-amber-100 text-stone-900 text-xs font-bold px-3.5 py-1.5 rounded-full shadow-md border-2 border-amber-400 font-cartoon text-center">
+                        "Let's master Mathematics while cooking delicious food!"
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quick Modes Nav / Tabs -->
+            <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2">
+                <h3 class="font-cartoon text-xl sm:text-2xl font-bold text-amber-400 flex items-center gap-2">
+                    <span>🍲</span>
+                    <span data-i18n="kitchenGridTitle">Choose Kitchen Worlds (Form 4 KSSM / DLP)</span>
+                </h3>
+                <button onclick="openFormulaModal()" class="px-3 py-1.5 rounded-xl bg-stone-800 hover:bg-stone-700 text-amber-300 text-xs font-bold border border-amber-500/30 transition flex items-center gap-1">
+                    <span>📖</span>
+                    <span data-i18n="btnFormulaBook">Recipe Book & Formulas</span>
+                </button>
+            </div>
+
+            <!-- 8 Kitchen Worlds Grid (KSSM Chapter 1 - 10) -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4" id="kitchen-grid">
+                <!-- Dynamically populated via JS -->
+            </div>
+        </section>
+
+        <!-- ============================================================= -->
+        <!-- VIEW 2: ACTIVE COOKING SIMULATOR (THE CORE GAME LOOP)         -->
+        <!-- ============================================================= -->
+        <section id="view-cooking" class="hidden flex flex-col gap-4">
+            
+            <!-- Kitchen HUD Bar: Recipe Title, Stage Step Tracker, Timer, Sizzle Tension -->
+            <div class="warung-panel rounded-2xl p-4 flex flex-wrap items-center justify-between gap-3 border-amber-500/40">
+                <div class="flex items-center gap-3">
+                    <button onclick="exitToMenu()" class="p-2 rounded-xl bg-stone-800 hover:bg-stone-700 text-stone-300 text-xs font-bold border border-stone-700" title="Cancel">
+                        ✕ <span data-i18n="btnCancel">Cancel</span>
+                    </button>
+                    <div>
+                        <div class="flex items-center gap-2">
+                            <span class="text-2xl" id="cook-recipe-icon">🍛</span>
+                            <h2 class="font-cartoon text-xl sm:text-2xl font-bold text-amber-300" id="cook-recipe-name">
+                                Nasi Lemak Royale
+                            </h2>
+                        </div>
+                        <p class="text-xs text-stone-400" id="cook-step-topic">
+                            Chapter 1: Quadratic Functions & Equations
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Stage Progress Indicators -->
+                <div class="flex items-center gap-1 sm:gap-1.5" id="step-dots-container">
+                    <!-- Dots injected via JS -->
+                </div>
+
+                <!-- Timer & Sizzle Tension Bar -->
+                <div class="flex items-center gap-3">
+                    <div class="text-right">
+                        <div class="text-[10px] uppercase font-bold text-amber-500 tracking-wider" data-i18n="cookingTimeLabel">Cooking Time</div>
+                        <div class="font-mono text-lg font-bold text-amber-300" id="cook-timer-text">25s</div>
+                    </div>
+                    <div class="w-24 sm:w-32 h-3 bg-stone-800 rounded-full overflow-hidden border border-stone-700 p-0.5">
+                        <div id="cook-timer-bar" class="h-full bg-emerald-400 rounded-full transition-all duration-100" style="width: 100%;"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Cooking Station: 2-Column Split -->
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-4">
+                
+                <!-- Left Column: Animated Mama Chef, Recipe Card, & Live Reactions (4 cols) -->
+                <div class="lg:col-span-4 flex flex-col gap-4">
+                    <!-- Mama Box -->
+                    <div class="warung-panel rounded-2xl p-5 flex flex-col items-center text-center relative overflow-hidden">
+                        <div class="text-xs font-bold text-amber-400 uppercase tracking-wider mb-2" id="cook-step-badge">
+                            Step 1: Prep Ingredients
+                        </div>
+
+                        <!-- Animated Mama SVG in Cooking Mode -->
+                        <div class="w-36 h-36 relative mb-2">
+                            <div id="cooking-mama-svg" class="w-full h-full drop-shadow-xl transition-transform duration-300"></div>
+                            <!-- Emotion Bubble -->
+                            <div id="mama-reaction-badge" class="absolute -top-2 -right-2 text-2xl animate-bounce hidden">
+                                🌟
+                            </div>
+                        </div>
+
+                        <!-- Mama Speech Box -->
+                        <div class="bg-stone-900/90 border border-amber-500/40 rounded-2xl p-3.5 w-full text-xs text-amber-100 font-medium relative shadow-inner">
+                            <span class="text-amber-400 font-bold block mb-1" data-i18n="mamaSpeechPrefix">👩‍🍳 Mama Says:</span>
+                            <span id="mama-speech-text">
+                                "Weigh the rice accurately! Don't add too much water or it turns to porridge!"
+                            </span>
+                        </div>
+
+                        <!-- Current Order Summary Widget -->
+                        <div class="mt-3 w-full bg-stone-950/60 rounded-xl p-3 border border-stone-800 text-left text-xs space-y-1 text-stone-300">
+                            <div class="flex justify-between font-bold text-amber-300">
+                                <span data-i18n="customerOrderLabel">Customer Order:</span>
+                                <span id="order-qty-tag">4 Packs</span>
+                            </div>
+                            <div class="text-[11px] text-stone-400" id="order-spec-tag">
+                                Medium spicy, fried egg, extra sambal.
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Quick Formula Hint Trigger -->
+                    <button onclick="openFormulaModal()" class="w-full py-2.5 rounded-xl bg-stone-800/80 hover:bg-stone-700 text-amber-300 text-xs font-bold border border-amber-500/30 flex items-center justify-center gap-2 transition">
+                        <span>💡</span>
+                        <span data-i18n="btnViewHints">View Chapter Formula Hints</span>
+                    </button>
+                </div>
+
+                <!-- Right Column: Interactive Cooking & Math Problem Space (8 cols) -->
+                <div class="lg:col-span-8 flex flex-col">
+                    <div class="warung-panel rounded-2xl p-5 sm:p-7 flex-grow flex flex-col justify-between" id="cooking-stage-container">
+                        
+                        <!-- Top: Step Header & Mathematical Scenario -->
+                        <div>
+                            <div class="flex items-center justify-between border-b border-stone-800 pb-3 mb-4">
+                                <h3 class="font-cartoon text-2xl font-bold text-white flex items-center gap-2" id="stage-action-title">
+                                    <span>🥣</span>
+                                    <span>Weigh Rice & Water</span>
+                                </h3>
+                                <span class="px-2.5 py-1 rounded-full bg-amber-500/20 text-amber-300 text-xs font-bold" id="stage-math-tag">
+                                    Linear Equations
+                                </span>
+                            </div>
+
+                            <!-- Narrative Math Scenario -->
+                            <div class="bg-stone-900/80 rounded-2xl p-4 border border-amber-500/20 mb-5">
+                                <p class="text-stone-200 text-sm sm:text-base leading-relaxed" id="stage-problem-description">
+                                    Mama needs 17 cups of rice for 4 servings. The pot already has 5 cups. Each rice packet contains <b>2x</b> cups. Find the value of <b>x</b> so the total rice is exactly 17 cups!
+                                </p>
+                                <!-- Mathematical Visual Equation Card -->
+                                <div class="mt-3 bg-stone-950 p-3 rounded-xl border border-stone-800 text-center font-mono text-base sm:text-lg text-amber-300 font-bold" id="stage-equation-display">
+                                    2x + 5 = 17
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Center: Interactive Cooking Mini-Game Workspace -->
+                        <div class="my-auto py-4 flex flex-col items-center justify-center w-full" id="interactive-workspace">
+                            <!-- Injected dynamically -->
+                        </div>
+
+                        <!-- Bottom: Feedback Box & Action Controls -->
+                        <div class="mt-4 pt-4 border-t border-stone-800">
+                            <div id="stage-feedback" class="text-center font-cartoon text-lg font-bold min-h-[32px] mb-3 transition-all duration-200"></div>
+                            <div class="flex items-center justify-end gap-3" id="stage-action-btns"></div>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+
+        </section>
+
+        <!-- ============================================================= -->
+        <!-- VIEW 3: DISH COMPLETED SCORECARD & COOKING MAMA RESULTS       -->
+        <!-- ============================================================= -->
+        <section id="view-result" class="hidden max-w-2xl mx-auto w-full">
+            <div class="warung-panel rounded-3xl p-6 sm:p-10 text-center relative overflow-hidden border-2 border-amber-500/50">
+                <!-- Stars Header -->
+                <div class="flex justify-center gap-2 mb-2 text-4xl sm:text-5xl" id="result-stars">
+                    <span>⭐</span><span>⭐</span><span>⭐</span>
+                </div>
+                
+                <h2 class="font-cartoon text-3xl sm:text-4xl font-extrabold text-amber-400 mb-1" id="result-title">
+                    BETTER THAN MAMA! 🏆
+                </h2>
+                <p class="text-stone-300 text-sm font-medium mb-6" id="result-subtitle">
+                    The dish is ready and received a 3-Star culinary rating!
+                </p>
+
+                <!-- Mama Animated Avatar for Result -->
+                <div class="w-32 h-32 mx-auto mb-6" id="result-mama-svg"></div>
+
+                <!-- Comprehensive Kitchen Analytics & Math Metrics -->
+                <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-6">
+                    <div class="bg-stone-900/90 rounded-2xl p-3 border border-stone-800">
+                        <div class="text-[10px] text-stone-400 font-bold uppercase" data-i18n="metricMathAccuracy">Math Accuracy</div>
+                        <div class="font-cartoon text-xl font-bold text-emerald-400" id="res-accuracy">100%</div>
+                    </div>
+                    <div class="bg-stone-900/90 rounded-2xl p-3 border border-stone-800">
+                        <div class="text-[10px] text-stone-400 font-bold uppercase" data-i18n="metricCookingTime">Cooking Time</div>
+                        <div class="font-cartoon text-xl font-bold text-amber-400" id="res-time">38s</div>
+                    </div>
+                    <div class="bg-stone-900/90 rounded-2xl p-3 border border-stone-800">
+                        <div class="text-[10px] text-stone-400 font-bold uppercase" data-i18n="metricCookingScore">Cooking Score</div>
+                        <div class="font-cartoon text-xl font-bold text-rose-400" id="res-cooking">98%</div>
+                    </div>
+                    <div class="bg-stone-900/90 rounded-2xl p-3 border border-stone-800">
+                        <div class="text-[10px] text-stone-400 font-bold uppercase" data-i18n="metricNetProfit">Net Profit (RM)</div>
+                        <div class="font-cartoon text-xl font-bold text-amber-300" id="res-profit">+RM 24.50</div>
+                    </div>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="flex flex-wrap justify-center gap-3">
+                    <button onclick="replayCurrentRecipe()" class="btn-mama px-6 py-3 rounded-2xl bg-stone-800 hover:bg-stone-700 text-amber-300 font-cartoon text-base font-bold border border-amber-500/40" data-i18n="btnReplayDish">
+                        🔄 Cook Again
+                    </button>
+                    <button onclick="nextRecipeOrMenu()" class="btn-mama px-8 py-3 rounded-2xl bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-stone-950 font-cartoon text-lg font-bold shadow-lg shadow-amber-500/30" data-i18n="btnNextDish">
+                        Next Dish ➔
+                    </button>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- ============================================================= -->
+    <!-- MODAL 1: RESTAURANT UPGRADE & CHEF PROMOTION SHOP             -->
+    <!-- ============================================================= -->
+    <div id="modal-shop" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm hidden flex items-center justify-center p-3 sm:p-6">
+        <div class="warung-panel rounded-3xl max-w-2xl w-full max-h-[90vh] overflow-y-auto p-6 border-amber-500/50 flex flex-col">
+            <div class="flex justify-between items-center border-b border-stone-800 pb-4 mb-4">
+                <div class="flex items-center gap-3">
+                    <span class="text-3xl">🏪</span>
+                    <div>
+                        <h3 class="font-cartoon text-2xl font-bold text-amber-300" data-i18n="shopModalTitle">Kitchen Upgrade Centre</h3>
+                        <p class="text-xs text-stone-400" data-i18n="shopModalSubtitle">Reinvest your cooking profits to expand your culinary empire!</p>
+                    </div>
+                </div>
+                <button onclick="closeModal('modal-shop')" class="p-2 rounded-xl bg-stone-800 hover:bg-stone-700 text-stone-300">✕</button>
+            </div>
+
+            <!-- Current Wallet & Rank Banner -->
+            <div class="bg-gradient-to-r from-amber-950 to-stone-900 rounded-2xl p-4 border border-amber-500/30 flex justify-between items-center mb-6">
+                <div>
+                    <div class="text-xs text-amber-400 font-bold uppercase" data-i18n="shopWalletLabel">Kitchen Funds</div>
+                    <div class="font-mono text-2xl font-black text-amber-300">RM <span id="shop-wallet">50.00</span></div>
+                </div>
+                <div class="text-right">
+                    <div class="text-xs text-stone-400 font-bold uppercase" data-i18n="shopRankLabel">Current Chef Rank</div>
+                    <div class="font-cartoon text-lg font-bold text-white" id="shop-rank-text">Junior Chef</div>
+                </div>
+            </div>
+
+            <!-- Upgrades List -->
+            <div class="flex flex-col gap-3" id="shop-items-container"></div>
+        </div>
+    </div>
+
+    <!-- ============================================================= -->
+    <!-- MODAL 2: FORMULA BOOK & CHEAT SHEET                           -->
+    <!-- ============================================================= -->
+    <div id="modal-formula" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm hidden flex items-center justify-center p-3 sm:p-6">
+        <div class="warung-panel rounded-3xl max-w-3xl w-full max-h-[90vh] overflow-y-auto p-6 border-amber-500/50 flex flex-col">
+            <div class="flex justify-between items-center border-b border-stone-800 pb-4 mb-4">
+                <div class="flex items-center gap-3">
+                    <span class="text-3xl">📖</span>
+                    <div>
+                        <h3 class="font-cartoon text-2xl font-bold text-amber-300" data-i18n="formulaModalTitle">Form 4 KSSM Recipe & Formula Book</h3>
+                        <p class="text-xs text-stone-400" data-i18n="formulaModalSubtitle">Quick math reference used across Mama's kitchen recipes.</p>
+                    </div>
+                </div>
+                <button onclick="closeModal('modal-formula')" class="p-2 rounded-xl bg-stone-800 hover:bg-stone-700 text-stone-300">✕</button>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs text-stone-200" id="formula-cards-container">
+                <!-- Dynamically populated based on current language -->
+            </div>
+        </div>
+    </div>
+
+    <!-- ============================================================= -->
+    <!-- AUDIO SYNTHESIZER & GAME ENGINE LOGIC                         -->
+    <!-- ============================================================= -->
+    <script>
+        /* =========================================================
+         * 1. BILINGUAL I18N STRINGS (ENGLISH DEFAULT & BAHASA MELAYU)
+         * ========================================================= */
+        let currentLang = 'en'; // Default language: English
+
+        const I18N = {
+            en: {
+                navPortal: "Portal",
+                appSubtitle: "Math Kitchen • Form 4 KSSM / DLP",
+                heroSlogan: "\"Cook. Calculate. Profit. Win!\"",
+                kitchenTitlePrefix: "Mama's",
+                defaultStallName: "Umbrella Stall",
+                heroDescription: "Master Form 4 KSSM Mathematics by cooking authentic Malaysian delicacies! Calculate ingredients, control quadratic stove parabolas, arrange coordinate plates, and build your culinary empire!",
+                btnStartCampaign: "Start Cooking (Campaign)",
+                btnStartSurvival: "SPM Survival Rush",
+                btnUpgradeStall: "Upgrade Kitchen",
+                kitchenGridTitle: "Choose Kitchen Worlds (Form 4 KSSM / DLP)",
+                btnFormulaBook: "Recipe Book & Formulas",
+                btnCancel: "Cancel",
+                cookingTimeLabel: "Cooking Time",
+                mamaSpeechPrefix: "👩‍🍳 Mama Says:",
+                customerOrderLabel: "Customer Order:",
+                btnViewHints: "View Chapter Formula Hints",
+                metricMathAccuracy: "Math Accuracy",
+                metricCookingTime: "Cooking Time",
+                metricCookingScore: "Cooking Score",
+                metricNetProfit: "Net Profit (RM)",
+                btnReplayDish: "🔄 Cook Again",
+                btnNextDish: "Next Dish ➔",
+                shopModalTitle: "Kitchen Upgrade Centre",
+                shopModalSubtitle: "Reinvest your cooking profits to expand your culinary empire!",
+                shopWalletLabel: "Kitchen Funds",
+                shopRankLabel: "Current Chef Rank",
+                shopRequires: "Requires: ⭐",
+                shopOwned: "Owned ✓",
+                shopBuy: "Buy RM",
+                confirmScale: "Confirm Measurement ✓",
+                confirmRoots: "Set Dimensions ✓",
+                timeOutMsg: "Oh no! The dish is burnt because time ran out! 🔥",
+                perfectFeedback: "Perfect! Measurement is spot-on! 🌟",
+                mcqCorrectFb: "Exactly right! Recipe mixed to perfection! 🌟",
+                rootsCorrectFb: "Awesome! Banana leaf folding dimensions are exact! 🌟",
+                rootsWrongFb: "Incorrect roots! Correct answer:",
+                unlockedStatus: "⭐⭐⭐ Cleared",
+                notCookedStatus: "Not Cooked Yet",
+                cookNowBtn: "Cook Now ➔",
+                insufficientFundsMsg: "Insufficient coins or stars to purchase this upgrade!"
+            },
+            bm: {
+                navPortal: "Portal",
+                appSubtitle: "Warung Matematik • Tingkatan 4 KSSM",
+                heroSlogan: "\"Masak. Kira. Untung. Menang!\"",
+                kitchenTitlePrefix: "Warung",
+                defaultStallName: "Gerai Payung Mama",
+                heroDescription: "Kuasai Matematik Tingkatan 4 KSSM dengan memasak hidangan lazat Malaysia! Kira sukatan bahan, kawal lengkok api kuadratik, susun pinggan koordinat, dan bina empayar makanan anda!",
+                btnStartCampaign: "Mula Masak (Campaign)",
+                btnStartSurvival: "SPM Survival Rush",
+                btnUpgradeStall: "Naik Taraf Warung",
+                kitchenGridTitle: "Pilih Dapur / Kitchen Worlds (Tingkatan 4 KSSM)",
+                btnFormulaBook: "Buku Resepi & Formula",
+                btnCancel: "Batal",
+                cookingTimeLabel: "Masa Memasak",
+                mamaSpeechPrefix: "👩‍🍳 Kata Mama:",
+                customerOrderLabel: "Pesanan Pelanggan:",
+                btnViewHints: "Lihat Petua Formula Bab Ini",
+                metricMathAccuracy: "Ketepatan Matematik",
+                metricCookingTime: "Masa Memasak",
+                metricCookingScore: "Skor Memasak",
+                metricNetProfit: "Untung Bersih (RM)",
+                btnReplayDish: "🔄 Masak Sekali Lagi",
+                btnNextDish: "Hidangan Seterusnya ➔",
+                shopModalTitle: "Pusat Naik Taraf Warung",
+                shopModalSubtitle: "Gunakan keuntungan jualan untuk kembangkan empayar makanan anda!",
+                shopWalletLabel: "Baki Wang Warung",
+                shopRankLabel: "Pangkat Chef Semasa",
+                shopRequires: "Syarat: ⭐",
+                shopOwned: "Dimiliki ✓",
+                shopBuy: "Beli RM",
+                confirmScale: "Sahkan Sukatan ✓",
+                confirmRoots: "Tetapkan Ukuran ✓",
+                timeOutMsg: "Alamak! Makanan hangus terbakar sebab masa tamat! 🔥",
+                perfectFeedback: "Tahniah! Sukatan tepat sempurna! 🌟",
+                mcqCorrectFb: "Tepat sekali! Formula diadun sempurna! 🌟",
+                rootsCorrectFb: "Hebat! Ukuran lipatan daun pisang kemas & tepat! 🌟",
+                rootsWrongFb: "Salah punca! Jawapan betul:",
+                unlockedStatus: "⭐⭐⭐ Siap",
+                notCookedStatus: "Belum Masak",
+                cookNowBtn: "Masak Sekarang ➔",
+                insufficientFundsMsg: "Wang atau bintang tidak mencukupi untuk naik taraf!"
+            }
+        };
+
+        function toggleLanguage() {
+            currentLang = currentLang === 'en' ? 'bm' : 'en';
+            document.getElementById('lang-label').textContent = currentLang.toUpperCase();
+            document.getElementById('lang-flag').textContent = currentLang === 'en' ? '🇬🇧' : '🇲🇾';
+            
+            // Save preference
+            try {
+                localStorage.setItem('math_mama_lang', currentLang);
+            } catch (e) {}
+
+            applyLanguageStrings();
+            renderKitchenGrid();
+            renderFormulaCards();
+            if (!document.getElementById('modal-shop').classList.contains('hidden')) {
+                openUpgradeShop();
+            }
+            if (!document.getElementById('view-cooking').classList.contains('hidden')) {
+                loadCookingStage();
+            }
+        }
+
+        function applyLanguageStrings() {
+            const dict = I18N[currentLang];
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                if (dict[key]) {
+                    el.textContent = dict[key];
+                }
+            });
+
+            // Update Dynamic Stall Name in Banner
+            const stallName = getStallName(state.rank);
+            document.getElementById('stall-name-display').textContent = stallName;
+            document.getElementById('hud-rank').textContent = getRankName(state.rank);
+            document.getElementById('shop-rank-text').textContent = getRankName(state.rank);
+        }
+
+        function getRankName(rankKey) {
+            const ranks = {
+                'Junior Chef': { en: 'Junior Chef', bm: 'Junior Chef' },
+                'Kitchen Apprentice': { en: 'Kitchen Apprentice', bm: 'Pelatih Dapur' },
+                'Warung Master': { en: 'Kitchen Master', bm: 'Master Warung' },
+                'Math Chef Emperor': { en: 'Math Chef Emperor', bm: 'Maharaja Chef Matematik' }
+            };
+            return (ranks[rankKey] && ranks[rankKey][currentLang]) || rankKey;
+        }
+
+        function getStallName(rankKey) {
+            const names = {
+                'Junior Chef': { en: "Mama's Umbrella Stall", bm: "Gerai Payung Mama" },
+                'Kitchen Apprentice': { en: "Mama's Food Truck", bm: "Food Truck Beroda Mama" },
+                'Warung Master': { en: "Mama's Heritage Kopitiam", bm: "Kedai Kopi Warisan Mama" },
+                'Math Chef Emperor': { en: "Mama's 5-Star Restaurant", bm: "Restoran Bintang Lima Mama" }
+            };
+            return (names[rankKey] && names[rankKey][currentLang]) || "Mama's Stall";
+        }
+
+        /* =========================================================
+         * 2. ZERO-DEPENDENCY WEB AUDIO API SOUND SYNTHESIZER
+         * ========================================================= */
+        class MamaAudioEngine {
+            constructor() {
+                this.ctx = null;
+                this.muted = false;
+            }
+
+            init() {
+                if (!this.ctx) {
+                    const AudioContext = window.AudioContext || window.webkitAudioContext;
+                    if (AudioContext) {
+                        this.ctx = new AudioContext();
+                    }
+                }
+                if (this.ctx && this.ctx.state === 'suspended') {
+                    this.ctx.resume();
+                }
+            }
+
+            playChop() {
+                if (this.muted) return;
+                this.init();
+                if (!this.ctx) return;
+                const osc = this.ctx.createOscillator();
+                const gain = this.ctx.createGain();
+                osc.type = 'triangle';
+                osc.frequency.setValueAtTime(320, this.ctx.currentTime);
+                osc.frequency.exponentialRampToValueAtTime(80, this.ctx.currentTime + 0.08);
+                gain.gain.setValueAtTime(0.4, this.ctx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.01, this.ctx.currentTime + 0.08);
+                osc.connect(gain);
+                gain.connect(this.ctx.destination);
+                osc.start();
+                osc.stop(this.ctx.currentTime + 0.08);
+            }
+
+            playSizzle() {
+                if (this.muted) return;
+                this.init();
+                if (!this.ctx) return;
+                const bufferSize = this.ctx.sampleRate * 0.4;
+                const buffer = this.ctx.createBuffer(1, bufferSize, this.ctx.sampleRate);
+                const data = buffer.getChannelData(0);
+                for (let i = 0; i < bufferSize; i++) {
+                    data[i] = Math.random() * 2 - 1;
+                }
+                const noise = this.ctx.createBufferSource();
+                noise.buffer = buffer;
+                const filter = this.ctx.createBiquadFilter();
+                filter.type = 'bandpass';
+                filter.frequency.value = 1800;
+                filter.Q.value = 3;
+
+                const gain = this.ctx.createGain();
+                gain.gain.setValueAtTime(0.25, this.ctx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.01, this.ctx.currentTime + 0.35);
+
+                noise.connect(filter);
+                filter.connect(gain);
+                gain.connect(this.ctx.destination);
+                noise.start();
+            }
+
+            playCoin() {
+                if (this.muted) return;
+                this.init();
+                if (!this.ctx) return;
+                const now = this.ctx.currentTime;
+                [987.77, 1318.51].forEach((freq, idx) => {
+                    const osc = this.ctx.createOscillator();
+                    const gain = this.ctx.createGain();
+                    osc.type = 'sine';
+                    osc.frequency.setValueAtTime(freq, now + idx * 0.08);
+                    gain.gain.setValueAtTime(0.3, now + idx * 0.08);
+                    gain.gain.exponentialRampToValueAtTime(0.01, now + idx * 0.08 + 0.25);
+                    osc.connect(gain);
+                    gain.connect(this.ctx.destination);
+                    osc.start(now + idx * 0.08);
+                    osc.stop(now + idx * 0.08 + 0.25);
+                });
+            }
+
+            playSuccess() {
+                if (this.muted) return;
+                this.init();
+                if (!this.ctx) return;
+                const notes = [523.25, 659.25, 783.99, 1046.50];
+                const now = this.ctx.currentTime;
+                notes.forEach((note, i) => {
+                    const osc = this.ctx.createOscillator();
+                    const gain = this.ctx.createGain();
+                    osc.type = 'triangle';
+                    osc.frequency.setValueAtTime(note, now + i * 0.09);
+                    gain.gain.setValueAtTime(0.3, now + i * 0.09);
+                    gain.gain.exponentialRampToValueAtTime(0.01, now + i * 0.09 + 0.3);
+                    osc.connect(gain);
+                    gain.connect(this.ctx.destination);
+                    osc.start(now + i * 0.09);
+                    osc.stop(now + i * 0.09 + 0.35);
+                });
+            }
+
+            playFail() {
+                if (this.muted) return;
+                this.init();
+                if (!this.ctx) return;
+                const now = this.ctx.currentTime;
+                const osc = this.ctx.createOscillator();
+                const gain = this.ctx.createGain();
+                osc.type = 'sawtooth';
+                osc.frequency.setValueAtTime(220, now);
+                osc.frequency.exponentialRampToValueAtTime(75, now + 0.4);
+                gain.gain.setValueAtTime(0.4, now);
+                gain.gain.exponentialRampToValueAtTime(0.01, now + 0.4);
+                osc.connect(gain);
+                gain.connect(this.ctx.destination);
+                osc.start(now);
+                osc.stop(now + 0.4);
+            }
+
+            playDing() {
+                if (this.muted) return;
+                this.init();
+                if (!this.ctx) return;
+                const osc = this.ctx.createOscillator();
+                const gain = this.ctx.createGain();
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(1760, this.ctx.currentTime);
+                gain.gain.setValueAtTime(0.35, this.ctx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + 0.8);
+                osc.connect(gain);
+                gain.connect(this.ctx.destination);
+                osc.start();
+                osc.stop(this.ctx.currentTime + 0.8);
+            }
+        }
+
+        const audio = new MamaAudioEngine();
+        function toggleAudio() {
+            audio.muted = !audio.muted;
+            document.getElementById('audio-icon').textContent = audio.muted ? '🔇' : '🔊';
+        }
+
+        /* =========================================================
+         * 3. MAMA SVG SPRITE GENERATOR (EXPRESSIVE EMOTIONS)
+         * ========================================================= */
+        function renderMamaSVG(emotion = 'happy') {
+            let mouth = `<path d="M 40 70 Q 50 82 60 70" stroke="#78350f" stroke-width="3" fill="#f43f5e" />`;
+            let eyes = `
+                <circle cx="36" cy="48" r="4.5" fill="#1c1917" />
+                <circle cx="64" cy="48" r="4.5" fill="#1c1917" />
+                <circle cx="37.5" cy="46.5" r="1.5" fill="#ffffff" />
+                <circle cx="65.5" cy="46.5" r="1.5" fill="#ffffff" />
+            `;
+            let extras = `
+                <circle cx="30" cy="56" r="6" fill="#fb7185" opacity="0.6" />
+                <circle cx="70" cy="56" r="6" fill="#fb7185" opacity="0.6" />
+            `;
+
+            if (emotion === 'delighted') {
+                eyes = `
+                    <text x="28" y="55" font-size="18" fill="#f59e0b">★</text>
+                    <text x="56" y="55" font-size="18" fill="#f59e0b">★</text>
+                `;
+                mouth = `<path d="M 38 68 Q 50 86 62 68 Z" stroke="#78350f" stroke-width="2.5" fill="#ef4444" />`;
+                extras += `<text x="75" y="35" font-size="16">✨</text>`;
+            } else if (emotion === 'fire') {
+                eyes = `
+                    <text x="27" y="55" font-size="18" fill="#dc2626">🔥</text>
+                    <text x="55" y="55" font-size="18" fill="#dc2626">🔥</text>
+                `;
+                mouth = `<path d="M 40 76 Q 50 66 60 76" stroke="#991b1b" stroke-width="4" fill="none" />`;
+                extras = `
+                    <circle cx="18" cy="25" r="8" fill="#78716c" opacity="0.8" />
+                    <circle cx="82" cy="25" r="8" fill="#78716c" opacity="0.8" />
+                `;
+            } else if (emotion === 'worried') {
+                eyes = `
+                    <circle cx="36" cy="48" r="4" fill="#1c1917" />
+                    <circle cx="64" cy="48" r="4" fill="#1c1917" />
+                    <path d="M 32 40 Q 38 37 42 41" stroke="#78350f" stroke-width="2.5" fill="none" />
+                    <path d="M 58 41 Q 62 37 68 40" stroke="#78350f" stroke-width="2.5" fill="none" />
+                `;
+                mouth = `<ellipse cx="50" cy="72" rx="6" ry="4" fill="#78350f" />`;
+                extras += `
+                    <path d="M 76 42 Q 73 50 77 52 Q 81 50 78 42 Z" fill="#38bdf8" />
+                `;
+            }
+
+            return `
+                <svg viewBox="0 0 100 100" class="w-full h-full">
+                    <defs>
+                        <linearGradient id="mamaSkin" x1="0%" y1="0%" x2="0%" y2="100%">
+                            <stop offset="0%" stop-color="#ffedd5" />
+                            <stop offset="100%" stop-color="#fed7aa" />
+                        </linearGradient>
+                        <linearGradient id="bandana" x1="0%" y1="0%" x2="100%" y2="0%">
+                            <stop offset="0%" stop-color="#ef4444" />
+                            <stop offset="100%" stop-color="#f59e0b" />
+                        </linearGradient>
+                    </defs>
+                    <circle cx="50" cy="22" r="14" fill="#451a03" />
+                    <circle cx="36" cy="24" r="10" fill="#451a03" />
+                    <circle cx="64" cy="24" r="10" fill="#451a03" />
+                    <path d="M 22 36 Q 50 24 78 36 Q 86 52 78 68 Q 50 82 22 68 Q 14 52 22 36 Z" fill="url(#bandana)" />
+                    <circle cx="32" cy="32" r="2" fill="#ffffff" opacity="0.8" />
+                    <circle cx="48" cy="28" r="2" fill="#ffffff" opacity="0.8" />
+                    <circle cx="66" cy="32" r="2" fill="#ffffff" opacity="0.8" />
+                    <ellipse cx="50" cy="18" rx="8" ry="4" fill="#ef4444" />
+                    <path d="M 26 44 Q 50 38 74 44 Q 78 72 50 86 Q 22 72 26 44 Z" fill="url(#mamaSkin)" stroke="#fbbf24" stroke-width="1.5" />
+                    ${eyes}
+                    ${mouth}
+                    ${extras}
+                    <path d="M 32 88 L 50 82 L 68 88 L 74 100 L 26 100 Z" fill="#f8fafc" stroke="#e2e8f0" stroke-width="1" />
+                    <path d="M 50 82 L 50 100" stroke="#f43f5e" stroke-width="2" />
+                </svg>
+            `;
+        }
+
+        /* =========================================================
+         * 4. BILINGUAL RECIPES & QUESTION DATABASE (FORM 4 KSSM / DLP)
+         * ========================================================= */
+        const KITCHENS_DB = [
+    {
+        id: "k1-quadratic",
+        chapter: { en: "Chapter 1", bm: "Bab 1" },
+        topic: { en: "Quadratic Functions & Equations", bm: "Fungsi & Persamaan Kuadratik" },
+        dishName: { en: "Nasi Lemak Royale", bm: "Nasi Lemak Royale" },
+        icon: "🍛",
+        desc: { 
+            en: "Balance rice measurements with algebra, control parabolic stove heat, and fold fragrant pandan leaf packets!",
+            bm: "Kawal suhu kuali kuadratik (senyum vs masam) dan timbang beras algebra!"
+        },
+        stages: [
+            {
+                stepBadge: { en: "Step 1: Weigh Rice", bm: "Langkah 1: Timbang Beras" },
+                title: { en: "Measure Rice Using Algebra", bm: "Sukat Beras Menggunakan Algebra" },
+                mathTopic: { en: "Linear Equations (Basics)", bm: "Persamaan Linear (Asas)" },
+                desc: {
+                    en: "Mama needs $17$ cups of rice. The pot already contains $5$ cups. Each sealed packet holds $2x$ cups. Find $x$ so the rice amount is exact!",
+                    bm: "Mama perlukan $17$ cawan beras. Periuk sudah ada $5$ cawan. Setiap pek beras ada $2x$ cawan. Cari nilai $x$!"
+                },
+                equation: "2x + 5 = 17",
+                type: "slider",
+                min: 1, max: 12, step: 1, default: 2,
+                targetVal: 6,
+                unit: { en: "cups per packet", bm: "cawan setiap pek" },
+                mamaPrompt: {
+                    en: "Slide the digital scale until x satisfies the equation!",
+                    bm: "Laraskan penimbang supaya nilai x menepati persamaan!"
+                },
+                calcHint: {
+                    en: "2x = 17 - 5 = 12 \implies x = 6",
+                    bm: "2x = 17 - 5 = 12 \implies x = 6"
+                }
+            },
+            {
+                stepBadge: { en: "Step 2: Stove Temperature Parabola", bm: "Langkah 2: Suhu Api Dapur Kuadratik" },
+                title: { en: "Control Parabolic Heat Curve", bm: "Kawal Lengkok Api Parabola" },
+                mathTopic: { en: "Quadratic Graph Shape (U vs n)", bm: "Bentuk Graf Kuadratik (U vs n)" },
+                desc: {
+                    en: "For fluffy coconut rice, the heat curve is modeled by $y = -2x^2 + 8x + 10$. What is the curve profile and extremum point?",
+                    bm: "Untuk memasak nasi santan gebu, fungsi suhu ialah $y = -2x^2 + 8x + 10$. Apakah bentuk graf dan titik ekstremum lengkok ini?"
+                },
+                equation: "y = -2x^2 + 8x + 10",
+                type: "mcq",
+                options: [
+                    { text: { en: "$\text{Maximum Point } (\cap\text{-Shape / Frown})$", bm: "$\text{Titik Maksimum } (\cap\text{ / Masam})$" }, correct: true },
+                    { text: { en: "$\text{Minimum Point } (\cup\text{-Shape / Smile})$", bm: "$\text{Titik Minimum } (\cup\text{ / Senyum})$" }, correct: false },
+                    { text: { en: "$\text{Straight Line with Constant Gradient}$", bm: "$\text{Garis Lurus Berkecerunan Malar}$" }, correct: false }
+                ],
+                mamaPrompt: {
+                    en: "Look closely at coefficient a! Since a is negative, what is the curve profile?",
+                    bm: "Tengok nilai perkali a! Kalau a negatif, kuali panas melengkung macam mana?"
+                },
+                calcHint: {
+                    en: "a = -2 < 0 \implies n\text{-shape curve with a MAXIMUM point.}",
+                    bm: "a = -2 < 0 \implies \text{graf bentuk } n \text{ dengan titik MAKSIMUM.}"
+                }
+            },
+            {
+                stepBadge: { en: "Step 3: Banana Leaf Dimensions", bm: "Langkah 3: Luas Daun Pisang (Punca Kuadratik)" },
+                title: { en: "Fold Triangular Nasi Lemak", bm: "Bungkus Nasi Lemak Segitiga" },
+                mathTopic: { en: "Roots of Quadratic Equations", bm: "Punca Persamaan Kuadratik" },
+                desc: {
+                    en: "The folding area of the banana leaf is given by $x^2 - 7x + 10 = 0$. Solve for both roots $x$ to fold the packet!",
+                    bm: "Luas lipatan daun pisang diberi oleh $x^2 - 7x + 10 = 0$. Cari nilai punca-punca $x$ bagi melipat bungkusan!"
+                },
+                equation: "x^2 - 7x + 10 = 0",
+                type: "inputs2",
+                ans1: 2, ans2: 5,
+                label1: { en: "$x_1 = $", bm: "$x_1 = $" },
+                label2: { en: "$x_2 = $", bm: "$x_2 = $" },
+                mamaPrompt: {
+                    en: "Factorize this quadratic equation to obtain the two fold dimensions!",
+                    bm: "Faktorkan persamaan ini untuk dapatkan 2 punca ukuran daun pisang!"
+                },
+                calcHint: {
+                    en: "(x - 2)(x - 5) = 0 \implies x = 2 \text{ or } x = 5",
+                    bm: "(x - 2)(x - 5) = 0 \implies x = 2 \text{ atau } x = 5"
+                }
+            },
+            {
+                stepBadge: { en: "Step 4: Cashier & Profit Margin", bm: "Langkah 4: Kaunter Bayaran & Untung" },
+                title: { en: "Calculate Net Profit & Revenue", bm: "Kira Untung Bersih & Margin Jualan" },
+                mathTopic: { en: "Consumer & Financial Mathematics", bm: "Matematik Pengguna & Kewangan" },
+                desc: {
+                    en: "Cost price per plate is $\text{RM } 4.50$. Selling price is $\text{RM } 7.00$. A customer buys $4$ packs with a $\text{RM } 2.00$ voucher discount. What is the net profit?",
+                    bm: "Kos sepinggan Nasi Lemak ialah $\text{RM } 4.50$. Anda jual pada harga $\text{RM } 7.00$. Pelanggan beli $4$ bungkus dan diberi diskaun $\text{RM } 2.00$. Berapakah untung bersih warung?"
+                },
+                equation: "\text{Net Profit} = \text{Total Revenue} - \text{Total Cost}",
+                type: "mcq",
+                options: [
+                    { text: { en: "$\text{RM } 8.00 \text{ Net Profit}$", bm: "$\text{RM } 8.00 \text{ Untung Bersih}$" }, correct: true },
+                    { text: { en: "$\text{RM } 10.00 \text{ Net Profit}$", bm: "$\text{RM } 10.00 \text{ Untung Bersih}$" }, correct: false },
+                    { text: { en: "$\text{RM } 6.50 \text{ Net Profit}$", bm: "$\text{RM } 6.50 \text{ Untung Bersih}$" }, correct: false }
+                ],
+                mamaPrompt: {
+                    en: "Quick, ring up the cashier! Profit = (4 × 7.00 - 2.00) - (4 × 4.50)",
+                    bm: "Kira cepat sebelum pelanggan beredar! Untung = (4 × 7.00 - 2.00) - (4 × 4.50)"
+                },
+                calcHint: {
+                    en: "\text{Revenue} = 28 - 2 = 26. \; \text{Cost} = 4 \times 4.50 = 18. \; \text{Profit} = 26 - 18 = 8.00",
+                    bm: "\text{Jualan} = 28 - 2 = 26. \; \text{Kos} = 4 \times 4.50 = 18. \; \text{Untung} = 26 - 18 = 8.00"
+                }
+            }
+        ]
+    },
+    {
+        id: "k2-bases",
+        chapter: { en: "Chapter 2", bm: "Bab 2" },
+        topic: { en: "Number Bases", bm: "Asas Nombor" },
+        dishName: { en: "Flying Roti Canai", bm: "Roti Canai Terbang" },
+        icon: "🥞",
+        desc: {
+            en: "Spin and flip dough across Base 2, 5, and 8 number systems to fill customer orders!",
+            bm: "Tebar doh roti dalam Asas 2, 5 dan 8 untuk penuhi pesanan meja mamak!"
+        },
+        stages: [
+            {
+                stepBadge: { en: "Step 1: Table Order in Base 5", bm: "Langkah 1: Pesanan Meja Asas 5" },
+                title: { en: "Convert Base 5 to Base 10", bm: "Tukar Asas 5 ke Asas 10" },
+                mathTopic: { en: "Number Base Conversion", bm: "Penukaran Asas Nombor" },
+                desc: {
+                    en: "Table 3 orders $24_5$ pieces of crispy Roti Canai. How many pieces must you knead in Base 10?",
+                    bm: "Pelanggan Meja 3 memesan $24_5$ keping Roti Canai Telur. Berapakah keping dalam Asas 10 yang perlu ditebar?"
+                },
+                equation: "24_5 = \; ?_{10}",
+                type: "slider",
+                min: 5, max: 25, step: 1, default: 10,
+                targetVal: 14,
+                unit: { en: "roti pieces", bm: "keping roti" },
+                mamaPrompt: {
+                    en: "Multiply each digit by its place value in Base 5: (2 × 5) + 4!",
+                    bm: "Darab digit dengan nilai tempat asas 5: (2 × 5) + 4!"
+                },
+                calcHint: {
+                    en: "24_5 = (2 \times 5^1) + (4 \times 5^0) = 10 + 4 = 14",
+                    bm: "24_5 = (2 \times 5^1) + (4 \times 5^0) = 10 + 4 = 14"
+                }
+            },
+            {
+                stepBadge: { en: "Step 2: Ghee Measurement in Binary (Base 2)", bm: "Langkah 2: Kod Minyak Ghee Asas 2" },
+                title: { en: "Decode Binary Digital Dispenser", bm: "Nyahkod Sukatan Asas 2 (Binari)" },
+                mathTopic: { en: "Base 2 to Base 10", bm: "Asas 2 ke Asas 10" },
+                desc: {
+                    en: "The digital dispenser dispenses ghee at $1101_2\text{ ml}$. Convert to Base 10 ml.",
+                    bm: "Sukat minyak sapi mengikut sukatan digital pemanas: $1101_2\text{ ml}$."
+                },
+                equation: "1101_2 = \; ?_{10}",
+                type: "mcq",
+                options: [
+                    { text: { en: "$13\text{ ml}$", bm: "$13\text{ ml}$" }, correct: true },
+                    { text: { en: "$11\text{ ml}$", bm: "$11\text{ ml}$" }, correct: false },
+                    { text: { en: "$15\text{ ml}$", bm: "$15\text{ ml}$" }, correct: false }
+                ],
+                mamaPrompt: {
+                    en: "Sum the powers of 2: 8 + 4 + 0 + 1!",
+                    bm: "Jumlahkan kuasa 2: 8 + 4 + 0 + 1!"
+                },
+                calcHint: {
+                    en: "1101_2 = (1 \times 2^3) + (1 \times 2^2) + (0 \times 2^1) + (1 \times 2^0) = 8 + 4 + 0 + 1 = 13",
+                    bm: "1101_2 = (1 \times 2^3) + (1 \times 2^2) + (0 \times 2^1) + (1 \times 2^0) = 8 + 4 + 0 + 1 = 13"
+                }
+            },
+            {
+                stepBadge: { en: "Step 3: Dhal Curry Stock (Base 8)", bm: "Langkah 3: Kuah Kari Dhal (Asas 8)" },
+                title: { en: "Convert Base 10 to Base 8 (Octal)", bm: "Tukar Asas 10 ke Asas 8" },
+                mathTopic: { en: "Repeated Division by 8", bm: "Pembahagian Berulang" },
+                desc: {
+                    en: "Convert $45_{10}$ bowls of dhal curry into Base 8 (octal) to stamp the kitchen inventory jar.",
+                    bm: "Tukarkan $45_{10}$ mangkuk dhal ke nombor Asas 8 untuk label stok dapur Mama."
+                },
+                equation: "45_{10} = \; ?_8",
+                type: "mcq",
+                options: [
+                    { text: { en: "$55_8$", bm: "$55_8$" }, correct: true },
+                    { text: { en: "$45_8$", bm: "$45_8$" }, correct: false },
+                    { text: { en: "$53_8$", bm: "$53_8$" }, correct: false }
+                ],
+                mamaPrompt: {
+                    en: "Divide 45 by 8: quotient 5 with remainder 5!",
+                    bm: "Bahagi 45 dengan 8: dapat 5 baki 5!"
+                },
+                calcHint: {
+                    en: "45 \div 8 = 5 \text{ remainder } 5 \implies 55_8",
+                    bm: "45 \div 8 = 5 \text{ baki } 5 \implies 55_8"
+                }
+            },
+            {
+                stepBadge: { en: "Step 4: Binary Dough Addition", bm: "Langkah 4: Tambah Doh Binari" },
+                title: { en: "Add Two Binary Quantities", bm: "Penambahan Nombor Asas 2" },
+                mathTopic: { en: "Addition in Base 2", bm: "Penambahan Asas Nombor" },
+                desc: {
+                    en: "Mama mixes two binary flour packets: $110_2\text{ g} + 11_2\text{ g}$. What is the total combined mass in Base 2?",
+                    bm: "Mama mencampurkan dua bungkusan tepung binari: $110_2\text{ g} + 11_2\text{ g}$. Berapakah jumlah jisim dalam Asas 2?"
+                },
+                equation: "110_2 + 11_2 = \; ?_2",
+                type: "mcq",
+                options: [
+                    { text: { en: "$1001_2\text{ g}$", bm: "$1001_2\text{ g}$" }, correct: true },
+                    { text: { en: "$1010_2\text{ g}$", bm: "$1010_2\text{ g}$" }, correct: false },
+                    { text: { en: "$1101_2\text{ g}$", bm: "$1101_2\text{ g}$" }, correct: false }
+                ],
+                mamaPrompt: {
+                    en: "In binary: 0+1=1, 1+1=10 (write 0, carry 1), and 1+1+1=11!",
+                    bm: "Dalam binari: 1+1=10 (tulis 0, kumpul semula 1)!"
+                },
+                calcHint: {
+                    en: "110_2 (6) + 11_2 (3) = 9_{10} = 1001_2",
+                    bm: "110_2 (6) + 11_2 (3) = 9_{10} = 1001_2"
+                }
+            }
+        ]
+    },
+    {
+        id: "k3-logic",
+        chapter: { en: "Chapter 3", bm: "Bab 3" },
+        topic: { en: "Logical Reasoning", bm: "Penaakulan Logik" },
+        dishName: { en: "Charcoal Satay Kajang", bm: "Satay Kajang Kuah Kacang" },
+        icon: "🍢",
+        desc: {
+            en: "Grill chicken satay skewers using implications p ➔ q, converses, contrapositives, and valid deductive arguments!",
+            bm: "Bakar satay menggunakan deduksi logik, implikasi p ➔ q, kontrapositif, dan hujah sah!"
+        },
+        stages: [
+            {
+                stepBadge: { en: "Step 1: Charcoal Implication Rules", bm: "Langkah 1: Peraturan Arang Membara" },
+                title: { en: "Converse of an Implication", bm: "Deduksi Akas & Implikasi" },
+                mathTopic: { en: "Implication 'If p, then q'", bm: "Implikasi 'Jika p, maka q'" },
+                desc: {
+                    en: "Statement: 'If the charcoal glows white-hot ($p$), then the satay meat cooks thoroughly ($q$).' What is the CONVERSE of this implication?",
+                    bm: "Pernyataan: 'Jika arang berwarna putih membara ($p$), maka daging satay masak sempurna ($q$).' Apakah AKAS bagi implikasi ini?"
+                },
+                equation: "p \implies q \quad \longrightarrow \quad \text{Converse: } ?",
+                type: "mcq",
+                options: [
+                    { 
+                        text: { 
+                            en: "If the satay meat cooks thoroughly, then the charcoal glows white-hot. ($q \implies p$)",
+                            bm: "Jika daging satay masak sempurna, maka arang berwarna putih membara. ($q \implies p$)"
+                        }, 
+                        correct: true 
+                    },
+                    { 
+                        text: { 
+                            en: "If the charcoal does not glow white-hot, then the satay meat is not cooked. ($\sim p \implies \sim q$)",
+                            bm: "Jika arang tidak membara, maka daging satay tidak masak. ($\sim p \implies \sim q$)"
+                        }, 
+                        correct: false 
+                    },
+                    { 
+                        text: { 
+                            en: "Satay is cooked if and only if charcoal glows white. ($p \iff q$)",
+                            bm: "Daging satay masak jika dan hanya jika arang putih. ($p \iff q$)"
+                        }, 
+                        correct: false 
+                    }
+                ],
+                mamaPrompt: {
+                    en: "Remember: The converse reverses the antecedent and consequent!",
+                    bm: "Akas bermaksud songsangkan kedudukan p dan q!"
+                },
+                calcHint: {
+                    en: "\text{Converse of } p \implies q \text{ is } q \implies p.",
+                    bm: "\text{Akas bagi } p \implies q \text{ ialah } q \implies p."
+                }
+            },
+            {
+                stepBadge: { en: "Step 2: Peanut Sauce Deduction", bm: "Langkah 2: Sukatan Kacang Tumbuk" },
+                title: { en: "Deductive Argument Form I (Modus Ponens)", bm: "Hujah Deduktif Bentuk I (Modus Ponens)" },
+                mathTopic: { en: "Valid Deductive Reasoning", bm: "Bentuk Hujah Sah & Munasabah" },
+                desc: {
+                    en: "Premise 1: All chicken satay orders require 2 scoops of peanut sauce.<br>Premise 2: Table 5's order is chicken satay.<br>What is the valid conclusion?",
+                    bm: "Premis 1: Semua satay ayam memerlukan 2 sudu kuah kacang.<br>Premis 2: Pesanan Meja 5 ialah satay ayam.<br>Apakah kesimpulan sah?"
+                },
+                equation: "\text{Premise 1: All } A \text{ are } B. \quad \text{Premise 2: } c \text{ is } A.",
+                type: "mcq",
+                options: [
+                    { 
+                        text: { 
+                            en: "Table 5's order requires 2 scoops of peanut sauce.",
+                            bm: "Pesanan Meja 5 memerlukan 2 sudu kuah kacang."
+                        }, 
+                        correct: true 
+                    },
+                    { 
+                        text: { 
+                            en: "All satay requires 2 scoops of peanut sauce.",
+                            bm: "Semua satay memerlukan 2 sudu kuah kacang."
+                        }, 
+                        correct: false 
+                    },
+                    { 
+                        text: { 
+                            en: "Table 5's order is not beef satay.",
+                            bm: "Pesanan Meja 5 bukan satay daging."
+                        }, 
+                        correct: false 
+                    }
+                ],
+                mamaPrompt: {
+                    en: "Apply deductive logic to season the dish properly!",
+                    bm: "Gunakan deduksi sah untuk selesaikan ramuan!"
+                },
+                calcHint: {
+                    en: "\text{Conclusion: Table 5 requires 2 scoops of peanut sauce.}",
+                    bm: "\text{Kesimpulan: Pesanan Meja 5 memerlukan 2 sudu kuah kacang.}"
+                }
+            },
+            {
+                stepBadge: { en: "Step 3: Compound Logic Truth Values", bm: "Langkah 3: Nilai Kebenaran Majmuk" },
+                title: { en: "Evaluate 'AND' Statement", bm: "Tentukan Nilai Pernyataan 'DAN'" },
+                mathTopic: { en: "Truth Value of Compound Statements", bm: "Nilai Kebenaran Pernyataan Majmuk" },
+                desc: {
+                    en: "Quality rule: '$5 > 2$' (True) AND '$12$ is an odd number' (False). What is the overall truth value of this compound statement?",
+                    bm: "Peraturan kualiti: '$5 > 2$' (Benar) DAN '$12$ ialah nombor ganjil' (Palsu). Apakah nilai kebenaran bagi pernyataan majmuk ini?"
+                },
+                equation: "p \land q \quad (\text{True } \land \text{ False})",
+                type: "mcq",
+                options: [
+                    { text: { en: "$\text{False } (\text{True } \land \text{ False} \implies \text{False})$", bm: "$\text{Palsu } (\text{Benar } \land \text{ Palsu} \implies \text{Palsu})$" }, correct: true },
+                    { text: { en: "$\text{True } (\text{True } \land \text{ False} \implies \text{True})$", bm: "$\text{Benar } (\text{Benar } \land \text{ Palsu} \implies \text{Benar})$" }, correct: false },
+                    { text: { en: "$\text{Indeterminate}$", bm: "$\text{Tidak dapat ditentukan}$" }, correct: false }
+                ],
+                mamaPrompt: {
+                    en: "For an 'AND' statement, if even one component is false, the entire statement is false!",
+                    bm: "Untuk 'DAN', jika ada satu bahagian palsu, seluruh pernyataan jadi palsu!"
+                },
+                calcHint: {
+                    en: "\text{True} \land \text{False} = \text{False}",
+                    bm: "\text{Benar} \land \text{Palsu} = \text{Palsu}"
+                }
+            },
+            {
+                stepBadge: { en: "Step 4: Smoke Hood Contrapositive", bm: "Langkah 4: Kontrapositif Penyedut Asap" },
+                title: { en: "Form the Contrapositive", bm: "Bina Pernyataan Kontrapositif" },
+                mathTopic: { en: "Contrapositive of an Implication", bm: "Kontrapositif Suatu Implikasi" },
+                desc: {
+                    en: "Implication: 'If the grill is smokeless ($p$), then the exhaust fan is active ($q$).' What is the CONTRAPOSITIVE?",
+                    bm: "Implikasi: 'Jika kuali tiada asap ($p$), maka kipas ekzos sedang berfungsi ($q$).' Apakah KONTRAPOSITIF bagi implikasi ini?"
+                },
+                equation: "p \implies q \quad \longrightarrow \quad \text{Contrapositive: } ?",
+                type: "mcq",
+                options: [
+                    { 
+                        text: { 
+                            en: "If the exhaust fan is not active, then the grill is not smokeless. ($\sim q \implies \sim p$)",
+                            bm: "Jika kipas ekzos tidak berfungsi, maka kuali bukan tiada asap. ($\sim q \implies \sim p$)"
+                        }, 
+                        correct: true 
+                    },
+                    { 
+                        text: { 
+                            en: "If the grill is not smokeless, then the exhaust fan is not active. ($\sim p \implies \sim q$)",
+                            bm: "Jika kuali bukan tiada asap, maka kipas ekzos tidak berfungsi. ($\sim p \implies \sim q$)"
+                        }, 
+                        correct: false 
+                    },
+                    { 
+                        text: { 
+                            en: "If the exhaust fan is active, then the grill is smokeless. ($q \implies p$)",
+                            bm: "Jika kipas ekzos berfungsi, maka kuali tiada asap. ($q \implies p$)"
+                        }, 
+                        correct: false 
+                    }
+                ],
+                mamaPrompt: {
+                    en: "Contrapositive: Negate both and swap their order: ~q => ~p!",
+                    bm: "Kontrapositif: Nafi kedua-duanya dan songsangkan kedudukan: ~q => ~p!"
+                },
+                calcHint: {
+                    en: "\text{Contrapositive of } p \implies q \text{ is } \sim q \implies \sim p",
+                    bm: "\text{Kontrapositif bagi } p \implies q \text{ ialah } \sim q \implies \sim p"
+                }
+            }
+        ]
+    },
+    {
+        id: "k4-sets",
+        chapter: { en: "Chapter 4", bm: "Bab 4" },
+        topic: { en: "Operations on Sets", bm: "Operasi Set" },
+        dishName: { en: "Claypot Asam Pedas", bm: "Asam Pedas Claypot" },
+        icon: "🍲",
+        desc: {
+            en: "Organize secret spices with Venn diagrams, set intersections A ∩ B, complements A', and set unions!",
+            bm: "Asingkan rempah ratus menggunakan persilangan set A ∩ B, kesatuan set, dan pelengkap!"
+        },
+        stages: [
+            {
+                stepBadge: { en: "Step 1: Spice Intersection (A ∩ B)", bm: "Langkah 1: Persilangan Rempah (A ∩ B)" },
+                title: { en: "Find Shared Spices Between Two Recipes", bm: "Cari Rempah Kongsi Dua Resepi" },
+                mathTopic: { en: "Intersection of Sets A ∩ B", bm: "Persilangan Set A ∩ B" },
+                desc: {
+                    en: "Set $A = \{\text{chili}, \text{tamarind}, \text{serai}, \text{kunyit}, \text{bendi}\}$. Set $B = \{\text{chili}, \text{serai}, \text{lengkuas}, \text{limau}, \text{kunyit}\}$. Find $n(A \cap B)$, the count of spices shared by both dishes!",
+                    bm: "Set Asam Pedas $A = \{\text{cili}, \text{asam}, \text{serai}, \text{kunyit}, \text{bendi}\}$. Set Tom Yam $B = \{\text{cili}, \text{serai}, \text{lengkuas}, \text{limau}, \text{kunyit}\}$. Cari $n(A \cap B)$ iaitu bilangan rempah sepunya!"
+                },
+                equation: "n(A \cap B) = \; ?",
+                type: "slider",
+                min: 1, max: 6, step: 1, default: 1,
+                targetVal: 3,
+                unit: { en: "shared spices", bm: "jenis rempah sepunya" },
+                mamaPrompt: {
+                    en: "Count how many ingredients appear in both recipe sets!",
+                    bm: "Kira berapa bahan yang bertindih dalam kedua-dua set!"
+                },
+                calcHint: {
+                    en: "A \cap B = \{\text{chili}, \text{serai}, \text{kunyit}\} \implies n(A \cap B) = 3",
+                    bm: "A \cap B = \{\text{cili}, \text{serai}, \text{kunyit}\} \implies n(A \cap B) = 3"
+                }
+            },
+            {
+                stepBadge: { en: "Step 2: Set Complement (A')", bm: "Langkah 2: Pelengkap Rempah (A')" },
+                title: { en: "Ingredients NOT Used in Asam Pedas", bm: "Bahan Bukan Untuk Asam Pedas" },
+                mathTopic: { en: "Complement of a Set A'", bm: "Pelengkap Suatu Set A'" },
+                desc: {
+                    en: "Universal Set $\\xi = \{\text{onion}, \text{chili}, \text{ginger}, \text{belacan}, \text{sawi}\}$. Asam Pedas Set $A = \{\text{onion}, \text{chili}, \text{belacan}\}$. What is the complement $A'$?",
+                    bm: "Semesta $\\xi = \{\text{bawang}, \text{cili}, \text{halia}, \text{belacan}, \text{sawi}\}$. Bahan asam pedas $A = \{\text{bawang}, \text{cili}, \text{belacan}\}$. Apakah elemen pelengkap $A'$?"
+                },
+                equation: "A' = \\xi \setminus A",
+                type: "mcq",
+                options: [
+                    { text: { en: "$\{\text{ginger}, \text{sawi}\}$", bm: "$\{\text{halia}, \text{sawi}\}$" }, correct: true },
+                    { text: { en: "$\{\text{chili}, \text{onion}\}$", bm: "$\{\text{cili}, \text{bawang}\}$" }, correct: false },
+                    { text: { en: "$\{\text{belacan}, \text{sawi}\}$", bm: "$\{\text{belacan}, \text{sawi}\}$" }, correct: false }
+                ],
+                mamaPrompt: {
+                    en: "Complement represents elements in the universe but NOT in set A!",
+                    bm: "Pelengkap ialah apa yang tiada dalam A tetapi ada dalam semesta!"
+                },
+                calcHint: {
+                    en: "A' = \\xi \setminus A = \{\text{ginger}, \text{sawi}\}",
+                    bm: "A' = \\xi \setminus A = \{\text{halia}, \text{sawi}\}"
+                }
+            },
+            {
+                stepBadge: { en: "Step 3: Union of Sets Formula", bm: "Langkah 3: Formula Kesatuan Set (A ∪ B)" },
+                title: { en: "Calculate Total Unique Sauces", bm: "Hitung Jumlah Sos Unik" },
+                mathTopic: { en: "Union of Two Sets: n(A ∪ B)", bm: "Kesatuan Dua Set: n(A ∪ B)" },
+                desc: {
+                    en: "Hot sauce category $A$ has $n(A) = 7$ varieties, Sweet sauce category $B$ has $n(B) = 6$ varieties, and $n(A \cap B) = 3$ hybrid sauces belong to both. Find $n(A \cup B)$!",
+                    bm: "Kategori sos pedas $A$ ada $n(A) = 7$ jenis, sos manis $B$ ada $n(B) = 6$ jenis, dan $n(A \cap B) = 3$ sos sepunya. Hitung jumlah sos unik $n(A \cup B)$!"
+                },
+                equation: "n(A \cup B) = n(A) + n(B) - n(A \cap B)",
+                type: "slider",
+                min: 4, max: 16, step: 1, default: 6,
+                targetVal: 10,
+                unit: { en: "unique sauces", bm: "jenis sos unik" },
+                mamaPrompt: {
+                    en: "Apply the Principle of Inclusion-Exclusion: Add both and subtract the overlap!",
+                    bm: "Tambah kedua-dua set kemudian tolak bahagian bertindih!"
+                },
+                calcHint: {
+                    en: "n(A \cup B) = 7 + 6 - 3 = 10",
+                    bm: "n(A \cup B) = 7 + 6 - 3 = 10"
+                }
+            },
+            {
+                stepBadge: { en: "Step 4: Three-Set Shaded Region", bm: "Langkah 4: Rantau Berlorek Tiga Set" },
+                title: { en: "Identify Shaded Venn Region", bm: "Kenal Pasti Rantau Gambar Rajah Venn" },
+                mathTopic: { en: "Combined Operations on Three Sets", bm: "Operasi Bergabung Tiga Set" },
+                desc: {
+                    en: "Which set notation accurately denotes ingredients that belong to BOTH Set $A$ and Set $B$, but are STRICTLY EXCLUDED from Set $C$?",
+                    bm: "Notasi set manakah yang mewakili bahan yang berada dalam Set $A$ dan Set $B$, tetapi TIDAK TERMASUK dalam Set $C$?"
+                },
+                equation: "\text{Target: Elements in } (A \cap B) \text{ outside } C",
+                type: "mcq",
+                options: [
+                    { text: { en: "$(A \cap B) \cap C'$", bm: "$(A \cap B) \cap C'$" }, correct: true },
+                    { text: { en: "$(A \cup B) \cap C$", bm: "$(A \cup B) \cap C$" }, correct: false },
+                    { text: { en: "$A' \cap (B \cup C)$", bm: "$A' \cap (B \cup C)$" }, correct: false }
+                ],
+                mamaPrompt: {
+                    en: "Outside C is represented by C' (complement of C)!",
+                    bm: "Luar daripada C diwakili oleh C' (pelengkap C)!"
+                },
+                calcHint: {
+                    en: "(A \cap B) \setminus C = (A \cap B) \cap C'",
+                    bm: "(A \cap B) \setminus C = (A \cap B) \cap C'"
+                }
+            }
+        ]
+    },
+    {
+        id: "k5-graphs",
+        chapter: { en: "Chapter 5", bm: "Bab 5" },
+        topic: { en: "Network in Graph Theory", bm: "Rangkaian dalam Teori Graf" },
+        dishName: { en: "Mamak Mee Goreng Delivery", bm: "Mee Goreng Mamak Delivery" },
+        icon: "🍜",
+        desc: {
+            en: "Plan optimal food delivery routes using degree of vertices, Minimum Spanning Trees, and weighted graphs!",
+            bm: "Rancang laluan penghantaran makanan terpantas menggunakan graf berpemberat dan pokok!"
+        },
+        stages: [
+            {
+                stepBadge: { en: "Step 1: Sum of Degrees in Graph", bm: "Langkah 1: Bilangan Darjah Graf" },
+                title: { en: "Calculate Table Connectivity", bm: "Hitung Sambungan Meja Warung" },
+                mathTopic: { en: "Sum of Degrees: Σd(v) = 2E", bm: "Jumlah Darjah Σd(v) = 2E" },
+                desc: {
+                    en: "Mama's café network has $V = 5$ tables linked by $E = 6$ pathway edges. Calculate the sum of degrees $\sum d(v)$ for this graph!",
+                    bm: "Warung Mama mempunyai $V = 5$ bucu (meja) dengan $E = 6$ tepi laluan (edges). Hitung jumlah bilangan darjah $\sum d(v)$ bagi graf ini!"
+                },
+                equation: "\sum d(v) = 2E \quad (E = 6)",
+                type: "slider",
+                min: 4, max: 20, step: 1, default: 8,
+                targetVal: 12,
+                unit: { en: "sum of degrees", bm: "jumlah darjah" },
+                mamaPrompt: {
+                    en: "Remember the Golden Rule of graph theory: Sum of degrees is always twice the number of edges!",
+                    bm: "Ingat formula emas teori graf: Jumlah darjah sentiasa dua kali ganda bilangan tepi!"
+                },
+                calcHint: {
+                    en: "\sum d(v) = 2(6) = 12",
+                    bm: "\sum d(v) = 2(6) = 12"
+                }
+            },
+            {
+                stepBadge: { en: "Step 2: Minimum Spanning Tree (MST)", bm: "Langkah 2: Pokok Rentangan Minimum (MST)" },
+                title: { en: "Fastest Mee Delivery Tree", bm: "Laluan Hantar Mee Terpendek" },
+                mathTopic: { en: "Properties of a Tree (No cycles)", bm: "Pokok (Trees) & Berat Minimum" },
+                desc: {
+                    en: "For a connected graph with $n = 5$ customer delivery tables (vertices), how many edges does a SPANNING TREE possess?",
+                    bm: "Untuk graf dengan $n = 5$ meja (bucu), berapakah bilangan tepi (edges) bagi suatu POKOK (tree)?"
+                },
+                equation: "\text{Tree with } n \text{ vertices} \implies E = ?",
+                type: "mcq",
+                options: [
+                    { text: { en: "$4\text{ Edges}$", bm: "$4\text{ Tepi}$" }, correct: true },
+                    { text: { en: "$5\text{ Edges}$", bm: "$5\text{ Tepi}$" }, correct: false },
+                    { text: { en: "$3\text{ Edges}$", bm: "$3\text{ Tepi}$" }, correct: false }
+                ],
+                mamaPrompt: {
+                    en: "A tree cannot contain cycles! The number of edges is always n - 1!",
+                    bm: "Pokok tak boleh ada kitaran! Bilangan sisi sentiasa bucu tolak 1!"
+                },
+                calcHint: {
+                    en: "E = n - 1 = 5 - 1 = 4 \text{ edges}",
+                    bm: "E = n - 1 = 5 - 1 = 4 \text{ tepi}"
+                }
+            },
+            {
+                stepBadge: { en: "Step 3: Shortest Weighted Delivery", bm: "Langkah 3: Laluan Berpemberat Terpendek" },
+                title: { en: "Find Minimum Distance Route", bm: "Cari Jarak Laluan Minimum" },
+                mathTopic: { en: "Weighted Graphs & Shortest Path", bm: "Graf Berpemberat & Laluan Terpendek" },
+                desc: {
+                    en: "Runner must deliver from Kitchen $K$ to Table $T$ via three weighted paths: Path 1: $4+5 = 9\text{ m}$; Path 2: $3+4 = 7\text{ m}$; Path 3: $2+6 = 8\text{ m}$. Slide to the shortest distance!",
+                    bm: "Penghantar makanan memilih laluan berpemberat dari Dapur $K$ ke Meja $T$: Laluan 1: $4+5=9\text{ m}$; Laluan 2: $3+4=7\text{ m}$; Laluan 3: $2+6=8\text{ m}$. Laraskan ke jarak terpendek!"
+                },
+                equation: "\text{Shortest Path} = \min(9, 7, 8)",
+                type: "slider",
+                min: 3, max: 15, step: 1, default: 10,
+                targetVal: 7,
+                unit: { en: "meters", bm: "meter" },
+                mamaPrompt: {
+                    en: "Compare the weights of the pathways to find the optimal route!",
+                    bm: "Bandingkan pemberat jarak setiap laluan untuk laluan terpantas!"
+                },
+                calcHint: {
+                    en: "\min(9, 7, 8) = 7\text{ m}",
+                    bm: "\min(9, 7, 8) = 7\text{ m}"
+                }
+            },
+            {
+                stepBadge: { en: "Step 4: Directed Graph In/Out Degrees", bm: "Langkah 4: Graf Berarah (Darjah Masuk/Keluar)" },
+                title: { en: "Total Degree of Junction Vertex", bm: "Jumlah Darjah Bucu Persimpangan" },
+                mathTopic: { en: "Directed Graphs: d(v) = din + dout", bm: "Graf Berarah: d(v) = din + dout" },
+                desc: {
+                    en: "At junction table $V_1$, there are $d_{in}(V_1) = 3$ incoming runner paths and $d_{out}(V_1) = 2$ outgoing paths. What is the total degree $d(V_1)$?",
+                    bm: "Di meja persimpangan $V_1$, terdapat $d_{in}(V_1) = 3$ laluan masuk dan $d_{out}(V_1) = 2$ laluan keluar. Apakah jumlah darjah bucu $d(V_1)$?"
+                },
+                equation: "d(V_1) = d_{in}(V_1) + d_{out}(V_1)",
+                type: "mcq",
+                options: [
+                    { text: { en: "$5\text{ Degrees}$", bm: "$5\text{ Darjah}$" }, correct: true },
+                    { text: { en: "$6\text{ Degrees}$", bm: "$6\text{ Darjah}$" }, correct: false },
+                    { text: { en: "$1\text{ Degree}$", bm: "$1\text{ Darjah}$" }, correct: false }
+                ],
+                mamaPrompt: {
+                    en: "In a directed graph, total degree is the sum of in-degree and out-degree!",
+                    bm: "Dalam graf berarah, jumlah darjah ialah hasil tambah darjah masuk dan keluar!"
+                },
+                calcHint: {
+                    en: "d(V_1) = 3 + 2 = 5",
+                    bm: "d(V_1) = 3 + 2 = 5"
+                }
+            }
+        ]
+    },
+    {
+        id: "k6-inequalities",
+        chapter: { en: "Chapter 6", bm: "Bab 6" },
+        topic: { en: "Linear Inequalities in Two Variables", bm: "Ketaksamaan Linear" },
+        dishName: { en: "Steamboat Sup Tulang", bm: "Sup Tulang Steamboat" },
+        icon: "🍲",
+        desc: {
+            en: "Balance beef (x) and mutton (y) ingredients within bounded feasible inequality regions!",
+            bm: "Pilih nisbah daging lembu (x) dan kambing (y) dalam rantau sepunya!"
+        },
+        stages: [
+            {
+                stepBadge: { en: "Step 1: Pot Capacity Constraint", bm: "Langkah 1: Had Muatan Periuk" },
+                title: { en: "Formulate Linear Inequality", bm: "Tentukan Ketaksamaan Bahan" },
+                mathTopic: { en: "Constructing Inequalities", bm: "Membina Ketaksamaan Linear" },
+                desc: {
+                    en: "The steamboat cauldron holds a maximum of $30\text{ kg}$ of meat. Beef is $x\text{ kg}$ and mutton is $y\text{ kg}$. Which inequality correctly represents this constraint?",
+                    bm: "Periuk besar Mama boleh memuatkan maksimum $30\text{ kg}$ daging. Berat daging lembu ialah $x\text{ kg}$ dan kambing $y\text{ kg}$. Ketaksamaan manakah yang betul?"
+                },
+                equation: "\text{Total Capacity} \le 30\text{ kg}",
+                type: "mcq",
+                options: [
+                    { text: { en: "$x + y \le 30$", bm: "$x + y \le 30$" }, correct: true },
+                    { text: { en: "$x + y \ge 30$", bm: "$x + y \ge 30$" }, correct: false },
+                    { text: { en: "$x + y < 30$", bm: "$x + y < 30$" }, correct: false }
+                ],
+                mamaPrompt: {
+                    en: "The keyword 'Maximum' means less than or equal to (≤)!",
+                    bm: "Kata kunci 'Maksimum' bermaksud kurang daripada atau sama dengan (≤)!"
+                },
+                calcHint: {
+                    en: "\text{Maximum of } 30 \implies x + y \le 30",
+                    bm: "\text{Maksimum } 30 \implies x + y \le 30"
+                }
+            },
+            {
+                stepBadge: { en: "Step 2: Feasible Coordinate Point", bm: "Langkah 2: Titik Koordinat Optimal" },
+                title: { en: "Test Region Coordinates", bm: "Uji Rantau Ketaksamaan" },
+                mathTopic: { en: "Satisfying Shaded Region", bm: "Memuaskan Rantau Ketaksamaan" },
+                desc: {
+                    en: "Given the soup richness inequality $2x + y \ge 10$. Which coordinate pair $(x, y)$ satisfies this region?",
+                    bm: "Diberi ketaksamaan $2x + y \ge 10$. Antara pasangan $(x, y)$ berikut, yang manakah memuaskan sistem ini?"
+                },
+                equation: "2x + y \ge 10",
+                type: "mcq",
+                options: [
+                    { text: { en: "$(4, 3)$", bm: "$(4, 3)$" }, correct: true },
+                    { text: { en: "$(2, 4)$", bm: "$(2, 4)$" }, correct: false },
+                    { text: { en: "$(1, 5)$", bm: "$(1, 5)$" }, correct: false }
+                ],
+                mamaPrompt: {
+                    en: "Substitute x and y into the inequality to verify!",
+                    bm: "Gantikan nilai x dan y ke dalam ketaksamaan!"
+                },
+                calcHint: {
+                    en: "2(4) + 3 = 11 \ge 10 \quad \text{(Satisfies region)}",
+                    bm: "2(4) + 3 = 11 \ge 10 \quad \text{(Memuaskan rantau)}"
+                }
+            },
+            {
+                stepBadge: { en: "Step 3: Boundary Line Style", bm: "Langkah 3: Jenis Garis Sempadan" },
+                title: { en: "Strict Inequality Graphing", bm: "Garis Graf Ketaksamaan Ketat" },
+                mathTopic: { en: "Solid vs Dashed Lines", bm: "Garis Padu vs Garis Sempang" },
+                desc: {
+                    en: "When plotting the broth temperature condition $y > 2x + 4$ on a Cartesian plane, what line type and shading direction must be used?",
+                    bm: "Apabila melukis graf suhu kuah $y > 2x + 4$ pada satah Cartes, apakah jenis garis dan arah lorekan yang mesti digunakan?"
+                },
+                equation: "y > 2x + 4",
+                type: "mcq",
+                options: [
+                    { text: { en: "$\text{Dashed line (sempang), shaded ABOVE}$", bm: "$\text{Garis sempang, lorek di ATAS}$" }, correct: true },
+                    { text: { en: "$\text{Solid line (padu), shaded ABOVE}$", bm: "$\text{Garis padu, lorek di ATAS}$" }, correct: false },
+                    { text: { en: "$\text{Solid line (padu), shaded BELOW}$", bm: "$\text{Garis padu, lorek di BAWAH}$" }, correct: false }
+                ],
+                mamaPrompt: {
+                    en: "Strict inequalities (> and <) do not include the boundary, so draw a dashed line!",
+                    bm: "Tanda ketaksamaan ketat (> dan <) gunakan garis sempang (putus-putus)!"
+                },
+                calcHint: {
+                    en: "> \implies \text{Dashed line, shaded above}",
+                    bm: "> \implies \text{Garis sempang, lorek atas}"
+                }
+            },
+            {
+                stepBadge: { en: "Step 4: Maximum Profit at Vertex", bm: "Langkah 4: Keuntungan Maksimum Bucu" },
+                title: { en: "Optimize Objective Function", bm: "Optimumkan Fungsi Sasaran" },
+                mathTopic: { en: "Linear Programming Optimization", bm: "Pengoptimuman Rantau Sepunya" },
+                desc: {
+                    en: "At the optimal corner vertex $(x, y) = (4, 6)$ of the feasible region, profit is given by $P = 3x + 5y$. Calculate the maximum net profit in RM!",
+                    bm: "Pada titik bucu optimum $(x, y) = (4, 6)$ dalam rantau sepunya, keuntungan ialah $P = 3x + 5y$. Hitung keuntungan maksimum dalam RM!"
+                },
+                equation: "P = 3x + 5y \quad \text{at } (4, 6)",
+                type: "slider",
+                min: 20, max: 60, step: 1, default: 30,
+                targetVal: 42,
+                unit: { en: "RM profit", bm: "RM untung" },
+                mamaPrompt: {
+                    en: "Multiply x by 3 and y by 5, then add them together!",
+                    bm: "Darab x dengan 3 dan y dengan 5, kemudian jumlahkan!"
+                },
+                calcHint: {
+                    en: "P = 3(4) + 5(6) = 12 + 30 = 42",
+                    bm: "P = 3(4) + 5(6) = 12 + 30 = 42"
+                }
+            }
+        ]
+    },
+    {
+        id: "k7-motion",
+        chapter: { en: "Chapter 7", bm: "Bab 7" },
+        topic: { en: "Graphs of Motion", bm: "Graf Gerakan" },
+        dishName: { en: "Snow Ice Cendol & ABC", bm: "Cendol Durian & ABC Salji" },
+        icon: "🍧",
+        desc: {
+            en: "Calculate shaved ice distance from area under speed-time graphs, acceleration, and average speed!",
+            bm: "Kira luas bawah graf laju-masa, pecutan sirap, dan laju purata!"
+        },
+        stages: [
+            {
+                stepBadge: { en: "Step 1: Shaved Ice Distance", bm: "Langkah 1: Sagat Ais (Jarak dari Luas)" },
+                title: { en: "Area Under Speed-Time Graph", bm: "Hitung Luas Bawah Graf Laju-Masa" },
+                mathTopic: { en: "Distance = Area Under Speed-Time Graph", bm: "Jarak = Luas Bawah Graf Laju-Masa" },
+                desc: {
+                    en: "The ice shaver spins at a constant speed of $v = 15\text{ cm/s}$ for $t = 4\text{ s}$ (forming a rectangle). What is the total rotation distance?",
+                    bm: "Mesin sagat ais berputar dengan laju malar $v = 15\text{ cm/s}$ selama $t = 4\text{ saat}$ (bentuk segi empat tepat). Berapakah jarak putaran sagatan?"
+                },
+                equation: "\text{Distance} = \text{Area Under Graph} = v \times t",
+                type: "slider",
+                min: 20, max: 100, step: 5, default: 30,
+                targetVal: 60,
+                unit: { en: "cm shaving distance", bm: "cm jarak sagatan" },
+                mamaPrompt: {
+                    en: "Area of rectangle = length × width = 15 × 4!",
+                    bm: "Luas segi empat tepat = panjang × lebar = 15 × 4!"
+                },
+                calcHint: {
+                    en: "\text{Distance} = 15 \times 4 = 60\text{ cm}",
+                    bm: "\text{Jarak} = 15 \times 4 = 60\text{ cm}"
+                }
+            },
+            {
+                stepBadge: { en: "Step 2: Gula Melaka Acceleration", bm: "Langkah 2: Tuang Sirap Gula Melaka" },
+                title: { en: "Gradient of Speed-Time Graph", bm: "Kecerunan Graf = Pecutan" },
+                mathTopic: { en: "Acceleration = Gradient = (v - u) / t", bm: "Kecerunan Graf Laju-Masa" },
+                desc: {
+                    en: "Syrup flow speed accelerates from $u = 0\text{ m/s}$ to $v = 12\text{ m/s}$ over $t = 3\text{ s}$. Find the acceleration $a$!",
+                    bm: "Laju sirap meningkat dari $u = 0\text{ m/s}$ ke $v = 12\text{ m/s}$ dalam masa $t = 3\text{ saat}$. Cari kadar perubahan laju (pecutan) $a$!"
+                },
+                equation: "a = \frac{v - u}{t}",
+                type: "mcq",
+                options: [
+                    { text: { en: "$4\text{ m s}^{-2}$", bm: "$4\text{ m s}^{-2}$" }, correct: true },
+                    { text: { en: "$6\text{ m s}^{-2}$", bm: "$6\text{ m s}^{-2}$" }, correct: false },
+                    { text: { en: "$36\text{ m s}^{-2}$", bm: "$36\text{ m s}^{-2}$" }, correct: false }
+                ],
+                mamaPrompt: {
+                    en: "Divide change in velocity by elapsed time!",
+                    bm: "Bahagikan perubahan laju dengan perubahan masa!"
+                },
+                calcHint: {
+                    en: "a = \frac{12 - 0}{3} = 4\text{ m s}^{-2}",
+                    bm: "a = \frac{12 - 0}{3} = 4\text{ m s}^{-2}"
+                }
+            },
+            {
+                stepBadge: { en: "Step 3: Average Speed of Delivery", bm: "Langkah 3: Laju Purata Penghantaran" },
+                title: { en: "Calculate Average Speed", bm: "Hitung Laju Purata" },
+                mathTopic: { en: "Average Speed = Total Distance / Total Time", bm: "Laju Purata = Jumlah Jarak / Jumlah Masa" },
+                desc: {
+                    en: "Mama's dessert scooter travels a total distance of $180\text{ m}$ in $9\text{ s}$. Set the dial to the average speed in $\text{m/s}$!",
+                    bm: "Skuter pencuci mulut Mama bergerak sejauh jumlah jarak $180\text{ m}$ dalam masa $9\text{ saat}$. Laraskan tombol ke laju purata dalam $\text{m/s}$!"
+                },
+                equation: "\text{Average Speed} = \frac{\text{Total Distance}}{\text{Total Time}}",
+                type: "slider",
+                min: 5, max: 40, step: 1, default: 10,
+                targetVal: 20,
+                unit: { en: "m/s", bm: "m/s" },
+                mamaPrompt: {
+                    en: "Divide total distance by total time taken!",
+                    bm: "Bahagikan jumlah jarak dengan jumlah masa!"
+                },
+                calcHint: {
+                    en: "\text{Average Speed} = \frac{180}{9} = 20\text{ m/s}",
+                    bm: "\text{Laju Purata} = \frac{180}{9} = 20\text{ m/s}"
+                }
+            },
+            {
+                stepBadge: { en: "Step 4: Distance-Time Graph Interpretation", bm: "Langkah 4: Graf Jarak-Masa (s-t)" },
+                title: { en: "Interpret Horizontal Line in s-t Graph", bm: "Tafsir Garis Mendatar Graf s-t" },
+                mathTopic: { en: "Gradient of Distance-Time Graph = Speed", bm: "Kecerunan Graf Jarak-Masa = Laju" },
+                desc: {
+                    en: "On a Distance-Time graph ($s\text{-}t$), what physical state does a horizontal section (gradient = 0) represent?",
+                    bm: "Pada graf Jarak-Masa ($s\text{-}t$), apakah keadaan gerakan yang diwakili oleh bahagian garis lurus mendatar (kecerunan = 0)?"
+                },
+                equation: "\frac{ds}{dt} = 0 \quad (s\text{-}t \text{ Graph})",
+                type: "mcq",
+                options: [
+                    { text: { en: "$\text{The vehicle is stationary / at rest (Speed} = 0)$", bm: "$\text{Kenderaan pegun / berhenti (Laju} = 0)$" }, correct: true },
+                    { text: { en: "$\text{Moving with uniform maximum acceleration}$", bm: "$\text{Bergerak dengan pecutan seragam}$" }, correct: false },
+                    { text: { en: "$\text{Moving in reverse gear}$", bm: "$\text{Bergerak mengundur ke belakang}$" }, correct: false }
+                ],
+                mamaPrompt: {
+                    en: "If distance does not change over time, the vehicle is stationary!",
+                    bm: "Jika jarak tidak berubah mengikut masa, kenderaan sedang berhenti!"
+                },
+                calcHint: {
+                    en: "\text{Gradient of } s\text{-}t \text{ graph} = \text{Speed}. \; 0 \text{ gradient} \implies \text{stationary}.",
+                    bm: "\text{Kecerunan graf } s\text{-}t = \text{Laju}. \; \text{Kecerunan } 0 \implies \text{pegun}."
+                }
+            }
+        ]
+    },
+    {
+        id: "k8-dispersion",
+        chapter: { en: "Chapter 8", bm: "Bab 8" },
+        topic: { en: "Measures of Dispersion for Ungrouped Data", bm: "Sukatan Serakan Data Tak Terkumpul" },
+        dishName: { en: "Crispy Ayam Penyet & Sambal", bm: "Ayam Penyet Sambal Gesek" },
+        icon: "🍗",
+        desc: {
+            en: "Master range, interquartile range, and outlier detection across crispy fried chicken quality batches!",
+            bm: "Kira julat, julat antara kuartil, dan sukatan serakan adunan sambal penyet!"
+        },
+        stages: [
+            {
+                stepBadge: { en: "Step 1: Range of Chili Heat", bm: "Langkah 1: Julat Kepedasan Cili" },
+                title: { en: "Calculate the Range of Data", bm: "Hitung Julat Skor Data" },
+                mathTopic: { en: "Range = Maximum - Minimum", bm: "Julat = Nilai Maksimum - Nilai Minimum" },
+                desc: {
+                    en: "Chili heat ratings across 5 test batches are: $12, 18, 25, 30, 42$. Calculate the Range of these heat ratings!",
+                    bm: "Skor kepedasan cili bagi 5 kumpulan adunan ialah: $12, 18, 25, 30, 42$. Hitung Julat bagi skor kepedasan ini!"
+                },
+                equation: "\text{Range} = \text{Maximum Value} - \text{Minimum Value}",
+                type: "slider",
+                min: 10, max: 50, step: 1, default: 20,
+                targetVal: 30,
+                unit: { en: "heat range score", bm: "skor julat pedas" },
+                mamaPrompt: {
+                    en: "Subtract the smallest data value from the largest value!",
+                    bm: "Tolak nilai terkecil daripada nilai terbesar!"
+                },
+                calcHint: {
+                    en: "\text{Range} = 42 - 12 = 30",
+                    bm: "\text{Julat} = 42 - 12 = 30"
+                }
+            },
+            {
+                stepBadge: { en: "Step 2: Interquartile Range (IQR)", bm: "Langkah 2: Julat Antara Kuartil (JAK)" },
+                title: { en: "Calculate Interquartile Range", bm: "Hitung Julat Antara Kuartil" },
+                mathTopic: { en: "IQR = Q3 - Q1", bm: "Julat Antara Kuartil = Q3 - Q1" },
+                desc: {
+                    en: "Spice weight quality test shows first quartile $Q_1 = 15\text{ g}$ and third quartile $Q_3 = 28\text{ g}$. Find the Interquartile Range ($IQR$)!",
+                    bm: "Ujian kualiti rempah menunjukkan kuartil pertama $Q_1 = 15\text{ g}$ dan kuartil ketiga $Q_3 = 28\text{ g}$. Cari Julat Antara Kuartil ($IQR$)!"
+                },
+                equation: "IQR = Q_3 - Q_1",
+                type: "mcq",
+                options: [
+                    { text: { en: "$13\text{ g}$", bm: "$13\text{ g}$" }, correct: true },
+                    { text: { en: "$43\text{ g}$", bm: "$43\text{ g}$" }, correct: false },
+                    { text: { en: "$21.5\text{ g}$", bm: "$21.5\text{ g}$" }, correct: false }
+                ],
+                mamaPrompt: {
+                    en: "Subtract Q1 from Q3 to get the interquartile range!",
+                    bm: "Tolak Q1 daripada Q3 untuk dapatkan julat antara kuartil!"
+                },
+                calcHint: {
+                    en: "IQR = 28 - 15 = 13\text{ g}",
+                    bm: "IQR = 28 - 15 = 13\text{ g}"
+                }
+            },
+            {
+                stepBadge: { en: "Step 3: Robustness to Outliers", bm: "Langkah 3: Kesan Nilai Pencilan (Outlier)" },
+                title: { en: "Select Outlier-Resistant Measure", bm: "Pilih Sukatan Kalis Pencilan" },
+                mathTopic: { en: "Effect of Outliers on Dispersion", bm: "Kesan Pencilan terhadap Sukatan Serakan" },
+                desc: {
+                    en: "Which measure of dispersion is LEAST influenced by extreme outlier values in a dataset?",
+                    bm: "Antara sukatan serakan berikut, yang manakah PALING KURANG dipengaruhi oleh nilai pencilan (outlier) melampau?"
+                },
+                equation: "\text{Robustness Against Extreme Outliers}",
+                type: "mcq",
+                options: [
+                    { text: { en: "$\text{Interquartile Range } (IQR)$", bm: "$\text{Julat Antara Kuartil } (IQR)$" }, correct: true },
+                    { text: { en: "$\text{Range (Julat)}$", bm: "$\text{Julat}$" }, correct: false },
+                    { text: { en: "$\text{Standard Deviation } (\sigma)$", bm: "$\text{Sisihan Piawai } (\sigma)$" }, correct: false }
+                ],
+                mamaPrompt: {
+                    en: "IQR only looks at the middle 50% of the dataset, ignoring extreme outliers!",
+                    bm: "IQR hanya melihat 50% data di tengah, jadi tidak terjejas oleh pencilan!"
+                },
+                calcHint: {
+                    en: "\text{IQR represents the middle 50\% and is resistant to outliers.}",
+                    bm: "\text{IQR mewakili 50\% data tengah dan tidak mudah dipengaruhi pencilan.}"
+                }
+            }
+        ]
+    },
+    {
+        id: "k9-probability",
+        chapter: { en: "Chapter 9", bm: "Bab 9" },
+        topic: { en: "Probability of Combined Events", bm: "Kebarangkalian Peristiwa Bergabung" },
+        dishName: { en: "Teh Tarik Kaw & Kaya Toast", bm: "Teh Tarik Kaw & Roti Bakar" },
+        icon: "🧋",
+        desc: {
+            en: "Calculate independent combo drink probabilities, mutually exclusive orders, and complementary events!",
+            bm: "Hitung kebarangkalian peristiwa bersandar, tak bersandar, dan saling eksklusif!"
+        },
+        stages: [
+            {
+                stepBadge: { en: "Step 1: Beverage Combo Probability", bm: "Langkah 1: Pilihan Minuman Pelanggan" },
+                title: { en: "Independent Combined Events", bm: "Peristiwa Tak Bersandar" },
+                mathTopic: { en: "P(A ∩ B) = P(A) × P(B)", bm: "P(A ∩ B) = P(A) × P(B)" },
+                desc: {
+                    en: "Probability of a patron picking Teh Tarik $P(A) = \frac{1}{2}$. Probability of picking Toast $P(B) = \frac{1}{3}$. What is the probability that a customer orders BOTH?",
+                    bm: "Kebarangkalian pelanggan memilih Teh Tarik $P(A) = \frac{1}{2}$. Kebarangkalian memilih Roti Bakar $P(B) = \frac{1}{3}$. Apakah kebarangkalian pelanggan memesan KEDUA-DUANYA?"
+                },
+                equation: "P(A \cap B) = P(A) \times P(B)",
+                type: "mcq",
+                options: [
+                    { text: { en: "$\frac{1}{6} \text{ (16.7\%)}$", bm: "$\frac{1}{6} \text{ (16.7\%)}$" }, correct: true },
+                    { text: { en: "$\frac{5}{6} \text{ (83.3\%)}$", bm: "$\frac{5}{6} \text{ (83.3\%)}$" }, correct: false },
+                    { text: { en: "$\frac{2}{5} \text{ (40.0\%)}$", bm: "$\frac{2}{5} \text{ (40.0\%)}$" }, correct: false }
+                ],
+                mamaPrompt: {
+                    en: "For independent events: Multiply their individual probabilities!",
+                    bm: "Peristiwa tak bersandar: Darabkan kedua-dua kebarangkalian!"
+                },
+                calcHint: {
+                    en: "P(A \cap B) = \frac{1}{2} \times \frac{1}{3} = \frac{1}{6}",
+                    bm: "P(A \cap B) = \frac{1}{2} \times \frac{1}{3} = \frac{1}{6}"
+                }
+            },
+            {
+                stepBadge: { en: "Step 2: Mutually Exclusive Orders", bm: "Langkah 2: Peristiwa Saling Eksklusif" },
+                title: { en: "Addition Rule for Exclusive Events", bm: "Hukum Penambahan Peristiwa" },
+                mathTopic: { en: "P(A ∪ B) = P(A) + P(B)", bm: "P(A ∪ B) = P(A) + P(B)" },
+                desc: {
+                    en: "A diner can only choose ONE hot cup: Coffee ($P(C) = \frac{2}{5}$) OR Tea ($P(T) = \frac{1}{5}$). Since they cannot drink both simultaneously, what is $P(C \cup T)$?",
+                    bm: "Pelanggan hanya boleh pilih SATU cawan panas: Kopi ($P(C) = \frac{2}{5}$) ATAU Teh ($P(T) = \frac{1}{5}$). Kerana saling eksklusif, cari $P(C \cup T)$!",
+                },
+                equation: "P(C \cup T) = P(C) + P(T)",
+                type: "mcq",
+                options: [
+                    { text: { en: "$\frac{3}{5} \text{ (60\%)}$", bm: "$\frac{3}{5} \text{ (60\%)}$" }, correct: true },
+                    { text: { en: "$\frac{2}{25} \text{ (8\%)}$", bm: "$\frac{2}{25} \text{ (8\%)}$" }, correct: false },
+                    { text: { en: "$\frac{1}{5} \text{ (20\%)}$", bm: "$\frac{1}{5} \text{ (20\%)}$" }, correct: false }
+                ],
+                mamaPrompt: {
+                    en: "Mutually exclusive events cannot occur together: Simply sum the probabilities!",
+                    bm: "Peristiwa saling eksklusif tidak bertindih: Tambahkan kedua-dua kebarangkalian!"
+                },
+                calcHint: {
+                    en: "P(C \cup T) = \frac{2}{5} + \frac{1}{5} = \frac{3}{5}",
+                    bm: "P(C \cup T) = \frac{2}{5} + \frac{1}{5} = \frac{3}{5}"
+                }
+            },
+            {
+                stepBadge: { en: "Step 3: Complementary Event (No Rain)", bm: "Langkah 3: Peristiwa Pelengkap (Cuaca)" },
+                title: { en: "Calculate Event Complement", bm: "Kira Kebarangkalian Pelengkap" },
+                mathTopic: { en: "P(A') = 1 - P(A)", bm: "Kebarangkalian Pelengkap P(A') = 1 - P(A)" },
+                desc: {
+                    en: "The weather forecast predicts a $P(R) = 0.35$ chance of rain at night. Find the probability that it DOES NOT rain, as a percentage ($100 \times P(R')$)!",
+                    bm: "Ramalan cuaca menjangka kebarangkalian hujan lebat ialah $P(R) = 0.35$. Cari kebarangkalian TIDAK hujan, dalam peratusan ($100 \times P(R')$)!"
+                },
+                equation: "P(R') = 1 - P(R)",
+                type: "slider",
+                min: 10, max: 100, step: 5, default: 50,
+                targetVal: 65,
+                unit: { en: "% probability", bm: "% kebarangkalian" },
+                mamaPrompt: {
+                    en: "Subtract probability of rain from 1, then multiply by 100%!",
+                    bm: "Tolak kebarangkalian hujan daripada 1, kemudian tukar ke peratus!"
+                },
+                calcHint: {
+                    en: "P(R') = 1 - 0.35 = 0.65 = 65\%",
+                    bm: "P(R') = 1 - 0.35 = 0.65 = 65\%"
+                }
+            }
+        ]
+    },
+    {
+        id: "k10-finance",
+        chapter: { en: "Chapter 10", bm: "Bab 10" },
+        topic: { en: "Financial Management", bm: "Pengurusan Kewangan" },
+        dishName: { en: "Golden Warung Franchise", bm: "Empayar Francais Warung" },
+        icon: "🏰",
+        desc: {
+            en: "Formulate SMART financial goals, assess monthly net cash flow, and manage restaurant investments!",
+            bm: "Bina matlamat kewangan SMART, nilai aliran tunai bulanan, dan kembangkan francais!"
+        },
+        stages: [
+            {
+                stepBadge: { en: "Step 1: SMART Savings Goal", bm: "Langkah 1: Matlamat Kewangan SMART" },
+                title: { en: "Monthly Equipment Investment Plan", bm: "Pelan Simpanan Beli Mesin Pengisar" },
+                mathTopic: { en: "SMART Financial Goal Calculation", bm: "Matlamat Kewangan SMART" },
+                desc: {
+                    en: "Mama plans to purchase an automatic commercial tea blender costing $\text{RM } 1,200$ in $6\text{ months}$. What fixed monthly savings must she set aside?",
+                    bm: "Mama ingin membeli mesin pengisar automatik berharga $\text{RM } 1,200$ dalam tempoh $6\text{ bulan}$. Berapakah jumlah simpanan bulanan tetap yang perlu disimpan?"
+                },
+                equation: "\text{Monthly Savings} = \frac{\text{Target Goal}}{\text{Total Months}}",
+                type: "slider",
+                min: 50, max: 400, step: 25, default: 100,
+                targetVal: 200,
+                unit: { en: "RM per month", bm: "RM sebulan" },
+                mamaPrompt: {
+                    en: "Divide total goal sum by total target months!",
+                    bm: "Bahagikan jumlah matlamat dengan bilangan bulan!"
+                },
+                calcHint: {
+                    en: "\text{Monthly Savings} = \frac{1200}{6} = \text{RM } 200",
+                    bm: "\text{Simpanan Bulanan} = \frac{1200}{6} = \text{RM } 200"
+                }
+            },
+            {
+                stepBadge: { en: "Step 2: Monthly Net Cash Flow", bm: "Langkah 2: Aliran Tunai Bersih Bulanan" },
+                title: { en: "Calculate Net Cash Flow", bm: "Hitung Aliran Tunai Bersih" },
+                mathTopic: { en: "Net Cash Flow = Total Inflow - Total Outflow", bm: "Aliran Tunai Bersih = Jumlah Pendapatan - Jumlah Perbelanjaan" },
+                desc: {
+                    en: "Monthly Warung Revenue = $\text{RM } 4,500$. Fixed Operating Rent = $\text{RM } 2,200$. Variable Ingredients = $\text{RM } 1,300$. What is the net cash flow status?",
+                    bm: "Pendapatan francais bulanan = $\text{RM } 4,500$. Sewa premis tetap = $\text{RM } 2,200$. Kos bahan mentah berubah = $\text{RM } 1,300$. Apakah status aliran tunai bersih?"
+                },
+                equation: "\text{Net Cash Flow} = \text{Total Inflow} - (\text{Fixed} + \text{Variable})",
+                type: "mcq",
+                options: [
+                    { text: { en: "$\text{Positive Cash Flow of } +\text{RM } 1,000$", bm: "$\text{Aliran Tunai Positif } +\text{RM } 1,000$" }, correct: true },
+                    { text: { en: "$\text{Negative Cash Flow of } -\text{RM } 1,000$", bm: "$\text{Aliran Tunai Negatif } -\text{RM } 1,000$" }, correct: false },
+                    { text: { en: "$\text{Deficit Cash Flow of } -\text{RM } 500$", bm: "$\text{Defisit Aliran Tunai } -\text{RM } 500$" }, correct: false }
+                ],
+                mamaPrompt: {
+                    en: "Subtract total expenses (2200 + 1300 = 3500) from revenue 4500!",
+                    bm: "Tolak jumlah perbelanjaan (2200 + 1300 = 3500) daripada pendapatan 4500!"
+                },
+                calcHint: {
+                    en: "4500 - (2200 + 1300) = 4500 - 3500 = +\text{RM } 1,000",
+                    bm: "4500 - (2200 + 1300) = 4500 - 3500 = +\text{RM } 1,000"
+                }
+            },
+            {
+                stepBadge: { en: "Step 3: SMART Acronym Concept", bm: "Langkah 3: Konsep Matlamat SMART" },
+                title: { en: "Identify SMART Goal Criteria", bm: "Kenal Pasti Ciri Matlamat SMART" },
+                mathTopic: { en: "SMART Concept (Specific, Measurable, Attainable, Realistic, Time-bound)", bm: "Konsep SMART dalam Pengurusan Kewangan" },
+                desc: {
+                    en: "In the SMART financial goal criteria ($S\text{-}M\text{-}A\text{-}R\text{-}T$), what does the letter 'M' stand for?",
+                    bm: "Dalam kriteria matlamat kewangan SMART ($S\text{-}M\text{-}A\text{-}R\text{-}T$), apakah maksud huruf 'M'?"
+                },
+                equation: "\text{SMART: } S - M - A - R - T",
+                type: "mcq",
+                options: [
+                    { text: { en: "$\text{Measurable (Boleh diukur)}$", bm: "$\text{Boleh diukur (Measurable)}$" }, correct: true },
+                    { text: { en: "$\text{Manageable (Boleh diurus)}$", bm: "$\text{Boleh diurus (Manageable)}$" }, correct: false },
+                    { text: { en: "$\text{Monetary (Berasaskan wang)}$", bm: "$\text{Berasaskan wang (Monetary)}$" }, correct: false }
+                ],
+                mamaPrompt: {
+                    en: "Goals must be quantifiable with numerical amounts: Measurable!",
+                    bm: "Matlamat mestilah boleh dihitung dengan angka: Boleh diukur (Measurable)!"
+                },
+                calcHint: {
+                    en: "\text{SMART: Specific, Measurable, Attainable, Realistic, Time-bound}",
+                    bm: "\text{SMART: Khusus (S), Boleh diukur (M), Boleh dicapai (A), Realistik (R), Tempoh masa (T)}"
+                }
+            }
+        ]
+    }
+];
+
+        /* =========================================================
+         * 5. UPGRADES DATABASE WITH BILINGUAL TITLES & PERKS
+         * ========================================================= */
+        const UPGRADES_DB = [
+            { 
+                id: "stall-truck", 
+                title: { en: "Motorized Food Truck 🚚", bm: "Food Truck Beroda 🚚" }, 
+                cost: 80, reqStars: 3, 
+                perk: { en: "+20% order profits & unlocks mobile catering crowd", bm: "Untung jualan +20% & Buka lebih banyak pelanggan" }, 
+                rankName: "Kitchen Apprentice" 
+            },
+            { 
+                id: "stall-cafe", 
+                title: { en: "Heritage Kopitiam Café 🏪", bm: "Kedai Kopi Warisan 🏪" }, 
+                cost: 180, reqStars: 8, 
+                perk: { en: "Modern cooking gear & +5s extra timer buffer", bm: "Peralatan dapur moden & Masa memasak +5s" }, 
+                rankName: "Warung Master" 
+            },
+            { 
+                id: "stall-empire", 
+                title: { en: "5-Star Culinary Restaurant 🏰", bm: "Restoran Bintang Lima 🏰" }, 
+                cost: 350, reqStars: 15, 
+                perk: { en: "Luxury kitchen suite & 25% wholesale ingredient discount", bm: "Dapur mewah & Diskaun bahan mentah 25%" }, 
+                rankName: "Math Chef Emperor" 
+            },
+            { 
+                id: "pan-gold", 
+                title: { en: "Golden Wok of Mat-Mama 🍳", bm: "Kuali Emas Mat-Mama 🍳" }, 
+                cost: 50, reqStars: 2, 
+                perk: { en: "Superior heat retention & +RM 5 bonus per served plate", bm: "Suhu api lebih stabil & Bonus +RM 5 sepinggan" }, 
+                rankName: null 
+            }
+        ];
+
+        /* =========================================================
+         * 6. GAME STATE & LOCALSTORAGE PERSISTENCE
+         * ========================================================= */
+        let state = {
+            coins: 50.00,
+            stars: 0,
+            rank: "Junior Chef",
+            purchasedUpgrades: [],
+            completedKitchens: [],
+            currentKitchenIdx: 0,
+            currentStageIdx: 0,
+            mode: "campaign",
+            timeRemaining: 30,
+            timerInterval: null,
+            mathMistakes: 0,
+            cookingMistakes: 0,
+            totalStagesInRun: 0,
+            startTime: null
+        };
+
+        function saveGame() {
+            try {
+                localStorage.setItem('math_mama_warung_save', JSON.stringify({
+                    coins: state.coins,
+                    stars: state.stars,
+                    rank: state.rank,
+                    purchasedUpgrades: state.purchasedUpgrades,
+                    completedKitchens: state.completedKitchens
+                }));
+            } catch (e) {
+                console.warn("Could not save to localStorage", e);
+            }
+        }
+
+        function loadGame() {
+            try {
+                const saved = localStorage.getItem('math_mama_warung_save');
+                if (saved) {
+                    const data = JSON.parse(saved);
+                    state.coins = data.coins || 50.00;
+                    state.stars = data.stars || 0;
+                    state.rank = data.rank || "Junior Chef";
+                    state.purchasedUpgrades = data.purchasedUpgrades || [];
+                    state.completedKitchens = data.completedKitchens || [];
+                }
+                const savedLang = localStorage.getItem('math_mama_lang');
+                if (savedLang && (savedLang === 'en' || savedLang === 'bm')) {
+                    currentLang = savedLang;
+                }
+            } catch (e) {
+                console.warn("Could not load from localStorage", e);
+            }
+            document.getElementById('lang-label').textContent = currentLang.toUpperCase();
+            document.getElementById('lang-flag').textContent = currentLang === 'en' ? '🇬🇧' : '🇲🇾';
+            updateHUD();
+            applyLanguageStrings();
+        }
+
+        function updateHUD() {
+            document.getElementById('hud-coins').textContent = state.coins.toFixed(2);
+            document.getElementById('hud-stars').textContent = state.stars;
+            document.getElementById('hud-rank').textContent = getRankName(state.rank);
+            document.getElementById('shop-wallet').textContent = state.coins.toFixed(2);
+            document.getElementById('shop-rank-text').textContent = getRankName(state.rank);
+        }
+
+        /* =========================================================
+         * 7. UI NAVIGATION & MAMA POKE
+         * ========================================================= */
+        function showView(viewId) {
+            ['view-menu', 'view-cooking', 'view-result'].forEach(id => {
+                document.getElementById(id).classList.add('hidden');
+            });
+            document.getElementById(viewId).classList.remove('hidden');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function exitToMenu() {
+            clearInterval(state.timerInterval);
+            showView('view-menu');
+            renderKitchenGrid();
+        }
+
+        function mamaPoke() {
+            audio.playDing();
+            const quotes = {
+                en: [
+                    "Wonderful! Mastering algebra makes calculating recipes effortless!",
+                    "Keep the quadratic heat in the golden zone—never burn the crust!",
+                    "Mathematics + Culinary skill = Maximum profits!",
+                    "Roots of a quadratic equation are where the curve meets the x-axis!",
+                    "Every ringgit earned deserves a SMART financial plan!"
+                ],
+                bm: [
+                    "Bagus! Belajar algebra memudahkan kira resepi!",
+                    "Ingat, api kuadratik jangan terlebih panas!",
+                    "Matematik + Masak = Untung berganda!",
+                    "Punca persamaan kuadratik ialah titik sentuh paksi-x!",
+                    "Setiap ringgit untung kena ada pelan kewangan SMART!"
+                ]
+            };
+            const list = quotes[currentLang];
+            const q = list[Math.floor(Math.random() * list.length)];
+            document.getElementById('mama-quote-bubble').textContent = `"${q}"`;
+            document.getElementById('hero-mama-svg-container').innerHTML = renderMamaSVG('delighted');
+            setTimeout(() => {
+                document.getElementById('hero-mama-svg-container').innerHTML = renderMamaSVG('happy');
+            }, 1200);
+        }
+
+        /* =========================================================
+         * 8. RENDER KITCHEN GRID (MENU SCREEN)
+         * ========================================================= */
+        function renderKitchenGrid() {
+            const container = document.getElementById('kitchen-grid');
+            container.innerHTML = '';
+            const dict = I18N[currentLang];
+
+            KITCHENS_DB.forEach((k, idx) => {
+                const isCompleted = state.completedKitchens.includes(k.id);
+                const card = document.createElement('div');
+                card.className = `warung-card rounded-2xl p-4 flex flex-col justify-between relative cursor-pointer group`;
+                card.onclick = () => selectKitchen(idx);
+
+                const chapterStr = k.chapter[currentLang];
+                const topicStr = k.topic[currentLang];
+                const dishStr = k.dishName[currentLang];
+                const descStr = k.desc[currentLang];
+
+                card.innerHTML = `
+                    <div>
+                        <div class="flex items-center justify-between gap-1 mb-2">
+                            <div class="flex items-center gap-1.5 flex-wrap">
+                                <span class="text-[10px] font-black text-amber-400 uppercase tracking-wide bg-amber-950/80 px-2 py-0.5 rounded-md border border-amber-500/30">
+                                    ${chapterStr}
+                                </span>
+                                <span class="text-[10px] font-bold text-amber-300 bg-stone-800/90 px-2 py-0.5 rounded-md border border-stone-700/70 flex items-center gap-1">
+                                    <span>📝</span>
+                                    <span>${k.stages.length} ${currentLang === 'en' ? 'Questions' : 'Soalan'}</span>
+                                </span>
+                            </div>
+                            <span class="text-xs font-bold ${isCompleted ? 'text-emerald-400' : 'text-stone-500'}">
+                                ${isCompleted ? dict.unlockedStatus : dict.notCookedStatus}
+                            </span>
+                        </div>
+                        <div class="text-3xl mb-2 group-hover:scale-110 transition-transform">
+                            ${k.icon}
+                        </div>
+                        <h4 class="font-cartoon text-lg font-bold text-white group-hover:text-amber-300 transition">
+                            ${dishStr}
+                        </h4>
+                        <div class="text-xs font-bold text-amber-500/90 mb-1">
+                            ${topicStr}
+                        </div>
+                        <p class="text-stone-400 text-xs line-clamp-2 leading-relaxed mb-4">
+                            ${descStr}
+                        </p>
+                    </div>
+                    <button class="w-full py-2 rounded-xl bg-amber-500/20 group-hover:bg-amber-500 text-amber-300 group-hover:text-stone-950 font-cartoon text-sm font-bold transition border border-amber-500/40">
+                        ${dict.cookNowBtn}
+                    </button>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        /* =========================================================
+         * 9. COOKING GAME CONTROLLER & STAGES
+         * ========================================================= */
+        function selectKitchen(idx) {
+            audio.init();
+            audio.playDing();
+            state.currentKitchenIdx = idx;
+            state.currentStageIdx = 0;
+            state.mathMistakes = 0;
+            state.cookingMistakes = 0;
+            state.startTime = Date.now();
+            showView('view-cooking');
+            loadCookingStage();
+        }
+
+        function startMode(mode) {
+            audio.init();
+            state.mode = mode;
+            if (mode === 'survival') {
+                audio.playSizzle();
+                selectKitchen(Math.floor(Math.random() * KITCHENS_DB.length));
+            } else {
+                selectKitchen(0);
+            }
+        }
+
+        /* =========================================================
+         * 9b. MATHEMATICAL TYPOGRAPHY (KATEX) & WORKSPACE UTILITIES
+         * ========================================================= */
+        function formatMath(text) {
+            if (!text || typeof text !== 'string') return text || '';
+            if (typeof katex === 'undefined') return text;
+            // First render display math $$...$$
+            let res = text.replace(/\$\$([^\$]+)\$\$/g, (match, expr) => {
+                try {
+                    return katex.renderToString(expr.trim(), { throwOnError: false, displayMode: true });
+                } catch (e) {
+                    return match;
+                }
+            });
+            // Then render inline math $...$
+            res = res.replace(/\$([^\$]+)\$/g, (match, expr) => {
+                try {
+                    return katex.renderToString(expr.trim(), { throwOnError: false, displayMode: false });
+                } catch (e) {
+                    return match;
+                }
+            });
+            return res;
+        }
+
+        function renderEquationBanner(latex) {
+            const el = document.getElementById('stage-equation-display');
+            if (!el) return;
+            if (!latex || !latex.trim()) {
+                el.innerHTML = '';
+                el.classList.add('hidden');
+                return;
+            }
+            el.classList.remove('hidden');
+            let clean = latex.trim();
+            if (clean.startsWith('$$') && clean.endsWith('$$')) {
+                clean = clean.slice(2, -2).trim();
+            } else if (clean.startsWith('$') && clean.endsWith('$')) {
+                clean = clean.slice(1, -1).trim();
+            }
+            try {
+                if (typeof katex !== 'undefined') {
+                    katex.render(clean, el, { throwOnError: false, displayMode: true });
+                } else {
+                    el.textContent = clean;
+                }
+            } catch (e) {
+                el.textContent = clean;
+            }
+        }
+
+        function shuffleArray(array) {
+            const arr = [...array];
+            for (let i = arr.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [arr[i], arr[j]] = [arr[j], arr[i]];
+            }
+            return arr;
+        }
+
+        function loadCookingStage() {
+            clearInterval(state.timerInterval);
+            const kitchen = KITCHENS_DB[state.currentKitchenIdx];
+            const stage = kitchen.stages[state.currentStageIdx];
+
+            // Update Kitchen Top Bar
+            document.getElementById('cook-recipe-icon').textContent = kitchen.icon;
+            document.getElementById('cook-recipe-name').textContent = kitchen.dishName[currentLang];
+            document.getElementById('cook-step-topic').textContent = `${kitchen.chapter[currentLang]}: ${kitchen.topic[currentLang]}`;
+            document.getElementById('cook-step-badge').textContent = `${stage.stepBadge[currentLang]} (${state.currentStageIdx + 1}/${kitchen.stages.length})`;
+
+            // Render Step Dots
+            const dotsContainer = document.getElementById('step-dots-container');
+            dotsContainer.innerHTML = '';
+            kitchen.stages.forEach((_, i) => {
+                const dot = document.createElement('div');
+                dot.className = `w-3 h-3 rounded-full transition-all ${
+                    i === state.currentStageIdx 
+                        ? 'bg-amber-400 scale-125 ring-2 ring-amber-300' 
+                        : (i < state.currentStageIdx ? 'bg-emerald-500' : 'bg-stone-700')
+                }`;
+                dotsContainer.appendChild(dot);
+            });
+
+            // Update Mama Speech & Avatar
+            document.getElementById('cooking-mama-svg').innerHTML = renderMamaSVG('happy');
+            document.getElementById('mama-speech-text').textContent = `"${stage.mamaPrompt[currentLang]}"`;
+            document.getElementById('mama-reaction-badge').classList.add('hidden');
+
+            // Update Stage Headers with Authentic KaTeX Form
+            document.getElementById('stage-action-title').innerHTML = `<span>🥣</span><span>${formatMath(stage.title[currentLang])}</span>`;
+            document.getElementById('stage-math-tag').innerHTML = formatMath(stage.mathTopic[currentLang]);
+            document.getElementById('stage-problem-description').innerHTML = formatMath(stage.desc[currentLang]);
+            renderEquationBanner(stage.equation);
+            document.getElementById('stage-feedback').textContent = '';
+            document.getElementById('stage-feedback').className = 'text-center font-cartoon text-lg font-bold min-h-[32px] mb-3';
+
+            // Build Workspace Based on Stage Type
+            const workspace = document.getElementById('interactive-workspace');
+            const actionBtns = document.getElementById('stage-action-btns');
+            workspace.innerHTML = '';
+            actionBtns.innerHTML = '';
+
+            if (stage.type === 'slider') {
+                renderSliderWorkspace(stage, workspace, actionBtns);
+            } else if (stage.type === 'mcq') {
+                renderMCQWorkspace(stage, workspace, actionBtns);
+            } else if (stage.type === 'inputs2') {
+                renderInputs2Workspace(stage, workspace, actionBtns);
+            }
+
+            // Start Cooking Timer
+            startStageTimer(state.mode === 'survival' ? 18 : 28);
+        }
+
+        function startStageTimer(seconds) {
+            state.timeRemaining = seconds;
+            const timerText = document.getElementById('cook-timer-text');
+            const timerBar = document.getElementById('cook-timer-bar');
+
+            timerText.textContent = `${state.timeRemaining}s`;
+            timerBar.style.width = '100%';
+            timerBar.className = 'h-full bg-emerald-400 rounded-full transition-all duration-200';
+
+            state.timerInterval = setInterval(() => {
+                state.timeRemaining--;
+                timerText.textContent = `${state.timeRemaining}s`;
+                const pct = (state.timeRemaining / seconds) * 100;
+                timerBar.style.width = `${Math.max(0, pct)}%`;
+
+                if (pct <= 40 && pct > 15) {
+                    timerBar.className = 'h-full bg-amber-400 rounded-full transition-all duration-200';
+                    document.getElementById('cooking-mama-svg').innerHTML = renderMamaSVG('worried');
+                } else if (pct <= 15) {
+                    timerBar.className = 'h-full bg-rose-500 rounded-full transition-all duration-200';
+                    document.getElementById('cooking-mama-svg').innerHTML = renderMamaSVG('fire');
+                }
+
+                if (state.timeRemaining <= 0) {
+                    clearInterval(state.timerInterval);
+                    handleTimeOut();
+                }
+            }, 1000);
+        }
+
+        function handleTimeOut() {
+            audio.playFail();
+            state.cookingMistakes++;
+            document.getElementById('cooking-mama-svg').innerHTML = renderMamaSVG('fire');
+            const fb = document.getElementById('stage-feedback');
+            fb.textContent = I18N[currentLang].timeOutMsg;
+            fb.classList.add('text-rose-400');
+            setTimeout(advanceNextStage, 1800);
+        }
+
+        /* ---------------------------------------------------------
+         * WORKSPACE BUILDERS (MINI-GAMES)
+         * --------------------------------------------------------- */
+        function renderSliderWorkspace(stage, workspace, actionBtns) {
+            const unitStr = formatMath(stage.unit[currentLang]);
+            const dict = I18N[currentLang];
+            workspace.innerHTML = `
+                <div class="w-full max-w-md flex flex-col items-center gap-4 bg-stone-900/60 p-5 rounded-2xl border border-stone-800">
+                    <div class="text-xs text-stone-400 uppercase font-bold">${currentLang === 'en' ? 'Digital Scale / Measure' : 'Penimbang / Sukatan Digital'}</div>
+                    <div class="flex items-center gap-2">
+                        <span class="font-mono text-4xl font-extrabold text-amber-300" id="slider-val-display">${stage.default}</span>
+                        <span class="text-sm font-bold text-stone-400">${unitStr}</span>
+                    </div>
+                    <input type="range" id="stage-slider" min="${stage.min}" max="${stage.max}" step="${stage.step}" value="${stage.default}" 
+                           class="w-full h-3 bg-stone-800 rounded-lg appearance-none cursor-pointer accent-amber-500"
+                           oninput="document.getElementById('slider-val-display').textContent = this.value; audio.playChop();">
+                    <div class="flex justify-between w-full text-xs text-stone-500 font-mono">
+                        <span>Min: ${stage.min}</span>
+                        <span>Max: ${stage.max}</span>
+                    </div>
+                </div>
+            `;
+
+            actionBtns.innerHTML = `
+                <button onclick="checkSliderAnswer(${stage.targetVal})" class="btn-mama px-7 py-3 rounded-2xl bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-stone-950 font-cartoon text-lg font-bold shadow-lg shadow-amber-500/20">
+                    ${dict.confirmScale}
+                </button>
+            `;
+        }
+
+        function checkSliderAnswer(target) {
+            clearInterval(state.timerInterval);
+            const val = parseFloat(document.getElementById('stage-slider').value);
+            const fb = document.getElementById('stage-feedback');
+            const dict = I18N[currentLang];
+
+            if (val === target) {
+                audio.playSuccess();
+                audio.playSizzle();
+                document.getElementById('cooking-mama-svg').innerHTML = renderMamaSVG('delighted');
+                document.getElementById('mama-reaction-badge').classList.remove('hidden');
+                fb.textContent = dict.perfectFeedback;
+                fb.classList.add('text-emerald-400');
+                setTimeout(advanceNextStage, 1400);
+            } else {
+                audio.playFail();
+                state.mathMistakes++;
+                document.getElementById('cooking-mama-svg').innerHTML = renderMamaSVG('worried');
+                fb.innerHTML = currentLang === 'en' 
+                    ? `Not quite! Mama wanted <b>${target}</b>! The flavor is slightly off!` 
+                    : `Kurang tepat! Mama mahu nilai <b>${target}</b>! Rasa masakan terjejas!`;
+                fb.classList.add('text-rose-400');
+                setTimeout(advanceNextStage, 1800);
+            }
+        }
+
+        function renderMCQWorkspace(stage, workspace, actionBtns) {
+            const grid = document.createElement('div');
+            grid.className = 'grid grid-cols-1 gap-3 w-full max-w-lg';
+
+            // Randomize / shuffle the options so the correct answer isn't always in position [0]
+            const shuffledOptions = shuffleArray(stage.options);
+            const badges = ['A', 'B', 'C', 'D'];
+
+            shuffledOptions.forEach((opt, idx) => {
+                const btn = document.createElement('button');
+                btn.className = 'warung-card p-4 rounded-2xl text-left font-medium text-sm sm:text-base text-stone-200 hover:text-amber-300 flex items-center justify-between group transition cursor-pointer border border-stone-800 hover:border-amber-500/50';
+                const optText = formatMath(opt.text[currentLang]);
+                const badgeLetter = badges[idx] || (idx + 1);
+                btn.innerHTML = `
+                    <div class="flex items-center gap-3">
+                        <span class="w-8 h-8 rounded-xl bg-stone-800 text-amber-400 font-cartoon font-bold text-sm flex items-center justify-center border border-amber-500/30 group-hover:bg-amber-500 group-hover:text-stone-950 transition-colors shrink-0">
+                            ${badgeLetter}
+                        </span>
+                        <span class="leading-relaxed">${optText}</span>
+                    </div>
+                    <span class="text-amber-500 font-bold opacity-0 group-hover:opacity-100 transition-opacity shrink-0 ml-2">➔</span>
+                `;
+                btn.onclick = () => checkMCQAnswer(opt.correct, stage.calcHint[currentLang]);
+                grid.appendChild(btn);
+            });
+
+            workspace.appendChild(grid);
+        }
+
+        function checkMCQAnswer(isCorrect, hint) {
+            clearInterval(state.timerInterval);
+            const fb = document.getElementById('stage-feedback');
+            const dict = I18N[currentLang];
+
+            if (isCorrect) {
+                audio.playSuccess();
+                audio.playChop();
+                document.getElementById('cooking-mama-svg').innerHTML = renderMamaSVG('delighted');
+                document.getElementById('mama-reaction-badge').classList.remove('hidden');
+                fb.textContent = dict.mcqCorrectFb;
+                fb.classList.add('text-emerald-400');
+                setTimeout(advanceNextStage, 1400);
+            } else {
+                audio.playFail();
+                state.mathMistakes++;
+                document.getElementById('cooking-mama-svg').innerHTML = renderMamaSVG('fire');
+                fb.innerHTML = currentLang === 'en' 
+                    ? `Recipe mistake! Hint: ${formatMath(hint)}` 
+                    : `Salah adunan! Petua: ${formatMath(hint)}`;
+                fb.classList.add('text-rose-400');
+                setTimeout(advanceNextStage, 2200);
+            }
+        }
+
+        function renderInputs2Workspace(stage, workspace, actionBtns) {
+            const lbl1 = formatMath(stage.label1[currentLang]);
+            const lbl2 = formatMath(stage.label2[currentLang]);
+            const dict = I18N[currentLang];
+
+            workspace.innerHTML = `
+                <div class="w-full max-w-md flex flex-col items-center gap-4 bg-stone-900/60 p-5 rounded-2xl border border-stone-800">
+                    <div class="text-xs text-stone-400 uppercase font-bold">${currentLang === 'en' ? 'Enter Quadratic Equation Roots' : 'Masukkan Punca-Punca Persamaan'}</div>
+                    <div class="flex flex-wrap items-center justify-center gap-4">
+                        <div class="flex items-center gap-2">
+                            <label class="font-bold text-amber-400">${lbl1}</label>
+                            <input type="number" id="input-root1" class="w-16 p-2 bg-stone-950 border-2 border-stone-700 focus:border-amber-500 rounded-xl text-center font-mono font-bold text-xl text-white outline-none">
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <label class="font-bold text-amber-400">${lbl2}</label>
+                            <input type="number" id="input-root2" class="w-16 p-2 bg-stone-950 border-2 border-stone-700 focus:border-amber-500 rounded-xl text-center font-mono font-bold text-xl text-white outline-none">
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            actionBtns.innerHTML = `
+                <button onclick="checkInputs2Answer(${stage.ans1}, ${stage.ans2})" class="btn-mama px-7 py-3 rounded-2xl bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-stone-950 font-cartoon text-lg font-bold shadow-lg shadow-amber-500/20">
+                    ${dict.confirmRoots}
+                </button>
+            `;
+        }
+
+        function checkInputs2Answer(ans1, ans2) {
+            clearInterval(state.timerInterval);
+            const val1 = parseInt(document.getElementById('input-root1').value);
+            const val2 = parseInt(document.getElementById('input-root2').value);
+            const fb = document.getElementById('stage-feedback');
+            const dict = I18N[currentLang];
+
+            if ((val1 === ans1 && val2 === ans2) || (val1 === ans2 && val2 === ans1)) {
+                audio.playSuccess();
+                document.getElementById('cooking-mama-svg').innerHTML = renderMamaSVG('delighted');
+                document.getElementById('mama-reaction-badge').classList.remove('hidden');
+                fb.textContent = dict.rootsCorrectFb;
+                fb.classList.add('text-emerald-400');
+                setTimeout(advanceNextStage, 1400);
+            } else {
+                audio.playFail();
+                state.mathMistakes++;
+                document.getElementById('cooking-mama-svg').innerHTML = renderMamaSVG('worried');
+                fb.textContent = `${dict.rootsWrongFb} x = ${ans1} & x = ${ans2}!`;
+                fb.classList.add('text-rose-400');
+                setTimeout(advanceNextStage, 2000);
+            }
+        }
+
+        function advanceNextStage() {
+            const kitchen = KITCHENS_DB[state.currentKitchenIdx];
+            state.currentStageIdx++;
+
+            if (state.currentStageIdx < kitchen.stages.length) {
+                loadCookingStage();
+            } else {
+                finishRecipe();
+            }
+        }
+
+        /* =========================================================
+         * 10. FINISH RECIPE & RESULTS BREAKDOWN
+         * ========================================================= */
+        function finishRecipe() {
+            clearInterval(state.timerInterval);
+            const kitchen = KITCHENS_DB[state.currentKitchenIdx];
+            const totalStages = kitchen.stages.length;
+            const correctMath = totalStages - state.mathMistakes;
+            const accuracyPct = Math.max(0, Math.round((correctMath / totalStages) * 100));
+
+            const totalDurationSec = Math.round((Date.now() - state.startTime) / 1000);
+            const cookingScore = Math.max(20, 100 - (state.cookingMistakes * 25));
+
+            let earnedProfit = 15.00 + (accuracyPct * 0.15);
+            let earnedStars = 1;
+            if (accuracyPct >= 90 && cookingScore >= 80) earnedStars = 3;
+            else if (accuracyPct >= 60) earnedStars = 2;
+
+            state.coins += earnedProfit;
+            state.stars += earnedStars;
+            if (!state.completedKitchens.includes(kitchen.id)) {
+                state.completedKitchens.push(kitchen.id);
+            }
+            saveGame();
+            updateHUD();
+
+            document.getElementById('res-accuracy').textContent = `${accuracyPct}%`;
+            document.getElementById('res-time').textContent = `${totalDurationSec}s`;
+            document.getElementById('res-cooking').textContent = `${cookingScore}%`;
+            document.getElementById('res-profit').textContent = `+RM ${earnedProfit.toFixed(2)}`;
+
+            const starsContainer = document.getElementById('result-stars');
+            starsContainer.innerHTML = '';
+            for (let i = 0; i < 3; i++) {
+                const s = document.createElement('span');
+                s.textContent = i < earnedStars ? '⭐' : '☆';
+                s.className = i < earnedStars ? 'text-amber-400 animate-bounce' : 'text-stone-600';
+                starsContainer.appendChild(s);
+            }
+
+            const dishStr = kitchen.dishName[currentLang];
+            if (earnedStars === 3) {
+                audio.playSuccess();
+                audio.playCoin();
+                confetti({ particleCount: 80, spread: 70, origin: { y: 0.6 } });
+                document.getElementById('result-title').textContent = currentLang === 'en' ? "BETTER THAN MAMA! 🏆" : "HEBAT DARIPADA MAMA! 🏆";
+                document.getElementById('result-subtitle').textContent = currentLang === 'en'
+                    ? `Your 3-Star ${dishStr} delighted every customer in the restaurant!`
+                    : `Hidangan ${dishStr} bertaraf 3 Bintang telah memikat seluruh pelanggan!`;
+                document.getElementById('result-mama-svg').innerHTML = renderMamaSVG('delighted');
+            } else if (earnedStars === 2) {
+                audio.playSuccess();
+                document.getElementById('result-title').textContent = currentLang === 'en' ? "NOT BAD AT ALL! 🍰" : "BOLEH TAHAN! 🍰";
+                document.getElementById('result-subtitle').textContent = currentLang === 'en'
+                    ? `${dishStr} tasted good, but keep practicing your math steps!`
+                    : `Rasa ${dishStr} sedap, tapi perkemaskan lagi kiraan matematik anda!`;
+                document.getElementById('result-mama-svg').innerHTML = renderMamaSVG('happy');
+            } else {
+                audio.playFail();
+                document.getElementById('result-title').textContent = currentLang === 'en' ? "SLIGHTLY OVERCOOKED! 🔥" : "MASAKAN HANGUS SEDIKIT! 🔥";
+                document.getElementById('result-subtitle').textContent = currentLang === 'en'
+                    ? "Don't give up! Review the formulas and cook with Mama again!"
+                    : "Jangan putus asa! Ulang kaji formula dan masak sekali lagi bersama Mama!";
+                document.getElementById('result-mama-svg').innerHTML = renderMamaSVG('worried');
+            }
+
+            showView('view-result');
+        }
+
+        function replayCurrentRecipe() {
+            selectKitchen(state.currentKitchenIdx);
+        }
+
+        function nextRecipeOrMenu() {
+            if (state.currentKitchenIdx + 1 < KITCHENS_DB.length) {
+                selectKitchen(state.currentKitchenIdx + 1);
+            } else {
+                exitToMenu();
+            }
+        }
+
+        /* =========================================================
+         * 11. MODALS & RESTAURANT UPGRADES
+         * ========================================================= */
+        function openUpgradeShop() {
+            audio.playDing();
+            updateHUD();
+            const container = document.getElementById('shop-items-container');
+            container.innerHTML = '';
+            const dict = I18N[currentLang];
+
+            UPGRADES_DB.forEach(item => {
+                const isBought = state.purchasedUpgrades.includes(item.id);
+                const canAfford = state.coins >= item.cost && state.stars >= item.reqStars;
+                const titleStr = item.title[currentLang];
+                const perkStr = item.perk[currentLang];
+
+                const card = document.createElement('div');
+                card.className = `bg-stone-900/90 rounded-2xl p-4 border ${isBought ? 'border-emerald-500/40 bg-emerald-950/20' : 'border-stone-800'} flex items-center justify-between gap-4`;
+                card.innerHTML = `
+                    <div>
+                        <div class="flex items-center gap-2 mb-1">
+                            <span class="font-cartoon text-lg font-bold text-white">${titleStr}</span>
+                            ${isBought ? `<span class="text-xs font-bold text-emerald-400 bg-emerald-950 px-2 py-0.5 rounded-full">${dict.shopOwned}</span>` : ''}
+                        </div>
+                        <p class="text-xs text-stone-400 mb-1">${perkStr}</p>
+                        <div class="text-[11px] text-amber-400 font-bold">${dict.shopRequires} ${item.reqStars}</div>
+                    </div>
+                    <div>
+                        ${
+                            isBought 
+                            ? `<span class="text-stone-500 text-sm font-bold">${dict.shopOwned}</span>`
+                            : `<button onclick="buyUpgrade('${item.id}', ${item.cost}, ${item.reqStars}, '${item.rankName}')" 
+                                      class="btn-mama px-4 py-2 rounded-xl ${canAfford ? 'bg-amber-500 hover:bg-amber-400 text-stone-950' : 'bg-stone-800 text-stone-500 cursor-not-allowed'} font-cartoon text-sm font-bold shadow">
+                                    ${dict.shopBuy} ${item.cost}
+                               </button>`
+                        }
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+
+            document.getElementById('modal-shop').classList.remove('hidden');
+        }
+
+        function buyUpgrade(id, cost, reqStars, newRank) {
+            if (state.coins >= cost && state.stars >= reqStars) {
+                audio.playCoin();
+                state.coins -= cost;
+                state.purchasedUpgrades.push(id);
+                if (newRank) {
+                    state.rank = newRank;
+                    document.getElementById('stall-name-display').textContent = getStallName(newRank);
+                }
+                saveGame();
+                openUpgradeShop();
+            } else {
+                audio.playFail();
+                alert(I18N[currentLang].insufficientFundsMsg);
+            }
+        }
+
+        function renderFormulaCards() {
+            const container = document.getElementById('formula-cards-container');
+            if (!container) return;
+
+            if (currentLang === 'en') {
+                container.innerHTML = `
+                    <div class="bg-stone-900/90 rounded-xl p-3.5 border border-stone-800">
+                        <div class="font-bold text-amber-400 mb-1">Chapter 1: Quadratic Functions & Equations</div>
+                        <p class="text-stone-400 mb-2">General Form: <span class="text-amber-300 font-mono font-bold">$ax^2 + bx + c = 0$</span></p>
+                        <ul class="list-disc list-inside space-y-1 text-stone-300 text-sm">
+                            <li>When $a > 0$: Smile curve ($\\cup$-shape), possesses a <b>minimum point</b>.</li>
+                            <li>When $a < 0$: Frown curve ($\\cap$-shape), possesses a <b>maximum point</b>.</li>
+                            <li>Roots are the $x$-intercepts where $y = 0$.</li>
+                        </ul>
+                    </div>
+                    <div class="bg-stone-900/90 rounded-xl p-3.5 border border-stone-800">
+                        <div class="font-bold text-amber-400 mb-1">Chapter 2: Number Bases</div>
+                        <p class="text-stone-400 mb-2">Bases 2, 5, 8, 10:</p>
+                        <ul class="list-disc list-inside space-y-1 text-stone-300 text-sm">
+                            <li>Place values of Base $n$: $n^0, n^1, n^2, n^3, \\dots$</li>
+                            <li>Conversion to Base 10: Sum each digit multiplied by its place value.</li>
+                            <li>Binary to Octal: Group binary digits into blocks of 3 ($2^3 = 8$).</li>
+                        </ul>
+                    </div>
+                    <div class="bg-stone-900/90 rounded-xl p-3.5 border border-stone-800">
+                        <div class="font-bold text-amber-400 mb-1">Chapter 5 & 6: Graph Theory & Linear Inequalities</div>
+                        <ul class="list-disc list-inside space-y-1 text-stone-300 text-sm">
+                            <li>Sum of Degrees: $\\sum d(v) = 2E$</li>
+                            <li>Tree properties: Connected, no cycles, $E = n - 1$.</li>
+                            <li>Solid line indicates $\\le$ or $\\ge$; dashed line indicates $<$ or $>$.</li>
+                        </ul>
+                    </div>
+                    <div class="bg-stone-900/90 rounded-xl p-3.5 border border-stone-800">
+                        <div class="font-bold text-amber-400 mb-1">Chapter 7 & 8: Motion & Measures of Dispersion</div>
+                        <ul class="list-disc list-inside space-y-1 text-stone-300 text-sm">
+                            <li>Distance in $v\\text{-}t$ graph = Area under graph; Acceleration $a = \\frac{v - u}{t}$</li>
+                            <li>$\\text{Range} = \\text{Maximum Value} - \\text{Minimum Value}$</li>
+                            <li>$\\text{Interquartile Range } (IQR) = Q_3 - Q_1$</li>
+                        </ul>
+                    </div>
+                    <div class="bg-stone-900/90 rounded-xl p-3.5 border border-stone-800">
+                        <div class="font-bold text-amber-400 mb-1">Chapter 9 & 10: Probability & Financial Management</div>
+                        <ul class="list-disc list-inside space-y-1 text-stone-300 text-sm">
+                            <li>Independent Events: $P(A \\cap B) = P(A) \\times P(B)$</li>
+                            <li>Mutually Exclusive Events: $P(A \\cup B) = P(A) + P(B)$</li>
+                            <li>SMART Monthly Savings: $\\text{Savings} = \\frac{\\text{Target Goal}}{\\text{Months}}$</li>
+                            <li>$\\text{Net Cash Flow} = \\text{Total Inflow} - \\text{Total Outflow}$</li>
+                        </ul>
+                    </div>
+                `;
+            } else {
+                container.innerHTML = `
+                    <div class="bg-stone-900/90 rounded-xl p-3.5 border border-stone-800">
+                        <div class="font-bold text-amber-400 mb-1">Bab 1: Fungsi & Persamaan Kuadratik</div>
+                        <p class="text-stone-400 mb-2">Bentuk Am: <span class="text-amber-300 font-mono font-bold">$ax^2 + bx + c = 0$</span></p>
+                        <ul class="list-disc list-inside space-y-1 text-stone-300 text-sm">
+                            <li>Jika $a > 0$: Graf senyum (bentuk $\\cup$), mempunyai <b>titik minimum</b>.</li>
+                            <li>Jika $a < 0$: Graf masam (bentuk $\\cap$), mempunyai <b>titik maksimum</b>.</li>
+                            <li>Punca persamaan ialah nilai-nilai $x$ apabila $y = 0$.</li>
+                        </ul>
+                    </div>
+                    <div class="bg-stone-900/90 rounded-xl p-3.5 border border-stone-800">
+                        <div class="font-bold text-amber-400 mb-1">Bab 2: Asas Nombor</div>
+                        <p class="text-stone-400 mb-2">Asas 2, 5, 8, 10:</p>
+                        <ul class="list-disc list-inside space-y-1 text-stone-300 text-sm">
+                            <li>Nilai tempat Asas $n$: $n^0, n^1, n^2, n^3, \\dots$</li>
+                            <li>Penukaran ke Asas 10: Darab digit dengan nilai tempat dan jumlahkan.</li>
+                            <li>Binari ke Oktal: Kumpulkan digit binari dalam kumpulan 3 bit ($2^3 = 8$).</li>
+                        </ul>
+                    </div>
+                    <div class="bg-stone-900/90 rounded-xl p-3.5 border border-stone-800">
+                        <div class="font-bold text-amber-400 mb-1">Bab 5 & 6: Teori Graf & Ketaksamaan Linear</div>
+                        <ul class="list-disc list-inside space-y-1 text-stone-300 text-sm">
+                            <li>Jumlah Darjah: $\\sum d(v) = 2E$</li>
+                            <li>Ciri-ciri Pokok (Tree): Berkait, tiada kitaran, $E = n - 1$.</li>
+                            <li>Garis padu untuk $\\le$ atau $\\ge$; garis putus-putus untuk $<$ atau $>$.</li>
+                        </ul>
+                    </div>
+                    <div class="bg-stone-900/90 rounded-xl p-3.5 border border-stone-800">
+                        <div class="font-bold text-amber-400 mb-1">Bab 7 & 8: Graf Gerakan & Sukatan Serakan</div>
+                        <ul class="list-disc list-inside space-y-1 text-stone-300 text-sm">
+                            <li>Jarak graf $v\\text{-}t$ = Luas bawah graf; Pecutan $a = \\frac{v - u}{t}$</li>
+                            <li>$\\text{Julat} = \\text{Nilai Maksimum} - \\text{Nilai Minimum}$</li>
+                            <li>$\\text{Julat Antara Kuartil } (IQR) = Q_3 - Q_1$</li>
+                        </ul>
+                    </div>
+                    <div class="bg-stone-900/90 rounded-xl p-3.5 border border-stone-800">
+                        <div class="font-bold text-amber-400 mb-1">Bab 9 & 10: Kebarangkalian & Pengurusan Kewangan</div>
+                        <ul class="list-disc list-inside space-y-1 text-stone-300 text-sm">
+                            <li>Peristiwa Tak Bersandar: $P(A \\cap B) = P(A) \\times P(B)$</li>
+                            <li>Peristiwa Saling Eksklusif: $P(A \\cup B) = P(A) + P(B)$</li>
+                            <li>Simpanan Bulanan SMART: $\\text{Simpanan} = \\frac{\\text{Sasaran Matlamat}}{\\text{Tempoh Bulan}}$</li>
+                            <li>$\\text{Aliran Tunai Bersih} = \\text{Jumlah Pendapatan} - \\text{Jumlah Perbelanjaan}$</li>
+                        </ul>
+                    </div>
+                `;
+            }
+            container.innerHTML = formatMath(container.innerHTML);
+        }
+
+        function openFormulaModal() {
+            audio.playDing();
+            renderFormulaCards();
+            document.getElementById('modal-formula').classList.remove('hidden');
+        }
+
+        function closeModal(id) {
+            document.getElementById(id).classList.add('hidden');
+        }
+
+        /* =========================================================
+         * 12. INITIALIZATION ON WINDOW LOAD
+         * ========================================================= */
+        window.addEventListener('DOMContentLoaded', () => {
+            loadGame();
+            document.getElementById('hero-mama-svg-container').innerHTML = renderMamaSVG('happy');
+            renderKitchenGrid();
+            renderFormulaCards();
+        });
+    </script>
+</body>
+</html>

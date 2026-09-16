@@ -37,6 +37,9 @@ CYE-MathVerse/
 ├── salary-tax-tycoon/         # 💼 Form 5: Taxation & Career Simulation 2.0
 │   └── index.html
 │
+├── math-mama/                 # 🍳 Form 4: Math Mama Warung Matematik Cooking Sim
+│   └── index.html
+│
 └── galactic-defense/          # 🚀 Form 4: Space Defense & Coordinate Algebra
     └── index.html
 ```

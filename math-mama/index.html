@@ -879,1047 +879,1927 @@
          * ========================================================= */
         const KITCHENS_DB = [
     {
-        id: "k1-quadratic",
-        chapter: { en: "Chapter 1", bm: "Bab 1" },
-        topic: { en: "Quadratic Functions & Equations", bm: "Fungsi & Persamaan Kuadratik" },
-        dishName: { en: "Nasi Lemak Royale", bm: "Nasi Lemak Royale" },
-        icon: "🍛",
-        desc: { 
-            en: "Balance rice measurements with algebra, control parabolic stove heat, and fold fragrant pandan leaf packets!",
-            bm: "Kawal suhu kuali kuadratik (senyum vs masam) dan timbang beras algebra!"
+        "id": "k1-quadratic",
+        "chapter": {
+            "en": "Chapter 1",
+            "bm": "Bab 1"
         },
-        stages: [
-            {
-                stepBadge: { en: "Step 1: Weigh Rice", bm: "Langkah 1: Timbang Beras" },
-                title: { en: "Measure Rice Using Algebra", bm: "Sukat Beras Menggunakan Algebra" },
-                mathTopic: { en: "Linear Equations (Basics)", bm: "Persamaan Linear (Asas)" },
-                desc: {
-                    en: "Mama needs $17$ cups of rice. The pot already contains $5$ cups. Each sealed packet holds $2x$ cups. Find $x$ so the rice amount is exact!",
-                    bm: "Mama perlukan $17$ cawan beras. Periuk sudah ada $5$ cawan. Setiap pek beras ada $2x$ cawan. Cari nilai $x$!"
-                },
-                equation: "2x + 5 = 17",
-                type: "slider",
-                min: 1, max: 12, step: 1, default: 2,
-                targetVal: 6,
-                unit: { en: "cups per packet", bm: "cawan setiap pek" },
-                mamaPrompt: {
-                    en: "Slide the digital scale until x satisfies the equation!",
-                    bm: "Laraskan penimbang supaya nilai x menepati persamaan!"
-                },
-                calcHint: {
-                    en: "2x = 17 - 5 = 12 \implies x = 6",
-                    bm: "2x = 17 - 5 = 12 \implies x = 6"
-                }
-            },
-            {
-                stepBadge: { en: "Step 2: Stove Temperature Parabola", bm: "Langkah 2: Suhu Api Dapur Kuadratik" },
-                title: { en: "Control Parabolic Heat Curve", bm: "Kawal Lengkok Api Parabola" },
-                mathTopic: { en: "Quadratic Graph Shape (U vs n)", bm: "Bentuk Graf Kuadratik (U vs n)" },
-                desc: {
-                    en: "For fluffy coconut rice, the heat curve is modeled by $y = -2x^2 + 8x + 10$. What is the curve profile and extremum point?",
-                    bm: "Untuk memasak nasi santan gebu, fungsi suhu ialah $y = -2x^2 + 8x + 10$. Apakah bentuk graf dan titik ekstremum lengkok ini?"
-                },
-                equation: "y = -2x^2 + 8x + 10",
-                type: "mcq",
-                options: [
-                    { text: { en: "$\text{Maximum Point } (\cap\text{-Shape / Frown})$", bm: "$\text{Titik Maksimum } (\cap\text{ / Masam})$" }, correct: true },
-                    { text: { en: "$\text{Minimum Point } (\cup\text{-Shape / Smile})$", bm: "$\text{Titik Minimum } (\cup\text{ / Senyum})$" }, correct: false },
-                    { text: { en: "$\text{Straight Line with Constant Gradient}$", bm: "$\text{Garis Lurus Berkecerunan Malar}$" }, correct: false }
-                ],
-                mamaPrompt: {
-                    en: "Look closely at coefficient a! Since a is negative, what is the curve profile?",
-                    bm: "Tengok nilai perkali a! Kalau a negatif, kuali panas melengkung macam mana?"
-                },
-                calcHint: {
-                    en: "a = -2 < 0 \implies n\text{-shape curve with a MAXIMUM point.}",
-                    bm: "a = -2 < 0 \implies \text{graf bentuk } n \text{ dengan titik MAKSIMUM.}"
-                }
-            },
-            {
-                stepBadge: { en: "Step 3: Banana Leaf Dimensions", bm: "Langkah 3: Luas Daun Pisang (Punca Kuadratik)" },
-                title: { en: "Fold Triangular Nasi Lemak", bm: "Bungkus Nasi Lemak Segitiga" },
-                mathTopic: { en: "Roots of Quadratic Equations", bm: "Punca Persamaan Kuadratik" },
-                desc: {
-                    en: "The folding area of the banana leaf is given by $x^2 - 7x + 10 = 0$. Solve for both roots $x$ to fold the packet!",
-                    bm: "Luas lipatan daun pisang diberi oleh $x^2 - 7x + 10 = 0$. Cari nilai punca-punca $x$ bagi melipat bungkusan!"
-                },
-                equation: "x^2 - 7x + 10 = 0",
-                type: "inputs2",
-                ans1: 2, ans2: 5,
-                label1: { en: "$x_1 = $", bm: "$x_1 = $" },
-                label2: { en: "$x_2 = $", bm: "$x_2 = $" },
-                mamaPrompt: {
-                    en: "Factorize this quadratic equation to obtain the two fold dimensions!",
-                    bm: "Faktorkan persamaan ini untuk dapatkan 2 punca ukuran daun pisang!"
-                },
-                calcHint: {
-                    en: "(x - 2)(x - 5) = 0 \implies x = 2 \text{ or } x = 5",
-                    bm: "(x - 2)(x - 5) = 0 \implies x = 2 \text{ atau } x = 5"
-                }
-            },
-            {
-                stepBadge: { en: "Step 4: Cashier & Profit Margin", bm: "Langkah 4: Kaunter Bayaran & Untung" },
-                title: { en: "Calculate Net Profit & Revenue", bm: "Kira Untung Bersih & Margin Jualan" },
-                mathTopic: { en: "Consumer & Financial Mathematics", bm: "Matematik Pengguna & Kewangan" },
-                desc: {
-                    en: "Cost price per plate is $\text{RM } 4.50$. Selling price is $\text{RM } 7.00$. A customer buys $4$ packs with a $\text{RM } 2.00$ voucher discount. What is the net profit?",
-                    bm: "Kos sepinggan Nasi Lemak ialah $\text{RM } 4.50$. Anda jual pada harga $\text{RM } 7.00$. Pelanggan beli $4$ bungkus dan diberi diskaun $\text{RM } 2.00$. Berapakah untung bersih warung?"
-                },
-                equation: "\text{Net Profit} = \text{Total Revenue} - \text{Total Cost}",
-                type: "mcq",
-                options: [
-                    { text: { en: "$\text{RM } 8.00 \text{ Net Profit}$", bm: "$\text{RM } 8.00 \text{ Untung Bersih}$" }, correct: true },
-                    { text: { en: "$\text{RM } 10.00 \text{ Net Profit}$", bm: "$\text{RM } 10.00 \text{ Untung Bersih}$" }, correct: false },
-                    { text: { en: "$\text{RM } 6.50 \text{ Net Profit}$", bm: "$\text{RM } 6.50 \text{ Untung Bersih}$" }, correct: false }
-                ],
-                mamaPrompt: {
-                    en: "Quick, ring up the cashier! Profit = (4 × 7.00 - 2.00) - (4 × 4.50)",
-                    bm: "Kira cepat sebelum pelanggan beredar! Untung = (4 × 7.00 - 2.00) - (4 × 4.50)"
-                },
-                calcHint: {
-                    en: "\text{Revenue} = 28 - 2 = 26. \; \text{Cost} = 4 \times 4.50 = 18. \; \text{Profit} = 26 - 18 = 8.00",
-                    bm: "\text{Jualan} = 28 - 2 = 26. \; \text{Kos} = 4 \times 4.50 = 18. \; \text{Untung} = 26 - 18 = 8.00"
-                }
-            }
-        ]
-    },
-    {
-        id: "k2-bases",
-        chapter: { en: "Chapter 2", bm: "Bab 2" },
-        topic: { en: "Number Bases", bm: "Asas Nombor" },
-        dishName: { en: "Flying Roti Canai", bm: "Roti Canai Terbang" },
-        icon: "🥞",
-        desc: {
-            en: "Spin and flip dough across Base 2, 5, and 8 number systems to fill customer orders!",
-            bm: "Tebar doh roti dalam Asas 2, 5 dan 8 untuk penuhi pesanan meja mamak!"
+        "topic": {
+            "en": "Quadratic Functions & Equations",
+            "bm": "Fungsi & Persamaan Kuadratik"
         },
-        stages: [
-            {
-                stepBadge: { en: "Step 1: Table Order in Base 5", bm: "Langkah 1: Pesanan Meja Asas 5" },
-                title: { en: "Convert Base 5 to Base 10", bm: "Tukar Asas 5 ke Asas 10" },
-                mathTopic: { en: "Number Base Conversion", bm: "Penukaran Asas Nombor" },
-                desc: {
-                    en: "Table 3 orders $24_5$ pieces of crispy Roti Canai. How many pieces must you knead in Base 10?",
-                    bm: "Pelanggan Meja 3 memesan $24_5$ keping Roti Canai Telur. Berapakah keping dalam Asas 10 yang perlu ditebar?"
-                },
-                equation: "24_5 = \; ?_{10}",
-                type: "slider",
-                min: 5, max: 25, step: 1, default: 10,
-                targetVal: 14,
-                unit: { en: "roti pieces", bm: "keping roti" },
-                mamaPrompt: {
-                    en: "Multiply each digit by its place value in Base 5: (2 × 5) + 4!",
-                    bm: "Darab digit dengan nilai tempat asas 5: (2 × 5) + 4!"
-                },
-                calcHint: {
-                    en: "24_5 = (2 \times 5^1) + (4 \times 5^0) = 10 + 4 = 14",
-                    bm: "24_5 = (2 \times 5^1) + (4 \times 5^0) = 10 + 4 = 14"
-                }
-            },
-            {
-                stepBadge: { en: "Step 2: Ghee Measurement in Binary (Base 2)", bm: "Langkah 2: Kod Minyak Ghee Asas 2" },
-                title: { en: "Decode Binary Digital Dispenser", bm: "Nyahkod Sukatan Asas 2 (Binari)" },
-                mathTopic: { en: "Base 2 to Base 10", bm: "Asas 2 ke Asas 10" },
-                desc: {
-                    en: "The digital dispenser dispenses ghee at $1101_2\text{ ml}$. Convert to Base 10 ml.",
-                    bm: "Sukat minyak sapi mengikut sukatan digital pemanas: $1101_2\text{ ml}$."
-                },
-                equation: "1101_2 = \; ?_{10}",
-                type: "mcq",
-                options: [
-                    { text: { en: "$13\text{ ml}$", bm: "$13\text{ ml}$" }, correct: true },
-                    { text: { en: "$11\text{ ml}$", bm: "$11\text{ ml}$" }, correct: false },
-                    { text: { en: "$15\text{ ml}$", bm: "$15\text{ ml}$" }, correct: false }
-                ],
-                mamaPrompt: {
-                    en: "Sum the powers of 2: 8 + 4 + 0 + 1!",
-                    bm: "Jumlahkan kuasa 2: 8 + 4 + 0 + 1!"
-                },
-                calcHint: {
-                    en: "1101_2 = (1 \times 2^3) + (1 \times 2^2) + (0 \times 2^1) + (1 \times 2^0) = 8 + 4 + 0 + 1 = 13",
-                    bm: "1101_2 = (1 \times 2^3) + (1 \times 2^2) + (0 \times 2^1) + (1 \times 2^0) = 8 + 4 + 0 + 1 = 13"
-                }
-            },
-            {
-                stepBadge: { en: "Step 3: Dhal Curry Stock (Base 8)", bm: "Langkah 3: Kuah Kari Dhal (Asas 8)" },
-                title: { en: "Convert Base 10 to Base 8 (Octal)", bm: "Tukar Asas 10 ke Asas 8" },
-                mathTopic: { en: "Repeated Division by 8", bm: "Pembahagian Berulang" },
-                desc: {
-                    en: "Convert $45_{10}$ bowls of dhal curry into Base 8 (octal) to stamp the kitchen inventory jar.",
-                    bm: "Tukarkan $45_{10}$ mangkuk dhal ke nombor Asas 8 untuk label stok dapur Mama."
-                },
-                equation: "45_{10} = \; ?_8",
-                type: "mcq",
-                options: [
-                    { text: { en: "$55_8$", bm: "$55_8$" }, correct: true },
-                    { text: { en: "$45_8$", bm: "$45_8$" }, correct: false },
-                    { text: { en: "$53_8$", bm: "$53_8$" }, correct: false }
-                ],
-                mamaPrompt: {
-                    en: "Divide 45 by 8: quotient 5 with remainder 5!",
-                    bm: "Bahagi 45 dengan 8: dapat 5 baki 5!"
-                },
-                calcHint: {
-                    en: "45 \div 8 = 5 \text{ remainder } 5 \implies 55_8",
-                    bm: "45 \div 8 = 5 \text{ baki } 5 \implies 55_8"
-                }
-            },
-            {
-                stepBadge: { en: "Step 4: Binary Dough Addition", bm: "Langkah 4: Tambah Doh Binari" },
-                title: { en: "Add Two Binary Quantities", bm: "Penambahan Nombor Asas 2" },
-                mathTopic: { en: "Addition in Base 2", bm: "Penambahan Asas Nombor" },
-                desc: {
-                    en: "Mama mixes two binary flour packets: $110_2\text{ g} + 11_2\text{ g}$. What is the total combined mass in Base 2?",
-                    bm: "Mama mencampurkan dua bungkusan tepung binari: $110_2\text{ g} + 11_2\text{ g}$. Berapakah jumlah jisim dalam Asas 2?"
-                },
-                equation: "110_2 + 11_2 = \; ?_2",
-                type: "mcq",
-                options: [
-                    { text: { en: "$1001_2\text{ g}$", bm: "$1001_2\text{ g}$" }, correct: true },
-                    { text: { en: "$1010_2\text{ g}$", bm: "$1010_2\text{ g}$" }, correct: false },
-                    { text: { en: "$1101_2\text{ g}$", bm: "$1101_2\text{ g}$" }, correct: false }
-                ],
-                mamaPrompt: {
-                    en: "In binary: 0+1=1, 1+1=10 (write 0, carry 1), and 1+1+1=11!",
-                    bm: "Dalam binari: 1+1=10 (tulis 0, kumpul semula 1)!"
-                },
-                calcHint: {
-                    en: "110_2 (6) + 11_2 (3) = 9_{10} = 1001_2",
-                    bm: "110_2 (6) + 11_2 (3) = 9_{10} = 1001_2"
-                }
-            }
-        ]
-    },
-    {
-        id: "k3-logic",
-        chapter: { en: "Chapter 3", bm: "Bab 3" },
-        topic: { en: "Logical Reasoning", bm: "Penaakulan Logik" },
-        dishName: { en: "Charcoal Satay Kajang", bm: "Satay Kajang Kuah Kacang" },
-        icon: "🍢",
-        desc: {
-            en: "Grill chicken satay skewers using implications p ➔ q, converses, contrapositives, and valid deductive arguments!",
-            bm: "Bakar satay menggunakan deduksi logik, implikasi p ➔ q, kontrapositif, dan hujah sah!"
+        "dishName": {
+            "en": "Nasi Lemak Royale",
+            "bm": "Nasi Lemak Royale"
         },
-        stages: [
+        "icon": "🍛",
+        "desc": {
+            "en": "Balance rice measurements with algebra, control parabolic stove heat, and fold fragrant pandan leaf packets!",
+            "bm": "Kawal suhu kuali kuadratik (senyum vs masam) dan timbang beras algebra!"
+        },
+        "stages": [
             {
-                stepBadge: { en: "Step 1: Charcoal Implication Rules", bm: "Langkah 1: Peraturan Arang Membara" },
-                title: { en: "Converse of an Implication", bm: "Deduksi Akas & Implikasi" },
-                mathTopic: { en: "Implication 'If p, then q'", bm: "Implikasi 'Jika p, maka q'" },
-                desc: {
-                    en: "Statement: 'If the charcoal glows white-hot ($p$), then the satay meat cooks thoroughly ($q$).' What is the CONVERSE of this implication?",
-                    bm: "Pernyataan: 'Jika arang berwarna putih membara ($p$), maka daging satay masak sempurna ($q$).' Apakah AKAS bagi implikasi ini?"
+                "stepBadge": {
+                    "en": "Step 1: Weigh Rice",
+                    "bm": "Langkah 1: Timbang Beras"
                 },
-                equation: "p \implies q \quad \longrightarrow \quad \text{Converse: } ?",
-                type: "mcq",
-                options: [
-                    { 
-                        text: { 
-                            en: "If the satay meat cooks thoroughly, then the charcoal glows white-hot. ($q \implies p$)",
-                            bm: "Jika daging satay masak sempurna, maka arang berwarna putih membara. ($q \implies p$)"
-                        }, 
-                        correct: true 
+                "title": {
+                    "en": "Measure Rice Using Algebra",
+                    "bm": "Sukat Beras Menggunakan Algebra"
+                },
+                "mathTopic": {
+                    "en": "Linear Equations (Basics)",
+                    "bm": "Persamaan Linear (Asas)"
+                },
+                "desc": {
+                    "en": "Mama needs a total of $17$ cups of rice. The pot already contains $5$ cups. Each sealed packet holds $2x$ cups. Solve $2x + 5 = 17$ for $x$!",
+                    "bm": "Mama perlukan $17$ cawan beras. Periuk sudah ada $5$ cawan. Setiap pek beras mengandungi $2x$ cawan. Selesaikan $2x + 5 = 17$ untuk mencari nilai $x$!"
+                },
+                "equation": "2x + 5 = 17",
+                "type": "slider",
+                "min": 1,
+                "max": 12,
+                "step": 1,
+                "default": 2,
+                "targetVal": 6,
+                "unit": {
+                    "en": "cups per packet",
+                    "bm": "cawan setiap pek"
+                },
+                "mamaPrompt": {
+                    "en": "Slide the digital scale until x satisfies the equation 2x + 5 = 17!",
+                    "bm": "Laraskan penimbang digital sehingga nilai x menepati persamaan 2x + 5 = 17!"
+                },
+                "calcHint": {
+                    "en": "2x = 17 - 5 = 12 \\implies x = 6",
+                    "bm": "2x = 17 - 5 = 12 \\implies x = 6"
+                }
+            },
+            {
+                "stepBadge": {
+                    "en": "Step 2: Stove Temperature Parabola",
+                    "bm": "Langkah 2: Suhu Api Dapur Kuadratik"
+                },
+                "title": {
+                    "en": "Control Parabolic Heat Curve",
+                    "bm": "Kawal Lengkok Api Parabola"
+                },
+                "mathTopic": {
+                    "en": "Quadratic Graph Shape (U vs n)",
+                    "bm": "Bentuk Graf Kuadratik (U vs n)"
+                },
+                "desc": {
+                    "en": "The cooking temperature is modeled by the quadratic function $y = -2x^2 + 8x + 10$. Because the coefficient $a = -2$ is negative ($a < 0$), what is the graph shape and extremum point?",
+                    "bm": "Suhu memasak dimodelkan oleh fungsi kuadratik $y = -2x^2 + 8x + 10$. Kerana perkali $a = -2$ adalah negatif ($a < 0$), apakah bentuk graf dan titik ekstremumnya?"
+                },
+                "equation": "y = -2x^2 + 8x + 10",
+                "type": "mcq",
+                "options": [
+                    {
+                        "text": {
+                            "en": "$\\cap\\text{-Shape (Inverted) with a Maximum Point}$",
+                            "bm": "$\\text{Bentuk } \\cap \\text{ (Masam) dengan Titik Maksimum}$"
+                        },
+                        "correct": true
                     },
-                    { 
-                        text: { 
-                            en: "If the charcoal does not glow white-hot, then the satay meat is not cooked. ($\sim p \implies \sim q$)",
-                            bm: "Jika arang tidak membara, maka daging satay tidak masak. ($\sim p \implies \sim q$)"
-                        }, 
-                        correct: false 
+                    {
+                        "text": {
+                            "en": "$\\cup\\text{-Shape (Upright) with a Minimum Point}$",
+                            "bm": "$\\text{Bentuk } \\cup \\text{ (Senyum) dengan Titik Minimum}$"
+                        },
+                        "correct": false
                     },
-                    { 
-                        text: { 
-                            en: "Satay is cooked if and only if charcoal glows white. ($p \iff q$)",
-                            bm: "Daging satay masak jika dan hanya jika arang putih. ($p \iff q$)"
-                        }, 
-                        correct: false 
+                    {
+                        "text": {
+                            "en": "$\\text{Straight Line with Constant Gradient}$",
+                            "bm": "$\\text{Garis Lurus Berkecerunan Malar}$"
+                        },
+                        "correct": false
                     }
                 ],
-                mamaPrompt: {
-                    en: "Remember: The converse reverses the antecedent and consequent!",
-                    bm: "Akas bermaksud songsangkan kedudukan p dan q!"
+                "mamaPrompt": {
+                    "en": "Look at coefficient a = -2! Since a < 0, does the parabola smile or frown?",
+                    "bm": "Tengok nilai perkali a = -2! Kalau a < 0, kuali senyum atau masam?"
                 },
-                calcHint: {
-                    en: "\text{Converse of } p \implies q \text{ is } q \implies p.",
-                    bm: "\text{Akas bagi } p \implies q \text{ ialah } q \implies p."
+                "calcHint": {
+                    "en": "a = -2 < 0 \\implies \\text{inverted } \\cap \\text{-shape curve with a MAXIMUM point.}",
+                    "bm": "a = -2 < 0 \\implies \\text{graf bentuk } \\cap \\text{ dengan titik MAKSIMUM.}"
                 }
             },
             {
-                stepBadge: { en: "Step 2: Peanut Sauce Deduction", bm: "Langkah 2: Sukatan Kacang Tumbuk" },
-                title: { en: "Deductive Argument Form I (Modus Ponens)", bm: "Hujah Deduktif Bentuk I (Modus Ponens)" },
-                mathTopic: { en: "Valid Deductive Reasoning", bm: "Bentuk Hujah Sah & Munasabah" },
-                desc: {
-                    en: "Premise 1: All chicken satay orders require 2 scoops of peanut sauce.<br>Premise 2: Table 5's order is chicken satay.<br>What is the valid conclusion?",
-                    bm: "Premis 1: Semua satay ayam memerlukan 2 sudu kuah kacang.<br>Premis 2: Pesanan Meja 5 ialah satay ayam.<br>Apakah kesimpulan sah?"
+                "stepBadge": {
+                    "en": "Step 3: Banana Leaf Dimensions",
+                    "bm": "Langkah 3: Luas Daun Pisang (Punca Kuadratik)"
                 },
-                equation: "\text{Premise 1: All } A \text{ are } B. \quad \text{Premise 2: } c \text{ is } A.",
-                type: "mcq",
-                options: [
-                    { 
-                        text: { 
-                            en: "Table 5's order requires 2 scoops of peanut sauce.",
-                            bm: "Pesanan Meja 5 memerlukan 2 sudu kuah kacang."
-                        }, 
-                        correct: true 
+                "title": {
+                    "en": "Fold Triangular Nasi Lemak",
+                    "bm": "Bungkus Nasi Lemak Segitiga"
+                },
+                "mathTopic": {
+                    "en": "Roots of Quadratic Equations",
+                    "bm": "Punca Persamaan Kuadratik"
+                },
+                "desc": {
+                    "en": "The banana leaf folding area satisfies the equation $x^2 - 7x + 10 = 0$. Solve by factorizing $(x - a)(x - b) = 0$ to find both roots $x_1$ and $x_2$!",
+                    "bm": "Luas lipatan daun pisang menepati persamaan $x^2 - 7x + 10 = 0$. Selesaikan dengan pemfaktoran $(x - a)(x - b) = 0$ untuk mencari punca $x_1$ dan $x_2$!"
+                },
+                "equation": "x^2 - 7x + 10 = 0",
+                "type": "inputs2",
+                "ans1": 2,
+                "ans2": 5,
+                "label1": {
+                    "en": "$x_1 = $",
+                    "bm": "$x_1 = $"
+                },
+                "label2": {
+                    "en": "$x_2 = $",
+                    "bm": "$x_2 = $"
+                },
+                "mamaPrompt": {
+                    "en": "Factorize x^2 - 7x + 10 = 0 to get the two roots!",
+                    "bm": "Faktorkan x^2 - 7x + 10 = 0 untuk dapatkan 2 punca!"
+                },
+                "calcHint": {
+                    "en": "(x - 2)(x - 5) = 0 \\implies x = 2 \\text{ or } x = 5",
+                    "bm": "(x - 2)(x - 5) = 0 \\implies x = 2 \\text{ atau } x = 5"
+                }
+            },
+            {
+                "stepBadge": {
+                    "en": "Step 4: Cashier & Profit Margin",
+                    "bm": "Langkah 4: Kaunter Bayaran & Untung"
+                },
+                "title": {
+                    "en": "Calculate Net Profit & Revenue",
+                    "bm": "Kira Untung Bersih & Margin Jualan"
+                },
+                "mathTopic": {
+                    "en": "Consumer & Financial Mathematics",
+                    "bm": "Matematik Pengguna & Kewangan"
+                },
+                "desc": {
+                    "en": "Cost price per packet is $\\text{RM } 4.50$, and selling price is $\\text{RM } 7.00$. A customer buys $4$ packets with a $\\text{RM } 2.00$ discount voucher. What is the net profit?",
+                    "bm": "Kos sepinggan Nasi Lemak ialah $\\text{RM } 4.50$, dan harga jualan ialah $\\text{RM } 7.00$. Pelanggan beli $4$ bungkus dengan baucar diskaun $\\text{RM } 2.00$. Berapakah untung bersih warung?"
+                },
+                "equation": "\\text{Net Profit} = \\text{Total Revenue} - \\text{Total Cost}",
+                "type": "mcq",
+                "options": [
+                    {
+                        "text": {
+                            "en": "$\\text{RM } 8.00 \\text{ Net Profit}$",
+                            "bm": "$\\text{RM } 8.00 \\text{ Untung Bersih}$"
+                        },
+                        "correct": true
                     },
-                    { 
-                        text: { 
-                            en: "All satay requires 2 scoops of peanut sauce.",
-                            bm: "Semua satay memerlukan 2 sudu kuah kacang."
-                        }, 
-                        correct: false 
+                    {
+                        "text": {
+                            "en": "$\\text{RM } 10.00 \\text{ Net Profit}$",
+                            "bm": "$\\text{RM } 10.00 \\text{ Untung Bersih}$"
+                        },
+                        "correct": false
                     },
-                    { 
-                        text: { 
-                            en: "Table 5's order is not beef satay.",
-                            bm: "Pesanan Meja 5 bukan satay daging."
-                        }, 
-                        correct: false 
+                    {
+                        "text": {
+                            "en": "$\\text{RM } 6.50 \\text{ Net Profit}$",
+                            "bm": "$\\text{RM } 6.50 \\text{ Untung Bersih}$"
+                        },
+                        "correct": false
                     }
                 ],
-                mamaPrompt: {
-                    en: "Apply deductive logic to season the dish properly!",
-                    bm: "Gunakan deduksi sah untuk selesaikan ramuan!"
+                "mamaPrompt": {
+                    "en": "Profit = Revenue (4 × 7.00 - 2.00) - Cost (4 × 4.50)!",
+                    "bm": "Untung = Jualan (4 × 7.00 - 2.00) - Kos (4 × 4.50)!"
                 },
-                calcHint: {
-                    en: "\text{Conclusion: Table 5 requires 2 scoops of peanut sauce.}",
-                    bm: "\text{Kesimpulan: Pesanan Meja 5 memerlukan 2 sudu kuah kacang.}"
+                "calcHint": {
+                    "en": "\\text{Revenue} = 28 - 2 = 26. \\; \\text{Cost} = 4 \\times 4.50 = 18. \\; \\text{Profit} = 26 - 18 = \\text{RM } 8.00",
+                    "bm": "\\text{Jualan} = 28 - 2 = 26. \\; \\text{Kos} = 4 \\times 4.50 = 18. \\; \\text{Untung} = 26 - 18 = \\text{RM } 8.00"
+                }
+            }
+        ]
+    },
+    {
+        "id": "k2-bases",
+        "chapter": {
+            "en": "Chapter 2",
+            "bm": "Bab 2"
+        },
+        "topic": {
+            "en": "Number Bases",
+            "bm": "Asas Nombor"
+        },
+        "dishName": {
+            "en": "Flying Roti Canai",
+            "bm": "Roti Canai Terbang"
+        },
+        "icon": "🥞",
+        "desc": {
+            "en": "Spin and flip dough across Base 2, 5, and 8 number systems to fill customer orders!",
+            "bm": "Tebar doh roti dalam Asas 2, 5 dan 8 untuk penuhi pesanan meja mamak!"
+        },
+        "stages": [
+            {
+                "stepBadge": {
+                    "en": "Step 1: Table Order in Base 5",
+                    "bm": "Langkah 1: Pesanan Meja Asas 5"
+                },
+                "title": {
+                    "en": "Convert Base 5 to Base 10",
+                    "bm": "Tukar Asas 5 ke Asas 10"
+                },
+                "mathTopic": {
+                    "en": "Number Base Conversion",
+                    "bm": "Penukaran Asas Nombor"
+                },
+                "desc": {
+                    "en": "Table 3 orders $24_5$ pieces of crispy Roti Canai. Convert $24_5$ to Base 10 ($?_{10}$) to know how many pieces to knead!",
+                    "bm": "Pelanggan Meja 3 memesan $24_5$ keping Roti Canai. Tukarkan $24_5$ kepada Asas 10 ($?_{10}$) untuk tahu bilangan keping!"
+                },
+                "equation": "24_5 = \\; ?_{10}",
+                "type": "slider",
+                "min": 5,
+                "max": 25,
+                "step": 1,
+                "default": 10,
+                "targetVal": 14,
+                "unit": {
+                    "en": "roti pieces",
+                    "bm": "keping roti"
+                },
+                "mamaPrompt": {
+                    "en": "Multiply each digit by place values of 5: (2 × 5) + 4!",
+                    "bm": "Darab setiap digit dengan nilai tempat asas 5: (2 × 5) + 4!"
+                },
+                "calcHint": {
+                    "en": "24_5 = (2 \\times 5^1) + (4 \\times 5^0) = 10 + 4 = 14",
+                    "bm": "24_5 = (2 \\times 5^1) + (4 \\times 5^0) = 10 + 4 = 14"
                 }
             },
             {
-                stepBadge: { en: "Step 3: Compound Logic Truth Values", bm: "Langkah 3: Nilai Kebenaran Majmuk" },
-                title: { en: "Evaluate 'AND' Statement", bm: "Tentukan Nilai Pernyataan 'DAN'" },
-                mathTopic: { en: "Truth Value of Compound Statements", bm: "Nilai Kebenaran Pernyataan Majmuk" },
-                desc: {
-                    en: "Quality rule: '$5 > 2$' (True) AND '$12$ is an odd number' (False). What is the overall truth value of this compound statement?",
-                    bm: "Peraturan kualiti: '$5 > 2$' (Benar) DAN '$12$ ialah nombor ganjil' (Palsu). Apakah nilai kebenaran bagi pernyataan majmuk ini?"
+                "stepBadge": {
+                    "en": "Step 2: Ghee Measurement in Binary (Base 2)",
+                    "bm": "Langkah 2: Kod Minyak Ghee Asas 2"
                 },
-                equation: "p \land q \quad (\text{True } \land \text{ False})",
-                type: "mcq",
-                options: [
-                    { text: { en: "$\text{False } (\text{True } \land \text{ False} \implies \text{False})$", bm: "$\text{Palsu } (\text{Benar } \land \text{ Palsu} \implies \text{Palsu})$" }, correct: true },
-                    { text: { en: "$\text{True } (\text{True } \land \text{ False} \implies \text{True})$", bm: "$\text{Benar } (\text{Benar } \land \text{ Palsu} \implies \text{Benar})$" }, correct: false },
-                    { text: { en: "$\text{Indeterminate}$", bm: "$\text{Tidak dapat ditentukan}$" }, correct: false }
-                ],
-                mamaPrompt: {
-                    en: "For an 'AND' statement, if even one component is false, the entire statement is false!",
-                    bm: "Untuk 'DAN', jika ada satu bahagian palsu, seluruh pernyataan jadi palsu!"
+                "title": {
+                    "en": "Decode Binary Digital Dispenser",
+                    "bm": "Nyahkod Sukatan Asas 2 (Binari)"
                 },
-                calcHint: {
-                    en: "\text{True} \land \text{False} = \text{False}",
-                    bm: "\text{Benar} \land \text{Palsu} = \text{Palsu}"
-                }
-            },
-            {
-                stepBadge: { en: "Step 4: Smoke Hood Contrapositive", bm: "Langkah 4: Kontrapositif Penyedut Asap" },
-                title: { en: "Form the Contrapositive", bm: "Bina Pernyataan Kontrapositif" },
-                mathTopic: { en: "Contrapositive of an Implication", bm: "Kontrapositif Suatu Implikasi" },
-                desc: {
-                    en: "Implication: 'If the grill is smokeless ($p$), then the exhaust fan is active ($q$).' What is the CONTRAPOSITIVE?",
-                    bm: "Implikasi: 'Jika kuali tiada asap ($p$), maka kipas ekzos sedang berfungsi ($q$).' Apakah KONTRAPOSITIF bagi implikasi ini?"
+                "mathTopic": {
+                    "en": "Base 2 to Base 10",
+                    "bm": "Asas 2 ke Asas 10"
                 },
-                equation: "p \implies q \quad \longrightarrow \quad \text{Contrapositive: } ?",
-                type: "mcq",
-                options: [
-                    { 
-                        text: { 
-                            en: "If the exhaust fan is not active, then the grill is not smokeless. ($\sim q \implies \sim p$)",
-                            bm: "Jika kipas ekzos tidak berfungsi, maka kuali bukan tiada asap. ($\sim q \implies \sim p$)"
-                        }, 
-                        correct: true 
+                "desc": {
+                    "en": "The digital dispenser displays a ghee measurement of $1101_2\\text{ ml}$. Convert $1101_2$ to Base 10 ($\\text{ml}$).",
+                    "bm": "Sukat minyak sapi mengikut sukatan digital pemanas: $1101_2\\text{ ml}$. Tukarkan $1101_2$ kepada Asas 10 ($\\text{ml}$)."
+                },
+                "equation": "1101_2 = \\; ?_{10}",
+                "type": "mcq",
+                "options": [
+                    {
+                        "text": {
+                            "en": "$13\\text{ ml}$",
+                            "bm": "$13\\text{ ml}$"
+                        },
+                        "correct": true
                     },
-                    { 
-                        text: { 
-                            en: "If the grill is not smokeless, then the exhaust fan is not active. ($\sim p \implies \sim q$)",
-                            bm: "Jika kuali bukan tiada asap, maka kipas ekzos tidak berfungsi. ($\sim p \implies \sim q$)"
-                        }, 
-                        correct: false 
+                    {
+                        "text": {
+                            "en": "$11\\text{ ml}$",
+                            "bm": "$11\\text{ ml}$"
+                        },
+                        "correct": false
                     },
-                    { 
-                        text: { 
-                            en: "If the exhaust fan is active, then the grill is smokeless. ($q \implies p$)",
-                            bm: "Jika kipas ekzos berfungsi, maka kuali tiada asap. ($q \implies p$)"
-                        }, 
-                        correct: false 
+                    {
+                        "text": {
+                            "en": "$15\\text{ ml}$",
+                            "bm": "$15\\text{ ml}$"
+                        },
+                        "correct": false
                     }
                 ],
-                mamaPrompt: {
-                    en: "Contrapositive: Negate both and swap their order: ~q => ~p!",
-                    bm: "Kontrapositif: Nafi kedua-duanya dan songsangkan kedudukan: ~q => ~p!"
+                "mamaPrompt": {
+                    "en": "Sum powers of 2: (1 × 8) + (1 × 4) + (0 × 2) + (1 × 1)!",
+                    "bm": "Jumlahkan kuasa 2: (1 × 8) + (1 × 4) + (0 × 2) + (1 × 1)!"
                 },
-                calcHint: {
-                    en: "\text{Contrapositive of } p \implies q \text{ is } \sim q \implies \sim p",
-                    bm: "\text{Kontrapositif bagi } p \implies q \text{ ialah } \sim q \implies \sim p"
+                "calcHint": {
+                    "en": "1101_2 = (1 \\times 2^3) + (1 \\times 2^2) + (0 \\times 2^1) + (1 \\times 2^0) = 8 + 4 + 0 + 1 = 13\\text{ ml}",
+                    "bm": "1101_2 = (1 \\times 2^3) + (1 \\times 2^2) + (0 \\times 2^1) + (1 \\times 2^0) = 8 + 4 + 0 + 1 = 13\\text{ ml}"
+                }
+            },
+            {
+                "stepBadge": {
+                    "en": "Step 3: Dhal Curry Stock (Base 8)",
+                    "bm": "Langkah 3: Kuah Kari Dhal (Asas 8)"
+                },
+                "title": {
+                    "en": "Convert Base 10 to Base 8 (Octal)",
+                    "bm": "Tukar Asas 10 ke Asas 8"
+                },
+                "mathTopic": {
+                    "en": "Repeated Division by 8",
+                    "bm": "Pembahagian Berulang"
+                },
+                "desc": {
+                    "en": "Convert $45_{10}$ bowls of dhal curry into Base 8 (octal) using repeated division by 8 to stamp the inventory jar.",
+                    "bm": "Tukarkan $45_{10}$ mangkuk kuah dhal ke nombor Asas 8 menggunakan pembahagian berulang dengan 8."
+                },
+                "equation": "45_{10} = \\; ?_8",
+                "type": "mcq",
+                "options": [
+                    {
+                        "text": {
+                            "en": "$55_8$",
+                            "bm": "$55_8$"
+                        },
+                        "correct": true
+                    },
+                    {
+                        "text": {
+                            "en": "$45_8$",
+                            "bm": "$45_8$"
+                        },
+                        "correct": false
+                    },
+                    {
+                        "text": {
+                            "en": "$53_8$",
+                            "bm": "$53_8$"
+                        },
+                        "correct": false
+                    }
+                ],
+                "mamaPrompt": {
+                    "en": "45 divided by 8 gives quotient 5 with remainder 5!",
+                    "bm": "45 dibahagi 8 dapat 5 baki 5!"
+                },
+                "calcHint": {
+                    "en": "45 \\div 8 = 5 \\text{ remainder } 5 \\implies 55_8",
+                    "bm": "45 \\div 8 = 5 \\text{ baki } 5 \\implies 55_8"
+                }
+            },
+            {
+                "stepBadge": {
+                    "en": "Step 4: Binary Dough Addition",
+                    "bm": "Langkah 4: Tambah Doh Binari"
+                },
+                "title": {
+                    "en": "Add Two Binary Quantities",
+                    "bm": "Penambahan Nombor Asas 2"
+                },
+                "mathTopic": {
+                    "en": "Addition in Base 2",
+                    "bm": "Penambahan Asas Nombor"
+                },
+                "desc": {
+                    "en": "Mama mixes two binary flour packets: $110_2\\text{ g} + 11_2\\text{ g}$. What is the total combined mass in Base 2?",
+                    "bm": "Mama mencampurkan dua bungkusan tepung binari: $110_2\\text{ g} + 11_2\\text{ g}$. Berapakah jumlah jisim dalam Asas 2?"
+                },
+                "equation": "110_2 + 11_2 = \\; ?_2",
+                "type": "mcq",
+                "options": [
+                    {
+                        "text": {
+                            "en": "$1001_2\\text{ g}$",
+                            "bm": "$1001_2\\text{ g}$"
+                        },
+                        "correct": true
+                    },
+                    {
+                        "text": {
+                            "en": "$1010_2\\text{ g}$",
+                            "bm": "$1010_2\\text{ g}$"
+                        },
+                        "correct": false
+                    },
+                    {
+                        "text": {
+                            "en": "$1101_2\\text{ g}$",
+                            "bm": "$1101_2\\text{ g}$"
+                        },
+                        "correct": false
+                    }
+                ],
+                "mamaPrompt": {
+                    "en": "Remember binary addition: 0+1=1, 1+1=10 (write 0, carry 1)!",
+                    "bm": "Ingat penambahan binari: 0+1=1, 1+1=10 (tulis 0, kumpul semula 1)!"
+                },
+                "calcHint": {
+                    "en": "110_2\\ (6_{10}) + 11_2\\ (3_{10}) = 9_{10} = 1001_2\\text{ g}",
+                    "bm": "110_2\\ (6_{10}) + 11_2\\ (3_{10}) = 9_{10} = 1001_2\\text{ g}"
                 }
             }
         ]
     },
     {
-        id: "k4-sets",
-        chapter: { en: "Chapter 4", bm: "Bab 4" },
-        topic: { en: "Operations on Sets", bm: "Operasi Set" },
-        dishName: { en: "Claypot Asam Pedas", bm: "Asam Pedas Claypot" },
-        icon: "🍲",
-        desc: {
-            en: "Organize secret spices with Venn diagrams, set intersections A ∩ B, complements A', and set unions!",
-            bm: "Asingkan rempah ratus menggunakan persilangan set A ∩ B, kesatuan set, dan pelengkap!"
+        "id": "k3-logic",
+        "chapter": {
+            "en": "Chapter 3",
+            "bm": "Bab 3"
         },
-        stages: [
+        "topic": {
+            "en": "Logical Reasoning",
+            "bm": "Penaakulan Logik"
+        },
+        "dishName": {
+            "en": "Charcoal Satay Kajang",
+            "bm": "Satay Kajang Kuah Kacang"
+        },
+        "icon": "🍢",
+        "desc": {
+            "en": "Grill chicken satay skewers using implications p ➔ q, converses, contrapositives, and valid deductive arguments!",
+            "bm": "Bakar satay menggunakan deduksi logik, implikasi p ➔ q, kontrapositif, dan hujah sah!"
+        },
+        "stages": [
             {
-                stepBadge: { en: "Step 1: Spice Intersection (A ∩ B)", bm: "Langkah 1: Persilangan Rempah (A ∩ B)" },
-                title: { en: "Find Shared Spices Between Two Recipes", bm: "Cari Rempah Kongsi Dua Resepi" },
-                mathTopic: { en: "Intersection of Sets A ∩ B", bm: "Persilangan Set A ∩ B" },
-                desc: {
-                    en: "Set $A = \{\text{chili}, \text{tamarind}, \text{serai}, \text{kunyit}, \text{bendi}\}$. Set $B = \{\text{chili}, \text{serai}, \text{lengkuas}, \text{limau}, \text{kunyit}\}$. Find $n(A \cap B)$, the count of spices shared by both dishes!",
-                    bm: "Set Asam Pedas $A = \{\text{cili}, \text{asam}, \text{serai}, \text{kunyit}, \text{bendi}\}$. Set Tom Yam $B = \{\text{cili}, \text{serai}, \text{lengkuas}, \text{limau}, \text{kunyit}\}$. Cari $n(A \cap B)$ iaitu bilangan rempah sepunya!"
+                "stepBadge": {
+                    "en": "Step 1: Charcoal Implication Rules",
+                    "bm": "Langkah 1: Peraturan Arang Membara"
                 },
-                equation: "n(A \cap B) = \; ?",
-                type: "slider",
-                min: 1, max: 6, step: 1, default: 1,
-                targetVal: 3,
-                unit: { en: "shared spices", bm: "jenis rempah sepunya" },
-                mamaPrompt: {
-                    en: "Count how many ingredients appear in both recipe sets!",
-                    bm: "Kira berapa bahan yang bertindih dalam kedua-dua set!"
+                "title": {
+                    "en": "Converse of an Implication",
+                    "bm": "Deduksi Akas & Implikasi"
                 },
-                calcHint: {
-                    en: "A \cap B = \{\text{chili}, \text{serai}, \text{kunyit}\} \implies n(A \cap B) = 3",
-                    bm: "A \cap B = \{\text{cili}, \text{serai}, \text{kunyit}\} \implies n(A \cap B) = 3"
-                }
-            },
-            {
-                stepBadge: { en: "Step 2: Set Complement (A')", bm: "Langkah 2: Pelengkap Rempah (A')" },
-                title: { en: "Ingredients NOT Used in Asam Pedas", bm: "Bahan Bukan Untuk Asam Pedas" },
-                mathTopic: { en: "Complement of a Set A'", bm: "Pelengkap Suatu Set A'" },
-                desc: {
-                    en: "Universal Set $\\xi = \{\text{onion}, \text{chili}, \text{ginger}, \text{belacan}, \text{sawi}\}$. Asam Pedas Set $A = \{\text{onion}, \text{chili}, \text{belacan}\}$. What is the complement $A'$?",
-                    bm: "Semesta $\\xi = \{\text{bawang}, \text{cili}, \text{halia}, \text{belacan}, \text{sawi}\}$. Bahan asam pedas $A = \{\text{bawang}, \text{cili}, \text{belacan}\}$. Apakah elemen pelengkap $A'$?"
+                "mathTopic": {
+                    "en": "Implication 'If p, then q'",
+                    "bm": "Implikasi 'Jika p, maka q'"
                 },
-                equation: "A' = \\xi \setminus A",
-                type: "mcq",
-                options: [
-                    { text: { en: "$\{\text{ginger}, \text{sawi}\}$", bm: "$\{\text{halia}, \text{sawi}\}$" }, correct: true },
-                    { text: { en: "$\{\text{chili}, \text{onion}\}$", bm: "$\{\text{cili}, \text{bawang}\}$" }, correct: false },
-                    { text: { en: "$\{\text{belacan}, \text{sawi}\}$", bm: "$\{\text{belacan}, \text{sawi}\}$" }, correct: false }
+                "desc": {
+                    "en": "Given the implication: 'If the charcoal glows white-hot ($p$), then the satay meat cooks thoroughly ($q$).' What is the CONVERSE ($q \\implies p$) of this implication?",
+                    "bm": "Diberi implikasi: 'Jika arang berwarna putih membara ($p$), maka daging satay masak sempurna ($q$).' Apakah AKAS ($q \\implies p$) bagi implikasi ini?"
+                },
+                "equation": "p \\implies q \\quad \\longrightarrow \\quad \\text{Converse: } ?",
+                "type": "mcq",
+                "options": [
+                    {
+                        "text": {
+                            "en": "If the satay meat cooks thoroughly, then the charcoal glows white-hot.",
+                            "bm": "Jika daging satay masak sempurna, maka arang berwarna putih membara."
+                        },
+                        "correct": true
+                    },
+                    {
+                        "text": {
+                            "en": "If the charcoal does not glow white-hot, then the satay meat does not cook.",
+                            "bm": "Jika arang tidak membara, maka daging satay tidak masak."
+                        },
+                        "correct": false
+                    },
+                    {
+                        "text": {
+                            "en": "If the satay meat does not cook, then the charcoal does not glow white-hot.",
+                            "bm": "Jika daging satay tidak masak, maka arang tidak membara."
+                        },
+                        "correct": false
+                    }
                 ],
-                mamaPrompt: {
-                    en: "Complement represents elements in the universe but NOT in set A!",
-                    bm: "Pelengkap ialah apa yang tiada dalam A tetapi ada dalam semesta!"
+                "mamaPrompt": {
+                    "en": "The converse simply swaps the order of p and q: q implies p!",
+                    "bm": "Akas bermaksud tukar kedudukan p dan q: q implikasi p!"
                 },
-                calcHint: {
-                    en: "A' = \\xi \setminus A = \{\text{ginger}, \text{sawi}\}",
-                    bm: "A' = \\xi \setminus A = \{\text{halia}, \text{sawi}\}"
+                "calcHint": {
+                    "en": "\\text{Converse of } p \\implies q \\text{ is } q \\implies p",
+                    "bm": "\\text{Akas bagi } p \\implies q \\text{ ialah } q \\implies p"
                 }
             },
             {
-                stepBadge: { en: "Step 3: Union of Sets Formula", bm: "Langkah 3: Formula Kesatuan Set (A ∪ B)" },
-                title: { en: "Calculate Total Unique Sauces", bm: "Hitung Jumlah Sos Unik" },
-                mathTopic: { en: "Union of Two Sets: n(A ∪ B)", bm: "Kesatuan Dua Set: n(A ∪ B)" },
-                desc: {
-                    en: "Hot sauce category $A$ has $n(A) = 7$ varieties, Sweet sauce category $B$ has $n(B) = 6$ varieties, and $n(A \cap B) = 3$ hybrid sauces belong to both. Find $n(A \cup B)$!",
-                    bm: "Kategori sos pedas $A$ ada $n(A) = 7$ jenis, sos manis $B$ ada $n(B) = 6$ jenis, dan $n(A \cap B) = 3$ sos sepunya. Hitung jumlah sos unik $n(A \cup B)$!"
+                "stepBadge": {
+                    "en": "Step 2: Peanut Sauce Deduction",
+                    "bm": "Langkah 2: Sukatan Kacang Tumbuk"
                 },
-                equation: "n(A \cup B) = n(A) + n(B) - n(A \cap B)",
-                type: "slider",
-                min: 4, max: 16, step: 1, default: 6,
-                targetVal: 10,
-                unit: { en: "unique sauces", bm: "jenis sos unik" },
-                mamaPrompt: {
-                    en: "Apply the Principle of Inclusion-Exclusion: Add both and subtract the overlap!",
-                    bm: "Tambah kedua-dua set kemudian tolak bahagian bertindih!"
+                "title": {
+                    "en": "Deductive Argument Form I (Modus Ponens)",
+                    "bm": "Hujah Deduktif Bentuk I (Modus Ponens)"
                 },
-                calcHint: {
-                    en: "n(A \cup B) = 7 + 6 - 3 = 10",
-                    bm: "n(A \cup B) = 7 + 6 - 3 = 10"
-                }
-            },
-            {
-                stepBadge: { en: "Step 4: Three-Set Shaded Region", bm: "Langkah 4: Rantau Berlorek Tiga Set" },
-                title: { en: "Identify Shaded Venn Region", bm: "Kenal Pasti Rantau Gambar Rajah Venn" },
-                mathTopic: { en: "Combined Operations on Three Sets", bm: "Operasi Bergabung Tiga Set" },
-                desc: {
-                    en: "Which set notation accurately denotes ingredients that belong to BOTH Set $A$ and Set $B$, but are STRICTLY EXCLUDED from Set $C$?",
-                    bm: "Notasi set manakah yang mewakili bahan yang berada dalam Set $A$ dan Set $B$, tetapi TIDAK TERMASUK dalam Set $C$?"
+                "mathTopic": {
+                    "en": "Valid Deductive Reasoning",
+                    "bm": "Bentuk Hujah Sah & Munasabah"
                 },
-                equation: "\text{Target: Elements in } (A \cap B) \text{ outside } C",
-                type: "mcq",
-                options: [
-                    { text: { en: "$(A \cap B) \cap C'$", bm: "$(A \cap B) \cap C'$" }, correct: true },
-                    { text: { en: "$(A \cup B) \cap C$", bm: "$(A \cup B) \cap C$" }, correct: false },
-                    { text: { en: "$A' \cap (B \cup C)$", bm: "$A' \cap (B \cup C)$" }, correct: false }
+                "desc": {
+                    "en": "Premise 1: All chicken satay orders require 2 scoops of peanut sauce.<br>Premise 2: Table 5 ordered chicken satay.<br>What is the valid deductive conclusion?",
+                    "bm": "Premis 1: Semua pesanan satay ayam memerlukan 2 sudu kuah kacang.<br>Premis 2: Meja 5 memesan satay ayam.<br>Apakah kesimpulan deduktif yang sah?"
+                },
+                "equation": "\\text{Premise 1: All } A \\text{ are } B. \\quad \\text{Premise 2: } c \\text{ is } A.",
+                "type": "mcq",
+                "options": [
+                    {
+                        "text": {
+                            "en": "Table 5's order requires 2 scoops of peanut sauce.",
+                            "bm": "Pesanan Meja 5 memerlukan 2 sudu kuah kacang."
+                        },
+                        "correct": true
+                    },
+                    {
+                        "text": {
+                            "en": "All satay requires 2 scoops of peanut sauce.",
+                            "bm": "Semua satay memerlukan 2 sudu kuah kacang."
+                        },
+                        "correct": false
+                    },
+                    {
+                        "text": {
+                            "en": "Table 5's order is not beef satay.",
+                            "bm": "Pesanan Meja 5 bukan satay daging."
+                        },
+                        "correct": false
+                    }
                 ],
-                mamaPrompt: {
-                    en: "Outside C is represented by C' (complement of C)!",
-                    bm: "Luar daripada C diwakili oleh C' (pelengkap C)!"
+                "mamaPrompt": {
+                    "en": "Apply Form I (Modus Ponens): If all A are B, and c is A, then c is B!",
+                    "bm": "Gunakan Bentuk I: Jika semua A ialah B, dan c ialah A, maka c ialah B!"
                 },
-                calcHint: {
-                    en: "(A \cap B) \setminus C = (A \cap B) \cap C'",
-                    bm: "(A \cap B) \setminus C = (A \cap B) \cap C'"
+                "calcHint": {
+                    "en": "\\text{Conclusion: Table 5 requires 2 scoops of peanut sauce.}",
+                    "bm": "\\text{Kesimpulan: Pesanan Meja 5 memerlukan 2 sudu kuah kacang.}"
+                }
+            },
+            {
+                "stepBadge": {
+                    "en": "Step 3: Compound Logic Truth Values",
+                    "bm": "Langkah 3: Nilai Kebenaran Majmuk"
+                },
+                "title": {
+                    "en": "Evaluate 'AND' Statement",
+                    "bm": "Tentukan Nilai Pernyataan 'DAN'"
+                },
+                "mathTopic": {
+                    "en": "Truth Value of Compound Statements",
+                    "bm": "Nilai Kebenaran Pernyataan Majmuk"
+                },
+                "desc": {
+                    "en": "Given statement $p$: '$5 > 2$' (True) and statement $q$: '$12\\text{ is an odd number}$' (False). What is the truth value of the compound statement '$p \\land q$' ($p\\text{ AND }q$)?",
+                    "bm": "Diberi pernyataan $p$: '$5 > 2$' (Benar) dan $q$: '$12\\text{ ialah nombor ganjil}$' (Palsu). Apakah nilai kebenaran bagi '$p \\land q$' ($p\\text{ DAN }q$)?"
+                },
+                "equation": "p \\land q \\quad (\\text{True} \\land \\text{False})",
+                "type": "mcq",
+                "options": [
+                    {
+                        "text": {
+                            "en": "$\\text{False (For 'AND', both components must be true)}$",
+                            "bm": "$\\text{Palsu (Untuk 'DAN', kedua-dua mesti benar)}$"
+                        },
+                        "correct": true
+                    },
+                    {
+                        "text": {
+                            "en": "$\\text{True (At least one component is true)}$",
+                            "bm": "$\\text{Benar (Sekurang-kurangnya satu benar)}$"
+                        },
+                        "correct": false
+                    },
+                    {
+                        "text": {
+                            "en": "$\\text{Indeterminate}$",
+                            "bm": "$\\text{Tidak dapat ditentukan}$"
+                        },
+                        "correct": false
+                    }
+                ],
+                "mamaPrompt": {
+                    "en": "For an 'AND' statement, if even one part is False, the whole statement is False!",
+                    "bm": "Untuk pernyataan 'DAN', jika ada satu Palsu, seluruh ayat jadi Palsu!"
+                },
+                "calcHint": {
+                    "en": "\\text{True} \\land \\text{False} = \\text{False}",
+                    "bm": "\\text{Benar} \\land \\text{Palsu} = \\text{Palsu}"
+                }
+            },
+            {
+                "stepBadge": {
+                    "en": "Step 4: Smoke Hood Contrapositive",
+                    "bm": "Langkah 4: Kontrapositif Penyedut Asap"
+                },
+                "title": {
+                    "en": "Form the Contrapositive",
+                    "bm": "Bina Pernyataan Kontrapositif"
+                },
+                "mathTopic": {
+                    "en": "Contrapositive of an Implication",
+                    "bm": "Kontrapositif Suatu Implikasi"
+                },
+                "desc": {
+                    "en": "Given: 'If the kitchen exhaust fan is on ($p$), then the grill area is smokeless ($q$).' What is the CONTRAPOSITIVE ($\\sim q \\implies \\sim p$)?",
+                    "bm": "Diberi: 'Jika kipas ekzos berfungsi ($p$), maka kawasan memanggang tiada asap ($q$).' Apakah KONTRAPOSITIF ($\\sim q \\implies \\sim p$)?"
+                },
+                "equation": "p \\implies q \\quad \\longrightarrow \\quad \\text{Contrapositive: } ?",
+                "type": "mcq",
+                "options": [
+                    {
+                        "text": {
+                            "en": "If the grill area is not smokeless, then the exhaust fan is not on.",
+                            "bm": "Jika kawasan memanggang ada asap, maka kipas ekzos tidak berfungsi."
+                        },
+                        "correct": true
+                    },
+                    {
+                        "text": {
+                            "en": "If the exhaust fan is not on, then the grill area is not smokeless.",
+                            "bm": "Jika kipas ekzos tidak berfungsi, maka kawasan memanggang ada asap."
+                        },
+                        "correct": false
+                    },
+                    {
+                        "text": {
+                            "en": "If the grill area is smokeless, then the exhaust fan is on.",
+                            "bm": "Jika kawasan memanggang tiada asap, maka kipas ekzos berfungsi."
+                        },
+                        "correct": false
+                    }
+                ],
+                "mamaPrompt": {
+                    "en": "Contrapositive negates both and reverses the order: ~q implies ~p!",
+                    "bm": "Kontrapositif nafikan kedua-duanya dan terbalikkan susunan: ~q implikasi ~p!"
+                },
+                "calcHint": {
+                    "en": "\\text{Contrapositive of } p \\implies q \\text{ is } \\sim q \\implies \\sim p",
+                    "bm": "\\text{Kontrapositif bagi } p \\implies q \\text{ ialah } \\sim q \\implies \\sim p"
                 }
             }
         ]
     },
     {
-        id: "k5-graphs",
-        chapter: { en: "Chapter 5", bm: "Bab 5" },
-        topic: { en: "Network in Graph Theory", bm: "Rangkaian dalam Teori Graf" },
-        dishName: { en: "Mamak Mee Goreng Delivery", bm: "Mee Goreng Mamak Delivery" },
-        icon: "🍜",
-        desc: {
-            en: "Plan optimal food delivery routes using degree of vertices, Minimum Spanning Trees, and weighted graphs!",
-            bm: "Rancang laluan penghantaran makanan terpantas menggunakan graf berpemberat dan pokok!"
+        "id": "k4-sets",
+        "chapter": {
+            "en": "Chapter 4",
+            "bm": "Bab 4"
         },
-        stages: [
+        "topic": {
+            "en": "Operations on Sets",
+            "bm": "Operasi Set"
+        },
+        "dishName": {
+            "en": "Claypot Asam Pedas",
+            "bm": "Asam Pedas Claypot"
+        },
+        "icon": "🍲",
+        "desc": {
+            "en": "Organize secret spices with Venn diagrams, set intersections A ∩ B, complements A', and set unions!",
+            "bm": "Asingkan rempah ratus menggunakan persilangan set A ∩ B, kesatuan set, dan pelengkap!"
+        },
+        "stages": [
             {
-                stepBadge: { en: "Step 1: Sum of Degrees in Graph", bm: "Langkah 1: Bilangan Darjah Graf" },
-                title: { en: "Calculate Table Connectivity", bm: "Hitung Sambungan Meja Warung" },
-                mathTopic: { en: "Sum of Degrees: Σd(v) = 2E", bm: "Jumlah Darjah Σd(v) = 2E" },
-                desc: {
-                    en: "Mama's café network has $V = 5$ tables linked by $E = 6$ pathway edges. Calculate the sum of degrees $\sum d(v)$ for this graph!",
-                    bm: "Warung Mama mempunyai $V = 5$ bucu (meja) dengan $E = 6$ tepi laluan (edges). Hitung jumlah bilangan darjah $\sum d(v)$ bagi graf ini!"
+                "stepBadge": {
+                    "en": "Step 1: Spice Intersection (A ∩ B)",
+                    "bm": "Langkah 1: Persilangan Rempah (A ∩ B)"
                 },
-                equation: "\sum d(v) = 2E \quad (E = 6)",
-                type: "slider",
-                min: 4, max: 20, step: 1, default: 8,
-                targetVal: 12,
-                unit: { en: "sum of degrees", bm: "jumlah darjah" },
-                mamaPrompt: {
-                    en: "Remember the Golden Rule of graph theory: Sum of degrees is always twice the number of edges!",
-                    bm: "Ingat formula emas teori graf: Jumlah darjah sentiasa dua kali ganda bilangan tepi!"
+                "title": {
+                    "en": "Find Shared Spices Between Two Recipes",
+                    "bm": "Cari Rempah Kongsi Dua Resepi"
                 },
-                calcHint: {
-                    en: "\sum d(v) = 2(6) = 12",
-                    bm: "\sum d(v) = 2(6) = 12"
+                "mathTopic": {
+                    "en": "Intersection of Sets A ∩ B",
+                    "bm": "Persilangan Set A ∩ B"
+                },
+                "desc": {
+                    "en": "Set $A = \\{\\text{chili}, \\text{tamarind}, \\text{serai}, \\text{kunyit}, \\text{bendi}\\}$. Set $B = \\{\\text{chili}, \\text{serai}, \\text{lengkuas}, \\text{limau}, \\text{kunyit}\\}$. Find $n(A \\cap B)$, the count of spices in both sets!",
+                    "bm": "Set $A = \\{\\text{cili}, \\text{asam}, \\text{serai}, \\text{kunyit}, \\text{bendi}\\}$. Set $B = \\{\\text{cili}, \\text{serai}, \\text{lengkuas}, \\text{limau}, \\text{kunyit}\\}$. Cari $n(A \\cap B)$ iaitu bilangan rempah sepunya!"
+                },
+                "equation": "n(A \\cap B) = \\; ?",
+                "type": "slider",
+                "min": 1,
+                "max": 6,
+                "step": 1,
+                "default": 1,
+                "targetVal": 3,
+                "unit": {
+                    "en": "shared spices",
+                    "bm": "jenis rempah sepunya"
+                },
+                "mamaPrompt": {
+                    "en": "Count how many spices appear in both set A and set B!",
+                    "bm": "Kira berapa jenis rempah yang ada dalam kedua-dua set A dan set B!"
+                },
+                "calcHint": {
+                    "en": "A \\cap B = \\{\\text{chili}, \\text{serai}, \\text{kunyit}\\} \\implies n(A \\cap B) = 3",
+                    "bm": "A \\cap B = \\{\\text{cili}, \\text{serai}, \\text{kunyit}\\} \\implies n(A \\cap B) = 3"
                 }
             },
             {
-                stepBadge: { en: "Step 2: Minimum Spanning Tree (MST)", bm: "Langkah 2: Pokok Rentangan Minimum (MST)" },
-                title: { en: "Fastest Mee Delivery Tree", bm: "Laluan Hantar Mee Terpendek" },
-                mathTopic: { en: "Properties of a Tree (No cycles)", bm: "Pokok (Trees) & Berat Minimum" },
-                desc: {
-                    en: "For a connected graph with $n = 5$ customer delivery tables (vertices), how many edges does a SPANNING TREE possess?",
-                    bm: "Untuk graf dengan $n = 5$ meja (bucu), berapakah bilangan tepi (edges) bagi suatu POKOK (tree)?"
+                "stepBadge": {
+                    "en": "Step 2: Set Complement (A')",
+                    "bm": "Langkah 2: Pelengkap Rempah (A')"
                 },
-                equation: "\text{Tree with } n \text{ vertices} \implies E = ?",
-                type: "mcq",
-                options: [
-                    { text: { en: "$4\text{ Edges}$", bm: "$4\text{ Tepi}$" }, correct: true },
-                    { text: { en: "$5\text{ Edges}$", bm: "$5\text{ Tepi}$" }, correct: false },
-                    { text: { en: "$3\text{ Edges}$", bm: "$3\text{ Tepi}$" }, correct: false }
+                "title": {
+                    "en": "Ingredients NOT Used in Asam Pedas",
+                    "bm": "Bahan Bukan Untuk Asam Pedas"
+                },
+                "mathTopic": {
+                    "en": "Complement of a Set A'",
+                    "bm": "Pelengkap Suatu Set A'"
+                },
+                "desc": {
+                    "en": "Universal Set $\\xi = \\{\\text{onion}, \\text{chili}, \\text{ginger}, \\text{belacan}, \\text{sawi}\\}$. Asam Pedas Set $A = \\{\\text{onion}, \\text{chili}, \\text{belacan}\\}$. What is the complement $A'$?",
+                    "bm": "Set Semesta $\\xi = \\{\\text{bawang}, \\text{cili}, \\text{halia}, \\text{belacan}, \\text{sawi}\\}$. Set $A = \\{\\text{bawang}, \\text{cili}, \\text{belacan}\\}$. Apakah set pelengkap $A'$?"
+                },
+                "equation": "A' = \\xi \\setminus A",
+                "type": "mcq",
+                "options": [
+                    {
+                        "text": {
+                            "en": "$\\{\\text{ginger}, \\text{sawi}\\}$",
+                            "bm": "$\\{\\text{halia}, \\text{sawi}\\}$"
+                        },
+                        "correct": true
+                    },
+                    {
+                        "text": {
+                            "en": "$\\{\\text{chili}, \\text{onion}\\}$",
+                            "bm": "$\\{\\text{cili}, \\text{bawang}\\}$"
+                        },
+                        "correct": false
+                    },
+                    {
+                        "text": {
+                            "en": "$\\{\\text{belacan}, \\text{sawi}\\}$",
+                            "bm": "$\\{\\text{belacan}, \\text{sawi}\\}$"
+                        },
+                        "correct": false
+                    }
                 ],
-                mamaPrompt: {
-                    en: "A tree cannot contain cycles! The number of edges is always n - 1!",
-                    bm: "Pokok tak boleh ada kitaran! Bilangan sisi sentiasa bucu tolak 1!"
+                "mamaPrompt": {
+                    "en": "The complement A' contains elements in universal set ξ that are NOT in set A!",
+                    "bm": "Pelengkap A' mengandungi unsur dalam semesta ξ yang TIADA dalam A!"
                 },
-                calcHint: {
-                    en: "E = n - 1 = 5 - 1 = 4 \text{ edges}",
-                    bm: "E = n - 1 = 5 - 1 = 4 \text{ tepi}"
+                "calcHint": {
+                    "en": "A' = \\xi \\setminus A = \\{\\text{ginger}, \\text{sawi}\\}",
+                    "bm": "A' = \\xi \\setminus A = \\{\\text{halia}, \\text{sawi}\\}"
                 }
             },
             {
-                stepBadge: { en: "Step 3: Shortest Weighted Delivery", bm: "Langkah 3: Laluan Berpemberat Terpendek" },
-                title: { en: "Find Minimum Distance Route", bm: "Cari Jarak Laluan Minimum" },
-                mathTopic: { en: "Weighted Graphs & Shortest Path", bm: "Graf Berpemberat & Laluan Terpendek" },
-                desc: {
-                    en: "Runner must deliver from Kitchen $K$ to Table $T$ via three weighted paths: Path 1: $4+5 = 9\text{ m}$; Path 2: $3+4 = 7\text{ m}$; Path 3: $2+6 = 8\text{ m}$. Slide to the shortest distance!",
-                    bm: "Penghantar makanan memilih laluan berpemberat dari Dapur $K$ ke Meja $T$: Laluan 1: $4+5=9\text{ m}$; Laluan 2: $3+4=7\text{ m}$; Laluan 3: $2+6=8\text{ m}$. Laraskan ke jarak terpendek!"
+                "stepBadge": {
+                    "en": "Step 3: Union of Sets Formula",
+                    "bm": "Langkah 3: Formula Kesatuan Set (A ∪ B)"
                 },
-                equation: "\text{Shortest Path} = \min(9, 7, 8)",
-                type: "slider",
-                min: 3, max: 15, step: 1, default: 10,
-                targetVal: 7,
-                unit: { en: "meters", bm: "meter" },
-                mamaPrompt: {
-                    en: "Compare the weights of the pathways to find the optimal route!",
-                    bm: "Bandingkan pemberat jarak setiap laluan untuk laluan terpantas!"
+                "title": {
+                    "en": "Calculate Total Unique Sauces",
+                    "bm": "Hitung Jumlah Sos Unik"
                 },
-                calcHint: {
-                    en: "\min(9, 7, 8) = 7\text{ m}",
-                    bm: "\min(9, 7, 8) = 7\text{ m}"
+                "mathTopic": {
+                    "en": "Union of Two Sets: n(A ∪ B)",
+                    "bm": "Kesatuan Dua Set: n(A ∪ B)"
+                },
+                "desc": {
+                    "en": "Hot sauce category $A$ has $n(A) = 7$ varieties, Sweet sauce category $B$ has $n(B) = 6$ varieties, and $n(A \\cap B) = 3$ sauces belong to both. Find $n(A \\cup B)$!",
+                    "bm": "Kategori sos pedas $A$ ada $n(A) = 7$ jenis, sos manis $B$ ada $n(B) = 6$ jenis, dan $n(A \\cap B) = 3$ sos sepunya. Cari $n(A \\cup B)$!"
+                },
+                "equation": "n(A \\cup B) = n(A) + n(B) - n(A \\cap B)",
+                "type": "slider",
+                "min": 4,
+                "max": 16,
+                "step": 1,
+                "default": 6,
+                "targetVal": 10,
+                "unit": {
+                    "en": "unique sauces",
+                    "bm": "jenis sos unik"
+                },
+                "mamaPrompt": {
+                    "en": "Add n(A) and n(B), then subtract the shared overlap n(A ∩ B)!",
+                    "bm": "Tambahkan n(A) dan n(B), kemudian tolak bahagian sepunya n(A ∩ B)!"
+                },
+                "calcHint": {
+                    "en": "n(A \\cup B) = 7 + 6 - 3 = 10",
+                    "bm": "n(A \\cup B) = 7 + 6 - 3 = 10"
                 }
             },
             {
-                stepBadge: { en: "Step 4: Directed Graph In/Out Degrees", bm: "Langkah 4: Graf Berarah (Darjah Masuk/Keluar)" },
-                title: { en: "Total Degree of Junction Vertex", bm: "Jumlah Darjah Bucu Persimpangan" },
-                mathTopic: { en: "Directed Graphs: d(v) = din + dout", bm: "Graf Berarah: d(v) = din + dout" },
-                desc: {
-                    en: "At junction table $V_1$, there are $d_{in}(V_1) = 3$ incoming runner paths and $d_{out}(V_1) = 2$ outgoing paths. What is the total degree $d(V_1)$?",
-                    bm: "Di meja persimpangan $V_1$, terdapat $d_{in}(V_1) = 3$ laluan masuk dan $d_{out}(V_1) = 2$ laluan keluar. Apakah jumlah darjah bucu $d(V_1)$?"
+                "stepBadge": {
+                    "en": "Step 4: Three-Set Shaded Region",
+                    "bm": "Langkah 4: Rantau Berlorek Tiga Set"
                 },
-                equation: "d(V_1) = d_{in}(V_1) + d_{out}(V_1)",
-                type: "mcq",
-                options: [
-                    { text: { en: "$5\text{ Degrees}$", bm: "$5\text{ Darjah}$" }, correct: true },
-                    { text: { en: "$6\text{ Degrees}$", bm: "$6\text{ Darjah}$" }, correct: false },
-                    { text: { en: "$1\text{ Degree}$", bm: "$1\text{ Darjah}$" }, correct: false }
+                "title": {
+                    "en": "Identify Shaded Venn Region",
+                    "bm": "Kenal Pasti Rantau Gambar Rajah Venn"
+                },
+                "mathTopic": {
+                    "en": "Combined Operations on Three Sets",
+                    "bm": "Operasi Bergabung Tiga Set"
+                },
+                "desc": {
+                    "en": "Which set notation describes elements that belong to BOTH Set $A$ and Set $B$, but are STRICTLY EXCLUDED from Set $C$?",
+                    "bm": "Notasi set manakah yang mewakili unsur dalam Set $A$ dan Set $B$, tetapi TIDAK TERMASUK dalam Set $C$?"
+                },
+                "equation": "(A \\cap B) \\cap C'",
+                "type": "mcq",
+                "options": [
+                    {
+                        "text": {
+                            "en": "$(A \\cap B) \\cap C'$",
+                            "bm": "$(A \\cap B) \\cap C'$"
+                        },
+                        "correct": true
+                    },
+                    {
+                        "text": {
+                            "en": "$(A \\cup B) \\cap C$",
+                            "bm": "$(A \\cup B) \\cap C$"
+                        },
+                        "correct": false
+                    },
+                    {
+                        "text": {
+                            "en": "$A' \\cap (B \\cup C)$",
+                            "bm": "$A' \\cap (B \\cup C)$"
+                        },
+                        "correct": false
+                    }
                 ],
-                mamaPrompt: {
-                    en: "In a directed graph, total degree is the sum of in-degree and out-degree!",
-                    bm: "Dalam graf berarah, jumlah darjah ialah hasil tambah darjah masuk dan keluar!"
+                "mamaPrompt": {
+                    "en": "Outside set C is represented by C' (complement of C)!",
+                    "bm": "Kawasan luar set C diwakili oleh C' (pelengkap bagi C)!"
                 },
-                calcHint: {
-                    en: "d(V_1) = 3 + 2 = 5",
-                    bm: "d(V_1) = 3 + 2 = 5"
+                "calcHint": {
+                    "en": "(A \\cap B) \\setminus C = (A \\cap B) \\cap C'",
+                    "bm": "(A \\cap B) \\setminus C = (A \\cap B) \\cap C'"
                 }
             }
         ]
     },
     {
-        id: "k6-inequalities",
-        chapter: { en: "Chapter 6", bm: "Bab 6" },
-        topic: { en: "Linear Inequalities in Two Variables", bm: "Ketaksamaan Linear" },
-        dishName: { en: "Steamboat Sup Tulang", bm: "Sup Tulang Steamboat" },
-        icon: "🍲",
-        desc: {
-            en: "Balance beef (x) and mutton (y) ingredients within bounded feasible inequality regions!",
-            bm: "Pilih nisbah daging lembu (x) dan kambing (y) dalam rantau sepunya!"
+        "id": "k5-graphs",
+        "chapter": {
+            "en": "Chapter 5",
+            "bm": "Bab 5"
         },
-        stages: [
+        "topic": {
+            "en": "Network in Graph Theory",
+            "bm": "Rangkaian dalam Teori Graf"
+        },
+        "dishName": {
+            "en": "Mamak Mee Goreng Delivery",
+            "bm": "Mee Goreng Mamak Delivery"
+        },
+        "icon": "🍜",
+        "desc": {
+            "en": "Plan optimal food delivery routes using degree of vertices, Minimum Spanning Trees, and weighted graphs!",
+            "bm": "Rancang laluan penghantaran makanan terpantas menggunakan graf berpemberat dan pokok!"
+        },
+        "stages": [
             {
-                stepBadge: { en: "Step 1: Pot Capacity Constraint", bm: "Langkah 1: Had Muatan Periuk" },
-                title: { en: "Formulate Linear Inequality", bm: "Tentukan Ketaksamaan Bahan" },
-                mathTopic: { en: "Constructing Inequalities", bm: "Membina Ketaksamaan Linear" },
-                desc: {
-                    en: "The steamboat cauldron holds a maximum of $30\text{ kg}$ of meat. Beef is $x\text{ kg}$ and mutton is $y\text{ kg}$. Which inequality correctly represents this constraint?",
-                    bm: "Periuk besar Mama boleh memuatkan maksimum $30\text{ kg}$ daging. Berat daging lembu ialah $x\text{ kg}$ dan kambing $y\text{ kg}$. Ketaksamaan manakah yang betul?"
+                "stepBadge": {
+                    "en": "Step 1: Sum of Degrees in Graph",
+                    "bm": "Langkah 1: Bilangan Darjah Graf"
                 },
-                equation: "\text{Total Capacity} \le 30\text{ kg}",
-                type: "mcq",
-                options: [
-                    { text: { en: "$x + y \le 30$", bm: "$x + y \le 30$" }, correct: true },
-                    { text: { en: "$x + y \ge 30$", bm: "$x + y \ge 30$" }, correct: false },
-                    { text: { en: "$x + y < 30$", bm: "$x + y < 30$" }, correct: false }
-                ],
-                mamaPrompt: {
-                    en: "The keyword 'Maximum' means less than or equal to (≤)!",
-                    bm: "Kata kunci 'Maksimum' bermaksud kurang daripada atau sama dengan (≤)!"
+                "title": {
+                    "en": "Calculate Table Connectivity",
+                    "bm": "Hitung Sambungan Meja Warung"
                 },
-                calcHint: {
-                    en: "\text{Maximum of } 30 \implies x + y \le 30",
-                    bm: "\text{Maksimum } 30 \implies x + y \le 30"
+                "mathTopic": {
+                    "en": "Sum of Degrees: Σd(v) = 2E",
+                    "bm": "Jumlah Darjah Σd(v) = 2E"
+                },
+                "desc": {
+                    "en": "A dining network has $V = 5$ tables connected by $E = 6$ pathway edges. Calculate the sum of degrees $\\sum d(v)$ for this graph!",
+                    "bm": "Rangkaian warung mempunyai $V = 5$ meja (bucu) dengan $E = 6$ laluan tepi (edges). Hitung jumlah bilangan darjah $\\sum d(v)$ bagi graf ini!"
+                },
+                "equation": "\\sum d(v) = 2E \\quad (E = 6)",
+                "type": "slider",
+                "min": 4,
+                "max": 20,
+                "step": 1,
+                "default": 8,
+                "targetVal": 12,
+                "unit": {
+                    "en": "sum of degrees",
+                    "bm": "jumlah darjah"
+                },
+                "mamaPrompt": {
+                    "en": "Sum of degrees is always twice the number of edges: 2 × E!",
+                    "bm": "Jumlah darjah sentiasa dua kali ganda bilangan tepi: 2 × E!"
+                },
+                "calcHint": {
+                    "en": "\\sum d(v) = 2(6) = 12",
+                    "bm": "\\sum d(v) = 2(6) = 12"
                 }
             },
             {
-                stepBadge: { en: "Step 2: Feasible Coordinate Point", bm: "Langkah 2: Titik Koordinat Optimal" },
-                title: { en: "Test Region Coordinates", bm: "Uji Rantau Ketaksamaan" },
-                mathTopic: { en: "Satisfying Shaded Region", bm: "Memuaskan Rantau Ketaksamaan" },
-                desc: {
-                    en: "Given the soup richness inequality $2x + y \ge 10$. Which coordinate pair $(x, y)$ satisfies this region?",
-                    bm: "Diberi ketaksamaan $2x + y \ge 10$. Antara pasangan $(x, y)$ berikut, yang manakah memuaskan sistem ini?"
+                "stepBadge": {
+                    "en": "Step 2: Minimum Spanning Tree (MST)",
+                    "bm": "Langkah 2: Pokok Rentangan Minimum (MST)"
                 },
-                equation: "2x + y \ge 10",
-                type: "mcq",
-                options: [
-                    { text: { en: "$(4, 3)$", bm: "$(4, 3)$" }, correct: true },
-                    { text: { en: "$(2, 4)$", bm: "$(2, 4)$" }, correct: false },
-                    { text: { en: "$(1, 5)$", bm: "$(1, 5)$" }, correct: false }
+                "title": {
+                    "en": "Fastest Mee Delivery Tree",
+                    "bm": "Laluan Hantar Mee Terpendek"
+                },
+                "mathTopic": {
+                    "en": "Properties of a Tree (No cycles)",
+                    "bm": "Pokok (Trees) & Berat Minimum"
+                },
+                "desc": {
+                    "en": "For a connected delivery graph with $n = 5$ customer tables (vertices), how many edges ($E$) does a SPANNING TREE possess?",
+                    "bm": "Untuk graf dengan $n = 5$ meja (bucu), berapakah bilangan tepi ($E$) bagi suatu POKOK (tree)?"
+                },
+                "equation": "\\text{Tree with } n \\text{ vertices} \\implies E = n - 1",
+                "type": "mcq",
+                "options": [
+                    {
+                        "text": {
+                            "en": "$4\\text{ Edges } (E = n - 1)$",
+                            "bm": "$4\\text{ Tepi } (E = n - 1)$"
+                        },
+                        "correct": true
+                    },
+                    {
+                        "text": {
+                            "en": "$5\\text{ Edges } (E = n)$",
+                            "bm": "$5\\text{ Tepi } (E = n)$"
+                        },
+                        "correct": false
+                    },
+                    {
+                        "text": {
+                            "en": "$3\\text{ Edges } (E = n - 2)$",
+                            "bm": "$3\\text{ Tepi } (E = n - 2)$"
+                        },
+                        "correct": false
+                    }
                 ],
-                mamaPrompt: {
-                    en: "Substitute x and y into the inequality to verify!",
-                    bm: "Gantikan nilai x dan y ke dalam ketaksamaan!"
+                "mamaPrompt": {
+                    "en": "A tree connects all vertices without cycles: Edges = n - 1!",
+                    "bm": "Pokok menghubungkan semua bucu tanpa kitaran: Tepi = n - 1!"
                 },
-                calcHint: {
-                    en: "2(4) + 3 = 11 \ge 10 \quad \text{(Satisfies region)}",
-                    bm: "2(4) + 3 = 11 \ge 10 \quad \text{(Memuaskan rantau)}"
+                "calcHint": {
+                    "en": "E = n - 1 = 5 - 1 = 4\\text{ edges}",
+                    "bm": "E = n - 1 = 5 - 1 = 4\\text{ tepi}"
                 }
             },
             {
-                stepBadge: { en: "Step 3: Boundary Line Style", bm: "Langkah 3: Jenis Garis Sempadan" },
-                title: { en: "Strict Inequality Graphing", bm: "Garis Graf Ketaksamaan Ketat" },
-                mathTopic: { en: "Solid vs Dashed Lines", bm: "Garis Padu vs Garis Sempang" },
-                desc: {
-                    en: "When plotting the broth temperature condition $y > 2x + 4$ on a Cartesian plane, what line type and shading direction must be used?",
-                    bm: "Apabila melukis graf suhu kuah $y > 2x + 4$ pada satah Cartes, apakah jenis garis dan arah lorekan yang mesti digunakan?"
+                "stepBadge": {
+                    "en": "Step 3: Shortest Weighted Delivery",
+                    "bm": "Langkah 3: Laluan Berpemberat Terpendek"
                 },
-                equation: "y > 2x + 4",
-                type: "mcq",
-                options: [
-                    { text: { en: "$\text{Dashed line (sempang), shaded ABOVE}$", bm: "$\text{Garis sempang, lorek di ATAS}$" }, correct: true },
-                    { text: { en: "$\text{Solid line (padu), shaded ABOVE}$", bm: "$\text{Garis padu, lorek di ATAS}$" }, correct: false },
-                    { text: { en: "$\text{Solid line (padu), shaded BELOW}$", bm: "$\text{Garis padu, lorek di BAWAH}$" }, correct: false }
-                ],
-                mamaPrompt: {
-                    en: "Strict inequalities (> and <) do not include the boundary, so draw a dashed line!",
-                    bm: "Tanda ketaksamaan ketat (> dan <) gunakan garis sempang (putus-putus)!"
+                "title": {
+                    "en": "Find Minimum Distance Route",
+                    "bm": "Cari Jarak Laluan Minimum"
                 },
-                calcHint: {
-                    en: "> \implies \text{Dashed line, shaded above}",
-                    bm: "> \implies \text{Garis sempang, lorek atas}"
+                "mathTopic": {
+                    "en": "Weighted Graphs & Shortest Path",
+                    "bm": "Graf Berpemberat & Laluan Terpendek"
+                },
+                "desc": {
+                    "en": "A runner must deliver from Kitchen $K$ to Table $T$ via three weighted paths: Path 1: $4+5 = 9\\text{ m}$; Path 2: $3+4 = 7\\text{ m}$; Path 3: $2+6 = 8\\text{ m}$. Find the shortest distance!",
+                    "bm": "Penghantar memilih laluan berpemberat dari Dapur $K$ ke Meja $T$: Laluan 1: $4+5 = 9\\text{ m}$; Laluan 2: $3+4 = 7\\text{ m}$; Laluan 3: $2+6 = 8\\text{ m}$. Laraskan ke jarak terpendek!"
+                },
+                "equation": "\\text{Shortest Route} = \\min(9, 7, 8)",
+                "type": "slider",
+                "min": 3,
+                "max": 15,
+                "step": 1,
+                "default": 10,
+                "targetVal": 7,
+                "unit": {
+                    "en": "meters",
+                    "bm": "meter"
+                },
+                "mamaPrompt": {
+                    "en": "Compare the 3 route weights to find the minimum distance!",
+                    "bm": "Bandingkan 3 pemberat laluan untuk mencari jarak paling pendek!"
+                },
+                "calcHint": {
+                    "en": "\\min(9, 7, 8) = 7\\text{ m}",
+                    "bm": "\\min(9, 7, 8) = 7\\text{ m}"
                 }
             },
             {
-                stepBadge: { en: "Step 4: Maximum Profit at Vertex", bm: "Langkah 4: Keuntungan Maksimum Bucu" },
-                title: { en: "Optimize Objective Function", bm: "Optimumkan Fungsi Sasaran" },
-                mathTopic: { en: "Linear Programming Optimization", bm: "Pengoptimuman Rantau Sepunya" },
-                desc: {
-                    en: "At the optimal corner vertex $(x, y) = (4, 6)$ of the feasible region, profit is given by $P = 3x + 5y$. Calculate the maximum net profit in RM!",
-                    bm: "Pada titik bucu optimum $(x, y) = (4, 6)$ dalam rantau sepunya, keuntungan ialah $P = 3x + 5y$. Hitung keuntungan maksimum dalam RM!"
+                "stepBadge": {
+                    "en": "Step 4: Directed Graph In/Out Degrees",
+                    "bm": "Langkah 4: Graf Berarah (Darjah Masuk/Keluar)"
                 },
-                equation: "P = 3x + 5y \quad \text{at } (4, 6)",
-                type: "slider",
-                min: 20, max: 60, step: 1, default: 30,
-                targetVal: 42,
-                unit: { en: "RM profit", bm: "RM untung" },
-                mamaPrompt: {
-                    en: "Multiply x by 3 and y by 5, then add them together!",
-                    bm: "Darab x dengan 3 dan y dengan 5, kemudian jumlahkan!"
+                "title": {
+                    "en": "Total Degree of Junction Vertex",
+                    "bm": "Jumlah Darjah Bucu Persimpangan"
                 },
-                calcHint: {
-                    en: "P = 3(4) + 5(6) = 12 + 30 = 42",
-                    bm: "P = 3(4) + 5(6) = 12 + 30 = 42"
+                "mathTopic": {
+                    "en": "Directed Graphs: d(v) = din + dout",
+                    "bm": "Graf Berarah: d(v) = din + dout"
+                },
+                "desc": {
+                    "en": "At junction table $V_1$, there are $d_{in}(V_1) = 3$ incoming paths and $d_{out}(V_1) = 2$ outgoing paths. What is the total degree $d(V_1)$?",
+                    "bm": "Di meja persimpangan $V_1$, terdapat $d_{in}(V_1) = 3$ laluan masuk dan $d_{out}(V_1) = 2$ laluan keluar. Apakah jumlah darjah bucu $d(V_1)$?"
+                },
+                "equation": "d(V_1) = d_{in}(V_1) + d_{out}(V_1)",
+                "type": "mcq",
+                "options": [
+                    {
+                        "text": {
+                            "en": "$5\\text{ Degrees}$",
+                            "bm": "$5\\text{ Darjah}$"
+                        },
+                        "correct": true
+                    },
+                    {
+                        "text": {
+                            "en": "$6\\text{ Degrees}$",
+                            "bm": "$6\\text{ Darjah}$"
+                        },
+                        "correct": false
+                    },
+                    {
+                        "text": {
+                            "en": "$1\\text{ Degree}$",
+                            "bm": "$1\\text{ Darjah}$"
+                        },
+                        "correct": false
+                    }
+                ],
+                "mamaPrompt": {
+                    "en": "In a directed graph, total degree is the sum of in-degree and out-degree!",
+                    "bm": "Dalam graf berarah, jumlah darjah ialah hasil tambah darjah masuk dan keluar!"
+                },
+                "calcHint": {
+                    "en": "d(V_1) = 3 + 2 = 5",
+                    "bm": "d(V_1) = 3 + 2 = 5"
                 }
             }
         ]
     },
     {
-        id: "k7-motion",
-        chapter: { en: "Chapter 7", bm: "Bab 7" },
-        topic: { en: "Graphs of Motion", bm: "Graf Gerakan" },
-        dishName: { en: "Snow Ice Cendol & ABC", bm: "Cendol Durian & ABC Salji" },
-        icon: "🍧",
-        desc: {
-            en: "Calculate shaved ice distance from area under speed-time graphs, acceleration, and average speed!",
-            bm: "Kira luas bawah graf laju-masa, pecutan sirap, dan laju purata!"
+        "id": "k6-inequalities",
+        "chapter": {
+            "en": "Chapter 6",
+            "bm": "Bab 6"
         },
-        stages: [
+        "topic": {
+            "en": "Linear Inequalities in Two Variables",
+            "bm": "Ketaksamaan Linear Dua Pemboleh Ubah"
+        },
+        "dishName": {
+            "en": "Steamboat Sup Tulang",
+            "bm": "Sup Tulang Steamboat"
+        },
+        "icon": "🍲",
+        "desc": {
+            "en": "Balance beef (x) and mutton (y) ingredients within bounded feasible inequality regions!",
+            "bm": "Pilih nisbah daging lembu (x) dan kambing (y) dalam rantau sepunya!"
+        },
+        "stages": [
             {
-                stepBadge: { en: "Step 1: Shaved Ice Distance", bm: "Langkah 1: Sagat Ais (Jarak dari Luas)" },
-                title: { en: "Area Under Speed-Time Graph", bm: "Hitung Luas Bawah Graf Laju-Masa" },
-                mathTopic: { en: "Distance = Area Under Speed-Time Graph", bm: "Jarak = Luas Bawah Graf Laju-Masa" },
-                desc: {
-                    en: "The ice shaver spins at a constant speed of $v = 15\text{ cm/s}$ for $t = 4\text{ s}$ (forming a rectangle). What is the total rotation distance?",
-                    bm: "Mesin sagat ais berputar dengan laju malar $v = 15\text{ cm/s}$ selama $t = 4\text{ saat}$ (bentuk segi empat tepat). Berapakah jarak putaran sagatan?"
+                "stepBadge": {
+                    "en": "Step 1: Pot Capacity Constraint",
+                    "bm": "Langkah 1: Had Muatan Periuk"
                 },
-                equation: "\text{Distance} = \text{Area Under Graph} = v \times t",
-                type: "slider",
-                min: 20, max: 100, step: 5, default: 30,
-                targetVal: 60,
-                unit: { en: "cm shaving distance", bm: "cm jarak sagatan" },
-                mamaPrompt: {
-                    en: "Area of rectangle = length × width = 15 × 4!",
-                    bm: "Luas segi empat tepat = panjang × lebar = 15 × 4!"
+                "title": {
+                    "en": "Formulate Linear Inequality",
+                    "bm": "Tentukan Ketaksamaan Bahan"
                 },
-                calcHint: {
-                    en: "\text{Distance} = 15 \times 4 = 60\text{ cm}",
-                    bm: "\text{Jarak} = 15 \times 4 = 60\text{ cm}"
-                }
-            },
-            {
-                stepBadge: { en: "Step 2: Gula Melaka Acceleration", bm: "Langkah 2: Tuang Sirap Gula Melaka" },
-                title: { en: "Gradient of Speed-Time Graph", bm: "Kecerunan Graf = Pecutan" },
-                mathTopic: { en: "Acceleration = Gradient = (v - u) / t", bm: "Kecerunan Graf Laju-Masa" },
-                desc: {
-                    en: "Syrup flow speed accelerates from $u = 0\text{ m/s}$ to $v = 12\text{ m/s}$ over $t = 3\text{ s}$. Find the acceleration $a$!",
-                    bm: "Laju sirap meningkat dari $u = 0\text{ m/s}$ ke $v = 12\text{ m/s}$ dalam masa $t = 3\text{ saat}$. Cari kadar perubahan laju (pecutan) $a$!"
+                "mathTopic": {
+                    "en": "Constructing Inequalities",
+                    "bm": "Membina Ketaksamaan Linear"
                 },
-                equation: "a = \frac{v - u}{t}",
-                type: "mcq",
-                options: [
-                    { text: { en: "$4\text{ m s}^{-2}$", bm: "$4\text{ m s}^{-2}$" }, correct: true },
-                    { text: { en: "$6\text{ m s}^{-2}$", bm: "$6\text{ m s}^{-2}$" }, correct: false },
-                    { text: { en: "$36\text{ m s}^{-2}$", bm: "$36\text{ m s}^{-2}$" }, correct: false }
+                "desc": {
+                    "en": "The steamboat pot holds a maximum of $30\\text{ kg}$ of meat. Beef mass is $x\\text{ kg}$ and mutton mass is $y\\text{ kg}$. Which inequality correctly represents this constraint?",
+                    "bm": "Periuk besar Mama boleh memuatkan maksimum $30\\text{ kg}$ daging. Berat daging lembu ialah $x\\text{ kg}$ dan kambing $y\\text{ kg}$. Ketaksamaan manakah yang betul?"
+                },
+                "equation": "x + y \\le 30",
+                "type": "mcq",
+                "options": [
+                    {
+                        "text": {
+                            "en": "$x + y \\le 30$",
+                            "bm": "$x + y \\le 30$"
+                        },
+                        "correct": true
+                    },
+                    {
+                        "text": {
+                            "en": "$x + y \\ge 30$",
+                            "bm": "$x + y \\ge 30$"
+                        },
+                        "correct": false
+                    },
+                    {
+                        "text": {
+                            "en": "$x + y < 30$",
+                            "bm": "$x + y < 30$"
+                        },
+                        "correct": false
+                    }
                 ],
-                mamaPrompt: {
-                    en: "Divide change in velocity by elapsed time!",
-                    bm: "Bahagikan perubahan laju dengan perubahan masa!"
+                "mamaPrompt": {
+                    "en": "The keyword 'Maximum' or 'at most' means less than or equal to (≤)!",
+                    "bm": "Kata kunci 'Maksimum' atau 'selepas-lebihnya' bermaksud kurang daripada atau sama dengan (≤)!"
                 },
-                calcHint: {
-                    en: "a = \frac{12 - 0}{3} = 4\text{ m s}^{-2}",
-                    bm: "a = \frac{12 - 0}{3} = 4\text{ m s}^{-2}"
+                "calcHint": {
+                    "en": "\\text{Maximum of } 30\\text{ kg} \\implies x + y \\le 30",
+                    "bm": "\\text{Maksimum } 30\\text{ kg} \\implies x + y \\le 30"
                 }
             },
             {
-                stepBadge: { en: "Step 3: Average Speed of Delivery", bm: "Langkah 3: Laju Purata Penghantaran" },
-                title: { en: "Calculate Average Speed", bm: "Hitung Laju Purata" },
-                mathTopic: { en: "Average Speed = Total Distance / Total Time", bm: "Laju Purata = Jumlah Jarak / Jumlah Masa" },
-                desc: {
-                    en: "Mama's dessert scooter travels a total distance of $180\text{ m}$ in $9\text{ s}$. Set the dial to the average speed in $\text{m/s}$!",
-                    bm: "Skuter pencuci mulut Mama bergerak sejauh jumlah jarak $180\text{ m}$ dalam masa $9\text{ saat}$. Laraskan tombol ke laju purata dalam $\text{m/s}$!"
+                "stepBadge": {
+                    "en": "Step 2: Feasible Coordinate Point",
+                    "bm": "Langkah 2: Titik Koordinat Memuaskan"
                 },
-                equation: "\text{Average Speed} = \frac{\text{Total Distance}}{\text{Total Time}}",
-                type: "slider",
-                min: 5, max: 40, step: 1, default: 10,
-                targetVal: 20,
-                unit: { en: "m/s", bm: "m/s" },
-                mamaPrompt: {
-                    en: "Divide total distance by total time taken!",
-                    bm: "Bahagikan jumlah jarak dengan jumlah masa!"
+                "title": {
+                    "en": "Test Region Coordinates",
+                    "bm": "Uji Rantau Ketaksamaan"
                 },
-                calcHint: {
-                    en: "\text{Average Speed} = \frac{180}{9} = 20\text{ m/s}",
-                    bm: "\text{Laju Purata} = \frac{180}{9} = 20\text{ m/s}"
-                }
-            },
-            {
-                stepBadge: { en: "Step 4: Distance-Time Graph Interpretation", bm: "Langkah 4: Graf Jarak-Masa (s-t)" },
-                title: { en: "Interpret Horizontal Line in s-t Graph", bm: "Tafsir Garis Mendatar Graf s-t" },
-                mathTopic: { en: "Gradient of Distance-Time Graph = Speed", bm: "Kecerunan Graf Jarak-Masa = Laju" },
-                desc: {
-                    en: "On a Distance-Time graph ($s\text{-}t$), what physical state does a horizontal section (gradient = 0) represent?",
-                    bm: "Pada graf Jarak-Masa ($s\text{-}t$), apakah keadaan gerakan yang diwakili oleh bahagian garis lurus mendatar (kecerunan = 0)?"
+                "mathTopic": {
+                    "en": "Satisfying Shaded Region",
+                    "bm": "Memuaskan Rantau Ketaksamaan"
                 },
-                equation: "\frac{ds}{dt} = 0 \quad (s\text{-}t \text{ Graph})",
-                type: "mcq",
-                options: [
-                    { text: { en: "$\text{The vehicle is stationary / at rest (Speed} = 0)$", bm: "$\text{Kenderaan pegun / berhenti (Laju} = 0)$" }, correct: true },
-                    { text: { en: "$\text{Moving with uniform maximum acceleration}$", bm: "$\text{Bergerak dengan pecutan seragam}$" }, correct: false },
-                    { text: { en: "$\text{Moving in reverse gear}$", bm: "$\text{Bergerak mengundur ke belakang}$" }, correct: false }
+                "desc": {
+                    "en": "Given the rich broth recipe inequality $2x + y \\ge 10$. Which coordinate point $(x, y)$ satisfies this inequality?",
+                    "bm": "Diberi ketaksamaan kepekatan sup $2x + y \\ge 10$. Antara titik koordinat $(x, y)$ berikut, yang manakah memuaskan ketaksamaan ini?"
+                },
+                "equation": "2x + y \\ge 10",
+                "type": "mcq",
+                "options": [
+                    {
+                        "text": {
+                            "en": "$(4, 3)$",
+                            "bm": "$(4, 3)$"
+                        },
+                        "correct": true
+                    },
+                    {
+                        "text": {
+                            "en": "$(2, 4)$",
+                            "bm": "$(2, 4)$"
+                        },
+                        "correct": false
+                    },
+                    {
+                        "text": {
+                            "en": "$(1, 5)$",
+                            "bm": "$(1, 5)$"
+                        },
+                        "correct": false
+                    }
                 ],
-                mamaPrompt: {
-                    en: "If distance does not change over time, the vehicle is stationary!",
-                    bm: "Jika jarak tidak berubah mengikut masa, kenderaan sedang berhenti!"
+                "mamaPrompt": {
+                    "en": "Substitute x and y into 2x + y to test if the result is greater than or equal to 10!",
+                    "bm": "Gantikan nilai x dan y ke dalam 2x + y untuk semak adakah nilainya ≥ 10!"
                 },
-                calcHint: {
-                    en: "\text{Gradient of } s\text{-}t \text{ graph} = \text{Speed}. \; 0 \text{ gradient} \implies \text{stationary}.",
-                    bm: "\text{Kecerunan graf } s\text{-}t = \text{Laju}. \; \text{Kecerunan } 0 \implies \text{pegun}."
+                "calcHint": {
+                    "en": "2(4) + 3 = 11 \\ge 10 \\quad \\text{(Satisfies inequality)}",
+                    "bm": "2(4) + 3 = 11 \\ge 10 \\quad \\text{(Memuaskan ketaksamaan)}"
+                }
+            },
+            {
+                "stepBadge": {
+                    "en": "Step 3: Boundary Line Style",
+                    "bm": "Langkah 3: Jenis Garis Sempadan"
+                },
+                "title": {
+                    "en": "Strict Inequality Graphing",
+                    "bm": "Garis Graf Ketaksamaan Ketat"
+                },
+                "mathTopic": {
+                    "en": "Solid vs Dashed Lines",
+                    "bm": "Garis Padu vs Garis Sempang"
+                },
+                "desc": {
+                    "en": "When plotting the broth temperature condition $y > 2x + 4$ on a Cartesian plane, what line style and shading direction must be drawn?",
+                    "bm": "Apabila melukis graf keadaan suhu $y > 2x + 4$ pada satah Cartes, apakah jenis garis sempadan dan arah rantau yang dilorek?"
+                },
+                "equation": "y > 2x + 4",
+                "type": "mcq",
+                "options": [
+                    {
+                        "text": {
+                            "en": "$\\text{Dashed line (garis sempang), shaded ABOVE}$",
+                            "bm": "$\\text{Garis sempang (putus-putus), lorek di ATAS}$"
+                        },
+                        "correct": true
+                    },
+                    {
+                        "text": {
+                            "en": "$\\text{Solid line (garis padu), shaded ABOVE}$",
+                            "bm": "$\\text{Garis padu, lorek di ATAS}$"
+                        },
+                        "correct": false
+                    },
+                    {
+                        "text": {
+                            "en": "$\\text{Solid line (garis padu), shaded BELOW}$",
+                            "bm": "$\\text{Garis padu, lorek di BAWAH}$"
+                        },
+                        "correct": false
+                    }
+                ],
+                "mamaPrompt": {
+                    "en": "Strict inequalities (> and <) exclude the boundary: Draw a dashed line!",
+                    "bm": "Ketaksamaan ketat (> dan <) tidak termasuk sempadan: Lukis garis sempang!"
+                },
+                "calcHint": {
+                    "en": "> \\implies \\text{Dashed line, shaded above the line}",
+                    "bm": "> \\implies \\text{Garis sempang, lorek di bahagian atas}"
+                }
+            },
+            {
+                "stepBadge": {
+                    "en": "Step 4: Maximum Profit at Vertex",
+                    "bm": "Langkah 4: Keuntungan Maksimum Bucu"
+                },
+                "title": {
+                    "en": "Optimize Objective Function",
+                    "bm": "Optimumkan Fungsi Sasaran"
+                },
+                "mathTopic": {
+                    "en": "Linear Programming Optimization",
+                    "bm": "Pengoptimuman Rantau Sepunya"
+                },
+                "desc": {
+                    "en": "At the optimal feasible corner vertex $(x, y) = (4, 6)$, the profit formula is $P = 3x + 5y$. Calculate the maximum net profit in RM!",
+                    "bm": "Pada titik bucu optimum $(x, y) = (4, 6)$ dalam rantau sepunya, keuntungan diberi oleh $P = 3x + 5y$. Hitung keuntungan maksimum dalam RM!"
+                },
+                "equation": "P = 3x + 5y \\quad \\text{at } (4, 6)",
+                "type": "slider",
+                "min": 20,
+                "max": 60,
+                "step": 1,
+                "default": 30,
+                "targetVal": 42,
+                "unit": {
+                    "en": "RM profit",
+                    "bm": "RM untung"
+                },
+                "mamaPrompt": {
+                    "en": "Substitute x = 4 and y = 6 into P = 3(4) + 5(6)!",
+                    "bm": "Gantikan x = 4 dan y = 6 ke dalam P = 3(4) + 5(6)!"
+                },
+                "calcHint": {
+                    "en": "P = 3(4) + 5(6) = 12 + 30 = \\text{RM } 42",
+                    "bm": "P = 3(4) + 5(6) = 12 + 30 = \\text{RM } 42"
                 }
             }
         ]
     },
     {
-        id: "k8-dispersion",
-        chapter: { en: "Chapter 8", bm: "Bab 8" },
-        topic: { en: "Measures of Dispersion for Ungrouped Data", bm: "Sukatan Serakan Data Tak Terkumpul" },
-        dishName: { en: "Crispy Ayam Penyet & Sambal", bm: "Ayam Penyet Sambal Gesek" },
-        icon: "🍗",
-        desc: {
-            en: "Master range, interquartile range, and outlier detection across crispy fried chicken quality batches!",
-            bm: "Kira julat, julat antara kuartil, dan sukatan serakan adunan sambal penyet!"
+        "id": "k7-motion",
+        "chapter": {
+            "en": "Chapter 7",
+            "bm": "Bab 7"
         },
-        stages: [
+        "topic": {
+            "en": "Graphs of Motion",
+            "bm": "Graf Gerakan"
+        },
+        "dishName": {
+            "en": "Snow Ice Cendol & ABC",
+            "bm": "Cendol Durian & ABC Salji"
+        },
+        "icon": "🍧",
+        "desc": {
+            "en": "Calculate shaved ice distance from area under speed-time graphs, acceleration, and average speed!",
+            "bm": "Kira luas bawah graf laju-masa, pecutan sirap, dan laju purata!"
+        },
+        "stages": [
             {
-                stepBadge: { en: "Step 1: Range of Chili Heat", bm: "Langkah 1: Julat Kepedasan Cili" },
-                title: { en: "Calculate the Range of Data", bm: "Hitung Julat Skor Data" },
-                mathTopic: { en: "Range = Maximum - Minimum", bm: "Julat = Nilai Maksimum - Nilai Minimum" },
-                desc: {
-                    en: "Chili heat ratings across 5 test batches are: $12, 18, 25, 30, 42$. Calculate the Range of these heat ratings!",
-                    bm: "Skor kepedasan cili bagi 5 kumpulan adunan ialah: $12, 18, 25, 30, 42$. Hitung Julat bagi skor kepedasan ini!"
+                "stepBadge": {
+                    "en": "Step 1: Shaved Ice Distance",
+                    "bm": "Langkah 1: Sagat Ais (Jarak dari Luas)"
                 },
-                equation: "\text{Range} = \text{Maximum Value} - \text{Minimum Value}",
-                type: "slider",
-                min: 10, max: 50, step: 1, default: 20,
-                targetVal: 30,
-                unit: { en: "heat range score", bm: "skor julat pedas" },
-                mamaPrompt: {
-                    en: "Subtract the smallest data value from the largest value!",
-                    bm: "Tolak nilai terkecil daripada nilai terbesar!"
+                "title": {
+                    "en": "Area Under Speed-Time Graph",
+                    "bm": "Hitung Luas Bawah Graf Laju-Masa"
                 },
-                calcHint: {
-                    en: "\text{Range} = 42 - 12 = 30",
-                    bm: "\text{Julat} = 42 - 12 = 30"
+                "mathTopic": {
+                    "en": "Distance = Area Under Speed-Time Graph",
+                    "bm": "Jarak = Luas Bawah Graf Laju-Masa"
+                },
+                "desc": {
+                    "en": "The ice shaver spins at a constant speed of $v = 15\\text{ cm/s}$ for $t = 4\\text{ s}$ (forming a rectangle). Calculate the total rotation distance!",
+                    "bm": "Mesin sagat ais berputar dengan laju malar $v = 15\\text{ cm/s}$ selama $t = 4\\text{ saat}$ (bentuk segi empat tepat). Hitung jumlah jarak putaran sagatan!"
+                },
+                "equation": "\\text{Distance} = \\text{Area Under Graph} = v \\times t",
+                "type": "slider",
+                "min": 20,
+                "max": 100,
+                "step": 5,
+                "default": 30,
+                "targetVal": 60,
+                "unit": {
+                    "en": "cm distance",
+                    "bm": "cm jarak"
+                },
+                "mamaPrompt": {
+                    "en": "Distance = Area of rectangle = speed × time = 15 × 4!",
+                    "bm": "Jarak = Luas segi empat tepat = laju × masa = 15 × 4!"
+                },
+                "calcHint": {
+                    "en": "\\text{Distance} = 15 \\times 4 = 60\\text{ cm}",
+                    "bm": "\\text{Jarak} = 15 \\times 4 = 60\\text{ cm}"
                 }
             },
             {
-                stepBadge: { en: "Step 2: Interquartile Range (IQR)", bm: "Langkah 2: Julat Antara Kuartil (JAK)" },
-                title: { en: "Calculate Interquartile Range", bm: "Hitung Julat Antara Kuartil" },
-                mathTopic: { en: "IQR = Q3 - Q1", bm: "Julat Antara Kuartil = Q3 - Q1" },
-                desc: {
-                    en: "Spice weight quality test shows first quartile $Q_1 = 15\text{ g}$ and third quartile $Q_3 = 28\text{ g}$. Find the Interquartile Range ($IQR$)!",
-                    bm: "Ujian kualiti rempah menunjukkan kuartil pertama $Q_1 = 15\text{ g}$ dan kuartil ketiga $Q_3 = 28\text{ g}$. Cari Julat Antara Kuartil ($IQR$)!"
+                "stepBadge": {
+                    "en": "Step 2: Gula Melaka Acceleration",
+                    "bm": "Langkah 2: Tuang Sirap Gula Melaka"
                 },
-                equation: "IQR = Q_3 - Q_1",
-                type: "mcq",
-                options: [
-                    { text: { en: "$13\text{ g}$", bm: "$13\text{ g}$" }, correct: true },
-                    { text: { en: "$43\text{ g}$", bm: "$43\text{ g}$" }, correct: false },
-                    { text: { en: "$21.5\text{ g}$", bm: "$21.5\text{ g}$" }, correct: false }
+                "title": {
+                    "en": "Gradient of Speed-Time Graph",
+                    "bm": "Kecerunan Graf = Pecutan"
+                },
+                "mathTopic": {
+                    "en": "Acceleration = Gradient = (v - u) / t",
+                    "bm": "Kecerunan Graf Laju-Masa"
+                },
+                "desc": {
+                    "en": "Syrup flow speed accelerates from $u = 0\\text{ m/s}$ to $v = 12\\text{ m/s}$ in $t = 3\\text{ s}$. Find the acceleration $a$!",
+                    "bm": "Laju sirap memecut dari $u = 0\\text{ m/s}$ ke $v = 12\\text{ m/s}$ dalam masa $t = 3\\text{ saat}$. Cari kadar perubahan laju (pecutan) $a$!"
+                },
+                "equation": "a = \\frac{v - u}{t}",
+                "type": "mcq",
+                "options": [
+                    {
+                        "text": {
+                            "en": "$4\\text{ m s}^{-2}$",
+                            "bm": "$4\\text{ m s}^{-2}$"
+                        },
+                        "correct": true
+                    },
+                    {
+                        "text": {
+                            "en": "$6\\text{ m s}^{-2}$",
+                            "bm": "$6\\text{ m s}^{-2}$"
+                        },
+                        "correct": false
+                    },
+                    {
+                        "text": {
+                            "en": "$36\\text{ m s}^{-2}$",
+                            "bm": "$36\\text{ m s}^{-2}$"
+                        },
+                        "correct": false
+                    }
                 ],
-                mamaPrompt: {
-                    en: "Subtract Q1 from Q3 to get the interquartile range!",
-                    bm: "Tolak Q1 daripada Q3 untuk dapatkan julat antara kuartil!"
+                "mamaPrompt": {
+                    "en": "Acceleration = change in velocity divided by time: (12 - 0) / 3!",
+                    "bm": "Pecutan = perubahan laju bahagi masa: (12 - 0) / 3!"
                 },
-                calcHint: {
-                    en: "IQR = 28 - 15 = 13\text{ g}",
-                    bm: "IQR = 28 - 15 = 13\text{ g}"
+                "calcHint": {
+                    "en": "a = \\frac{12 - 0}{3} = 4\\text{ m s}^{-2}",
+                    "bm": "a = \\frac{12 - 0}{3} = 4\\text{ m s}^{-2}"
                 }
             },
             {
-                stepBadge: { en: "Step 3: Robustness to Outliers", bm: "Langkah 3: Kesan Nilai Pencilan (Outlier)" },
-                title: { en: "Select Outlier-Resistant Measure", bm: "Pilih Sukatan Kalis Pencilan" },
-                mathTopic: { en: "Effect of Outliers on Dispersion", bm: "Kesan Pencilan terhadap Sukatan Serakan" },
-                desc: {
-                    en: "Which measure of dispersion is LEAST influenced by extreme outlier values in a dataset?",
-                    bm: "Antara sukatan serakan berikut, yang manakah PALING KURANG dipengaruhi oleh nilai pencilan (outlier) melampau?"
+                "stepBadge": {
+                    "en": "Step 3: Average Speed of Delivery",
+                    "bm": "Langkah 3: Laju Purata Penghantaran"
                 },
-                equation: "\text{Robustness Against Extreme Outliers}",
-                type: "mcq",
-                options: [
-                    { text: { en: "$\text{Interquartile Range } (IQR)$", bm: "$\text{Julat Antara Kuartil } (IQR)$" }, correct: true },
-                    { text: { en: "$\text{Range (Julat)}$", bm: "$\text{Julat}$" }, correct: false },
-                    { text: { en: "$\text{Standard Deviation } (\sigma)$", bm: "$\text{Sisihan Piawai } (\sigma)$" }, correct: false }
+                "title": {
+                    "en": "Calculate Average Speed",
+                    "bm": "Hitung Laju Purata"
+                },
+                "mathTopic": {
+                    "en": "Average Speed = Total Distance / Total Time",
+                    "bm": "Laju Purata = Jumlah Jarak / Jumlah Masa"
+                },
+                "desc": {
+                    "en": "Mama's delivery scooter travels a total distance of $180\\text{ m}$ in $9\\text{ s}$. Calculate the average speed in $\\text{m/s}$!",
+                    "bm": "Skuter penghantaran bergerak sejauh jumlah jarak $180\\text{ m}$ dalam masa $9\\text{ saat}$. Hitung laju purata dalam $\\text{m/s}$!"
+                },
+                "equation": "\\text{Average Speed} = \\frac{\\text{Total Distance}}{\\text{Total Time}}",
+                "type": "slider",
+                "min": 5,
+                "max": 40,
+                "step": 1,
+                "default": 10,
+                "targetVal": 20,
+                "unit": {
+                    "en": "m/s",
+                    "bm": "m/s"
+                },
+                "mamaPrompt": {
+                    "en": "Divide total distance (180 m) by total time (9 s)!",
+                    "bm": "Bahagikan jumlah jarak (180 m) dengan jumlah masa (9 s)!"
+                },
+                "calcHint": {
+                    "en": "\\text{Average Speed} = \\frac{180}{9} = 20\\text{ m/s}",
+                    "bm": "\\text{Laju Purata} = \\frac{180}{9} = 20\\text{ m/s}"
+                }
+            },
+            {
+                "stepBadge": {
+                    "en": "Step 4: Distance-Time Graph Interpretation",
+                    "bm": "Langkah 4: Graf Jarak-Masa (s-t)"
+                },
+                "title": {
+                    "en": "Interpret Horizontal Line in s-t Graph",
+                    "bm": "Tafsir Garis Mendatar Graf s-t"
+                },
+                "mathTopic": {
+                    "en": "Gradient of Distance-Time Graph = Speed",
+                    "bm": "Kecerunan Graf Jarak-Masa = Laju"
+                },
+                "desc": {
+                    "en": "On a Distance-Time graph ($s\\text{-}t$), what physical state of motion is represented by a horizontal straight line (gradient = 0)?",
+                    "bm": "Pada graf Jarak-Masa ($s\\text{-}t$), apakah keadaan gerakan yang diwakili oleh garis lurus mendatar (kecerunan = 0)?"
+                },
+                "equation": "\\frac{ds}{dt} = 0 \\quad (s\\text{-}t \\text{ Graph})",
+                "type": "mcq",
+                "options": [
+                    {
+                        "text": {
+                            "en": "$\\text{The vehicle is stationary / at rest (Speed} = 0)$",
+                            "bm": "$\\text{Kenderaan pegun / berhenti (Laju} = 0)$"
+                        },
+                        "correct": true
+                    },
+                    {
+                        "text": {
+                            "en": "$\\text{Moving with uniform maximum acceleration}$",
+                            "bm": "$\\text{Bergerak dengan pecutan seragam}$"
+                        },
+                        "correct": false
+                    },
+                    {
+                        "text": {
+                            "en": "$\\text{Moving in reverse gear}$",
+                            "bm": "$\\text{Bergerak mengundur ke belakang}$"
+                        },
+                        "correct": false
+                    }
                 ],
-                mamaPrompt: {
-                    en: "IQR only looks at the middle 50% of the dataset, ignoring extreme outliers!",
-                    bm: "IQR hanya melihat 50% data di tengah, jadi tidak terjejas oleh pencilan!"
+                "mamaPrompt": {
+                    "en": "Gradient of a distance-time graph is speed. If gradient is zero, speed is zero!",
+                    "bm": "Kecerunan graf jarak-masa ialah laju. Bila kecerunan sifar, kenderaan pegun!"
                 },
-                calcHint: {
-                    en: "\text{IQR represents the middle 50\% and is resistant to outliers.}",
-                    bm: "\text{IQR mewakili 50\% data tengah dan tidak mudah dipengaruhi pencilan.}"
+                "calcHint": {
+                    "en": "\\text{Gradient of } s\\text{-}t \\text{ graph} = \\text{Speed}. \\; 0 \\text{ gradient} \\implies \\text{stationary}.",
+                    "bm": "\\text{Kecerunan graf } s\\text{-}t = \\text{Laju}. \\; \\text{Kecerunan } 0 \\implies \\text{pegun}."
                 }
             }
         ]
     },
     {
-        id: "k9-probability",
-        chapter: { en: "Chapter 9", bm: "Bab 9" },
-        topic: { en: "Probability of Combined Events", bm: "Kebarangkalian Peristiwa Bergabung" },
-        dishName: { en: "Teh Tarik Kaw & Kaya Toast", bm: "Teh Tarik Kaw & Roti Bakar" },
-        icon: "🧋",
-        desc: {
-            en: "Calculate independent combo drink probabilities, mutually exclusive orders, and complementary events!",
-            bm: "Hitung kebarangkalian peristiwa bersandar, tak bersandar, dan saling eksklusif!"
+        "id": "k8-dispersion",
+        "chapter": {
+            "en": "Chapter 8",
+            "bm": "Bab 8"
         },
-        stages: [
+        "topic": {
+            "en": "Measures of Dispersion for Ungrouped Data",
+            "bm": "Sukatan Serakan Data Tak Terkumpul"
+        },
+        "dishName": {
+            "en": "Crispy Ayam Penyet & Sambal",
+            "bm": "Ayam Penyet Sambal Gesek"
+        },
+        "icon": "🍗",
+        "desc": {
+            "en": "Master range, interquartile range, and outlier detection across crispy fried chicken quality batches!",
+            "bm": "Kira julat, julat antara kuartil, dan sukatan serakan adunan sambal penyet!"
+        },
+        "stages": [
             {
-                stepBadge: { en: "Step 1: Beverage Combo Probability", bm: "Langkah 1: Pilihan Minuman Pelanggan" },
-                title: { en: "Independent Combined Events", bm: "Peristiwa Tak Bersandar" },
-                mathTopic: { en: "P(A ∩ B) = P(A) × P(B)", bm: "P(A ∩ B) = P(A) × P(B)" },
-                desc: {
-                    en: "Probability of a patron picking Teh Tarik $P(A) = \frac{1}{2}$. Probability of picking Toast $P(B) = \frac{1}{3}$. What is the probability that a customer orders BOTH?",
-                    bm: "Kebarangkalian pelanggan memilih Teh Tarik $P(A) = \frac{1}{2}$. Kebarangkalian memilih Roti Bakar $P(B) = \frac{1}{3}$. Apakah kebarangkalian pelanggan memesan KEDUA-DUANYA?"
+                "stepBadge": {
+                    "en": "Step 1: Range of Chili Heat",
+                    "bm": "Langkah 1: Julat Kepedasan Cili"
                 },
-                equation: "P(A \cap B) = P(A) \times P(B)",
-                type: "mcq",
-                options: [
-                    { text: { en: "$\frac{1}{6} \text{ (16.7\%)}$", bm: "$\frac{1}{6} \text{ (16.7\%)}$" }, correct: true },
-                    { text: { en: "$\frac{5}{6} \text{ (83.3\%)}$", bm: "$\frac{5}{6} \text{ (83.3\%)}$" }, correct: false },
-                    { text: { en: "$\frac{2}{5} \text{ (40.0\%)}$", bm: "$\frac{2}{5} \text{ (40.0\%)}$" }, correct: false }
-                ],
-                mamaPrompt: {
-                    en: "For independent events: Multiply their individual probabilities!",
-                    bm: "Peristiwa tak bersandar: Darabkan kedua-dua kebarangkalian!"
+                "title": {
+                    "en": "Calculate the Range of Data",
+                    "bm": "Hitung Julat Skor Data"
                 },
-                calcHint: {
-                    en: "P(A \cap B) = \frac{1}{2} \times \frac{1}{3} = \frac{1}{6}",
-                    bm: "P(A \cap B) = \frac{1}{2} \times \frac{1}{3} = \frac{1}{6}"
+                "mathTopic": {
+                    "en": "Range = Maximum - Minimum",
+                    "bm": "Julat = Nilai Maksimum - Nilai Minimum"
+                },
+                "desc": {
+                    "en": "Chili heat ratings across 5 test batches are: $12, 18, 25, 30, 42$. Calculate the Range of these heat ratings!",
+                    "bm": "Skor kepedasan cili bagi 5 kumpulan adunan ialah: $12, 18, 25, 30, 42$. Hitung Julat bagi skor kepedasan ini!"
+                },
+                "equation": "\\text{Range} = \\text{Maximum Value} - \\text{Minimum Value}",
+                "type": "slider",
+                "min": 10,
+                "max": 50,
+                "step": 1,
+                "default": 20,
+                "targetVal": 30,
+                "unit": {
+                    "en": "heat range score",
+                    "bm": "skor julat pedas"
+                },
+                "mamaPrompt": {
+                    "en": "Subtract the minimum value (12) from the maximum value (42)!",
+                    "bm": "Tolak nilai minimum (12) daripada nilai maksimum (42)!"
+                },
+                "calcHint": {
+                    "en": "\\text{Range} = 42 - 12 = 30",
+                    "bm": "\\text{Julat} = 42 - 12 = 30"
                 }
             },
             {
-                stepBadge: { en: "Step 2: Mutually Exclusive Orders", bm: "Langkah 2: Peristiwa Saling Eksklusif" },
-                title: { en: "Addition Rule for Exclusive Events", bm: "Hukum Penambahan Peristiwa" },
-                mathTopic: { en: "P(A ∪ B) = P(A) + P(B)", bm: "P(A ∪ B) = P(A) + P(B)" },
-                desc: {
-                    en: "A diner can only choose ONE hot cup: Coffee ($P(C) = \frac{2}{5}$) OR Tea ($P(T) = \frac{1}{5}$). Since they cannot drink both simultaneously, what is $P(C \cup T)$?",
-                    bm: "Pelanggan hanya boleh pilih SATU cawan panas: Kopi ($P(C) = \frac{2}{5}$) ATAU Teh ($P(T) = \frac{1}{5}$). Kerana saling eksklusif, cari $P(C \cup T)$!",
+                "stepBadge": {
+                    "en": "Step 2: Interquartile Range (IQR)",
+                    "bm": "Langkah 2: Julat Antara Kuartil (JAK)"
                 },
-                equation: "P(C \cup T) = P(C) + P(T)",
-                type: "mcq",
-                options: [
-                    { text: { en: "$\frac{3}{5} \text{ (60\%)}$", bm: "$\frac{3}{5} \text{ (60\%)}$" }, correct: true },
-                    { text: { en: "$\frac{2}{25} \text{ (8\%)}$", bm: "$\frac{2}{25} \text{ (8\%)}$" }, correct: false },
-                    { text: { en: "$\frac{1}{5} \text{ (20\%)}$", bm: "$\frac{1}{5} \text{ (20\%)}$" }, correct: false }
+                "title": {
+                    "en": "Calculate Interquartile Range",
+                    "bm": "Hitung Julat Antara Kuartil"
+                },
+                "mathTopic": {
+                    "en": "IQR = Q3 - Q1",
+                    "bm": "Julat Antara Kuartil = Q3 - Q1"
+                },
+                "desc": {
+                    "en": "Spice weight test shows first quartile $Q_1 = 15\\text{ g}$ and third quartile $Q_3 = 28\\text{ g}$. Find the Interquartile Range ($IQR$)!",
+                    "bm": "Ujian berat rempah menunjukkan kuartil pertama $Q_1 = 15\\text{ g}$ dan kuartil ketiga $Q_3 = 28\\text{ g}$. Cari Julat Antara Kuartil ($IQR$)!"
+                },
+                "equation": "IQR = Q_3 - Q_1",
+                "type": "mcq",
+                "options": [
+                    {
+                        "text": {
+                            "en": "$13\\text{ g}$",
+                            "bm": "$13\\text{ g}$"
+                        },
+                        "correct": true
+                    },
+                    {
+                        "text": {
+                            "en": "$43\\text{ g}$",
+                            "bm": "$43\\text{ g}$"
+                        },
+                        "correct": false
+                    },
+                    {
+                        "text": {
+                            "en": "$21.5\\text{ g}$",
+                            "bm": "$21.5\\text{ g}$"
+                        },
+                        "correct": false
+                    }
                 ],
-                mamaPrompt: {
-                    en: "Mutually exclusive events cannot occur together: Simply sum the probabilities!",
-                    bm: "Peristiwa saling eksklusif tidak bertindih: Tambahkan kedua-dua kebarangkalian!"
+                "mamaPrompt": {
+                    "en": "Subtract Q1 (15) from Q3 (28) to find IQR!",
+                    "bm": "Tolak Q1 (15) daripada Q3 (28) untuk dapatkan IQR!"
                 },
-                calcHint: {
-                    en: "P(C \cup T) = \frac{2}{5} + \frac{1}{5} = \frac{3}{5}",
-                    bm: "P(C \cup T) = \frac{2}{5} + \frac{1}{5} = \frac{3}{5}"
+                "calcHint": {
+                    "en": "IQR = 28 - 15 = 13\\text{ g}",
+                    "bm": "IQR = 28 - 15 = 13\\text{ g}"
                 }
             },
             {
-                stepBadge: { en: "Step 3: Complementary Event (No Rain)", bm: "Langkah 3: Peristiwa Pelengkap (Cuaca)" },
-                title: { en: "Calculate Event Complement", bm: "Kira Kebarangkalian Pelengkap" },
-                mathTopic: { en: "P(A') = 1 - P(A)", bm: "Kebarangkalian Pelengkap P(A') = 1 - P(A)" },
-                desc: {
-                    en: "The weather forecast predicts a $P(R) = 0.35$ chance of rain at night. Find the probability that it DOES NOT rain, as a percentage ($100 \times P(R')$)!",
-                    bm: "Ramalan cuaca menjangka kebarangkalian hujan lebat ialah $P(R) = 0.35$. Cari kebarangkalian TIDAK hujan, dalam peratusan ($100 \times P(R')$)!"
+                "stepBadge": {
+                    "en": "Step 3: Robustness to Outliers",
+                    "bm": "Langkah 3: Kesan Nilai Pencilan (Outlier)"
                 },
-                equation: "P(R') = 1 - P(R)",
-                type: "slider",
-                min: 10, max: 100, step: 5, default: 50,
-                targetVal: 65,
-                unit: { en: "% probability", bm: "% kebarangkalian" },
-                mamaPrompt: {
-                    en: "Subtract probability of rain from 1, then multiply by 100%!",
-                    bm: "Tolak kebarangkalian hujan daripada 1, kemudian tukar ke peratus!"
+                "title": {
+                    "en": "Select Outlier-Resistant Measure",
+                    "bm": "Pilih Sukatan Kalis Pencilan"
                 },
-                calcHint: {
-                    en: "P(R') = 1 - 0.35 = 0.65 = 65\%",
-                    bm: "P(R') = 1 - 0.35 = 0.65 = 65\%"
+                "mathTopic": {
+                    "en": "Effect of Outliers on Dispersion",
+                    "bm": "Kesan Pencilan terhadap Sukatan Serakan"
+                },
+                "desc": {
+                    "en": "Which measure of dispersion is LEAST influenced by extreme outlier values in a dataset?",
+                    "bm": "Antara sukatan serakan berikut, yang manakah PALING KURANG dipengaruhi oleh nilai pencilan (outlier) melampau?"
+                },
+                "equation": "\\text{Robustness Against Extreme Outliers}",
+                "type": "mcq",
+                "options": [
+                    {
+                        "text": {
+                            "en": "$\\text{Interquartile Range } (IQR)$",
+                            "bm": "$\\text{Julat Antara Kuartil } (IQR)$"
+                        },
+                        "correct": true
+                    },
+                    {
+                        "text": {
+                            "en": "$\\text{Range (Julat)}$",
+                            "bm": "$\\text{Julat}$"
+                        },
+                        "correct": false
+                    },
+                    {
+                        "text": {
+                            "en": "$\\text{Standard Deviation } (\\sigma)$",
+                            "bm": "$\\text{Sisihan Piawai } (\\sigma)$"
+                        },
+                        "correct": false
+                    }
+                ],
+                "mamaPrompt": {
+                    "en": "IQR only measures the middle 50% of data, so it is resistant to extreme outliers!",
+                    "bm": "IQR hanya mengukur 50% data di tengah, jadi ia kebal daripada pencilan!"
+                },
+                "calcHint": {
+                    "en": "\\text{IQR represents the middle 50\\% and is resistant to outliers.}",
+                    "bm": "\\text{IQR mewakili 50\\% data tengah dan tidak mudah dipengaruhi pencilan.}"
                 }
             }
         ]
     },
     {
-        id: "k10-finance",
-        chapter: { en: "Chapter 10", bm: "Bab 10" },
-        topic: { en: "Financial Management", bm: "Pengurusan Kewangan" },
-        dishName: { en: "Golden Warung Franchise", bm: "Empayar Francais Warung" },
-        icon: "🏰",
-        desc: {
-            en: "Formulate SMART financial goals, assess monthly net cash flow, and manage restaurant investments!",
-            bm: "Bina matlamat kewangan SMART, nilai aliran tunai bulanan, dan kembangkan francais!"
+        "id": "k9-probability",
+        "chapter": {
+            "en": "Chapter 9",
+            "bm": "Bab 9"
         },
-        stages: [
+        "topic": {
+            "en": "Probability of Combined Events",
+            "bm": "Kebarangkalian Peristiwa Bergabung"
+        },
+        "dishName": {
+            "en": "Teh Tarik Kaw & Kaya Toast",
+            "bm": "Teh Tarik Kaw & Roti Bakar"
+        },
+        "icon": "🧋",
+        "desc": {
+            "en": "Calculate independent combo drink probabilities, mutually exclusive orders, and complementary events!",
+            "bm": "Hitung kebarangkalian peristiwa bersandar, tak bersandar, dan saling eksklusif!"
+        },
+        "stages": [
             {
-                stepBadge: { en: "Step 1: SMART Savings Goal", bm: "Langkah 1: Matlamat Kewangan SMART" },
-                title: { en: "Monthly Equipment Investment Plan", bm: "Pelan Simpanan Beli Mesin Pengisar" },
-                mathTopic: { en: "SMART Financial Goal Calculation", bm: "Matlamat Kewangan SMART" },
-                desc: {
-                    en: "Mama plans to purchase an automatic commercial tea blender costing $\text{RM } 1,200$ in $6\text{ months}$. What fixed monthly savings must she set aside?",
-                    bm: "Mama ingin membeli mesin pengisar automatik berharga $\text{RM } 1,200$ dalam tempoh $6\text{ bulan}$. Berapakah jumlah simpanan bulanan tetap yang perlu disimpan?"
+                "stepBadge": {
+                    "en": "Step 1: Beverage Combo Probability",
+                    "bm": "Langkah 1: Pilihan Minuman Pelanggan"
                 },
-                equation: "\text{Monthly Savings} = \frac{\text{Target Goal}}{\text{Total Months}}",
-                type: "slider",
-                min: 50, max: 400, step: 25, default: 100,
-                targetVal: 200,
-                unit: { en: "RM per month", bm: "RM sebulan" },
-                mamaPrompt: {
-                    en: "Divide total goal sum by total target months!",
-                    bm: "Bahagikan jumlah matlamat dengan bilangan bulan!"
+                "title": {
+                    "en": "Independent Combined Events",
+                    "bm": "Peristiwa Tak Bersandar"
                 },
-                calcHint: {
-                    en: "\text{Monthly Savings} = \frac{1200}{6} = \text{RM } 200",
-                    bm: "\text{Simpanan Bulanan} = \frac{1200}{6} = \text{RM } 200"
+                "mathTopic": {
+                    "en": "P(A ∩ B) = P(A) × P(B)",
+                    "bm": "P(A ∩ B) = P(A) × P(B)"
+                },
+                "desc": {
+                    "en": "Probability of a patron picking Teh Tarik is $P(A) = \\frac{1}{2}$. Probability of picking Toast is $P(B) = \\frac{1}{3}$. If choices are independent, what is the probability that a customer orders BOTH ($P(A \\cap B)$)?",
+                    "bm": "Kebarangkalian pelanggan memilih Teh Tarik ialah $P(A) = \\frac{1}{2}$. Kebarangkalian memilih Roti Bakar ialah $P(B) = \\frac{1}{3}$. Jika peristiwa tak bersandar, apakah kebarangkalian pelanggan memesan KEDUA-DUANYA ($P(A \\cap B)$)?"
+                },
+                "equation": "P(A \\cap B) = P(A) \\times P(B)",
+                "type": "mcq",
+                "options": [
+                    {
+                        "text": {
+                            "en": "$\\frac{1}{6} \\text{ (16.7\\%)}$",
+                            "bm": "$\\frac{1}{6} \\text{ (16.7\\%)}$"
+                        },
+                        "correct": true
+                    },
+                    {
+                        "text": {
+                            "en": "$\\frac{5}{6} \\text{ (83.3\\%)}$",
+                            "bm": "$\\frac{5}{6} \\text{ (83.3\\%)}$"
+                        },
+                        "correct": false
+                    },
+                    {
+                        "text": {
+                            "en": "$\\frac{2}{5} \\text{ (40.0\\%)}$",
+                            "bm": "$\\frac{2}{5} \\text{ (40.0\\%)}$"
+                        },
+                        "correct": false
+                    }
+                ],
+                "mamaPrompt": {
+                    "en": "For independent events: Multiply their individual probabilities: (1/2) × (1/3)!",
+                    "bm": "Peristiwa tak bersandar: Darabkan kedua-dua kebarangkalian: (1/2) × (1/3)!"
+                },
+                "calcHint": {
+                    "en": "P(A \\cap B) = \\frac{1}{2} \\times \\frac{1}{3} = \\frac{1}{6}",
+                    "bm": "P(A \\cap B) = \\frac{1}{2} \\times \\frac{1}{3} = \\frac{1}{6}"
                 }
             },
             {
-                stepBadge: { en: "Step 2: Monthly Net Cash Flow", bm: "Langkah 2: Aliran Tunai Bersih Bulanan" },
-                title: { en: "Calculate Net Cash Flow", bm: "Hitung Aliran Tunai Bersih" },
-                mathTopic: { en: "Net Cash Flow = Total Inflow - Total Outflow", bm: "Aliran Tunai Bersih = Jumlah Pendapatan - Jumlah Perbelanjaan" },
-                desc: {
-                    en: "Monthly Warung Revenue = $\text{RM } 4,500$. Fixed Operating Rent = $\text{RM } 2,200$. Variable Ingredients = $\text{RM } 1,300$. What is the net cash flow status?",
-                    bm: "Pendapatan francais bulanan = $\text{RM } 4,500$. Sewa premis tetap = $\text{RM } 2,200$. Kos bahan mentah berubah = $\text{RM } 1,300$. Apakah status aliran tunai bersih?"
+                "stepBadge": {
+                    "en": "Step 2: Mutually Exclusive Orders",
+                    "bm": "Langkah 2: Peristiwa Saling Eksklusif"
                 },
-                equation: "\text{Net Cash Flow} = \text{Total Inflow} - (\text{Fixed} + \text{Variable})",
-                type: "mcq",
-                options: [
-                    { text: { en: "$\text{Positive Cash Flow of } +\text{RM } 1,000$", bm: "$\text{Aliran Tunai Positif } +\text{RM } 1,000$" }, correct: true },
-                    { text: { en: "$\text{Negative Cash Flow of } -\text{RM } 1,000$", bm: "$\text{Aliran Tunai Negatif } -\text{RM } 1,000$" }, correct: false },
-                    { text: { en: "$\text{Deficit Cash Flow of } -\text{RM } 500$", bm: "$\text{Defisit Aliran Tunai } -\text{RM } 500$" }, correct: false }
+                "title": {
+                    "en": "Addition Rule for Exclusive Events",
+                    "bm": "Hukum Penambahan Peristiwa"
+                },
+                "mathTopic": {
+                    "en": "P(A ∪ B) = P(A) + P(B)",
+                    "bm": "P(A ∪ B) = P(A) + P(B)"
+                },
+                "desc": {
+                    "en": "A diner can only choose ONE hot drink: Coffee ($P(C) = \\frac{2}{5}$) OR Tea ($P(T) = \\frac{1}{5}$). Because they are mutually exclusive, find $P(C \\cup T)$!",
+                    "bm": "Pelanggan hanya boleh memilih SATU minuman panas: Kopi ($P(C) = \\frac{2}{5}$) ATAU Teh ($P(T) = \\frac{1}{5}$). Kerana saling eksklusif, cari $P(C \\cup T)$!"
+                },
+                "equation": "P(C \\cup T) = P(C) + P(T)",
+                "type": "mcq",
+                "options": [
+                    {
+                        "text": {
+                            "en": "$\\frac{3}{5} \\text{ (60\\%)}$",
+                            "bm": "$\\frac{3}{5} \\text{ (60\\%)}$"
+                        },
+                        "correct": true
+                    },
+                    {
+                        "text": {
+                            "en": "$\\frac{2}{25} \\text{ (8\\%)}$",
+                            "bm": "$\\frac{2}{25} \\text{ (8\\%)}$"
+                        },
+                        "correct": false
+                    },
+                    {
+                        "text": {
+                            "en": "$\\frac{1}{5} \\text{ (20\\%)}$",
+                            "bm": "$\\frac{1}{5} \\text{ (20\\%)}$"
+                        },
+                        "correct": false
+                    }
                 ],
-                mamaPrompt: {
-                    en: "Subtract total expenses (2200 + 1300 = 3500) from revenue 4500!",
-                    bm: "Tolak jumlah perbelanjaan (2200 + 1300 = 3500) daripada pendapatan 4500!"
+                "mamaPrompt": {
+                    "en": "Mutually exclusive events cannot occur together: Simply sum the probabilities!",
+                    "bm": "Peristiwa saling eksklusif tidak boleh berlaku serentak: Tambahkan kedua-dua kebarangkalian!"
                 },
-                calcHint: {
-                    en: "4500 - (2200 + 1300) = 4500 - 3500 = +\text{RM } 1,000",
-                    bm: "4500 - (2200 + 1300) = 4500 - 3500 = +\text{RM } 1,000"
+                "calcHint": {
+                    "en": "P(C \\cup T) = \\frac{2}{5} + \\frac{1}{5} = \\frac{3}{5}",
+                    "bm": "P(C \\cup T) = \\frac{2}{5} + \\frac{1}{5} = \\frac{3}{5}"
                 }
             },
             {
-                stepBadge: { en: "Step 3: SMART Acronym Concept", bm: "Langkah 3: Konsep Matlamat SMART" },
-                title: { en: "Identify SMART Goal Criteria", bm: "Kenal Pasti Ciri Matlamat SMART" },
-                mathTopic: { en: "SMART Concept (Specific, Measurable, Attainable, Realistic, Time-bound)", bm: "Konsep SMART dalam Pengurusan Kewangan" },
-                desc: {
-                    en: "In the SMART financial goal criteria ($S\text{-}M\text{-}A\text{-}R\text{-}T$), what does the letter 'M' stand for?",
-                    bm: "Dalam kriteria matlamat kewangan SMART ($S\text{-}M\text{-}A\text{-}R\text{-}T$), apakah maksud huruf 'M'?"
+                "stepBadge": {
+                    "en": "Step 3: Complementary Event (No Rain)",
+                    "bm": "Langkah 3: Peristiwa Pelengkap (Cuaca)"
                 },
-                equation: "\text{SMART: } S - M - A - R - T",
-                type: "mcq",
-                options: [
-                    { text: { en: "$\text{Measurable (Boleh diukur)}$", bm: "$\text{Boleh diukur (Measurable)}$" }, correct: true },
-                    { text: { en: "$\text{Manageable (Boleh diurus)}$", bm: "$\text{Boleh diurus (Manageable)}$" }, correct: false },
-                    { text: { en: "$\text{Monetary (Berasaskan wang)}$", bm: "$\text{Berasaskan wang (Monetary)}$" }, correct: false }
+                "title": {
+                    "en": "Calculate Event Complement",
+                    "bm": "Kira Kebarangkalian Pelengkap"
+                },
+                "mathTopic": {
+                    "en": "P(A') = 1 - P(A)",
+                    "bm": "Kebarangkalian Pelengkap P(A') = 1 - P(A)"
+                },
+                "desc": {
+                    "en": "The weather forecast predicts a $P(R) = 0.35$ chance of rain at night. Find the probability that it DOES NOT rain, as a percentage ($100 \\times P(R')$)!",
+                    "bm": "Ramalan cuaca menjangka kebarangkalian hujan lebat ialah $P(R) = 0.35$. Cari kebarangkalian TIDAK hujan, dalam peratusan ($100 \\times P(R')$)!"
+                },
+                "equation": "P(R') = 1 - P(R)",
+                "type": "slider",
+                "min": 10,
+                "max": 100,
+                "step": 5,
+                "default": 50,
+                "targetVal": 65,
+                "unit": {
+                    "en": "% probability",
+                    "bm": "% kebarangkalian"
+                },
+                "mamaPrompt": {
+                    "en": "Subtract probability of rain from 1: 1 - 0.35 = 0.65 = 65%!",
+                    "bm": "Tolak kebarangkalian hujan daripada 1: 1 - 0.35 = 0.65 = 65%!"
+                },
+                "calcHint": {
+                    "en": "P(R') = 1 - 0.35 = 0.65 = 65\\%",
+                    "bm": "P(R') = 1 - 0.35 = 0.65 = 65\\%"
+                }
+            }
+        ]
+    },
+    {
+        "id": "k10-finance",
+        "chapter": {
+            "en": "Chapter 10",
+            "bm": "Bab 10"
+        },
+        "topic": {
+            "en": "Financial Management",
+            "bm": "Pengurusan Kewangan"
+        },
+        "dishName": {
+            "en": "Golden Warung Franchise",
+            "bm": "Empayar Francais Warung"
+        },
+        "icon": "🏰",
+        "desc": {
+            "en": "Formulate SMART financial goals, assess monthly net cash flow, and manage restaurant investments!",
+            "bm": "Bina matlamat kewangan SMART, nilai aliran tunai bulanan, dan kembangkan francais!"
+        },
+        "stages": [
+            {
+                "stepBadge": {
+                    "en": "Step 1: SMART Savings Goal",
+                    "bm": "Langkah 1: Matlamat Kewangan SMART"
+                },
+                "title": {
+                    "en": "Monthly Equipment Investment Plan",
+                    "bm": "Pelan Simpanan Beli Mesin Pengisar"
+                },
+                "mathTopic": {
+                    "en": "SMART Financial Goal Calculation",
+                    "bm": "Matlamat Kewangan SMART"
+                },
+                "desc": {
+                    "en": "Mama plans to purchase an automatic commercial tea blender costing $\\text{RM } 1,200$ in $6\\text{ months}$. What fixed monthly savings must she set aside?",
+                    "bm": "Mama ingin membeli mesin pengisar automatik berharga $\\text{RM } 1,200$ dalam tempoh $6\\text{ bulan}$. Berapakah jumlah simpanan bulanan tetap yang perlu disimpan?"
+                },
+                "equation": "\\text{Monthly Savings} = \\frac{\\text{Target Goal}}{\\text{Total Months}}",
+                "type": "slider",
+                "min": 50,
+                "max": 400,
+                "step": 25,
+                "default": 100,
+                "targetVal": 200,
+                "unit": {
+                    "en": "RM per month",
+                    "bm": "RM sebulan"
+                },
+                "mamaPrompt": {
+                    "en": "Divide the target goal (RM 1200) by the number of months (6)!",
+                    "bm": "Bahagikan jumlah matlamat (RM 1200) dengan bilangan bulan (6)!"
+                },
+                "calcHint": {
+                    "en": "\\text{Monthly Savings} = \\frac{1200}{6} = \\text{RM } 200",
+                    "bm": "\\text{Simpanan Bulanan} = \\frac{1200}{6} = \\text{RM } 200"
+                }
+            },
+            {
+                "stepBadge": {
+                    "en": "Step 2: Monthly Net Cash Flow",
+                    "bm": "Langkah 2: Aliran Tunai Bersih Bulanan"
+                },
+                "title": {
+                    "en": "Calculate Net Cash Flow",
+                    "bm": "Hitung Aliran Tunai Bersih"
+                },
+                "mathTopic": {
+                    "en": "Net Cash Flow = Total Inflow - Total Outflow",
+                    "bm": "Aliran Tunai Bersih = Jumlah Pendapatan - Jumlah Perbelanjaan"
+                },
+                "desc": {
+                    "en": "Monthly Warung Revenue = $\\text{RM } 4,500$. Fixed Operating Rent = $\\text{RM } 2,200$. Variable Ingredients = $\\text{RM } 1,300$. What is the net cash flow status?",
+                    "bm": "Pendapatan francais bulanan = $\\text{RM } 4,500$. Sewa premis tetap = $\\text{RM } 2,200$. Kos bahan mentah berubah = $\\text{RM } 1,300$. Apakah status aliran tunai bersih?"
+                },
+                "equation": "\\text{Net Cash Flow} = \\text{Total Inflow} - (\\text{Fixed} + \\text{Variable})",
+                "type": "mcq",
+                "options": [
+                    {
+                        "text": {
+                            "en": "$\\text{Positive Cash Flow of } +\\text{RM } 1,000$",
+                            "bm": "$\\text{Aliran Tunai Positif } +\\text{RM } 1,000$"
+                        },
+                        "correct": true
+                    },
+                    {
+                        "text": {
+                            "en": "$\\text{Negative Cash Flow of } -\\text{RM } 1,000$",
+                            "bm": "$\\text{Aliran Tunai Negatif } -\\text{RM } 1,000$"
+                        },
+                        "correct": false
+                    },
+                    {
+                        "text": {
+                            "en": "$\\text{Deficit Cash Flow of } -\\text{RM } 500$",
+                            "bm": "$\\text{Defisit Aliran Tunai } -\\text{RM } 500$"
+                        },
+                        "correct": false
+                    }
                 ],
-                mamaPrompt: {
-                    en: "Goals must be quantifiable with numerical amounts: Measurable!",
-                    bm: "Matlamat mestilah boleh dihitung dengan angka: Boleh diukur (Measurable)!"
+                "mamaPrompt": {
+                    "en": "Total outflow is 2200 + 1300 = 3500. Net Cash Flow = 4500 - 3500!",
+                    "bm": "Jumlah perbelanjaan ialah 2200 + 1300 = 3500. Aliran tunai = 4500 - 3500!"
                 },
-                calcHint: {
-                    en: "\text{SMART: Specific, Measurable, Attainable, Realistic, Time-bound}",
-                    bm: "\text{SMART: Khusus (S), Boleh diukur (M), Boleh dicapai (A), Realistik (R), Tempoh masa (T)}"
+                "calcHint": {
+                    "en": "4500 - (2200 + 1300) = 4500 - 3500 = +\\text{RM } 1,000",
+                    "bm": "4500 - (2200 + 1300) = 4500 - 3500 = +\\text{RM } 1,000"
+                }
+            },
+            {
+                "stepBadge": {
+                    "en": "Step 3: SMART Acronym Concept",
+                    "bm": "Langkah 3: Konsep Matlamat SMART"
+                },
+                "title": {
+                    "en": "Identify SMART Goal Criteria",
+                    "bm": "Kenal Pasti Ciri Matlamat SMART"
+                },
+                "mathTopic": {
+                    "en": "SMART Concept (Specific, Measurable, Attainable, Realistic, Time-bound)",
+                    "bm": "Konsep SMART dalam Pengurusan Kewangan"
+                },
+                "desc": {
+                    "en": "In the SMART financial goal criteria ($S\\text{-}M\\text{-}A\\text{-}R\\text{-}T$), what does the letter 'M' stand for?",
+                    "bm": "Dalam kriteria matlamat kewangan SMART ($S\\text{-}M\\text{-}A\\text{-}R\\text{-}T$), apakah maksud huruf 'M'?"
+                },
+                "equation": "\\text{SMART: } S - M - A - R - T",
+                "type": "mcq",
+                "options": [
+                    {
+                        "text": {
+                            "en": "$\\text{Measurable (Boleh diukur)}$",
+                            "bm": "$\\text{Boleh diukur (Measurable)}$"
+                        },
+                        "correct": true
+                    },
+                    {
+                        "text": {
+                            "en": "$\\text{Manageable (Boleh diurus)}$",
+                            "bm": "$\\text{Boleh diurus (Manageable)}$"
+                        },
+                        "correct": false
+                    },
+                    {
+                        "text": {
+                            "en": "$\\text{Monetary (Berasaskan wang)}$",
+                            "bm": "$\\text{Berasaskan wang (Monetary)}$"
+                        },
+                        "correct": false
+                    }
+                ],
+                "mamaPrompt": {
+                    "en": "Goals must be quantifiable with numerical amounts: Measurable!",
+                    "bm": "Matlamat mestilah boleh dihitung dengan angka: Boleh diukur (Measurable)!"
+                },
+                "calcHint": {
+                    "en": "\\text{SMART: Specific, Measurable, Attainable, Realistic, Time-bound}",
+                    "bm": "\\text{SMART: Khusus (S), Boleh diukur (M), Boleh dicapai (A), Realistik (R), Tempoh masa (T)}"
                 }
             }
         ]

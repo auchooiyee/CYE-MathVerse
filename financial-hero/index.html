@@ -2,23 +2,32 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>Financial Hero: Smart Saver 2D - Form 4 Mathematics</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <!-- jsPDF CDN for PDF Result Export -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
     <style>
-        body {
+        html, body {
             font-family: 'Plus Jakarta Sans', sans-serif;
             background-color: #080c16;
             color: #f3f4f6;
             touch-action: manipulation;
             user-select: none;
             -webkit-user-select: none;
+            -webkit-touch-callout: none;
             overflow: hidden;
+            height: 100vh;
+            height: 100dvh;
+            max-height: 100dvh;
+            width: 100vw;
+            margin: 0;
+            padding: 0;
         }
         .font-tech {
             font-family: 'Orbitron', sans-serif;
@@ -29,8 +38,9 @@
         canvas {
             display: block;
             background: radial-gradient(circle at center, #172338 0%, #090e1a 100%);
-            border-radius: 14px;
+            border-radius: 12px;
             box-shadow: 0 12px 35px rgba(0, 0, 0, 0.6), 0 0 25px rgba(16, 185, 129, 0.15);
+            touch-action: none;
         }
         .glass-panel {
             background: rgba(13, 20, 36, 0.88);
@@ -55,6 +65,37 @@
         .glow-purple {
             box-shadow: 0 0 18px rgba(168, 85, 247, 0.45);
         }
+        .touch-btn {
+            touch-action: none;
+            -webkit-touch-callout: none;
+            user-select: none;
+            -webkit-user-select: none;
+        }
+        .touch-btn.pressed {
+            transform: scale(0.94);
+            background: rgba(16, 185, 129, 0.35) !important;
+            border-color: #34d399 !important;
+            box-shadow: 0 0 15px rgba(16, 185, 129, 0.5);
+        }
+        /* Compact mode for smartphone landscape orientation */
+        @media (max-height: 520px) and (orientation: landscape) {
+            body {
+                padding: 2px 6px !important;
+            }
+            header {
+                padding: 4px 10px !important;
+                border-radius: 8px !important;
+            }
+            footer {
+                padding: 2px 6px !important;
+            }
+            .landscape-compact-btn {
+                height: 2.6rem !important;
+            }
+            .landscape-hide {
+                display: none !important;
+            }
+        }
         /* Custom Scrollbar */
         ::-webkit-scrollbar {
             width: 6px;
@@ -76,134 +117,149 @@
         }
     </style>
 </head>
-<body class="h-screen w-screen flex flex-col justify-between p-2 md:p-3 select-none">
+<body class="flex flex-col justify-between p-1.5 sm:p-2 md:p-3 select-none">
 
     <!-- TOP HUD BAR -->
-    <header class="glass-panel w-full max-w-5xl mx-auto rounded-xl px-3.5 py-2.5 flex items-center justify-between z-10">
+    <header class="glass-panel w-full max-w-5xl mx-auto rounded-xl px-2 sm:px-3.5 py-1.5 sm:py-2.5 flex flex-wrap items-center justify-between gap-1.5 z-10 shrink-0">
         <!-- Logo / Title & Stage Select Trigger -->
-        <div class="flex items-center space-x-2.5">
-            <button id="btn-logo" class="w-10 h-10 rounded-xl bg-gradient-to-tr from-emerald-500 via-teal-400 to-cyan-400 flex items-center justify-center font-tech font-black text-slate-950 text-2xl shadow-lg hover:scale-105 transition cursor-pointer">
+        <div class="flex items-center space-x-2">
+            <button id="btn-logo" title="Home / Start Screen" class="w-8 h-8 sm:w-10 sm:h-10 rounded-lg sm:rounded-xl bg-gradient-to-tr from-emerald-500 via-teal-400 to-cyan-400 flex items-center justify-center font-tech font-black text-slate-950 text-lg sm:text-2xl shadow-lg hover:scale-105 transition cursor-pointer shrink-0">
                 $
             </button>
-            <div>
-                <div class="flex items-center space-x-2">
-                    <h1 class="font-tech text-sm md:text-base font-bold tracking-wider text-emerald-400">FINANCIAL HERO</h1>
-                    <span class="bg-emerald-500/20 text-emerald-300 text-xs font-bold px-2 py-0.5 rounded border border-emerald-500/30">SPM Form 4</span>
+            <div class="leading-tight">
+                <div class="flex items-center space-x-1.5">
+                    <h1 class="font-tech text-xs sm:text-sm md:text-base font-bold tracking-wider text-emerald-400">FINANCIAL HERO</h1>
+                    <span class="hidden md:inline-block bg-emerald-500/20 text-emerald-300 text-[10px] font-bold px-1.5 py-0.5 rounded border border-emerald-500/30">SPM Form 4</span>
                 </div>
-                <p class="text-xs text-slate-400 hidden sm:block">Chapter 10: Financial Management 2D Adventure</p>
+                <p class="text-[11px] text-slate-400 hidden lg:block">Chapter 10: Financial Management 2D Adventure</p>
             </div>
         </div>
 
         <!-- Gameplay Stats -->
-        <div class="flex items-center space-x-3 md:space-x-6">
+        <div class="flex items-center space-x-2 sm:space-x-4 md:space-x-6">
             <!-- Stage Selector Button -->
-            <button id="btn-open-stages" class="px-3 py-1.5 rounded-lg bg-slate-800/90 hover:bg-slate-700 border border-slate-600 text-center transition group">
-                <span class="text-xs uppercase tracking-wider text-slate-400 block font-semibold group-hover:text-cyan-300">Stage Map</span>
-                <span id="hud-level" class="font-tech text-sm md:text-base font-bold text-cyan-400 flex items-center justify-center gap-1">
-                    Stage 1 <span class="text-xs">▼</span>
+            <button id="btn-open-stages" class="px-2 sm:px-3 py-1 rounded-lg bg-slate-800/90 hover:bg-slate-700 border border-slate-600 text-center transition group cursor-pointer">
+                <span class="text-[9px] sm:text-[10px] uppercase tracking-wider text-slate-400 block font-semibold group-hover:text-cyan-300 landscape-hide">Stage Map</span>
+                <span id="hud-level" class="font-tech text-xs sm:text-sm md:text-base font-bold text-cyan-400 flex items-center justify-center gap-1">
+                    Stage 1 <span class="text-[10px]">▼</span>
                 </span>
             </button>
 
             <!-- Health Hearts -->
             <div class="text-center">
-                <span class="text-xs uppercase tracking-wider text-slate-400 block font-semibold">Health</span>
-                <div id="hud-health" class="flex space-x-0.5 text-base md:text-lg">
+                <span class="text-[9px] sm:text-[10px] uppercase tracking-wider text-slate-400 block font-semibold landscape-hide">Health</span>
+                <div id="hud-health" class="flex space-x-0.5 text-sm sm:text-base md:text-lg leading-none">
                     <span>❤️</span><span>❤️</span><span>❤️</span>
                 </div>
             </div>
 
             <!-- Active Buffs Indicator -->
-            <div id="hud-buff-container" class="hidden md:flex items-center space-x-1.5 min-w-[80px]">
-                <div id="hud-buff-badge" class="px-2.5 py-1 rounded-full text-xs font-bold bg-amber-500/20 text-amber-300 border border-amber-500/40 hidden">
+            <div id="hud-buff-container" class="flex items-center space-x-1">
+                <div id="hud-buff-badge" class="px-1.5 sm:px-2.5 py-0.5 sm:py-1 rounded-full text-[10px] sm:text-xs font-bold bg-amber-500/20 text-amber-300 border border-amber-500/40 hidden">
                     ⚡ 2X (8s)
                 </div>
-                <div id="hud-shield-badge" class="px-2.5 py-1 rounded-full text-xs font-bold bg-cyan-500/20 text-cyan-300 border border-cyan-500/40 hidden">
-                    🛡️ Shield
+                <div id="hud-shield-badge" class="px-1.5 sm:px-2.5 py-0.5 sm:py-1 rounded-full text-[10px] sm:text-xs font-bold bg-cyan-500/20 text-cyan-300 border border-cyan-500/40 hidden">
+                    🛡️
                 </div>
             </div>
 
             <!-- Savings Score -->
-            <div class="text-center">
-                <span class="text-xs uppercase tracking-wider text-slate-400 block font-semibold">Net Savings</span>
-                <span id="hud-savings" class="font-tech text-sm md:text-lg font-extrabold text-emerald-400">RM 0</span>
+            <div class="text-center min-w-[68px] sm:min-w-[85px]">
+                <span class="text-[9px] sm:text-[10px] uppercase tracking-wider text-slate-400 block font-semibold landscape-hide">Net Savings</span>
+                <span id="hud-savings" class="font-tech text-xs sm:text-sm md:text-lg font-extrabold text-emerald-400">RM 0</span>
             </div>
         </div>
 
         <!-- Utility Buttons -->
-        <div class="flex items-center space-x-2">
+        <div class="flex items-center space-x-1 sm:space-x-1.5">
             <!-- Live Balance Sheet Modal Trigger -->
-            <button id="btn-balance-sheet" title="View Financial Balance Sheet (B)" class="px-2.5 py-1.5 rounded-lg bg-emerald-950/80 hover:bg-emerald-900/90 border border-emerald-500/40 text-emerald-300 font-bold text-xs md:text-sm flex items-center space-x-1.5 transition cursor-pointer">
-                <span>📊</span> <span class="hidden lg:inline text-xs font-bold">Balance Sheet</span>
+            <button id="btn-balance-sheet" title="View Financial Balance Sheet (B)" class="px-2 sm:px-2.5 py-1.5 rounded-lg bg-emerald-950/80 hover:bg-emerald-900/90 border border-emerald-500/40 text-emerald-300 font-bold text-xs flex items-center space-x-1 transition cursor-pointer">
+                <span>📊</span> <span class="hidden xl:inline text-xs font-bold">Balance Sheet</span>
             </button>
-            <button id="btn-audio" title="Mute/Unmute Audio" class="w-9 h-9 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 flex items-center justify-center text-sm transition cursor-pointer">
+            <button id="btn-audio" title="Mute/Unmute Audio" class="w-8 h-8 sm:w-9 sm:h-9 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 flex items-center justify-center text-xs sm:text-sm transition cursor-pointer">
                 🔊
             </button>
-            <button id="btn-restart" title="Restart Level" class="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 font-semibold text-xs md:text-sm transition cursor-pointer">
-                ↺ Reset
+            <button id="btn-fullscreen" title="Toggle Fullscreen" class="w-8 h-8 sm:w-9 sm:h-9 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 flex items-center justify-center text-xs sm:text-sm transition cursor-pointer">
+                ⛶
+            </button>
+            <button id="btn-restart" title="Restart Level (Resets Money to RM 0)" class="px-2 sm:px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 font-semibold text-xs transition cursor-pointer">
+                ↺ <span class="hidden sm:inline">Reset</span>
             </button>
         </div>
     </header>
 
     <!-- MAIN GAME CANVAS WRAPPER -->
-    <main class="relative flex-1 w-full max-w-5xl mx-auto my-1 flex items-center justify-center overflow-hidden">
-        <canvas id="gameCanvas" class="w-full h-full max-h-[560px] object-contain border border-slate-800/80"></canvas>
+    <main id="canvas-container" class="relative flex-1 w-full max-w-5xl mx-auto my-1 flex items-center justify-center overflow-hidden min-h-0">
+        <canvas id="gameCanvas" class="border border-slate-800/80"></canvas>
 
         <!-- START OVERLAY -->
-        <div id="screen-start" class="absolute inset-0 glass-panel-glow rounded-xl flex flex-col items-center justify-center p-6 text-center z-20 overflow-y-auto">
-            <div class="inline-block p-4 rounded-2xl bg-gradient-to-tr from-emerald-500/20 to-cyan-500/20 border border-emerald-500/30 mb-3 animate-pulse-subtle">
-                <span class="text-5xl md:text-6xl">🚀</span>
+        <div id="screen-start" class="absolute inset-0 glass-panel-glow rounded-xl flex flex-col items-center justify-start sm:justify-center p-4 sm:p-6 text-center z-20 overflow-y-auto" style="touch-action: pan-y;">
+            <div class="inline-block p-3 sm:p-4 rounded-2xl bg-gradient-to-tr from-emerald-500/20 to-cyan-500/20 border border-emerald-500/30 mb-2 animate-pulse-subtle shrink-0">
+                <span class="text-3xl sm:text-5xl">🚀</span>
             </div>
-            <h2 class="font-tech text-3xl md:text-5xl font-black text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 via-teal-300 to-cyan-400 mb-2">
+            <h2 class="font-tech text-2xl sm:text-4xl md:text-5xl font-black text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 via-teal-300 to-cyan-400 mb-1.5">
                 FINANCIAL HERO 2D
             </h2>
-            <p class="text-sm md:text-base text-slate-300 max-w-xl mb-6 leading-relaxed">
-                Master <strong class="text-emerald-400">Form 4 Mathematics (Chapter 10: Financial Management)</strong> in an epic 6-stage arcade platformer! Calculate cash flows, eliminate debt traps, activate compound interest multipliers, and build your emergency fund!
+            <p class="text-xs sm:text-sm md:text-base text-slate-300 max-w-xl mb-3 sm:mb-4 leading-relaxed">
+                Master <strong class="text-emerald-400">Form 4 Mathematics (Chapter 10: Financial Management)</strong> in an epic 6-stage platformer! <span class="text-amber-300 font-semibold">Warning: If you die, your money resets to RM 0!</span>
             </p>
 
-            <div class="grid grid-cols-2 md:grid-cols-4 gap-3 w-full max-w-2xl text-left mb-6 text-sm">
-                <div class="bg-slate-800/80 p-3 rounded-xl border border-slate-700/80 flex items-center space-x-2.5">
-                    <span class="text-2xl">💎</span>
+            <!-- Student Info for Google Classroom Result Certificate -->
+            <div class="w-full max-w-md bg-slate-900/90 border border-emerald-500/30 rounded-xl p-3 mb-3 sm:mb-4 text-left">
+                <div class="text-[11px] font-bold uppercase tracking-wider text-emerald-400 mb-2 flex items-center justify-between">
+                    <span>🎓 Student Info (For Google Classroom Result)</span>
+                    <span class="text-[10px] text-slate-400 font-normal">Optional</span>
+                </div>
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-2">
+                    <input id="input-student-name" type="text" placeholder="Your Full Name" class="sm:col-span-2 px-3 py-2 rounded-lg bg-slate-950 border border-slate-700 text-slate-100 text-xs sm:text-sm focus:outline-none focus:border-emerald-400 select-text" style="user-select: text; -webkit-user-select: text;">
+                    <input id="input-student-class" type="text" placeholder="Class (e.g. 4S1)" class="px-3 py-2 rounded-lg bg-slate-950 border border-slate-700 text-slate-100 text-xs sm:text-sm focus:outline-none focus:border-emerald-400 select-text" style="user-select: text; -webkit-user-select: text;">
+                </div>
+            </div>
+
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-2 sm:gap-3 w-full max-w-2xl text-left mb-4 text-xs sm:text-sm">
+                <div class="bg-slate-800/80 p-2.5 sm:p-3 rounded-xl border border-slate-700/80 flex items-center space-x-2">
+                    <span class="text-xl sm:text-2xl">💎</span>
                     <div>
-                        <div class="font-bold text-emerald-400 text-xs md:text-sm">Income Gems</div>
-                        <div class="text-xs text-slate-400">Active & Passive Assets</div>
+                        <div class="font-bold text-emerald-400 text-xs">Income Gems</div>
+                        <div class="text-[11px] text-slate-400">Active & Passive</div>
                     </div>
                 </div>
-                <div class="bg-slate-800/80 p-3 rounded-xl border border-slate-700/80 flex items-center space-x-2.5">
-                    <span class="text-2xl">🛡️</span>
+                <div class="bg-slate-800/80 p-2.5 sm:p-3 rounded-xl border border-slate-700/80 flex items-center space-x-2">
+                    <span class="text-xl sm:text-2xl">🛡️</span>
                     <div>
-                        <div class="font-bold text-cyan-400 text-xs md:text-sm">Insurance Shield</div>
-                        <div class="text-xs text-slate-400">Hazard Hit Protection</div>
+                        <div class="font-bold text-cyan-400 text-xs">Insurance Shield</div>
+                        <div class="text-[11px] text-slate-400">Blocks 1 Hazard</div>
                     </div>
                 </div>
-                <div class="bg-slate-800/80 p-3 rounded-xl border border-slate-700/80 flex items-center space-x-2.5">
-                    <span class="text-2xl">⚡</span>
+                <div class="bg-slate-800/80 p-2.5 sm:p-3 rounded-xl border border-slate-700/80 flex items-center space-x-2">
+                    <span class="text-xl sm:text-2xl">⚡</span>
                     <div>
-                        <div class="font-bold text-amber-400 text-xs md:text-sm">Compound Surge</div>
-                        <div class="text-xs text-slate-400">2X Multiplier Boost</div>
+                        <div class="font-bold text-amber-400 text-xs">Compound Surge</div>
+                        <div class="text-[11px] text-slate-400">2X Multiplier</div>
                     </div>
                 </div>
-                <div class="bg-slate-800/80 p-3 rounded-xl border border-slate-700/80 flex items-center space-x-2.5">
-                    <span class="text-2xl">🧹</span>
+                <div class="bg-slate-800/80 p-2.5 sm:p-3 rounded-xl border border-slate-700/80 flex items-center space-x-2">
+                    <span class="text-xl sm:text-2xl">🧹</span>
                     <div>
-                        <div class="font-bold text-purple-400 text-xs md:text-sm">Debt Buster</div>
-                        <div class="text-xs text-slate-400">Destroy Debt Traps</div>
+                        <div class="font-bold text-purple-400 text-xs">Debt Buster</div>
+                        <div class="text-[11px] text-slate-400">Clears Traps</div>
                     </div>
                 </div>
             </div>
 
-            <div class="flex flex-wrap items-center justify-center gap-4">
-                <button id="btn-start" class="font-tech px-9 py-4 rounded-xl bg-gradient-to-r from-emerald-500 via-teal-500 to-cyan-500 hover:from-emerald-400 hover:to-cyan-400 text-slate-950 font-black text-sm md:text-base tracking-wider uppercase transition-all duration-200 transform hover:scale-105 glow-green cursor-pointer">
+            <div class="flex flex-wrap items-center justify-center gap-3 pb-2">
+                <button id="btn-start" class="font-tech px-7 sm:px-9 py-3 sm:py-4 rounded-xl bg-gradient-to-r from-emerald-500 via-teal-500 to-cyan-500 hover:from-emerald-400 hover:to-cyan-400 text-slate-950 font-black text-xs sm:text-base tracking-wider uppercase transition-all duration-200 transform hover:scale-105 glow-green cursor-pointer">
                     Start Mission ➔
                 </button>
-                <button id="btn-start-stages" class="font-tech px-7 py-4 rounded-xl bg-slate-800 hover:bg-slate-700 border border-slate-600 text-slate-200 font-bold text-sm md:text-base tracking-wider transition cursor-pointer">
+                <button id="btn-start-stages" class="font-tech px-5 sm:px-7 py-3 sm:py-4 rounded-xl bg-slate-800 hover:bg-slate-700 border border-slate-600 text-slate-200 font-bold text-xs sm:text-base tracking-wider transition cursor-pointer">
                     Select Stage (1-6)
                 </button>
             </div>
         </div>
 
         <!-- STAGE SELECT MODAL -->
-        <div id="modal-stages" class="hidden fixed inset-0 bg-slate-950/85 backdrop-blur-md flex items-center justify-center p-3 md:p-4 z-50 overflow-y-auto">
-            <div class="bg-slate-900 border border-slate-700 rounded-2xl max-w-2xl w-full p-5 md:p-6 shadow-2xl space-y-4 max-h-[92vh] overflow-y-auto my-auto">
+        <div id="modal-stages" class="hidden fixed inset-0 bg-slate-950/85 backdrop-blur-md flex items-center justify-center p-2 sm:p-4 z-50 overflow-y-auto" style="touch-action: pan-y;">
+            <div class="bg-slate-900 border border-slate-700 rounded-2xl max-w-2xl w-full p-4 sm:p-6 shadow-2xl space-y-4 max-h-[92dvh] overflow-y-auto my-auto">
                 <div class="flex justify-between items-center border-b border-slate-800 pb-3">
                     <div>
                         <h3 class="font-tech text-base md:text-xl font-bold text-emerald-400">STAGE MAP & CURRICULUM</h3>
@@ -214,7 +270,7 @@
                     </button>
                 </div>
 
-                <div id="stages-grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3.5">
+                <div id="stages-grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">
                     <!-- Dynamically generated stage cards -->
                 </div>
 
@@ -226,8 +282,8 @@
         </div>
 
         <!-- QUIZ MODAL POPUP -->
-        <div id="modal-quiz" class="hidden fixed inset-0 bg-slate-950/85 backdrop-blur-md flex items-center justify-center p-3 md:p-4 z-50 overflow-y-auto">
-            <div class="bg-slate-900 border border-slate-700 rounded-2xl max-w-xl w-full p-4 md:p-6 shadow-2xl space-y-3 max-h-[92vh] overflow-y-auto my-auto">
+        <div id="modal-quiz" class="hidden fixed inset-0 bg-slate-950/85 backdrop-blur-md flex items-center justify-center p-2 sm:p-4 z-50 overflow-y-auto" style="touch-action: pan-y;">
+            <div class="bg-slate-900 border border-slate-700 rounded-2xl max-w-xl w-full p-4 sm:p-6 shadow-2xl space-y-3 max-h-[92dvh] overflow-y-auto my-auto">
                 <div class="flex justify-between items-center border-b border-slate-800 pb-2.5">
                     <div class="flex items-center space-x-2">
                         <span class="w-2.5 h-2.5 rounded-full bg-cyan-400 animate-ping"></span>
@@ -236,7 +292,7 @@
                     <span id="quiz-number" class="text-xs md:text-sm bg-slate-800 border border-slate-700 text-slate-300 px-3 py-1 rounded-full font-code font-semibold">Q1 / 24</span>
                 </div>
 
-                <div class="bg-slate-950/80 p-3.5 md:p-4 rounded-xl border border-slate-800 space-y-1">
+                <div class="bg-slate-950/80 p-3 sm:p-4 rounded-xl border border-slate-800 space-y-1">
                     <span id="quiz-topic" class="text-xs uppercase font-bold text-emerald-400 tracking-wider block">Topic: Budgeting & SMART Goals</span>
                     <h3 id="quiz-question" class="text-sm md:text-base font-bold text-slate-100 leading-snug">
                         Question text goes here...
@@ -247,10 +303,10 @@
                     <!-- Option buttons dynamically generated -->
                 </div>
 
-                <div id="quiz-feedback" class="hidden p-3.5 md:p-4 rounded-xl text-sm font-semibold leading-relaxed border space-y-1.5 shadow-inner"></div>
+                <div id="quiz-feedback" class="hidden p-3 sm:p-4 rounded-xl text-xs sm:text-sm font-semibold leading-relaxed border space-y-1.5 shadow-inner"></div>
 
                 <div class="flex justify-end pt-1 pb-1">
-                    <button id="btn-quiz-continue" class="hidden font-tech px-7 py-3 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-400 hover:to-teal-400 text-slate-950 font-black text-xs md:text-sm uppercase tracking-wider transition transform hover:scale-105 shadow-xl cursor-pointer">
+                    <button id="btn-quiz-continue" class="hidden font-tech px-6 sm:px-7 py-3 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-400 hover:to-teal-400 text-slate-950 font-black text-xs md:text-sm uppercase tracking-wider transition transform hover:scale-105 shadow-xl cursor-pointer">
                         Continue Mission ➔
                     </button>
                 </div>
@@ -258,8 +314,8 @@
         </div>
 
         <!-- LIVE BALANCE SHEET DRAWER / MODAL -->
-        <div id="modal-balance-sheet" class="hidden fixed inset-0 bg-slate-950/85 backdrop-blur-md flex items-center justify-center p-3 md:p-4 z-50 overflow-y-auto">
-            <div class="bg-slate-900 border border-slate-700 rounded-2xl max-w-xl w-full p-5 md:p-6 shadow-2xl space-y-4 max-h-[92vh] overflow-y-auto my-auto">
+        <div id="modal-balance-sheet" class="hidden fixed inset-0 bg-slate-950/85 backdrop-blur-md flex items-center justify-center p-2 sm:p-4 z-50 overflow-y-auto" style="touch-action: pan-y;">
+            <div class="bg-slate-900 border border-slate-700 rounded-2xl max-w-xl w-full p-4 sm:p-6 shadow-2xl space-y-4 max-h-[92dvh] overflow-y-auto my-auto">
                 <div class="flex justify-between items-center border-b border-slate-800 pb-3">
                     <div class="flex items-center space-x-2.5">
                         <span class="text-2xl">📊</span>
@@ -358,20 +414,20 @@
         </div>
 
         <!-- STAGE CLEAR MODAL -->
-        <div id="screen-stageclear" class="hidden fixed inset-0 bg-slate-950/85 backdrop-blur-md flex items-center justify-center p-3 md:p-4 z-50 overflow-y-auto">
-            <div class="glass-panel-glow border border-emerald-500/30 rounded-2xl p-6 md:p-8 max-w-md w-full text-center flex flex-col items-center shadow-2xl my-auto">
-                <div class="text-5xl mb-2 animate-bounce">🎉</div>
-                <h2 class="font-tech text-2xl md:text-4xl font-black text-emerald-400 mb-1">STAGE CLEARED!</h2>
-                <p id="clear-stage-title" class="text-sm md:text-base text-slate-300 mb-3 font-semibold">Level Complete</p>
+        <div id="screen-stageclear" class="hidden fixed inset-0 bg-slate-950/85 backdrop-blur-md flex items-center justify-center p-2 sm:p-4 z-50 overflow-y-auto" style="touch-action: pan-y;">
+            <div class="glass-panel-glow border border-emerald-500/30 rounded-2xl p-5 sm:p-7 max-w-md w-full text-center flex flex-col items-center shadow-2xl my-auto max-h-[92dvh] overflow-y-auto">
+                <div class="text-4xl sm:text-5xl mb-1.5 animate-bounce">🎉</div>
+                <h2 class="font-tech text-2xl md:text-3xl font-black text-emerald-400 mb-1">STAGE CLEARED!</h2>
+                <p id="clear-stage-title" class="text-xs sm:text-sm text-slate-300 mb-2.5 font-semibold">Level Complete</p>
 
                 <!-- Star Rating Display -->
-                <div id="clear-stars-row" class="flex space-x-2 text-4xl mb-4">
+                <div id="clear-stars-row" class="flex space-x-2 text-3xl sm:text-4xl mb-3">
                     <span id="star-1" class="text-slate-600 transition duration-300">⭐</span>
                     <span id="star-2" class="text-slate-600 transition duration-300">⭐</span>
                     <span id="star-3" class="text-slate-600 transition duration-300">⭐</span>
                 </div>
 
-                <div class="bg-slate-900/90 border border-slate-800 rounded-xl p-5 w-full text-left space-y-2.5 mb-5 text-sm">
+                <div class="bg-slate-900/90 border border-slate-800 rounded-xl p-4 w-full text-left space-y-2 mb-4 text-xs sm:text-sm">
                     <div class="flex justify-between border-b border-slate-800/80 pb-1.5">
                         <span class="text-slate-400">Stage Savings Earned:</span>
                         <span id="clear-savings" class="font-bold text-emerald-400 font-code">RM 0</span>
@@ -385,16 +441,29 @@
                         <span id="clear-quiz" class="font-bold text-cyan-400 font-code">100%</span>
                     </div>
                     <div class="flex justify-between text-slate-300 pt-0.5">
-                        <span class="text-slate-400">Total Net Worth:</span>
+                        <span class="text-slate-400">Current Net Worth:</span>
                         <span id="clear-total-net" class="font-bold text-amber-300 font-code">RM 0</span>
                     </div>
                 </div>
 
-                <div class="flex space-x-3">
-                    <button id="btn-stage-map" class="font-tech px-6 py-3.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold text-xs md:text-sm uppercase tracking-wider transition cursor-pointer">
+                <!-- Quick Result Download Option (for students turning in stage progress) -->
+                <div class="w-full bg-slate-900/70 border border-slate-800 rounded-xl p-2.5 mb-4">
+                    <div class="text-[11px] text-slate-400 mb-2 font-medium">Turn in current progress to Google Classroom:</div>
+                    <div class="grid grid-cols-2 gap-2">
+                        <button id="btn-stage-pdf" class="px-3 py-2 rounded-lg bg-rose-500/20 hover:bg-rose-500/30 border border-rose-500/40 text-rose-200 font-bold text-xs flex items-center justify-center gap-1.5 transition cursor-pointer">
+                            <span>📄</span> <span>Download PDF</span>
+                        </button>
+                        <button id="btn-stage-img" class="px-3 py-2 rounded-lg bg-cyan-500/20 hover:bg-cyan-500/30 border border-cyan-500/40 text-cyan-200 font-bold text-xs flex items-center justify-center gap-1.5 transition cursor-pointer">
+                            <span>🖼️</span> <span>Download Image</span>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="flex space-x-3 w-full justify-center">
+                    <button id="btn-stage-map" class="font-tech px-5 py-3 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold text-xs sm:text-sm uppercase tracking-wider transition cursor-pointer">
                         Stage Map
                     </button>
-                    <button id="btn-next-stage" class="font-tech px-8 py-3.5 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-400 hover:to-teal-400 text-slate-950 font-black text-xs md:text-sm uppercase tracking-wider transition transform hover:scale-105 shadow-lg cursor-pointer">
+                    <button id="btn-next-stage" class="font-tech px-7 py-3 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-400 hover:to-teal-400 text-slate-950 font-black text-xs sm:text-sm uppercase tracking-wider transition transform hover:scale-105 shadow-lg cursor-pointer">
                         Next Stage ➔
                     </button>
                 </div>
@@ -402,64 +471,87 @@
         </div>
 
         <!-- GAME OVER MODAL -->
-        <div id="screen-gameover" class="hidden fixed inset-0 bg-slate-950/85 backdrop-blur-md flex items-center justify-center p-3 md:p-4 z-50 overflow-y-auto">
+        <div id="screen-gameover" class="hidden fixed inset-0 bg-slate-950/85 backdrop-blur-md flex items-center justify-center p-2 sm:p-4 z-50 overflow-y-auto" style="touch-action: pan-y;">
             <div class="glass-panel border border-red-500/40 rounded-2xl p-6 md:p-8 max-w-md w-full text-center flex flex-col items-center shadow-2xl my-auto">
-                <div class="text-6xl mb-2">💸</div>
-                <h2 class="font-tech text-3xl md:text-4xl font-black text-red-500 mb-2">FINANCIAL CRISIS</h2>
-                <p id="gameover-reason" class="text-sm md:text-base text-slate-300 max-w-md mb-6 leading-relaxed">
+                <div class="text-5xl sm:text-6xl mb-2">💸</div>
+                <h2 class="font-tech text-2xl sm:text-4xl font-black text-red-500 mb-2">FINANCIAL CRISIS</h2>
+                <p id="gameover-reason" class="text-xs sm:text-base text-slate-300 max-w-md mb-4 leading-relaxed">
                     Your financial health dropped to zero due to bad debt traps and negative cash flow!
                 </p>
-                <div class="flex space-x-4">
-                    <button id="btn-gameover-map" class="font-tech px-6 py-3.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold text-xs md:text-sm tracking-wider uppercase transition cursor-pointer">
+                <div class="w-full bg-red-950/60 border border-red-500/40 rounded-xl p-3 mb-5 text-xs sm:text-sm text-red-200 font-semibold">
+                    ⚠️ Bankruptcy Reset: Your accumulated money has been reset to <strong class="font-code text-white">RM 0</strong>.
+                </div>
+                <div class="flex space-x-3 sm:space-x-4">
+                    <button id="btn-gameover-map" class="font-tech px-5 sm:px-6 py-3.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold text-xs md:text-sm tracking-wider uppercase transition cursor-pointer">
                         Stage Map
                     </button>
-                    <button id="btn-retry" class="font-tech px-8 py-3.5 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-black text-xs md:text-sm tracking-wider uppercase transition transform hover:scale-105 cursor-pointer">
-                        Retry Level ↺
+                    <button id="btn-retry" class="font-tech px-6 sm:px-8 py-3.5 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-black text-xs md:text-sm tracking-wider uppercase transition transform hover:scale-105 cursor-pointer">
+                        Retry from RM 0 ↺
                     </button>
                 </div>
             </div>
         </div>
 
         <!-- GRAND VICTORY MODAL (ALL 6 STAGES COMPLETED) -->
-        <div id="screen-victory" class="hidden fixed inset-0 bg-slate-950/85 backdrop-blur-md flex items-center justify-center p-3 md:p-4 z-50 overflow-y-auto">
-            <div class="glass-panel-glow border border-cyan-500/30 rounded-2xl p-6 md:p-8 max-w-lg w-full text-center flex flex-col items-center shadow-2xl my-auto">
-                <div class="text-6xl mb-2 animate-bounce">🏆</div>
-                <h2 class="font-tech text-3xl md:text-5xl font-black text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 via-amber-300 to-cyan-300 mb-2">
+        <div id="screen-victory" class="hidden fixed inset-0 bg-slate-950/85 backdrop-blur-md flex items-center justify-center p-2 sm:p-4 z-50 overflow-y-auto" style="touch-action: pan-y;">
+            <div class="glass-panel-glow border border-cyan-500/30 rounded-2xl p-4 sm:p-7 max-w-lg w-full text-center flex flex-col items-center shadow-2xl my-auto max-h-[94dvh] overflow-y-auto">
+                <div class="text-4xl sm:text-5xl mb-1 animate-bounce">🏆</div>
+                <h2 class="font-tech text-2xl sm:text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 via-amber-300 to-cyan-300 mb-1">
                     FINANCIAL FREEDOM MASTER!
                 </h2>
-                <p class="text-sm md:text-base text-slate-300 mb-4 max-w-lg">
-                    Congratulations! You have completed all 6 stages of Form 4 Mathematics Chapter 10: Financial Management with distinction!
+                <p class="text-xs sm:text-sm text-slate-300 mb-3 max-w-lg">
+                    Congratulations! You have completed all 6 stages of Form 4 Mathematics Chapter 10: Financial Management!
                 </p>
 
-                <div class="bg-slate-900/90 border border-slate-800 rounded-xl p-5 w-full text-left space-y-2.5 mb-6 text-sm md:text-base">
-                    <div class="flex justify-between border-b border-slate-800 pb-2">
-                        <span class="text-slate-400">Total Net Worth Accumulated:</span>
-                        <span id="vic-savings" class="font-bold text-emerald-400 font-code text-base md:text-lg">RM 0</span>
+                <div class="bg-slate-900/90 border border-slate-800 rounded-xl p-3.5 sm:p-4 w-full text-left space-y-2 mb-3.5 text-xs sm:text-sm">
+                    <div class="flex justify-between border-b border-slate-800 pb-1.5">
+                        <span class="text-slate-400">Final Net Worth Accumulated:</span>
+                        <span id="vic-savings" class="font-bold text-emerald-400 font-code text-sm sm:text-base">RM 0</span>
                     </div>
-                    <div class="flex justify-between border-b border-slate-800 pb-2">
+                    <div class="flex justify-between border-b border-slate-800 pb-1.5">
                         <span class="text-slate-400">Overall Quiz Accuracy:</span>
                         <span id="vic-accuracy" class="font-bold text-cyan-400 font-code">0%</span>
                     </div>
-                    <div class="flex justify-between border-b border-slate-800 pb-2">
+                    <div class="flex justify-between border-b border-slate-800 pb-1.5">
                         <span class="text-slate-400">Total Stars Achieved:</span>
                         <span id="vic-stars" class="font-bold text-amber-400 font-code">18 / 18 ⭐</span>
                     </div>
-                    <div class="flex justify-between border-b border-slate-800 pb-2">
+                    <div class="flex justify-between border-b border-slate-800 pb-1.5">
                         <span class="text-slate-400">Financial Advisor Grade:</span>
                         <span id="vic-grade" class="font-bold text-yellow-300">Chartered Financial Master</span>
                     </div>
-                    <div class="pt-2">
-                        <p class="text-xs md:text-sm text-slate-400 leading-relaxed italic" id="vic-eval">
+                    <div class="pt-1">
+                        <p class="text-[11px] sm:text-xs text-slate-400 leading-relaxed italic" id="vic-eval">
                             Outstanding grasp of financial planning, compounding assets, emergency buffers, and debt management!
                         </p>
                     </div>
                 </div>
 
-                <div class="flex space-x-4">
-                    <button id="btn-vic-stages" class="font-tech px-7 py-3.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 font-bold text-xs md:text-sm uppercase tracking-wider transition cursor-pointer">
+                <!-- GOOGLE CLASSROOM SUBMISSION SECTION -->
+                <div class="w-full bg-emerald-950/40 border border-emerald-500/40 rounded-xl p-3.5 mb-4 text-left space-y-2.5">
+                    <div class="flex items-center justify-between">
+                        <span class="font-tech text-xs sm:text-sm font-bold text-emerald-300">📥 TURN IN TO GOOGLE CLASSROOM</span>
+                        <span class="text-[10px] bg-emerald-500/20 text-emerald-300 px-2 py-0.5 rounded border border-emerald-500/30 font-semibold">Official Report</span>
+                    </div>
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-2">
+                        <input id="vic-student-name" type="text" placeholder="Enter Student Full Name" class="sm:col-span-2 px-3 py-2 rounded-lg bg-slate-950 border border-slate-700 text-slate-100 text-xs sm:text-sm focus:outline-none focus:border-emerald-400 select-text" style="user-select: text; -webkit-user-select: text;">
+                        <input id="vic-student-class" type="text" placeholder="Class (e.g. 4S1)" class="px-3 py-2 rounded-lg bg-slate-950 border border-slate-700 text-slate-100 text-xs sm:text-sm focus:outline-none focus:border-emerald-400 select-text" style="user-select: text; -webkit-user-select: text;">
+                    </div>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 pt-1">
+                        <button id="btn-download-pdf" class="font-tech px-4 py-3 rounded-xl bg-gradient-to-r from-rose-500 to-amber-500 hover:from-rose-400 hover:to-amber-400 text-slate-950 font-black text-xs uppercase tracking-wider flex items-center justify-center space-x-2 shadow-lg transition transform hover:scale-[1.02] cursor-pointer">
+                            <span>📄</span> <span>Download PDF Report</span>
+                        </button>
+                        <button id="btn-download-img" class="font-tech px-4 py-3 rounded-xl bg-gradient-to-r from-cyan-500 to-emerald-500 hover:from-cyan-400 hover:to-emerald-400 text-slate-950 font-black text-xs uppercase tracking-wider flex items-center justify-center space-x-2 shadow-lg transition transform hover:scale-[1.02] cursor-pointer">
+                            <span>🖼️</span> <span>Download Image (PNG)</span>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="flex space-x-3 w-full justify-center">
+                    <button id="btn-vic-stages" class="font-tech px-5 py-3 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 font-bold text-xs uppercase tracking-wider transition cursor-pointer">
                         Stage Select
                     </button>
-                    <button id="btn-play-again" class="font-tech px-9 py-3.5 rounded-xl bg-gradient-to-r from-emerald-500 via-teal-500 to-cyan-500 text-slate-950 font-black text-xs md:text-sm uppercase tracking-wider transition transform hover:scale-105 shadow-lg cursor-pointer">
+                    <button id="btn-play-again" class="font-tech px-6 py-3 rounded-xl bg-slate-700 hover:bg-slate-600 text-emerald-300 border border-emerald-500/40 font-black text-xs uppercase tracking-wider transition cursor-pointer">
                         Replay Campaign ↺
                     </button>
                 </div>
@@ -467,32 +559,32 @@
         </div>
     </main>
 
-    <!-- MOBILE / TOUCH CONTROLS -->
-    <footer class="w-full max-w-5xl mx-auto flex justify-between items-center px-2 py-1.5 z-10 select-none">
-        <!-- Directional Touch Buttons -->
-        <div class="flex space-x-2.5">
-            <button id="btn-left" class="w-13 h-13 md:w-16 md:h-16 rounded-xl glass-panel active:bg-emerald-500/30 text-white font-bold text-xl flex items-center justify-center border border-slate-700 transition cursor-pointer">
+    <!-- MOBILE / TABLET / DESKTOP CONTROLS BAR -->
+    <footer class="w-full max-w-5xl mx-auto flex justify-between items-center px-2 py-1 z-10 select-none shrink-0">
+        <!-- Directional Touch / Click Buttons -->
+        <div class="flex space-x-2 sm:space-x-3">
+            <button id="btn-left" aria-label="Move Left" class="touch-btn landscape-compact-btn w-14 h-12 sm:w-16 sm:h-14 md:w-16 md:h-15 rounded-xl glass-panel text-white font-bold text-xl sm:text-2xl flex items-center justify-center border border-slate-600 transition cursor-pointer shadow-md">
                 ◀
             </button>
-            <button id="btn-right" class="w-13 h-13 md:w-16 md:h-16 rounded-xl glass-panel active:bg-emerald-500/30 text-white font-bold text-xl flex items-center justify-center border border-slate-700 transition cursor-pointer">
+            <button id="btn-right" aria-label="Move Right" class="touch-btn landscape-compact-btn w-14 h-12 sm:w-16 sm:h-14 md:w-16 md:h-15 rounded-xl glass-panel text-white font-bold text-xl sm:text-2xl flex items-center justify-center border border-slate-600 transition cursor-pointer shadow-md">
                 ▶
             </button>
         </div>
 
         <div class="text-xs md:text-sm text-slate-300 hidden md:block text-center font-medium">
-            Controls: <span class="bg-slate-800 px-2 py-0.5 rounded text-emerald-300 font-bold">A / ◀</span> Move Left &bull; 
-            <span class="bg-slate-800 px-2 py-0.5 rounded text-emerald-300 font-bold">D / ▶</span> Move Right &bull; 
+            Controls: <span class="bg-slate-800 px-2 py-0.5 rounded text-emerald-300 font-bold">A / ◀</span> Left &bull; 
+            <span class="bg-slate-800 px-2 py-0.5 rounded text-emerald-300 font-bold">D / ▶</span> Right &bull; 
             <span class="bg-slate-800 px-2 py-0.5 rounded text-cyan-300 font-bold">Space / W / ▲</span> Jump &bull; 
             <span class="bg-slate-800 px-2 py-0.5 rounded text-amber-300 font-bold">B</span> Balance Sheet
         </div>
 
         <!-- Jump Touch Button & Quick Balance Sheet Button -->
-        <div class="flex space-x-2.5">
-            <button id="btn-touch-bs" class="w-13 h-13 md:hidden rounded-xl glass-panel text-emerald-300 font-bold text-base flex items-center justify-center border border-emerald-500/40 cursor-pointer">
+        <div class="flex space-x-2 sm:space-x-2.5">
+            <button id="btn-touch-bs" aria-label="Balance Sheet" class="touch-btn landscape-compact-btn w-12 h-12 sm:w-14 sm:h-14 md:hidden rounded-xl glass-panel text-emerald-300 font-bold text-lg flex items-center justify-center border border-emerald-500/40 cursor-pointer shadow-md">
                 📊
             </button>
-            <button id="btn-jump" class="w-20 h-13 md:w-24 md:h-16 rounded-xl bg-gradient-to-tr from-emerald-600 via-teal-500 to-cyan-500 active:from-emerald-500 active:to-cyan-400 text-slate-950 font-tech font-extrabold text-sm md:text-base flex items-center justify-center shadow-lg border border-emerald-400/30 transition cursor-pointer">
-                JUMP
+            <button id="btn-jump" aria-label="Jump" class="touch-btn landscape-compact-btn w-24 h-12 sm:w-28 sm:h-14 md:w-28 md:h-15 rounded-xl bg-gradient-to-tr from-emerald-600 via-teal-500 to-cyan-500 text-slate-950 font-tech font-extrabold text-sm sm:text-base flex items-center justify-center shadow-lg border border-emerald-400/40 transition cursor-pointer">
+                JUMP ▲
             </button>
         </div>
     </footer>
@@ -860,20 +952,27 @@
         const V_HEIGHT = 540;
 
         function resizeCanvas() {
-            const container = canvas.parentElement;
+            const container = document.getElementById('canvas-container') || canvas.parentElement;
+            if (!container) return;
             const aspect = V_WIDTH / V_HEIGHT;
-            let w = container.clientWidth;
+            const availW = Math.max(240, container.clientWidth - 4);
+            const availH = Math.max(140, container.clientHeight - 4);
+            let w = availW;
             let h = w / aspect;
 
-            if (h > container.clientHeight) {
-                h = container.clientHeight;
+            if (h > availH) {
+                h = availH;
                 w = h * aspect;
             }
 
             canvas.width = V_WIDTH;
             canvas.height = V_HEIGHT;
+            canvas.style.width = `${Math.floor(w)}px`;
+            canvas.style.height = `${Math.floor(h)}px`;
         }
         window.addEventListener('resize', resizeCanvas);
+        window.addEventListener('orientationchange', () => setTimeout(resizeCanvas, 150));
+        document.addEventListener('fullscreenchange', () => setTimeout(resizeCanvas, 150));
         resizeCanvas();
 
         // Game Stages Configuration
@@ -890,7 +989,9 @@
         let gameProgress = {
             unlockedStage: 1,
             stars: [0, 0, 0, 0, 0, 0],
-            highScores: [0, 0, 0, 0, 0, 0]
+            highScores: [0, 0, 0, 0, 0, 0],
+            studentName: '',
+            studentClass: ''
         };
 
         function loadProgress() {
@@ -900,6 +1001,14 @@
                     gameProgress = Object.assign(gameProgress, JSON.parse(saved));
                 }
             } catch(e) {}
+            const nameInput = document.getElementById('input-student-name');
+            const classInput = document.getElementById('input-student-class');
+            const vicNameInput = document.getElementById('vic-student-name');
+            const vicClassInput = document.getElementById('vic-student-class');
+            if (nameInput && gameProgress.studentName) nameInput.value = gameProgress.studentName;
+            if (classInput && gameProgress.studentClass) classInput.value = gameProgress.studentClass;
+            if (vicNameInput && gameProgress.studentName) vicNameInput.value = gameProgress.studentName;
+            if (vicClassInput && gameProgress.studentClass) vicClassInput.value = gameProgress.studentClass;
         }
 
         function saveProgress() {
@@ -907,6 +1016,32 @@
                 localStorage.setItem('financial_hero_save_v2', JSON.stringify(gameProgress));
             } catch(e) {}
         }
+
+        function syncStudentInputs(source) {
+            const nameInput = document.getElementById('input-student-name');
+            const classInput = document.getElementById('input-student-class');
+            const vicNameInput = document.getElementById('vic-student-name');
+            const vicClassInput = document.getElementById('vic-student-class');
+
+            if (source === 'start') {
+                gameProgress.studentName = (nameInput?.value || '').trim();
+                gameProgress.studentClass = (classInput?.value || '').trim();
+                if (vicNameInput) vicNameInput.value = gameProgress.studentName;
+                if (vicClassInput) vicClassInput.value = gameProgress.studentClass;
+            } else if (source === 'victory') {
+                gameProgress.studentName = (vicNameInput?.value || '').trim();
+                gameProgress.studentClass = (vicClassInput?.value || '').trim();
+                if (nameInput) nameInput.value = gameProgress.studentName;
+                if (classInput) classInput.value = gameProgress.studentClass;
+            }
+            saveProgress();
+        }
+
+        document.getElementById('input-student-name')?.addEventListener('input', () => syncStudentInputs('start'));
+        document.getElementById('input-student-class')?.addEventListener('input', () => syncStudentInputs('start'));
+        document.getElementById('vic-student-name')?.addEventListener('input', () => syncStudentInputs('victory'));
+        document.getElementById('vic-student-class')?.addEventListener('input', () => syncStudentInputs('victory'));
+
         loadProgress();
 
         // Runtime Game State
@@ -932,6 +1067,17 @@
         let hasInsuranceShield = false;
         let activeSpeedTimer = 0;
         let activeDebtBusterTimer = 0;
+
+        // Reset money to zero when player dies (never accumulate from previous run/stage)
+        function resetMoneyToZero() {
+            savings = 0;
+            stageSavingsEarned = 0;
+            totalActiveIncome = 0;
+            totalPassiveIncome = 0;
+            totalQuizBonus = 0;
+            totalDebtLosses = 0;
+            updateHUD();
+        }
 
         // Particle System
         class Particle {
@@ -1000,6 +1146,15 @@
         // Key states
         const keys = { left: false, right: false, jump: false };
 
+        function clearInputKeys() {
+            keys.left = false;
+            keys.right = false;
+            keys.jump = false;
+            ['btn-left', 'btn-right', 'btn-jump'].forEach(id => {
+                document.getElementById(id)?.classList.remove('pressed');
+            });
+        }
+
         // Player Object
         const player = {
             x: 60,
@@ -1035,6 +1190,7 @@
             stageSavingsEarned = 0;
             stageQuestionsAnswered = 0;
             stageCorrectCount = 0;
+            clearInputKeys();
 
             document.getElementById('hud-level').innerHTML = `Stage ${lvl} <span class="text-[10px]">▼</span>`;
             player.x = 50;
@@ -1315,13 +1471,21 @@
         }
 
         /* ==========================================================================
-           KEYBOARD & TOUCH CONTROLS
+           KEYBOARD, TOUCH & POINTER CONTROLS (SMARTPHONE, TABLET & COMPUTER)
            ========================================================================== */
         window.addEventListener('keydown', (e) => {
-            if (e.key === 'ArrowLeft' || e.key === 'a' || e.key === 'A') keys.left = true;
-            if (e.key === 'ArrowRight' || e.key === 'd' || e.key === 'D') keys.right = true;
+            if (document.activeElement && document.activeElement.tagName === 'INPUT') return;
+            if (e.key === 'ArrowLeft' || e.key === 'a' || e.key === 'A') {
+                keys.left = true;
+                document.getElementById('btn-left')?.classList.add('pressed');
+            }
+            if (e.key === 'ArrowRight' || e.key === 'd' || e.key === 'D') {
+                keys.right = true;
+                document.getElementById('btn-right')?.classList.add('pressed');
+            }
             if (e.key === 'ArrowUp' || e.key === 'w' || e.key === 'W' || e.key === ' ') {
                 keys.jump = true;
+                document.getElementById('btn-jump')?.classList.add('pressed');
                 e.preventDefault();
             }
             if (e.key === 'b' || e.key === 'B') {
@@ -1333,30 +1497,71 @@
         });
 
         window.addEventListener('keyup', (e) => {
-            if (e.key === 'ArrowLeft' || e.key === 'a' || e.key === 'A') keys.left = false;
-            if (e.key === 'ArrowRight' || e.key === 'd' || e.key === 'D') keys.right = false;
-            if (e.key === 'ArrowUp' || e.key === 'w' || e.key === 'W' || e.key === ' ') keys.jump = false;
+            if (document.activeElement && document.activeElement.tagName === 'INPUT') return;
+            if (e.key === 'ArrowLeft' || e.key === 'a' || e.key === 'A') {
+                keys.left = false;
+                document.getElementById('btn-left')?.classList.remove('pressed');
+            }
+            if (e.key === 'ArrowRight' || e.key === 'd' || e.key === 'D') {
+                keys.right = false;
+                document.getElementById('btn-right')?.classList.remove('pressed');
+            }
+            if (e.key === 'ArrowUp' || e.key === 'w' || e.key === 'W' || e.key === ' ') {
+                keys.jump = false;
+                document.getElementById('btn-jump')?.classList.remove('pressed');
+            }
         });
 
-        // Touch Control Listeners
-        const bindTouch = (id, keyName) => {
+        window.addEventListener('blur', clearInputKeys);
+
+        // Universal Touch / Pointer / Mouse Control Binding
+        const bindControlBtn = (id, keyName) => {
             const btn = document.getElementById(id);
             if (!btn) return;
-            btn.addEventListener('touchstart', (e) => {
-                e.preventDefault();
+
+            const activate = (e) => {
+                if (e.cancelable) e.preventDefault();
                 sfx.init();
                 keys[keyName] = true;
-            });
-            btn.addEventListener('touchend', (e) => {
-                e.preventDefault();
+                btn.classList.add('pressed');
+            };
+
+            const deactivate = (e) => {
+                if (e && e.cancelable) e.preventDefault();
                 keys[keyName] = false;
-            });
+                btn.classList.remove('pressed');
+            };
+
+            btn.addEventListener('touchstart', activate, { passive: false });
+            btn.addEventListener('touchend', deactivate, { passive: false });
+            btn.addEventListener('touchcancel', deactivate, { passive: false });
+
+            btn.addEventListener('mousedown', activate);
+            btn.addEventListener('mouseup', deactivate);
+            btn.addEventListener('mouseleave', deactivate);
+            btn.addEventListener('contextmenu', (e) => e.preventDefault());
         };
-        bindTouch('btn-left', 'left');
-        bindTouch('btn-right', 'right');
-        bindTouch('btn-jump', 'jump');
+        bindControlBtn('btn-left', 'left');
+        bindControlBtn('btn-right', 'right');
+        bindControlBtn('btn-jump', 'jump');
 
         document.getElementById('btn-touch-bs').onclick = () => toggleBalanceSheet();
+
+        // Fullscreen Toggle for Smartphones & Tablets
+        document.getElementById('btn-fullscreen').onclick = () => {
+            if (!document.fullscreenElement) {
+                document.documentElement.requestFullscreen?.().catch(() => {});
+            } else {
+                document.exitFullscreen?.().catch(() => {});
+            }
+        };
+
+        // Logo Button returns to Start Screen
+        document.getElementById('btn-logo').onclick = () => {
+            closeAllModals();
+            document.getElementById('screen-start').classList.remove('hidden');
+            gameState = 'START';
+        };
 
         /* ==========================================================================
            PHYSICS & GAME LOOP
@@ -1492,12 +1697,15 @@
             if (player.x < 0) player.x = 0;
             if (player.x + player.w > V_WIDTH) player.x = V_WIDTH - player.w;
 
-            // Fall Off Screen check
+            // Fall Off Screen check (Dying in pit resets money to RM 0!)
             if (player.y > V_HEIGHT + 40) {
-                takeDamage("Fell into negative liquidity and overdraft debt!");
-                player.x = 60;
-                player.y = 300;
-                player.vy = 0;
+                resetMoneyToZero();
+                takeDamage("Fell into negative liquidity and overdraft debt! All money reset to RM 0.");
+                if (gameState === 'PLAYING') {
+                    // Respawn at start of stage with gems reset so money starts fresh from RM 0
+                    loadLevel(currentLevel);
+                }
+                return;
             }
 
             // Income Collectables Collision
@@ -1599,12 +1807,15 @@
         function takeDamage(reason) {
             health--;
             sfx.playHurt();
-            updateHUD();
             if (health <= 0) {
+                health = 0;
+                resetMoneyToZero();
+                clearInputKeys();
                 gameState = 'GAMEOVER';
                 document.getElementById('gameover-reason').innerText = reason;
                 document.getElementById('screen-gameover').classList.remove('hidden');
             }
+            updateHUD();
         }
 
         function updateHUD() {
@@ -1908,6 +2119,7 @@
 
         function triggerQuizModal(node) {
             gameState = 'QUIZ';
+            clearInputKeys();
             activeQuizNode = node;
             const qData = quizDataset[node.qIdx];
 
@@ -1922,8 +2134,8 @@
 
             qData.options.forEach((optText, index) => {
                 const btn = document.createElement('button');
-                btn.className = "w-full text-left p-3.5 rounded-xl bg-slate-800 hover:bg-slate-700/80 border border-slate-700/60 text-sm md:text-base text-slate-100 font-semibold transition flex items-center justify-between cursor-pointer";
-                btn.innerHTML = `<span>${String.fromCharCode(65 + index)}. ${optText}</span> <span class="text-slate-400 text-xs bg-slate-900 px-2 py-0.5 rounded border border-slate-700">Select</span>`;
+                btn.className = "w-full text-left p-3 sm:p-3.5 rounded-xl bg-slate-800 hover:bg-slate-700/80 border border-slate-700/60 text-xs sm:text-sm md:text-base text-slate-100 font-semibold transition flex items-center justify-between gap-2 cursor-pointer";
+                btn.innerHTML = `<span>${String.fromCharCode(65 + index)}. ${optText}</span> <span class="text-slate-400 text-[11px] bg-slate-900 px-2 py-0.5 rounded border border-slate-700 shrink-0">Select</span>`;
                 btn.onclick = () => handleQuizAnswer(index, qData, btn);
                 optionsContainer.appendChild(btn);
             });
@@ -1958,8 +2170,8 @@
                 clickedBtn.classList.remove('bg-slate-800', 'opacity-60');
                 clickedBtn.classList.add('bg-emerald-500/20', 'border-emerald-500', 'text-emerald-300');
 
-                feedbackEl.className = "p-4 rounded-xl text-sm md:text-base font-semibold leading-relaxed border bg-emerald-950/80 border-emerald-500/50 text-emerald-300 space-y-1.5";
-                feedbackEl.innerHTML = `<div class="text-base font-bold">✓ Correct! (+RM 300 Knowledge Bonus)</div><div class="text-slate-200">${qData.explanation}</div>`;
+                feedbackEl.className = "p-3.5 sm:p-4 rounded-xl text-xs sm:text-sm font-semibold leading-relaxed border bg-emerald-950/80 border-emerald-500/50 text-emerald-300 space-y-1.5";
+                feedbackEl.innerHTML = `<div class="text-sm sm:text-base font-bold">✓ Correct! (+RM 300 Knowledge Bonus)</div><div class="text-slate-200">${qData.explanation}</div>`;
                 spawnParticles(player.x + player.w/2, player.y, 15, '#10b981', 'sparkle', 3);
             } else {
                 sfx.playWrong();
@@ -1970,8 +2182,8 @@
                 allBtns[qData.answer].classList.remove('opacity-60');
                 allBtns[qData.answer].classList.add('bg-emerald-500/20', 'border-emerald-500', 'text-emerald-300');
 
-                feedbackEl.className = "p-4 rounded-xl text-sm md:text-base font-semibold leading-relaxed border bg-red-950/80 border-red-500/50 text-red-300 space-y-1.5";
-                feedbackEl.innerHTML = `<div class="text-base font-bold">✗ Incorrect!</div><div class="text-slate-200">${qData.explanation}</div>`;
+                feedbackEl.className = "p-3.5 sm:p-4 rounded-xl text-xs sm:text-sm font-semibold leading-relaxed border bg-red-950/80 border-red-500/50 text-red-300 space-y-1.5";
+                feedbackEl.innerHTML = `<div class="text-sm sm:text-base font-bold">✗ Incorrect!</div><div class="text-slate-200">${qData.explanation}</div>`;
             }
 
             feedbackEl.classList.remove('hidden');
@@ -1994,6 +2206,7 @@
            ========================================================================== */
         function triggerStageClear() {
             gameState = 'STAGECLEAR';
+            clearInputKeys();
             sfx.playCorrect();
 
             // Calculate Stars (1 to 3 stars)
@@ -2066,6 +2279,7 @@
         function triggerGrandVictory() {
             document.getElementById('screen-stageclear').classList.add('hidden');
             gameState = 'VICTORY';
+            clearInputKeys();
             sfx.playCorrect();
 
             const accuracy = totalQuestionsAnswered > 0 ? Math.round((correctAnswersCount / totalQuestionsAnswered) * 100) : 100;
@@ -2086,6 +2300,12 @@
             document.getElementById('vic-grade').innerText = grade;
             document.getElementById('vic-eval').innerText = evalText;
 
+            // Ensure student inputs are synced
+            const vicNameInput = document.getElementById('vic-student-name');
+            const vicClassInput = document.getElementById('vic-student-class');
+            if (vicNameInput && gameProgress.studentName) vicNameInput.value = gameProgress.studentName;
+            if (vicClassInput && gameProgress.studentClass) vicClassInput.value = gameProgress.studentClass;
+
             spawnParticles(V_WIDTH/2, V_HEIGHT/2, 60, '#38bdf8', 'confetti', 6);
             spawnParticles(V_WIDTH/2, V_HEIGHT/2, 40, '#f59e0b', 'sparkle', 5);
 
@@ -2093,11 +2313,415 @@
         }
 
         /* ==========================================================================
+           GOOGLE CLASSROOM RESULT EXPORT (PDF & IMAGE CERTIFICATE)
+           ========================================================================== */
+        function ensureStudentNamePrompt(isVictoryScreen) {
+            if (isVictoryScreen) {
+                syncStudentInputs('victory');
+            } else {
+                syncStudentInputs('start');
+            }
+            if (!gameProgress.studentName) {
+                const enteredName = prompt("Enter your Full Name for the Google Classroom report:", "");
+                if (enteredName !== null && enteredName.trim() !== "") {
+                    gameProgress.studentName = enteredName.trim();
+                }
+                if (!gameProgress.studentClass) {
+                    const enteredClass = prompt("Enter your Class / Form (e.g. 4S1):", "");
+                    if (enteredClass !== null && enteredClass.trim() !== "") {
+                        gameProgress.studentClass = enteredClass.trim();
+                    }
+                }
+                const nameInput = document.getElementById('input-student-name');
+                const classInput = document.getElementById('input-student-class');
+                const vicNameInput = document.getElementById('vic-student-name');
+                const vicClassInput = document.getElementById('vic-student-class');
+                if (nameInput) nameInput.value = gameProgress.studentName;
+                if (classInput) classInput.value = gameProgress.studentClass;
+                if (vicNameInput) vicNameInput.value = gameProgress.studentName;
+                if (vicClassInput) vicClassInput.value = gameProgress.studentClass;
+                saveProgress();
+            }
+        }
+
+        function generateResultCanvas(isFullVictory = true) {
+            ensureStudentNamePrompt(isFullVictory);
+
+            const certCanvas = document.createElement('canvas');
+            const W = 1200;
+            const H = 850;
+            certCanvas.width = W;
+            certCanvas.height = H;
+            const c = certCanvas.getContext('2d');
+
+            // Background Gradient
+            const bgGrad = c.createLinearGradient(0, 0, W, H);
+            bgGrad.addColorStop(0, '#070b14');
+            bgGrad.addColorStop(0.5, '#0f172a');
+            bgGrad.addColorStop(1, '#091526');
+            c.fillStyle = bgGrad;
+            c.fillRect(0, 0, W, H);
+
+            // Subtle Tech Grid
+            c.strokeStyle = 'rgba(51, 65, 85, 0.25)';
+            c.lineWidth = 1;
+            for (let x = 0; x < W; x += 40) {
+                c.beginPath(); c.moveTo(x, 0); c.lineTo(x, H); c.stroke();
+            }
+            for (let y = 0; y < H; y += 40) {
+                c.beginPath(); c.moveTo(0, y); c.lineTo(W, y); c.stroke();
+            }
+
+            // Outer Neon Border
+            c.strokeStyle = '#10b981';
+            c.lineWidth = 4;
+            c.strokeRect(24, 24, W - 48, H - 48);
+
+            c.strokeStyle = 'rgba(56, 189, 248, 0.4)';
+            c.lineWidth = 1.5;
+            c.strokeRect(32, 32, W - 64, H - 64);
+
+            // Header Banner
+            const headerGrad = c.createLinearGradient(40, 40, W - 40, 140);
+            headerGrad.addColorStop(0, 'rgba(16, 185, 129, 0.18)');
+            headerGrad.addColorStop(0.5, 'rgba(6, 182, 212, 0.15)');
+            headerGrad.addColorStop(1, 'rgba(245, 158, 11, 0.18)');
+            c.fillStyle = headerGrad;
+            c.fillRect(40, 40, W - 80, 105);
+            c.strokeStyle = 'rgba(16, 185, 129, 0.45)';
+            c.lineWidth = 1.5;
+            c.strokeRect(40, 40, W - 80, 105);
+
+            // Title & Subtitle
+            c.fillStyle = '#34d399';
+            c.font = '900 32px Orbitron, sans-serif';
+            c.textAlign = 'left';
+            c.fillText('FINANCIAL HERO: SMART SAVER 2D', 65, 85);
+
+            c.fillStyle = '#e2e8f0';
+            c.font = '600 17px "Plus Jakarta Sans", sans-serif';
+            c.fillText('SPM Form 4 Mathematics • Chapter 10: Financial Management', 65, 115);
+
+            // Right Header Badge
+            c.fillStyle = '#0f172a';
+            c.fillRect(W - 350, 58, 290, 68);
+            c.strokeStyle = '#f59e0b';
+            c.lineWidth = 2;
+            c.strokeRect(W - 350, 58, 290, 68);
+            c.fillStyle = '#fbbf24';
+            c.font = 'bold 14px Orbitron, sans-serif';
+            c.textAlign = 'center';
+            c.fillText('GOOGLE CLASSROOM REPORT', W - 205, 86);
+            const statusLabel = isFullVictory ? '🏆 ALL 6 STAGES COMPLETED' : `✓ STAGE ${currentLevel} CLEARED`;
+            c.fillStyle = '#34d399';
+            c.font = 'bold 15px "Plus Jakarta Sans", sans-serif';
+            c.fillText(statusLabel, W - 205, 110);
+
+            // Student Info Bar
+            const studentName = gameProgress.studentName || 'Student Hero';
+            const studentClass = gameProgress.studentClass || 'Form 4';
+            const now = new Date();
+            const dateStr = now.toLocaleDateString('en-MY', { day: '2-digit', month: 'short', year: 'numeric' }) + ' ' +
+                            now.toLocaleTimeString('en-MY', { hour: '2-digit', minute: '2-digit' });
+            const totalStars = gameProgress.stars.reduce((a, b) => a + b, 0);
+            const accuracy = totalQuestionsAnswered > 0 ? Math.round((correctAnswersCount / totalQuestionsAnswered) * 100) : 100;
+            const verifyCode = 'FH-' + Math.abs((studentName.length * 313 + savings * 7 + totalStars * 97 + currentLevel * 53) % 90000 + 10000);
+
+            c.fillStyle = 'rgba(15, 23, 42, 0.9)';
+            c.fillRect(40, 160, W - 80, 74);
+            c.strokeStyle = 'rgba(148, 163, 184, 0.3)';
+            c.lineWidth = 1;
+            c.strokeRect(40, 160, W - 80, 74);
+
+            c.textAlign = 'left';
+            c.fillStyle = '#94a3b8';
+            c.font = '600 13px "Plus Jakarta Sans", sans-serif';
+            c.fillText('STUDENT NAME', 60, 185);
+            c.fillText('CLASS / FORM', 460, 185);
+            c.fillText('COMPLETION DATE & TIME', 680, 185);
+            c.fillText('VERIFICATION CODE', 980, 185);
+
+            c.fillStyle = '#ffffff';
+            c.font = 'bold 20px "Plus Jakarta Sans", sans-serif';
+            c.fillText(studentName.slice(0, 28), 60, 215);
+            c.fillStyle = '#38bdf8';
+            c.fillText(studentClass.slice(0, 14), 460, 215);
+            c.fillStyle = '#e2e8f0';
+            c.font = 'bold 16px "JetBrains Mono", monospace';
+            c.fillText(dateStr, 680, 214);
+            c.fillStyle = '#fbbf24';
+            c.fillText(verifyCode, 980, 214);
+
+            // 4 KPI Summary Cards
+            const grade = accuracy >= 75 ? 'Chartered Financial Master' : 'Certified Financial Planner';
+            const kpis = [
+                { label: 'FINAL NET SAVINGS', value: `RM ${savings.toLocaleString()}`, color: '#34d399', border: 'rgba(16, 185, 129, 0.5)' },
+                { label: 'QUIZ ACCURACY', value: `${accuracy}% (${correctAnswersCount}/${totalQuestionsAnswered})`, color: '#38bdf8', border: 'rgba(56, 189, 248, 0.5)' },
+                { label: 'TOTAL STARS EARNED', value: `${totalStars} / 18 ★`, color: '#fbbf24', border: 'rgba(245, 158, 11, 0.5)' },
+                { label: 'ADVISOR GRADE', value: grade, color: '#c084fc', border: 'rgba(168, 85, 247, 0.5)' }
+            ];
+
+            const cardW = (W - 80 - 36) / 4;
+            kpis.forEach((k, idx) => {
+                const cx = 40 + idx * (cardW + 12);
+                const cy = 250;
+                c.fillStyle = 'rgba(15, 23, 42, 0.92)';
+                c.fillRect(cx, cy, cardW, 95);
+                c.strokeStyle = k.border;
+                c.lineWidth = 2;
+                c.strokeRect(cx, cy, cardW, 95);
+
+                c.fillStyle = '#94a3b8';
+                c.font = 'bold 12px Orbitron, sans-serif';
+                c.textAlign = 'left';
+                c.fillText(k.label, cx + 18, cy + 30);
+
+                c.fillStyle = k.color;
+                c.font = idx === 3 ? 'bold 16px "Plus Jakarta Sans", sans-serif' : '900 24px Orbitron, sans-serif';
+                c.fillText(k.value, cx + 18, cy + 68);
+            });
+
+            // Left Panel: Personal Financial Balance Sheet Summary
+            const leftX = 40;
+            const panelY = 365;
+            const leftW = 540;
+            const panelH = 405;
+
+            c.fillStyle = 'rgba(15, 23, 42, 0.92)';
+            c.fillRect(leftX, panelY, leftW, panelH);
+            c.strokeStyle = 'rgba(16, 185, 129, 0.35)';
+            c.lineWidth = 1.5;
+            c.strokeRect(leftX, panelY, leftW, panelH);
+
+            c.fillStyle = '#34d399';
+            c.font = 'bold 18px Orbitron, sans-serif';
+            c.textAlign = 'left';
+            c.fillText('PERSONAL FINANCIAL STATEMENT', leftX + 24, panelY + 38);
+
+            const totalInflow = totalActiveIncome + totalPassiveIncome + totalQuizBonus;
+            const efPercent = Math.min(100, Math.round((savings / 10000) * 100));
+            const bsRows = [
+                { name: 'Active Income Earned (Salary / Hustle)', val: `+ RM ${totalActiveIncome.toLocaleString()}`, col: '#34d399' },
+                { name: 'Passive Income Earned (Dividends / ROI)', val: `+ RM ${totalPassiveIncome.toLocaleString()}`, col: '#38bdf8' },
+                { name: 'Quiz Knowledge Bonuses', val: `+ RM ${totalQuizBonus.toLocaleString()}`, col: '#fbbf24' },
+                { name: 'Total Gross Cash Inflow', val: `RM ${totalInflow.toLocaleString()}`, col: '#ffffff' },
+                { name: 'Losses to Impulse / Debt Traps', val: `- RM ${totalDebtLosses.toLocaleString()}`, col: '#f87171' },
+                { name: 'Insurance Shield Protection Blocks', val: `${totalShieldBlocks} Hits Blocked`, col: '#67e8f9' },
+                { name: 'High-Interest Debt Traps Cleared', val: `${totalDebtTrapsCleared} Cleared`, col: '#d8b4fe' },
+                { name: 'Emergency Fund Target (RM 10,000)', val: `${efPercent}% (${(savings / 2000).toFixed(1)} Months)`, col: '#34d399' }
+            ];
+
+            bsRows.forEach((row, i) => {
+                const ry = panelY + 75 + i * 38;
+                c.fillStyle = i % 2 === 0 ? 'rgba(30, 41, 59, 0.5)' : 'rgba(15, 23, 42, 0.4)';
+                c.fillRect(leftX + 18, ry - 22, leftW - 36, 32);
+
+                c.fillStyle = '#cbd5e1';
+                c.font = '600 14px "Plus Jakarta Sans", sans-serif';
+                c.textAlign = 'left';
+                c.fillText(row.name, leftX + 30, ry);
+
+                c.fillStyle = row.col;
+                c.font = 'bold 15px "JetBrains Mono", monospace';
+                c.textAlign = 'right';
+                c.fillText(row.val, leftX + leftW - 30, ry);
+            });
+
+            // Right Panel: 6-Stage Curriculum Performance Table
+            const rightX = 600;
+            const rightW = 560;
+            c.fillStyle = 'rgba(15, 23, 42, 0.92)';
+            c.fillRect(rightX, panelY, rightW, panelH);
+            c.strokeStyle = 'rgba(56, 189, 248, 0.35)';
+            c.lineWidth = 1.5;
+            c.strokeRect(rightX, panelY, rightW, panelH);
+
+            c.fillStyle = '#38bdf8';
+            c.font = 'bold 18px Orbitron, sans-serif';
+            c.textAlign = 'left';
+            c.fillText('STAGE-BY-STAGE CURRICULUM MASTERY', rightX + 24, panelY + 38);
+
+            STAGE_CONFIG.forEach((stg, idx) => {
+                const ry = panelY + 80 + idx * 50;
+                const stars = gameProgress.stars[idx] || 0;
+                const best = gameProgress.highScores[idx] || 0;
+                const isCleared = stars > 0;
+
+                c.fillStyle = isCleared ? 'rgba(16, 185, 129, 0.1)' : 'rgba(30, 41, 59, 0.4)';
+                c.fillRect(rightX + 18, ry - 26, rightW - 36, 40);
+                c.strokeStyle = isCleared ? 'rgba(16, 185, 129, 0.35)' : 'rgba(71, 85, 105, 0.3)';
+                c.lineWidth = 1;
+                c.strokeRect(rightX + 18, ry - 26, rightW - 36, 40);
+
+                c.fillStyle = isCleared ? '#34d399' : '#94a3b8';
+                c.font = 'bold 14px "Plus Jakarta Sans", sans-serif';
+                c.textAlign = 'left';
+                c.fillText(stg.name, rightX + 30, ry);
+
+                // Stars
+                const starStr = '★'.repeat(stars) + '☆'.repeat(3 - stars);
+                c.fillStyle = stars > 0 ? '#fbbf24' : '#475569';
+                c.font = 'bold 16px sans-serif';
+                c.textAlign = 'right';
+                c.fillText(starStr, rightX + rightW - 135, ry + 1);
+
+                // Best Score
+                c.fillStyle = isCleared ? '#e2e8f0' : '#64748b';
+                c.font = 'bold 14px "JetBrains Mono", monospace';
+                c.fillText(`RM ${best.toLocaleString()}`, rightX + rightW - 28, ry);
+            });
+
+            // Footer Note
+            c.fillStyle = '#94a3b8';
+            c.font = '600 13px "Plus Jakarta Sans", sans-serif';
+            c.textAlign = 'center';
+            c.fillText('Official Result Certificate for Google Classroom Submission • CYE-MathVerse Financial Hero 2D • Note: Dying resets money to RM 0', W / 2, H - 40);
+
+            return certCanvas;
+        }
+
+        function getSafeFilename(ext) {
+            const rawName = (gameProgress.studentName || 'Student').replace(/[^a-zA-Z0-9_-]/g, '_');
+            const rawClass = (gameProgress.studentClass || 'Form4').replace(/[^a-zA-Z0-9_-]/g, '_');
+            return `Financial_Hero_Result_${rawName}_${rawClass}.${ext}`;
+        }
+
+        function downloadResultImage(isFullVictory = true) {
+            const certCanvas = generateResultCanvas(isFullVictory);
+            const filename = getSafeFilename('png');
+
+            if (certCanvas.toBlob) {
+                certCanvas.toBlob((blob) => {
+                    if (!blob) return;
+                    const url = URL.createObjectURL(blob);
+                    const link = document.createElement('a');
+                    link.href = url;
+                    link.download = filename;
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
+                    setTimeout(() => URL.revokeObjectURL(url), 5000);
+                }, 'image/png');
+            } else {
+                const dataUrl = certCanvas.toDataURL('image/png');
+                const link = document.createElement('a');
+                link.href = dataUrl;
+                link.download = filename;
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+            }
+        }
+
+        // Built-in zero-dependency fallback PDF generator (embeds JPEG into valid PDF 1.4 binary)
+        function createMinimalPdfFromJpegDataUrl(jpegDataUrl, widthPx, heightPx) {
+            const base64 = jpegDataUrl.split(',')[1];
+            const binStr = atob(base64);
+            const imgBytes = new Uint8Array(binStr.length);
+            for (let i = 0; i < binStr.length; i++) {
+                imgBytes[i] = binStr.charCodeAt(i);
+            }
+
+            // A4 Landscape points: 842 x 595
+            const pageW = 842;
+            const pageH = 595;
+            const enc = new TextEncoder();
+            const chunks = [];
+            const offsets = [];
+            let currentOffset = 0;
+
+            const pushStr = (s) => {
+                const b = enc.encode(s);
+                chunks.push(b);
+                currentOffset += b.length;
+            };
+            const pushBytes = (b) => {
+                chunks.push(b);
+                currentOffset += b.length;
+            };
+
+            pushStr('%PDF-1.4\n%\xFF\xFF\xFF\xFF\n');
+
+            // Obj 1: Catalog
+            offsets[1] = currentOffset;
+            pushStr('1 0 obj\n<< /Type /Catalog /Pages 2 0 R >>\nendobj\n');
+
+            // Obj 2: Pages
+            offsets[2] = currentOffset;
+            pushStr('2 0 obj\n<< /Type /Pages /Kids [3 0 R] /Count 1 >>\nendobj\n');
+
+            // Obj 3: Page
+            offsets[3] = currentOffset;
+            pushStr(`3 0 obj\n<< /Type /Page /Parent 2 0 R /MediaBox [0 0 ${pageW} ${pageH}] /Resources << /XObject << /Im0 4 0 R >> >> /Contents 5 0 R >>\nendobj\n`);
+
+            // Obj 4: Image XObject
+            offsets[4] = currentOffset;
+            pushStr(`4 0 obj\n<< /Type /XObject /Subtype /Image /Width ${widthPx} /Height ${heightPx} /ColorSpace /DeviceRGB /BitsPerComponent 8 /Filter /DCTDecode /Length ${imgBytes.length} >>\nstream\n`);
+            pushBytes(imgBytes);
+            pushStr('\nendstream\nendobj\n');
+
+            // Obj 5: Content stream
+            const contentStream = `q\n${pageW} 0 0 ${pageH} 0 0 cm\n/Im0 Do\nQ\n`;
+            offsets[5] = currentOffset;
+            pushStr(`5 0 obj\n<< /Length ${contentStream.length} >>\nstream\n${contentStream}endstream\nendobj\n`);
+
+            // XRef
+            const xrefOffset = currentOffset;
+            pushStr('xref\n0 6\n0000000000 65535 f \n');
+            for (let i = 1; i <= 5; i++) {
+                pushStr(String(offsets[i]).padStart(10, '0') + ' 00000 n \n');
+            }
+            pushStr(`trailer\n<< /Size 6 /Root 1 0 R >>\nstartxref\n${xrefOffset}\n%%EOF`);
+
+            return new Blob(chunks, { type: 'application/pdf' });
+        }
+
+        function downloadResultPDF(isFullVictory = true) {
+            const certCanvas = generateResultCanvas(isFullVictory);
+            const filename = getSafeFilename('pdf');
+
+            try {
+                if (window.jspdf && window.jspdf.jsPDF) {
+                    const { jsPDF } = window.jspdf;
+                    const doc = new jsPDF({
+                        orientation: 'landscape',
+                        unit: 'mm',
+                        format: 'a4'
+                    });
+                    const imgData = certCanvas.toDataURL('image/png', 1.0);
+                    doc.addImage(imgData, 'PNG', 0, 0, 297, 210);
+                    doc.save(filename);
+                    return;
+                }
+            } catch (err) {
+                console.warn('Fallback to native PDF generator:', err);
+            }
+
+            // Fallback native PDF generator
+            const jpegUrl = certCanvas.toDataURL('image/jpeg', 0.95);
+            const pdfBlob = createMinimalPdfFromJpegDataUrl(jpegUrl, certCanvas.width, certCanvas.height);
+            const url = URL.createObjectURL(pdfBlob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = filename;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            setTimeout(() => URL.revokeObjectURL(url), 5000);
+        }
+
+        document.getElementById('btn-download-pdf').onclick = () => downloadResultPDF(true);
+        document.getElementById('btn-download-img').onclick = () => downloadResultImage(true);
+        document.getElementById('btn-stage-pdf').onclick = () => downloadResultPDF(false);
+        document.getElementById('btn-stage-img').onclick = () => downloadResultImage(false);
+
+        /* ==========================================================================
            LIVE BALANCE SHEET DRAWER
            ========================================================================== */
         function toggleBalanceSheet() {
             const modal = document.getElementById('modal-balance-sheet');
             if (modal.classList.contains('hidden')) {
+                clearInputKeys();
                 // Populate live data
                 const totalInflow = totalActiveIncome + totalPassiveIncome + totalQuizBonus;
                 document.getElementById('bs-active-income').innerText = `RM ${totalActiveIncome.toLocaleString()}`;
@@ -2135,6 +2759,7 @@
            STAGE SELECT MODAL
            ========================================================================== */
         function openStagesModal() {
+            clearInputKeys();
             const grid = document.getElementById('stages-grid');
             grid.innerHTML = '';
 
@@ -2177,6 +2802,12 @@
                         document.getElementById('screen-stageclear').classList.add('hidden');
                         document.getElementById('screen-gameover').classList.add('hidden');
                         document.getElementById('screen-victory').classList.add('hidden');
+                        health = 3;
+                        hasInsuranceShield = false;
+                        activeMultiplierTimer = 0;
+                        activeSpeedTimer = 0;
+                        activeDebtBusterTimer = 0;
+                        resetMoneyToZero();
                         loadLevel(stg.id);
                         gameState = 'PLAYING';
                     };
@@ -2198,7 +2829,13 @@
 
         document.getElementById('btn-reset-progress').onclick = () => {
             if (confirm("Reset all stage progression and high scores?")) {
-                gameProgress = { unlockedStage: 1, stars: [0,0,0,0,0,0], highScores: [0,0,0,0,0,0] };
+                gameProgress = {
+                    unlockedStage: 1,
+                    stars: [0,0,0,0,0,0],
+                    highScores: [0,0,0,0,0,0],
+                    studentName: gameProgress.studentName || '',
+                    studentClass: gameProgress.studentClass || ''
+                };
                 saveProgress();
                 openStagesModal();
             }
@@ -2221,13 +2858,10 @@
         // Start Mission Button
         document.getElementById('btn-start').onclick = () => {
             sfx.init();
+            syncStudentInputs('start');
             document.getElementById('screen-start').classList.add('hidden');
             health = 3;
-            savings = 0;
-            totalActiveIncome = 0;
-            totalPassiveIncome = 0;
-            totalQuizBonus = 0;
-            totalDebtLosses = 0;
+            resetMoneyToZero();
             totalShieldBlocks = 0;
             totalDebtTrapsCleared = 0;
             totalQuestionsAnswered = 0;
@@ -2238,10 +2872,11 @@
             activeDebtBusterTimer = 0;
             updateHUD();
             loadLevel(1);
+            resizeCanvas();
             gameState = 'PLAYING';
         };
 
-        // Reset / Replay Buttons
+        // Reset / Retry Buttons (Resets money to RM 0 — never accumulates from previous run)
         const resetCurrentLevel = () => {
             document.getElementById('screen-gameover').classList.add('hidden');
             document.getElementById('screen-victory').classList.add('hidden');
@@ -2251,7 +2886,7 @@
             activeMultiplierTimer = 0;
             activeSpeedTimer = 0;
             activeDebtBusterTimer = 0;
-            updateHUD();
+            resetMoneyToZero();
             loadLevel(currentLevel);
             gameState = 'PLAYING';
         };
@@ -2260,12 +2895,17 @@
         document.getElementById('btn-retry').onclick = resetCurrentLevel;
         document.getElementById('btn-play-again').onclick = () => {
             document.getElementById('screen-victory').classList.add('hidden');
-            loadLevel(1);
             health = 3;
-            savings = 0;
+            resetMoneyToZero();
+            totalShieldBlocks = 0;
+            totalDebtTrapsCleared = 0;
             totalQuestionsAnswered = 0;
             correctAnswersCount = 0;
-            updateHUD();
+            hasInsuranceShield = false;
+            activeMultiplierTimer = 0;
+            activeSpeedTimer = 0;
+            activeDebtBusterTimer = 0;
+            loadLevel(1);
             gameState = 'PLAYING';
         };
 
@@ -2277,6 +2917,7 @@
 
         // Start Loop on Window Load
         window.onload = () => {
+            resizeCanvas();
             gameLoop();
         };
     </script>

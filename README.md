@@ -28,6 +28,9 @@ CYE-MathVerse/
 ├── financial-survival-tycoon/ # 🎲 Form 4: Ch 10 Financial Mgmt & Ch 9 Probability (2-4P Tycoon)
 │   └── index.html
 │
+├── number-bases/              # 🔐 Form 4: Ch 2 Number Bases Cyber Lock Decryption
+│   └── index.html
+│
 ├── measures-of-dispersion/    # 📊 Form 4: Measures of Dispersion Quantum Data Lab
 │   └── index.html
 │

@@ -1,0 +1,2883 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+    <meta name="theme-color" content="#0b0f1d">
+    <meta name="description" content="Crack number-base cyber locks in CYE-MathVerse Cipher Vault. Form 4 Chapter 2 Number Bases interactive mystery game.">
+    <title>CYE MathVerse — Cipher Vault: Base Protocol (Form 4 Chapter 2)</title>
+
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@500;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- KaTeX for Professional Mathematical Typesetting -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Plus Jakarta Sans', ' system-ui', 'sans-serif'],
+                        tech: ['Orbitron', 'sans-serif'],
+                        code: ['JetBrains Mono', 'ui-monospace', 'monospace'],
+                    },
+                    colors: {
+                        cye: {
+                            dark: '#0b0f1d',
+                            panel: '#151a2d',
+                            card: '#1b2238',
+                            line: '#2b3350',
+                            cyan: '#00f2fe',
+                            teal: '#14b8a6',
+                            gold: '#f4c875',
+                            green: '#88e9bc',
+                            purple: '#b39bff',
+                            danger: '#ff6b6b'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        :root {
+            --bg: #0b0f1d;
+            --panel: #151a2d;
+            --card: #1b2238;
+            --line: #2b3350;
+            --muted: #9ba5c2;
+            --text: #f1f5f9;
+            --gold: #f4c875;
+            --green: #34d399;
+            --purple: #b39bff;
+            --cyan: #00f2fe;
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            margin: 0;
+            background-color: var(--bg);
+            color: var(--text);
+            font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+            background-image:
+                radial-gradient(circle at 12% 15%, rgba(179, 155, 255, 0.12), transparent 35%),
+                radial-gradient(circle at 88% 82%, rgba(0, 242, 254, 0.10), transparent 35%),
+                linear-gradient(to right, rgba(255, 255, 255, 0.025) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(255, 255, 255, 0.025) 1px, transparent 1px);
+            background-size: 100% 100%, 100% 100%, 32px 32px, 32px 32px;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+        }
+
+        .font-tech { font-family: 'Orbitron', sans-serif; }
+        .font-code { font-family: 'JetBrains Mono', ui-monospace, monospace; }
+
+        button, a, input, select, textarea {
+            touch-action: manipulation;
+        }
+
+        /* KaTeX Contrast & Responsive Sizing */
+        .katex { font-size: 1.06em; color: #f1f5f9; }
+        .katex-display { margin: 0.45em 0; overflow-x: auto; overflow-y: hidden; padding: 2px 0; }
+
+        /* Glass & Panel Cards */
+        .glass-panel {
+            background: rgba(21, 26, 45, 0.88);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(0, 242, 254, 0.18);
+        }
+
+        .vault-panel {
+            background: var(--panel);
+            border: 1px solid var(--line);
+            border-radius: 16px;
+            box-shadow: 0 12px 32px rgba(0, 0, 0, 0.45);
+        }
+
+        /* Difficulty Cards */
+        .diff-card {
+            background: var(--panel);
+            border: 1.5px solid var(--line);
+            border-radius: 14px;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: pointer;
+        }
+        .diff-card:hover {
+            border-color: #6d6485;
+            transform: translateY(-2px);
+        }
+        .diff-card.selected {
+            border-color: var(--gold);
+            box-shadow: inset 0 0 0 1px var(--gold), 0 0 22px rgba(244, 200, 117, 0.18);
+            background: linear-gradient(145deg, #252334, #181c2e);
+        }
+
+        /* Keypad Digit Buttons */
+        .key-btn {
+            background: #22283e;
+            color: var(--text);
+            border: 1.5px solid #364060;
+            border-radius: 10px;
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 700;
+            transition: all 0.12s ease;
+            min-height: 46px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            user-select: none;
+            -webkit-user-select: none;
+        }
+        .key-btn:hover:not(:disabled) {
+            background: #323b59;
+            border-color: var(--gold);
+            color: var(--gold);
+            transform: translateY(-1px);
+        }
+        .key-btn:active:not(:disabled) {
+            transform: translateY(1px) scale(0.97);
+        }
+        .key-btn:disabled {
+            opacity: 0.28;
+            cursor: not-allowed;
+            background: #141826;
+            border-color: #22273a;
+        }
+        .key-btn.action-del {
+            background: rgba(245, 158, 11, 0.14);
+            border-color: rgba(245, 158, 11, 0.4);
+            color: #fbbf24;
+        }
+        .key-btn.action-del:hover:not(:disabled) {
+            background: rgba(245, 158, 11, 0.26);
+            border-color: #fbbf24;
+        }
+        .key-btn.action-clear {
+            background: rgba(239, 68, 68, 0.15);
+            border-color: rgba(239, 68, 68, 0.45);
+            color: #fca5a5;
+        }
+        .key-btn.action-clear:hover:not(:disabled) {
+            background: rgba(239, 68, 68, 0.28);
+            border-color: #f87171;
+        }
+
+        /* Infiltration Route Map */
+        .route-node {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px 10px;
+            border-radius: 10px;
+            border: 1px solid transparent;
+            font-size: 12px;
+            color: #8b95b3;
+            transition: all 0.2s ease;
+        }
+        .route-node.current {
+            color: var(--gold);
+            background: rgba(244, 200, 117, 0.1);
+            border-color: rgba(244, 200, 117, 0.4);
+            font-weight: 700;
+        }
+        .route-node.done {
+            color: #6ee7b7;
+            background: rgba(16, 185, 129, 0.08);
+            border-color: rgba(16, 185, 129, 0.25);
+        }
+        .route-badge {
+            width: 28px;
+            height: 28px;
+            border-radius: 7px;
+            border: 1px solid var(--line);
+            display: grid;
+            place-items: center;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11px;
+            font-weight: 700;
+            flex-shrink: 0;
+        }
+        .route-node.current .route-badge {
+            border-color: var(--gold);
+            background: #3b3226;
+            color: var(--gold);
+        }
+        .route-node.done .route-badge {
+            border-color: #10b981;
+            background: #14352c;
+            color: #6ee7b7;
+        }
+
+        /* Secret Clue Cells */
+        .clue-cell {
+            border: 1.5px solid #434963;
+            border-radius: 6px;
+            background: #0d111e;
+            width: 28px;
+            height: 34px;
+            display: grid;
+            place-items: center;
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 800;
+            font-size: 14px;
+            color: var(--gold);
+            transition: all 0.3s ease;
+        }
+        .clue-cell.revealed {
+            border-color: var(--gold);
+            background: rgba(244, 200, 117, 0.14);
+            box-shadow: 0 0 10px rgba(244, 200, 117, 0.25);
+        }
+
+        /* Hero Vault Box */
+        .hero-visual {
+            position: relative;
+            min-height: 300px;
+            border: 1px solid #393752;
+            background: radial-gradient(ellipse at 50% 50%, #342b48 0%, #1a1c2d 55%, #121624 92%);
+            border-radius: 18px;
+            overflow: hidden;
+        }
+        .hero-visual::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background-image: linear-gradient(#a893c612 1px, transparent 1px), linear-gradient(90deg, #a893c612 1px, transparent 1px);
+            background-size: 26px 26px;
+        }
+        .float-code {
+            position: absolute;
+            font: 700 12px 'JetBrains Mono', monospace;
+            color: var(--purple);
+            padding: 6px 11px;
+            background: rgba(24, 27, 44, 0.92);
+            border: 1px solid #564a6e;
+            border-radius: 7px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.35);
+        }
+
+        /* Confetti Overlay Canvas */
+        #confetti-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none;
+            z-index: 9999;
+        }
+
+        /* Toast notification */
+        #toast {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            left: 20px;
+            max-width: 380px;
+            margin-left: auto;
+            z-index: 9990;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: rgba(11, 15, 29, 0.6); }
+        ::-webkit-scrollbar-thumb { background: #28324e; border-radius: 3px; }
+        ::-webkit-scrollbar-thumb:hover { background: #3b4970; }
+    </style>
+</head>
+<body>
+
+    <!-- Confetti Effects Canvas -->
+    <canvas id="confetti-canvas"></canvas>
+
+    <!-- =========================================================================
+         TOP NAVIGATION & GLOBAL TOOLS HEADER
+         ========================================================================= -->
+    <header class="sticky top-0 z-40 border-b border-cye-line bg-[#0e1222]/90 backdrop-blur-md">
+        <div class="max-w-7xl mx-auto px-3 sm:px-6 h-16 sm:h-18 flex items-center justify-between gap-2">
+            <!-- Left: Back to Portal & CYE Brand -->
+            <div class="flex items-center gap-2 sm:gap-3 min-w-0">
+                <a href="../" class="flex items-center gap-1.5 text-slate-300 hover:text-white bg-slate-800/70 hover:bg-slate-700/80 border border-slate-700 px-2.5 py-1.5 rounded-xl text-xs font-bold transition shrink-0" title="Back to CYE MathVerse Game Library">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-cye-gold" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+                    </svg>
+                    <span class="hidden sm:inline">Library</span>
+                </a>
+
+                <div class="flex items-center gap-2.5 min-w-0">
+                    <div class="w-9 h-9 rounded-xl border border-cye-gold/70 bg-cye-gold/10 flex items-center justify-center text-lg text-cye-gold font-bold shrink-0">
+                        ⌘
+                    </div>
+                    <div class="truncate">
+                        <div class="font-extrabold text-sm sm:text-base tracking-tight text-white flex items-center gap-1.5">
+                            <span>CYE<span class="text-cye-gold">-MathVerse</span></span>
+                            <span class="hidden md:inline-block text-[10px] font-code uppercase px-2 py-0.5 rounded bg-purple-500/20 text-purple-300 border border-purple-500/30">Cipher Vault</span>
+                        </div>
+                        <div class="text-[10px] font-code tracking-widest text-slate-400 uppercase truncate">FORM 4 • CH 2 NUMBER BASES</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right: Global Tool Triggers (Cipher Lab, Formulas, Scratchpad, Field Guide, Sound) -->
+            <nav class="flex items-center gap-1.5 sm:gap-2 shrink-0" aria-label="Game tools">
+                <!-- Interactive Cipher Lab Modal Trigger -->
+                <button id="btn-cipher-lab" class="px-2.5 py-1.5 sm:px-3 sm:py-2 rounded-xl bg-cyan-500/15 hover:bg-cyan-500/25 text-cyan-300 border border-cyan-500/35 text-xs font-bold flex items-center gap-1.5 transition" title="Interactive Cyber Base Converter Lab">
+                    <span>🔐</span>
+                    <span class="hidden md:inline">Cipher Lab</span>
+                </button>
+
+                <!-- Formula Cheat Sheet Modal Trigger -->
+                <button id="btn-formulas" class="px-2.5 py-1.5 sm:px-3 sm:py-2 rounded-xl bg-slate-800/90 hover:bg-slate-700 text-amber-300 border border-amber-500/30 text-xs font-bold flex items-center gap-1.5 transition" title="Formulas & Reference Sheet">
+                    <span>📑</span>
+                    <span class="hidden md:inline">Formulas</span>
+                </button>
+
+                <!-- Full-Screen Scratchpad Modal Trigger -->
+                <button id="btn-scratchpad-modal" class="px-2.5 py-1.5 sm:px-3 sm:py-2 rounded-xl bg-slate-800/90 hover:bg-slate-700 text-purple-300 border border-purple-500/30 text-xs font-bold flex items-center gap-1.5 transition" title="Open Full Scratchpad">
+                    <span>✏️</span>
+                    <span class="hidden lg:inline">Scratchpad</span>
+                </button>
+
+                <!-- Field Guide Trigger -->
+                <button id="btn-guide" class="px-2.5 py-1.5 sm:px-3 sm:py-2 rounded-xl bg-slate-800/90 hover:bg-slate-700 text-slate-200 border border-slate-700 text-xs font-bold hidden sm:flex items-center gap-1.5 transition" title="Agent Field Guide">
+                    <span>📖</span>
+                    <span class="hidden lg:inline">Field Guide</span>
+                </button>
+
+                <!-- Audio Sound Toggle -->
+                <button id="btn-sound-toggle" class="p-2 rounded-xl bg-slate-800/90 hover:bg-slate-700 text-slate-300 hover:text-white border border-slate-700 transition" title="Toggle Sound Effects">
+                    <svg id="icon-sound-on" xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-emerald-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z" />
+                    </svg>
+                    <svg id="icon-sound-off" xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 hidden text-red-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z" />
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M17 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2" />
+                    </svg>
+                </button>
+            </nav>
+        </div>
+    </header>
+
+    <!-- =========================================================================
+         MAIN VIEWPORT CONTAINER
+         ========================================================================= -->
+    <main class="flex-grow max-w-7xl w-full mx-auto px-3 sm:px-6 py-5 sm:py-8">
+
+        <!-- =====================================================================
+             VIEW 1: HOME / MISSION BRIEFING & AGENT CLEARANCE LAUNCH
+             ===================================================================== -->
+        <section id="view-home" class="space-y-8">
+            <!-- Hero Banner -->
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-10 items-center">
+                <div class="lg:col-span-7 space-y-4">
+                    <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-cye-line bg-cye-panel text-[11px] font-code tracking-wider text-slate-300">
+                        <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
+                        <span>FORM 4 • CHAPTER 02 • NUMBER BASES (ASAS NOMBOR)</span>
+                    </div>
+
+                    <h1 class="text-4xl sm:text-5xl lg:text-6xl font-black tracking-tight leading-[1.08] text-white">
+                        Every number<br>hides a <span class="text-cye-gold">secret.</span>
+                    </h1>
+
+                    <p class="text-slate-300 text-sm sm:text-base lg:text-lg max-w-xl leading-relaxed">
+                        The MathVerse archive has gone dark. Follow the signal, convert the number-base codes with the interactive cipher keypad, record your working on the scratchpad, and crack <strong>8 cyber locks</strong> to discover who holds the vault key.
+                    </p>
+
+                    <div class="flex flex-wrap gap-x-6 gap-y-2 text-xs sm:text-sm text-slate-400 pt-1">
+                        <span><strong class="text-cye-gold">✦</strong> 8 Cyber Locks + Final Cipher</span>
+                        <span><strong class="text-cye-gold">✦</strong> Interactive Digit Keypad &amp; Scratchpad</span>
+                        <span><strong class="text-cye-gold">✦</strong> PDF &amp; Image Report for Google Classroom</span>
+                    </div>
+                </div>
+
+                <!-- Encrypted Vault SVG Visual -->
+                <div class="lg:col-span-5 hero-visual flex items-center justify-center p-4">
+                    <div class="absolute top-4 left-5 font-code text-[10px] tracking-widest text-slate-400 uppercase">ENCRYPTED ARCHIVE / VAULT 02</div>
+                    <svg class="w-full h-60 sm:h-64" viewBox="0 0 500 330" aria-hidden="true">
+                        <defs>
+                            <linearGradient id="metal" x1="0" y1="0" x2="1" y2="1">
+                                <stop stop-color="#766884"/>
+                                <stop offset=".5" stop-color="#35364a"/>
+                                <stop offset="1" stop-color="#252939"/>
+                            </linearGradient>
+                            <linearGradient id="ring">
+                                <stop stop-color="#f6d79a"/>
+                                <stop offset="1" stop-color="#9f7943"/>
+                            </linearGradient>
+                        </defs>
+                        <path d="M90 230H40V180H0M410 110H470V150H500M370 270H430V320" stroke="#796496" fill="none"/>
+                        <circle cx="40" cy="180" r="4" fill="#b39bff"/>
+                        <circle cx="470" cy="150" r="4" fill="#b39bff"/>
+                        <path d="M140 75L360 50L389 77V252L168 280L140 250Z" fill="#191d2b" stroke="#6b6078" stroke-width="2"/>
+                        <path d="M140 75L360 50V226L140 250Z" fill="url(#metal)" stroke="#8b7a96" stroke-width="2"/>
+                        <path d="M157 88L344 67V212L157 234Z" fill="#212434" stroke="#5d536a"/>
+                        <g transform="translate(250 151)">
+                            <ellipse rx="64" ry="68" fill="#1a1c2b" stroke="url(#ring)" stroke-width="4"/>
+                            <ellipse rx="53" ry="57" fill="#2a293b" stroke="#625368"/>
+                            <g stroke="url(#ring)" stroke-width="5" stroke-linecap="round">
+                                <path d="M0-40V-14M0 14V40M-36-21L-12-7M12 7L36 21M-36 21L-12 7M12-7L36-21"/>
+                            </g>
+                            <circle r="17" fill="#dec08a"/>
+                            <circle r="7" fill="#2b293b"/>
+                        </g>
+                        <path d="M161 108L167 107M161 212L167 211" stroke="#f4c875" stroke-width="6"/>
+                        <rect x="295" y="187" width="28" height="13" rx="3" fill="#171e28"/>
+                        <circle cx="300" cy="193" r="2" fill="#88e9bc"/>
+                    </svg>
+                    <span class="float-code top-14 left-4 -rotate-6">10110<sub>2</sub> → ?<sub>10</sub></span>
+                    <span class="float-code bottom-14 right-4 rotate-6">132<sub>5</sub> → ?<sub>8</sub></span>
+                    <div class="absolute bottom-4 left-5 right-5 flex justify-between font-code text-[11px]">
+                        <span class="flex items-center gap-1.5 text-emerald-300"><span class="w-2 h-2 rounded-full bg-emerald-400"></span> SIGNAL DETECTED</span>
+                        <span class="text-cye-gold font-bold">ACCESS: LOCKED</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Clearance Level Selector -->
+            <div class="space-y-4">
+                <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-2">
+                    <div>
+                        <div class="font-code text-xs uppercase tracking-widest text-cye-gold">CHOOSE YOUR CLEARANCE</div>
+                        <h2 class="text-xl sm:text-2xl font-extrabold text-white mt-0.5">One mystery. Three ways in.</h2>
+                    </div>
+                    <span class="text-xs text-slate-400">All missions include strategic hints, interactive scratchpad &amp; worked solutions</span>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4" id="difficulty-grid">
+                    <!-- Populated via JS -->
+                </div>
+            </div>
+
+            <!-- Student Name, Class, Avatar & Launch Form -->
+            <form id="launch-form" class="vault-panel p-5 sm:p-6 space-y-4">
+                <div class="grid grid-cols-1 sm:grid-cols-12 gap-4 items-end">
+                    <div class="sm:col-span-4">
+                        <label for="agent-name" class="block text-xs font-bold uppercase tracking-wider text-slate-300 mb-1.5">
+                            Student Name / Agent Alias
+                        </label>
+                        <input id="agent-name" type="text" maxlength="60" placeholder="e.g. Amirul Hakimi" autocomplete="name" required
+                            class="w-full px-3.5 py-2.5 rounded-xl bg-[#0b0f1c] border border-slate-700 text-white placeholder-slate-500 focus:outline-none focus:border-cye-gold font-semibold text-sm">
+                    </div>
+
+                    <div class="sm:col-span-3">
+                        <label for="agent-class" class="block text-xs font-bold uppercase tracking-wider text-slate-300 mb-1.5">
+                            Class / Form
+                        </label>
+                        <input id="agent-class" type="text" maxlength="25" placeholder="e.g. 4 Sains 1" required
+                            class="w-full px-3.5 py-2.5 rounded-xl bg-[#0b0f1c] border border-slate-700 text-white placeholder-slate-500 focus:outline-none focus:border-cye-gold font-semibold text-sm">
+                    </div>
+
+                    <div class="sm:col-span-3">
+                        <label class="block text-xs font-bold uppercase tracking-wider text-slate-300 mb-1.5">
+                            Agent Avatar
+                        </label>
+                        <div class="grid grid-cols-6 gap-1.5" id="avatar-picker">
+                            <button type="button" class="avatar-opt h-10 rounded-lg border border-cye-gold bg-cye-gold/20 text-lg flex items-center justify-center" data-avatar="🔐">🔐</button>
+                            <button type="button" class="avatar-opt h-10 rounded-lg border border-slate-700 bg-[#0b0f1c] text-lg flex items-center justify-center" data-avatar="🕵️">🕵️</button>
+                            <button type="button" class="avatar-opt h-10 rounded-lg border border-slate-700 bg-[#0b0f1c] text-lg flex items-center justify-center" data-avatar="🤖">🤖</button>
+                            <button type="button" class="avatar-opt h-10 rounded-lg border border-slate-700 bg-[#0b0f1c] text-lg flex items-center justify-center" data-avatar="🦊">🦊</button>
+                            <button type="button" class="avatar-opt h-10 rounded-lg border border-slate-700 bg-[#0b0f1c] text-lg flex items-center justify-center" data-avatar="⚡">⚡</button>
+                            <button type="button" class="avatar-opt h-10 rounded-lg border border-slate-700 bg-[#0b0f1c] text-lg flex items-center justify-center" data-avatar="🚀">🚀</button>
+                        </div>
+                    </div>
+
+                    <div class="sm:col-span-2">
+                        <button type="submit" class="w-full py-3 px-4 rounded-xl bg-cye-gold hover:bg-[#ffdc99] text-slate-950 font-extrabold text-sm transition shadow-lg shadow-amber-500/15 flex items-center justify-center gap-1.5">
+                            <span>Begin Mission</span>
+                            <span aria-hidden="true">↗</span>
+                        </button>
+                    </div>
+                </div>
+
+                <div id="launch-error" class="text-xs font-semibold text-rose-400 hidden" role="alert"></div>
+
+                <!-- Resume Saved Mission Banner -->
+                <div id="resume-box" class="hidden pt-3 border-t border-slate-800 flex flex-wrap items-center justify-between gap-3">
+                    <div class="flex items-center gap-2 text-xs text-slate-300">
+                        <span class="text-cye-gold">💾</span>
+                        <span id="resume-summary-text">Saved mission found on this device.</span>
+                    </div>
+                    <button type="button" id="btn-resume-mission" class="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 border border-cye-gold/50 text-cye-gold text-xs font-bold transition">
+                        ↻ Resume Saved Mission
+                    </button>
+                </div>
+            </form>
+
+            <!-- Collapsible Mission Briefing Details -->
+            <details class="vault-panel p-4 sm:p-5 text-xs sm:text-sm text-slate-300">
+                <summary class="cursor-pointer font-bold text-white select-none">📋 Mission Rules, Scoring &amp; Google Classroom Submission Guide</summary>
+                <div class="mt-3 space-y-2 text-slate-400 leading-relaxed">
+                    <p>
+                        Convert numbers, check place values, and collect <strong>8 key fragments</strong>. Each solved lock reveals one letter of the guardian's callsign (<code class="text-cye-gold">STARFALL</code>). Put the letters together to unlock the final archive vault!
+                    </p>
+                    <p>
+                        <strong>Scoring:</strong> Earn up to <strong>100 XP</strong> per lock (+ Streak Combo Bonuses!). Each incorrect attempt costs 15 XP; using a hint costs 20 XP. Every lock earns at least 20 XP when solved.
+                    </p>
+                    <p>
+                        <strong>Working &amp; Scratchpad:</strong> Open <em>"My working / notes &amp; scratchpad (included in report)"</em> under any question to draw your calculation steps or type notes. Your scratchpad drawings and notes are saved automatically for each lock and embedded in your downloadable <strong>PDF Report</strong> and <strong>Certificate Image</strong> for Google Classroom!
+                    </p>
+                </div>
+            </details>
+        </section>
+
+        <!-- =====================================================================
+             VIEW 2: ACTIVE GAMEPLAY (INFILTRATION ROUTE + TERMINAL + FIELD GUIDE)
+             ===================================================================== -->
+        <section id="view-game" class="hidden space-y-5">
+            <!-- Top Mission HUD Bar -->
+            <div class="vault-panel p-4 flex flex-wrap items-center justify-between gap-3">
+                <div class="flex items-center gap-3">
+                    <div id="hud-avatar" class="w-11 h-11 rounded-xl bg-cye-gold/15 border border-cye-gold/40 flex items-center justify-center text-2xl shrink-0">
+                        🔐
+                    </div>
+                    <div>
+                        <div id="mission-label" class="font-code text-[11px] uppercase tracking-wider text-cye-gold">EASY CLEARANCE / AGENT</div>
+                        <h2 class="text-lg sm:text-xl font-black text-white leading-tight">Operation: Silent Archive</h2>
+                    </div>
+                </div>
+
+                <!-- Right HUD Stats: Lives, Streak, XP, Time -->
+                <div class="flex flex-wrap items-center gap-3 sm:gap-5">
+                    <div class="text-right">
+                        <div class="text-[10px] font-code uppercase tracking-wider text-slate-400">SIGNAL INTEGRITY</div>
+                        <div id="hud-lives" class="text-sm sm:text-base tracking-widest">❤️❤️❤️</div>
+                    </div>
+                    <div class="text-right">
+                        <div class="text-[10px] font-code uppercase tracking-wider text-slate-400">STREAK</div>
+                        <div id="hud-streak" class="font-code font-bold text-sm sm:text-base text-purple-300">🔥 x1</div>
+                    </div>
+                    <div class="text-right">
+                        <div id="hud-xp" class="font-code font-extrabold text-xl sm:text-2xl text-cye-gold leading-none">000</div>
+                        <span class="text-[10px] font-code uppercase tracking-wider text-slate-400">MISSION XP</span>
+                    </div>
+                    <div class="text-right">
+                        <div id="hud-clock" class="font-code font-extrabold text-xl sm:text-2xl text-cyan-300 leading-none">00:00</div>
+                        <span class="text-[10px] font-code uppercase tracking-wider text-slate-400">ACTIVE TIME</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Responsive 3-Column Gameplay Layout -->
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-5 items-start">
+
+                <!-- LEFT COLUMN (3 cols on desktop): Infiltration Route & Recovered Key Clues -->
+                <aside class="lg:col-span-3 vault-panel p-4 sm:p-5 space-y-4">
+                    <div class="flex items-center justify-between">
+                        <span class="font-code text-[11px] uppercase tracking-widest text-slate-400">INFILTRATION ROUTE</span>
+                        <span id="route-progress-count" class="font-code text-xs font-bold text-cye-gold">0 / 8</span>
+                    </div>
+
+                    <!-- Mobile/Tablet horizontal scroll or Desktop vertical list -->
+                    <div id="map-list" class="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-1 gap-1.5">
+                        <!-- Populated via JS -->
+                    </div>
+
+                    <div class="pt-2 border-t border-slate-800">
+                        <div class="font-code text-[10px] uppercase tracking-widest text-cye-gold mb-2 text-center">RECOVERED KEY FRAGMENTS</div>
+                        <div id="clues-strip" class="flex items-center justify-center gap-1 flex-wrap">
+                            <!-- 8 Clue cells populated via JS -->
+                        </div>
+                    </div>
+
+                    <div class="pt-2 flex gap-2">
+                        <button type="button" id="btn-save-exit" class="w-full py-2 px-3 rounded-xl border border-slate-700 bg-slate-800/70 hover:bg-slate-700 text-xs font-bold text-slate-300 transition">
+                            💾 Save &amp; Return
+                        </button>
+                    </div>
+                </aside>
+
+                <!-- CENTER COLUMN (6 cols on desktop): Cyber Lock Terminal -->
+                <section class="lg:col-span-6 vault-panel overflow-hidden" aria-label="Current cyber lock">
+                    <!-- Terminal Header Bar -->
+                    <div class="px-5 py-3.5 bg-[#1b2035] border-b border-cye-line flex items-center justify-between font-code text-xs tracking-wider">
+                        <span id="terminal-id" class="text-slate-300 font-bold">TERMINAL 01 / 08</span>
+                        <span id="terminal-status" class="text-amber-300 font-bold">● ENCRYPTED</span>
+                    </div>
+
+                    <!-- Progress Bar -->
+                    <div class="h-1.5 bg-slate-900 w-full">
+                        <div id="progress-fill" class="h-full bg-gradient-to-r from-cye-cyan via-cye-gold to-emerald-400 transition-all duration-300 w-0"></div>
+                    </div>
+
+                    <!-- Dynamic Terminal Body -->
+                    <div id="terminal-body" class="p-4 sm:p-6 space-y-5">
+                        <!-- Populated via JS -->
+                    </div>
+                </section>
+
+                <!-- RIGHT COLUMN (3 cols on desktop): Agent Field Guide & Quick Base Powers -->
+                <aside class="lg:col-span-3 vault-panel p-4 sm:p-5 space-y-4">
+                    <div class="flex items-center justify-between border-b border-slate-800 pb-2.5">
+                        <span class="font-code text-xs uppercase tracking-widest text-cye-gold font-bold">AGENT FIELD GUIDE</span>
+                        <button type="button" id="btn-quick-lab" class="text-[11px] font-bold text-cyan-300 hover:underline">Open Lab ↗</button>
+                    </div>
+
+                    <div class="space-y-3.5 text-xs text-slate-300 leading-relaxed math-render">
+                        <div class="pb-3 border-b border-slate-800/80">
+                            <h3 class="font-bold text-white text-sm mb-1">1. Digits Obey the Base</h3>
+                            <p class="text-slate-400">In Base $b$, allowed digits are $0$ to $b - 1$. In Base $5$: $0, 1, 2, 3, 4$. Never write a digit $\ge b$.</p>
+                        </div>
+
+                        <div class="pb-3 border-b border-slate-800/80">
+                            <div class="font-code text-[11px] text-cye-gold font-bold mb-1">01 / BASE b → BASE 10</div>
+                            <p class="text-slate-400 mb-2">Multiply each digit by its place value $b^n$ and sum:</p>
+                            <div class="grid grid-cols-4 text-center rounded-lg overflow-hidden border border-slate-700 font-code text-[11px]">
+                                <span class="bg-slate-800 py-1 text-slate-300">2³</span>
+                                <span class="bg-slate-800 py-1 text-slate-300">2²</span>
+                                <span class="bg-slate-800 py-1 text-slate-300">2¹</span>
+                                <span class="bg-slate-800 py-1 text-slate-300">2⁰</span>
+                                <span class="bg-slate-950 py-1 text-cye-gold font-bold">8</span>
+                                <span class="bg-slate-950 py-1 text-cye-gold font-bold">4</span>
+                                <span class="bg-slate-950 py-1 text-cye-gold font-bold">2</span>
+                                <span class="bg-slate-950 py-1 text-cye-gold font-bold">1</span>
+                            </div>
+                            <div class="font-code text-[11px] text-emerald-300 mt-1.5">1011₂ = 8 + 0 + 2 + 1 = 11₁₀</div>
+                        </div>
+
+                        <div class="pb-3 border-b border-slate-800/80">
+                            <div class="font-code text-[11px] text-cye-gold font-bold mb-1">02 / BASE 10 → BASE b</div>
+                            <p class="text-slate-400">Divide repeatedly by target base $b$. Read remainders from <strong>bottom to top ($\uparrow$)</strong>.</p>
+                            <div class="font-code text-[11px] bg-slate-950/90 p-2.5 rounded-lg border border-slate-800 mt-1.5 text-slate-300">
+                                13 ÷ 2 = 6 R 1 ↑<br>
+                                6 ÷ 2 = 3 R 0 ↑<br>
+                                3 ÷ 2 = 1 R 1 ↑<br>
+                                1 ÷ 2 = 0 R 1 ↑<br>
+                                <span class="text-cye-gold font-bold">13₁₀ = 1101₂</span>
+                            </div>
+                        </div>
+
+                        <div>
+                            <div class="font-code text-[11px] text-cye-gold font-bold mb-1">03 / BETWEEN TWO BASES</div>
+                            <p class="text-slate-400">Use Base $10$ as a bridge: $\text{Base } p \to \text{Base } 10 \to \text{Base } q$. For Base $2 \leftrightarrow \text{Base } 8$, group in 3-bit triplets ($4, 2, 1$).</p>
+                        </div>
+                    </div>
+                </aside>
+            </div>
+        </section>
+
+        <!-- =====================================================================
+             VIEW 3: MISSION REPORT & GOOGLE CLASSROOM SUBMISSION
+             ===================================================================== -->
+        <section id="view-report" class="hidden max-w-4xl mx-auto space-y-6">
+            <!-- Populated dynamically via renderReport() -->
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="border-t border-cye-line bg-[#0b0f1c] py-4 px-4 sm:px-6 mt-auto text-xs text-slate-400">
+        <div class="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-2">
+            <span><strong>CYE-MathVerse</strong> • Cipher Vault: Base Protocol</span>
+            <span>Form 4 Mathematics • Chapter 2: Number Bases</span>
+            <span class="text-cye-gold font-semibold">Think carefully. Decode confidently.</span>
+        </div>
+    </footer>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="hidden vault-panel border-purple-400/60 bg-[#23263a] text-white px-4 py-3 rounded-xl shadow-2xl text-xs sm:text-sm font-medium" role="status"></div>
+
+    <!-- =========================================================================
+         MODALS: CIPHER LAB, FORMULAS, FULL SCRATCHPAD, FIELD GUIDE
+         ========================================================================= -->
+
+    <!-- MODAL 1: INTERACTIVE CYBER BASE CONVERTER SANDBOX (CIPHER LAB) -->
+    <div id="modal-cipher-lab" class="fixed inset-0 bg-slate-950/85 backdrop-blur-md z-50 hidden flex items-center justify-center p-3 sm:p-4">
+        <div class="vault-panel max-w-3xl w-full p-5 sm:p-7 space-y-4 max-h-[92vh] overflow-y-auto border border-cyan-500/40">
+            <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+                <div class="flex items-center gap-2 text-cyan-400 font-tech font-bold text-sm sm:text-base">
+                    <span>🔐</span>
+                    <span>INTERACTIVE CYBER BASE CONVERTER LAB</span>
+                </div>
+                <button type="button" class="modal-close p-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300">✕</button>
+            </div>
+
+            <p class="text-xs text-slate-400 leading-relaxed math-render">
+                Enter any positive number and choose its source base ($2$ to $10$) to inspect live place-value powers ($b^n$), digit values, Base $10$ expansion, and multi-base conversions!
+            </p>
+
+            <div class="grid grid-cols-1 sm:grid-cols-4 gap-2.5">
+                <div class="sm:col-span-2">
+                    <label class="block text-[10px] font-bold uppercase text-slate-400 mb-1">Input Number Digits</label>
+                    <input type="text" id="sandbox-number-input" value="110101" maxlength="12" placeholder="e.g. 110101 or 342"
+                        class="w-full px-3.5 py-2 rounded-xl bg-slate-900 border border-slate-700 text-cyan-300 font-code text-sm focus:outline-none focus:border-cyan-400">
+                </div>
+                <div>
+                    <label class="block text-[10px] font-bold uppercase text-slate-400 mb-1">Source Base ($b$)</label>
+                    <select id="sandbox-base-select" class="w-full px-3 py-2 rounded-xl bg-slate-900 border border-slate-700 text-white font-bold text-sm focus:outline-none focus:border-cyan-400">
+                        <option value="2" selected>Base 2 (Binary)</option>
+                        <option value="3">Base 3</option>
+                        <option value="4">Base 4</option>
+                        <option value="5">Base 5</option>
+                        <option value="6">Base 6</option>
+                        <option value="7">Base 7</option>
+                        <option value="8">Base 8 (Octal)</option>
+                        <option value="9">Base 9</option>
+                        <option value="10">Base 10 (Decimal)</option>
+                    </select>
+                </div>
+                <div class="flex items-end">
+                    <button type="button" id="btn-sandbox-convert" class="w-full py-2 rounded-xl bg-cyan-400 hover:bg-cyan-300 text-slate-950 font-tech font-bold text-xs transition">
+                        DECODE BASE
+                    </button>
+                </div>
+            </div>
+
+            <div id="sandbox-error" class="hidden bg-red-950/60 border border-red-500/40 text-red-300 rounded-xl p-3 text-xs font-semibold"></div>
+
+            <div class="w-full bg-slate-950/90 rounded-2xl p-4 border border-slate-800 overflow-x-auto">
+                <div class="text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-2">
+                    Live Place Value ($b^n$) &amp; Digit Value Breakdown
+                </div>
+                <div id="sandbox-expansion-table" class="text-xs sm:text-sm math-render"></div>
+            </div>
+
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-2.5 text-center text-xs math-render" id="sandbox-bases-grid"></div>
+
+            <div class="flex flex-wrap items-center gap-2 pt-1">
+                <span class="text-[11px] font-bold text-slate-400">Presets:</span>
+                <button type="button" class="sandbox-preset px-2.5 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-cyan-300 text-xs font-code border border-slate-700" data-num="110101" data-base="2">110101₂</button>
+                <button type="button" class="sandbox-preset px-2.5 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-emerald-300 text-xs font-code border border-slate-700" data-num="3421" data-base="5">3421₅</button>
+                <button type="button" class="sandbox-preset px-2.5 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-amber-300 text-xs font-code border border-slate-700" data-num="563" data-base="8">563₈</button>
+                <button type="button" class="sandbox-preset px-2.5 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-purple-300 text-xs font-code border border-slate-700" data-num="243" data-base="6">243₆</button>
+                <button type="button" class="sandbox-preset px-2.5 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-rose-300 text-xs font-code border border-slate-700" data-num="194" data-base="10">194₁₀</button>
+            </div>
+
+            <button type="button" class="modal-close w-full py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-white font-bold text-xs transition">
+                Close Cipher Lab
+            </button>
+        </div>
+    </div>
+
+    <!-- MODAL 2: FORMULAS & REFERENCE SHEET (Number Bases + Sine/Cosine/Tangent & Triangle Area) -->
+    <div id="modal-formulas" class="fixed inset-0 bg-slate-950/85 backdrop-blur-md z-50 hidden flex items-center justify-center p-3 sm:p-4">
+        <div class="vault-panel max-w-3xl w-full p-5 sm:p-7 space-y-4 max-h-[92vh] overflow-y-auto border border-amber-500/35">
+            <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+                <div class="flex items-center gap-2 text-cye-gold font-tech font-bold text-sm sm:text-base">
+                    <span>📑</span>
+                    <span>MATHEMATICAL FORMULA &amp; CIPHER REFERENCE SHEET</span>
+                </div>
+                <button type="button" class="modal-close p-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300">✕</button>
+            </div>
+
+            <div class="flex flex-wrap gap-2">
+                <button type="button" class="formula-tab-btn px-3 py-1.5 rounded-xl bg-amber-500/20 text-amber-300 border border-amber-500/40 text-xs font-bold" data-tab="all">
+                    All Formulas
+                </button>
+                <button type="button" class="formula-tab-btn px-3 py-1.5 rounded-xl bg-slate-800 text-slate-400 border border-slate-700 text-xs font-bold" data-tab="bases">
+                    🔐 Ch 2: Number Bases
+                </button>
+                <button type="button" class="formula-tab-btn px-3 py-1.5 rounded-xl bg-slate-800 text-slate-400 border border-slate-700 text-xs font-bold" data-tab="trig">
+                    📐 Sine, Cosine, Tangent &amp; Area of Triangles
+                </button>
+            </div>
+
+            <div id="formula-list-container" class="space-y-3 text-xs sm:text-sm text-slate-300 math-render"></div>
+
+            <button type="button" class="modal-close w-full py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-white font-bold text-xs transition">
+                Close Formula Sheet
+            </button>
+        </div>
+    </div>
+
+    <!-- MODAL 3: GLOBAL SCRATCHPAD MODAL -->
+    <div id="modal-scratchpad" class="fixed inset-0 bg-slate-950/85 backdrop-blur-md z-50 hidden flex items-center justify-center p-3 sm:p-4">
+        <div class="vault-panel max-w-2xl w-full p-5 sm:p-6 space-y-3 border border-purple-500/40 flex flex-col">
+            <div class="flex items-center justify-between border-b border-slate-800 pb-2.5">
+                <div class="flex items-center gap-2 text-purple-300 font-tech font-bold text-sm">
+                    <span>✏️</span>
+                    <span>INTERACTIVE CALCULATION SCRATCHPAD</span>
+                </div>
+                <button type="button" class="modal-close p-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300">✕</button>
+            </div>
+
+            <div class="w-full bg-[#070a14] rounded-xl border border-slate-700 overflow-hidden relative touch-none" style="height: 320px;">
+                <canvas id="modal-scratch-canvas" class="w-full h-full cursor-crosshair"></canvas>
+            </div>
+
+            <div class="flex flex-wrap items-center justify-between gap-2 pt-1">
+                <div class="flex items-center gap-2">
+                    <button type="button" id="modal-pen-btn" class="px-3 py-1.5 rounded-lg bg-cyan-500/20 text-cyan-300 border border-cyan-500/40 text-xs font-bold">Pen</button>
+                    <button type="button" id="modal-eraser-btn" class="px-3 py-1.5 rounded-lg bg-slate-800 text-slate-400 border border-slate-700 text-xs font-bold">Eraser</button>
+                    <div class="flex items-center gap-1.5 ml-1">
+                        <button type="button" class="modal-color-dot w-5 h-5 rounded-full bg-cyan-400 ring-2 ring-white" data-color="#22d3ee"></button>
+                        <button type="button" class="modal-color-dot w-5 h-5 rounded-full bg-amber-400" data-color="#fbbf24"></button>
+                        <button type="button" class="modal-color-dot w-5 h-5 rounded-full bg-emerald-400" data-color="#34d399"></button>
+                        <button type="button" class="modal-color-dot w-5 h-5 rounded-full bg-rose-400" data-color="#fb7185"></button>
+                        <button type="button" class="modal-color-dot w-5 h-5 rounded-full bg-white" data-color="#ffffff"></button>
+                    </div>
+                </div>
+                <div class="flex items-center gap-2">
+                    <button type="button" id="modal-save-to-lock-btn" class="px-3 py-1.5 rounded-lg bg-emerald-500/20 hover:bg-emerald-500/30 text-emerald-300 border border-emerald-500/30 text-xs font-bold transition">
+                        Save to Lock Working
+                    </button>
+                    <button type="button" id="modal-clear-scratch-btn" class="px-3 py-1.5 rounded-lg bg-red-500/20 hover:bg-red-500/30 text-red-300 border border-red-500/30 text-xs font-bold transition">
+                        Clear
+                    </button>
+                    <button type="button" class="modal-close px-4 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-white text-xs font-bold">
+                        Done
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL 4: FIELD GUIDE DIALOG -->
+    <div id="modal-guide" class="fixed inset-0 bg-slate-950/85 backdrop-blur-md z-50 hidden flex items-center justify-center p-3 sm:p-4">
+        <div class="vault-panel max-w-lg w-full p-6 space-y-4 border border-cye-gold/40">
+            <div class="font-code text-xs uppercase tracking-widest text-cye-gold">FIELD GUIDE</div>
+            <h2 class="text-2xl font-black text-white">Same value. New code.</h2>
+            <div class="space-y-3 text-sm text-slate-300 leading-relaxed math-render">
+                <p>In $101_2$, the place values are $4, 2,$ and $1$. So $101_2 = 4 + 0 + 1 = 5_{10}$. To convert $5_{10}$ back to binary, divide by $2$ repeatedly and read the remainders upwards: $101_2$.</p>
+                <p>In Base $8$, the place values are $64, 8,$ and $1$. Thus $17_8 = (1 \times 8) + 7 = 15_{10}$. Only digits $0$–$7$ are valid in Base $8$.</p>
+                <p>To convert between two non-decimal bases, use Base $10$ as your bridge: $\text{Place Value} = b^n$ and $\text{Digit Value} = \text{digit} \times b^n$.</p>
+            </div>
+            <div class="flex justify-end pt-2">
+                <button type="button" class="modal-close px-5 py-2.5 rounded-xl bg-cye-gold text-slate-950 font-bold text-sm">Ready to Decode</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- =========================================================================
+         APPLICATION JAVASCRIPT ENGINE
+         ========================================================================= -->
+    <script>
+        'use strict';
+
+        const $ = id => document.getElementById(id);
+        const STORAGE_KEY = 'cye-cipher-vault-combined-v2';
+        const SECRET = 'STARFALL';
+
+        /* =========================================================================
+           0. MATHEMATICAL TYPESETTING HELPER (KaTeX)
+           ========================================================================= */
+        function triggerMathRender(container) {
+            const target = container || document.body;
+            if (window.renderMathInElement) {
+                try {
+                    window.renderMathInElement(target, {
+                        delimiters: [
+                            { left: '$$', right: '$$', display: true },
+                            { left: '$', right: '$', display: false },
+                            { left: '\\(', right: '\\)', display: false },
+                            { left: '\\[', right: '\\]', display: true }
+                        ],
+                        throwOnError: false
+                    });
+                } catch (e) {}
+            }
+        }
+
+        /* =========================================================================
+           1. PROCEDURAL WEB AUDIO SYNTHESIZER & CONFETTI SYSTEM
+           ========================================================================= */
+        class SoundFX {
+            constructor() {
+                this.ctx = null;
+                this.enabled = true;
+            }
+            init() {
+                if (!this.ctx) {
+                    const AudioCtx = window.AudioContext || window.webkitAudioContext;
+                    if (AudioCtx) this.ctx = new AudioCtx();
+                }
+                if (this.ctx && this.ctx.state === 'suspended') this.ctx.resume();
+            }
+            playClick(freq = 640) {
+                if (!this.enabled || !this.ctx) return;
+                try {
+                    const osc = this.ctx.createOscillator();
+                    const gain = this.ctx.createGain();
+                    osc.connect(gain);
+                    gain.connect(this.ctx.destination);
+                    osc.type = 'sine';
+                    osc.frequency.setValueAtTime(freq, this.ctx.currentTime);
+                    osc.frequency.exponentialRampToValueAtTime(freq * 0.5, this.ctx.currentTime + 0.045);
+                    gain.gain.setValueAtTime(0.11, this.ctx.currentTime);
+                    gain.gain.linearRampToValueAtTime(0.01, this.ctx.currentTime + 0.045);
+                    osc.start();
+                    osc.stop(this.ctx.currentTime + 0.045);
+                } catch (e) {}
+            }
+            playSuccess() {
+                if (!this.enabled || !this.ctx) return;
+                try {
+                    const now = this.ctx.currentTime;
+                    [523.25, 659.25, 783.99, 1046.50].forEach((freq, idx) => {
+                        const osc = this.ctx.createOscillator();
+                        const gain = this.ctx.createGain();
+                        osc.connect(gain);
+                        gain.connect(this.ctx.destination);
+                        osc.type = 'triangle';
+                        osc.frequency.value = freq;
+                        gain.gain.setValueAtTime(0.18, now + idx * 0.065);
+                        gain.gain.linearRampToValueAtTime(0.01, now + idx * 0.065 + 0.18);
+                        osc.start(now + idx * 0.065);
+                        osc.stop(now + idx * 0.065 + 0.18);
+                    });
+                } catch (e) {}
+            }
+            playError() {
+                if (!this.enabled || !this.ctx) return;
+                try {
+                    const now = this.ctx.currentTime;
+                    [220, 175].forEach((freq, idx) => {
+                        const osc = this.ctx.createOscillator();
+                        const gain = this.ctx.createGain();
+                        osc.connect(gain);
+                        gain.connect(this.ctx.destination);
+                        osc.type = 'sawtooth';
+                        osc.frequency.value = freq;
+                        gain.gain.setValueAtTime(0.18, now + idx * 0.12);
+                        gain.gain.linearRampToValueAtTime(0.01, now + idx * 0.12 + 0.2);
+                        osc.start(now + idx * 0.12);
+                        osc.stop(now + idx * 0.12 + 0.2);
+                    });
+                } catch (e) {}
+            }
+            playFanfare() {
+                if (!this.enabled || !this.ctx) return;
+                try {
+                    const notes = [440, 554.37, 659.25, 880, 880, 880, 1108.73];
+                    const times = [0, 0.12, 0.24, 0.36, 0.55, 0.70, 0.88];
+                    const durations = [0.1, 0.1, 0.1, 0.16, 0.12, 0.12, 0.45];
+                    const now = this.ctx.currentTime;
+                    notes.forEach((f, i) => {
+                        const osc = this.ctx.createOscillator();
+                        const gain = this.ctx.createGain();
+                        osc.connect(gain);
+                        gain.connect(this.ctx.destination);
+                        osc.type = 'triangle';
+                        osc.frequency.value = f;
+                        gain.gain.setValueAtTime(0.24, now + times[i]);
+                        gain.gain.linearRampToValueAtTime(0.01, now + times[i] + durations[i]);
+                        osc.start(now + times[i]);
+                        osc.stop(now + times[i] + durations[i]);
+                    });
+                } catch (e) {}
+            }
+        }
+
+        class ConfettiManager {
+            constructor(canvasId) {
+                this.canvas = $(canvasId);
+                this.ctx = this.canvas ? this.canvas.getContext('2d') : null;
+                this.particles = [];
+                this.animId = null;
+                this.resize();
+                window.addEventListener('resize', () => this.resize());
+            }
+            resize() {
+                if (!this.canvas) return;
+                this.canvas.width = window.innerWidth;
+                this.canvas.height = window.innerHeight;
+            }
+            burst(count = 65) {
+                if (!this.canvas || !this.ctx) return;
+                const colors = ['#f4c875', '#00f2fe', '#34d399', '#b39bff', '#fb7185'];
+                const ox = this.canvas.width / 2;
+                const oy = this.canvas.height / 3;
+                for (let i = 0; i < count; i++) {
+                    const angle = Math.random() * Math.PI * 2;
+                    const speed = Math.random() * 8 + 3;
+                    this.particles.push({
+                        x: ox, y: oy,
+                        vx: Math.cos(angle) * speed,
+                        vy: Math.sin(angle) * speed - 2,
+                        size: Math.random() * 7 + 4,
+                        color: colors[Math.floor(Math.random() * colors.length)],
+                        rot: Math.random() * 360,
+                        rotSpeed: (Math.random() - 0.5) * 12,
+                        alpha: 1,
+                        decay: Math.random() * 0.015 + 0.01
+                    });
+                }
+                if (!this.animId) this.animate();
+            }
+            animate() {
+                if (!this.ctx) return;
+                this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+                for (let i = this.particles.length - 1; i >= 0; i--) {
+                    const p = this.particles[i];
+                    p.x += p.vx; p.y += p.vy; p.vy += 0.2;
+                    p.rot += p.rotSpeed; p.alpha -= p.decay;
+                    if (p.alpha <= 0) { this.particles.splice(i, 1); continue; }
+                    this.ctx.save();
+                    this.ctx.globalAlpha = p.alpha;
+                    this.ctx.translate(p.x, p.y);
+                    this.ctx.rotate((p.rot * Math.PI) / 180);
+                    this.ctx.fillStyle = p.color;
+                    this.ctx.fillRect(-p.size / 2, -p.size / 2, p.size, p.size);
+                    this.ctx.restore();
+                }
+                if (this.particles.length > 0) {
+                    this.animId = requestAnimationFrame(() => this.animate());
+                } else {
+                    this.animId = null;
+                }
+            }
+        }
+
+        const sound = new SoundFX();
+        const confetti = new ConfettiManager('confetti-canvas');
+
+        /* =========================================================================
+           2. FORMULAS DATABASE (Number Bases + Sine, Cosine, Tangent & Triangle Area)
+           ========================================================================= */
+        const FORMULAS_DB = [
+            {
+                group: "bases",
+                title: "1. Place Value & Digit Value in Base b",
+                math: "$$\\text{Place Value} = b^n \\quad (n = 0, 1, 2, \\dots), \\qquad \\text{Digit Value} = \\text{Digit} \\times b^n$$",
+                desc: "In Base $b$, valid digits are $0$ to $b - 1$. Example: In $3\\underline{4}2_5$, the place value of $4$ is $5^1 = 5$ and its digit value is $4 \\times 5 = 20$."
+            },
+            {
+                group: "bases",
+                title: "2. Converting Base b to Base 10 (Expansion)",
+                math: "$$(d_k d_{k-1} \\dots d_1 d_0)_b = (d_k \\times b^k) + \\dots + (d_1 \\times b^1) + (d_0 \\times b^0)$$",
+                desc: "Multiply each digit by its base power $b^n$ and add the products in Base $10$."
+            },
+            {
+                group: "bases",
+                title: "3. Converting Base 10 to Base b (Repeated Division)",
+                math: "$$N_{10} \\div b \\implies \\text{Read Remainders from Bottom } (\\uparrow) \\text{ to Top until Quotient} = 0$$",
+                desc: "Divide repeatedly by target base $b$, recording each remainder. The last remainder is the most significant (leftmost) digit."
+            },
+            {
+                group: "bases",
+                title: "4. Base 2 (Binary) ↔ Base 8 (Octal) 3-Bit Cipher Table",
+                math: "$$\\begin{array}{|c|c|c|c|c|c|c|c|} \\hline 0_8=000_2 & 1_8=001_2 & 2_8=010_2 & 3_8=011_2 & 4_8=100_2 & 5_8=101_2 & 6_8=110_2 & 7_8=111_2 \\\\ \\hline \\end{array}$$",
+                desc: "Group binary digits in triplets of $3$ from right to left using weights $(4, 2, 1)$ to convert directly between Base $2$ and Base $8$."
+            },
+            {
+                group: "bases",
+                title: "5. Addition & Subtraction in Base b",
+                math: "$$\\text{Carry Rule: Sum } S \\ge b \\implies \\text{write } (S - b), \\text{ carry } +1 \\quad \\big| \\quad \\text{Borrow Rule: Borrow } 1 \\implies +b$$",
+                desc: "Alternatively, decode both numbers to Base $10$, add or subtract in Base $10$, and re-encode to Base $b$."
+            },
+            {
+                group: "trig",
+                title: "6. Right-Angled Trigonometric Ratios (Sine, Cosine, Tangent)",
+                math: "$$\\sin \\theta = \\frac{\\text{Opposite}}{\\text{Hypotenuse}}, \\qquad \\cos \\theta = \\frac{\\text{Adjacent}}{\\text{Hypotenuse}}, \\qquad \\tan \\theta = \\frac{\\text{Opposite}}{\\text{Adjacent}} = \\frac{\\sin \\theta}{\\cos \\theta}$$",
+                desc: "Trigonometric ratios (SOH-CAH-TOA) for right-angled triangles."
+            },
+            {
+                group: "trig",
+                title: "7. The Sine Rule (Petua Sinus)",
+                math: "$$\\frac{a}{\\sin A} = \\frac{b}{\\sin B} = \\frac{c}{\\sin C} \\qquad \\text{or} \\qquad \\frac{\\sin A}{a} = \\frac{\\sin B}{b} = \\frac{\\sin C}{c}$$",
+                desc: "Used in any triangle $ABC$ when given two angles and one side (AAS/ASA) or two sides and a non-included angle (SSA)."
+            },
+            {
+                group: "trig",
+                title: "8. The Cosine Rule (Petua Kosinus)",
+                math: "$$a^2 = b^2 + c^2 - 2bc \\cos A \\qquad \\Longleftrightarrow \\qquad \\cos A = \\frac{b^2 + c^2 - a^2}{2bc}$$",
+                desc: "Used in any triangle $ABC$ when given two sides and an included angle (SAS) or all three sides (SSS)."
+            },
+            {
+                group: "trig",
+                title: "9. Area of Triangles (Luas Segi Tiga)",
+                math: "$$\\text{Area} = \\frac{1}{2} ab \\sin C = \\frac{1}{2} bc \\sin A = \\frac{1}{2} ac \\sin B$$",
+                desc: "Calculates the area of any triangle using two adjacent sides and the sine of their included angle."
+            }
+        ];
+
+        /* =========================================================================
+           3. CLEARANCE LEVELS & QUESTION GENERATOR (Cipher Vault 8-Lock Architecture)
+           ========================================================================= */
+        const LEVELS = {
+            Easy: {
+                icon: '◇',
+                tag: 'CADET',
+                badge: '🟢 Easy',
+                desc: 'Start with place values and friendly binary (Base 2), Base 5 & Base 8 codes.',
+                foot: 'GUIDED ENTRY',
+                bases: [2, 5, 8],
+                range: 35
+            },
+            Medium: {
+                icon: '◈',
+                tag: 'SPECIALIST',
+                badge: '🟡 Medium',
+                desc: 'Switch between bases (Base 3, 4, 5, 6, 8) and restore broken addition & subtraction circuits.',
+                foot: 'CROSS-BASE CIPHERS',
+                bases: [3, 4, 5, 6, 8],
+                range: 140
+            },
+            Hard: {
+                icon: '⬡',
+                tag: 'ELITE',
+                badge: '🔴 Hard',
+                desc: 'Trace larger codes (Base 3, 4, 6, 7, 9), solve a missing digit & decode a multi-step transmission.',
+                foot: 'ADVANCED DECRYPTION',
+                bases: [3, 4, 6, 7, 9],
+                range: 390
+            }
+        };
+
+        const LOCK_NAMES = [
+            'Signal gate',
+            'Identity scan',
+            'Power relay',
+            'Binary bridge',
+            'Mirror node',
+            'Data merger',
+            'Shadow trace',
+            'Archive door'
+        ];
+
+        const esc = s => String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+        const fmt = (n, b) => `${n.toString(b)}<sub>${b}</sub>`;
+        const textNum = (n, b) => `${n.toString(b)} (base ${b})`;
+        const rand = (a, b) => a + Math.floor(Math.random() * (b - a + 1));
+        const choice = a => a[rand(0, a.length - 1)];
+
+        function expand(n, b) {
+            const d = n.toString(b).split('');
+            return d.map((v, i) => `${v} × ${b}^${d.length - 1 - i}`).join(' + ') + ` = ${n} (base 10)`;
+        }
+
+        function expandLatex(n, b) {
+            const d = n.toString(b).split('');
+            return `$$${n.toString(b)}_{${b}} = ` + d.map((v, i) => `(${v} \\times ${b}^{${d.length - 1 - i}})`).join(' + ') + ` = \\mathbf{${n}_{10}}$$`;
+        }
+
+        function divisions(n, b) {
+            const lines = [];
+            let v = n;
+            do {
+                const q = Math.floor(v / b), r = v % b;
+                lines.push(`${v} ÷ ${b} = ${q}, remainder ${r}`);
+                v = q;
+            } while (v);
+            return lines.join(' → ') + `. Read remainders upwards: ${n.toString(b)} (base ${b}).`;
+        }
+
+        function makeQuestions(level) {
+            const conf = LEVELS[level];
+            const base = () => choice(conf.bases);
+            let b = base(), n = rand(10, conf.range);
+            const q = [];
+
+            function add(title, skill, story, equation, visualFormula, prompt, answer, answerBase, hint, solution, plain) {
+                q.push({
+                    title, skill, story, equation, visualFormula, prompt,
+                    answer: String(answer), answerBase, hint, solution, plain
+                });
+            }
+
+            // LOCK 1: Digit rules
+            add(
+                'Check the signal',
+                'Digit rules',
+                'The security scan needs the largest permitted digit before it accepts a transmission.',
+                `BASE ${b}`,
+                `$$\\text{Allowed Digits in Base } ${b} = \\{ 0, 1, 2, \\dots, b - 1 \\}$$`,
+                `What is the largest single digit allowed in base ${b}?`,
+                b - 1,
+                10,
+                `Base ${b} uses digits from 0 to ${b} − 1.`,
+                `In base ${b}, valid digits are 0 to ${b - 1}. The largest allowed digit is ${b - 1}.`,
+                `Largest digit allowed in base ${b}?`
+            );
+
+            // LOCK 2: Digit value
+            const digit = rand(1, b - 1), tail = rand(0, b - 1), dLast = rand(0, b - 1);
+            const digits = `${digit}${tail}${dLast}`;
+            const dv = digit * b * b;
+            add(
+                'Identify the agent',
+                'Digit value',
+                'A stolen ID contains a disguised value. Decode its leftmost digit to prove your identity.',
+                `<u>${digit}</u>${tail}${dLast}<sub>${b}</sub>`,
+                `$$\\begin{array}{|c|c|c|c|} \\hline \\textbf{Digit} & \\mathbf{\\underline{${digit}}} & ${tail} & ${dLast} \\\\ \\hline \\textbf{Place Value} & \\mathbf{${b}^2 = ${b * b}} & ${b}^1 = ${b} & ${b}^0 = 1 \\\\ \\hline \\end{array}$$`,
+                `Find the digit value of the leftmost digit ${digit} in ${digits} (base ${b}), expressed in base ten.`,
+                dv,
+                10,
+                `The leftmost place of a 3-digit number in base ${b} has place value ${b}² = ${b * b}. Multiply by the digit ${digit}.`,
+                `${digit} × ${b}² = ${digit} × ${b * b} = ${dv} (base 10).`,
+                `Digit value of leftmost ${digit} in ${digits} (base ${b}), in base 10?`
+            );
+
+            // LOCK 3: Base to decimal
+            b = base();
+            n = rand(10, conf.range);
+            const dArr3 = n.toString(b).split('');
+            add(
+                'Restore the power',
+                'Base to decimal',
+                'The power relay speaks in another base. Translate the packet to decimal to restore the lights.',
+                `${fmt(n, b)} → ?<sub>10</sub>`,
+                `$$${n.toString(b)}_{${b}} = ${dArr3.map((v, i) => `(${v} \\times ${b}^{${dArr3.length - 1 - i}})`).join(' + ')}$$`,
+                'Convert the packet to base ten.',
+                n,
+                10,
+                `Expand each digit using powers of ${b} starting at ${b}⁰ = 1 on the right.`,
+                expand(n, b),
+                `Convert ${textNum(n, b)} to base 10.`
+            );
+
+            // LOCK 4: Decimal to base
+            b = level === 'Easy' ? 2 : base();
+            n = rand(9, conf.range);
+            add(
+                'Build a bridge',
+                'Decimal to base',
+                'The next terminal cannot read decimal. Re-encode the access number in its own base language.',
+                `${fmt(n, 10)} → ?<sub>${b}</sub>`,
+                `$$\\text{Repeated Division: } ${n}_{10} \\div ${b} \\implies \\text{Read Remainders Upwards } (\\uparrow)$$`,
+                `Convert ${n} (base 10) to base ${b}.`,
+                n.toString(b),
+                b,
+                `Divide ${n} repeatedly by ${b}, then read the remainders from bottom to top (↑).`,
+                divisions(n, b),
+                `Convert ${textNum(n, 10)} to base ${b}.`
+            );
+
+            // LOCK 5: Between bases
+            b = base();
+            let to = choice(conf.bases.filter(v => v !== b));
+            n = rand(12, conf.range);
+            add(
+                'Cross the mirror',
+                'Between bases',
+                'The mirror node translates incoming codes. Preserve the value while changing its base.',
+                `${fmt(n, b)} → ?<sub>${to}</sub>`,
+                `$$\\text{Bridge Protocol: } ${n.toString(b)}_{${b}} \\xrightarrow{\\sum d_i \\times ${b}^i} \\text{Base } 10 \\xrightarrow{\\div ${to}} ?_{${to}}$$`,
+                `Convert ${n.toString(b)} (base ${b}) to base ${to}.`,
+                n.toString(to),
+                to,
+                `Use base ten as a bridge: convert base ${b} → base 10 first, then divide by ${to} to get base ${to}.`,
+                expand(n, b) + '. ' + divisions(n, to),
+                `Convert ${textNum(n, b)} to base ${to}.`
+            );
+
+            // LOCK 6: Addition in a base
+            b = level === 'Easy' ? 2 : base();
+            let a = rand(5, Math.floor(conf.range / 2)), c = rand(3, Math.floor(conf.range / 3));
+            add(
+                'Merge the data',
+                'Addition in a base',
+                'Two data streams hold pieces of the key. Add their values to repair the merger.',
+                `${fmt(a, b)} + ${fmt(c, b)} = ?<sub>${b}</sub>`,
+                `$$\\begin{aligned} & ${a.toString(b)}_{${b}} \\\\ + \\; & ${c.toString(b)}_{${b}} \\\\ \\hline & ?_{${b}} \\end{aligned} \\qquad \\text{(Carry } +1 \\text{ whenever column sum } \\ge ${b}\\text{)}$$`,
+                `Give the sum in base ${b}.`,
+                (a + c).toString(b),
+                b,
+                `Convert both to base ten (${a} + ${c} = ${a + c}), then convert ${a + c} back to base ${b} (or add column-by-column in base ${b}).`,
+                `${textNum(a, b)} = ${a} (base 10); ${textNum(c, b)} = ${c} (base 10). ${a} + ${c} = ${a + c}. ` + divisions(a + c, b),
+                `Add ${textNum(a, b)} and ${textNum(c, b)}. Answer in base ${b}.`
+            );
+
+            // LOCK 7: Subtraction or Missing Digit
+            b = base();
+            a = rand(Math.max(15, b * b), conf.range);
+            c = rand(3, a - 2);
+            if (level === 'Hard') {
+                const ds = a.toString(b).split('');
+                const i = rand(0, ds.length - 1);
+                const missing = ds[i];
+                const placePow = ds.length - 1 - i;
+                ds[i] = 'k';
+                add(
+                    'Trace the shadow',
+                    'Missing digit',
+                    'An intruder erased one digit k. Use the decimal record to reconstruct the missing digit.',
+                    `${ds.join('')}<sub>${b}</sub> = ${a}<sub>10</sub>`,
+                    `$$${ds.join('')}_{${b}} = ${a}_{10} \\implies \\text{Missing digit } k \\text{ is at place value } ${b}^{${placePow}} = ${Math.pow(b, placePow)}$$`,
+                    'Which single digit replaces k?',
+                    missing,
+                    b,
+                    `Expand the known digits in powers of ${b}. Subtract their sum from ${a}, then divide by ${b}^${placePow} = ${Math.pow(b, placePow)}.`,
+                    `Full code: ${textNum(a, b)}. ` + expand(a, b) + `. Missing digit k = ${missing}.`,
+                    `Find k in ${ds.join('')} (base ${b}) = ${a} (base 10).`
+                );
+            } else {
+                add(
+                    'Trace the shadow',
+                    'Subtraction in a base',
+                    'The intruder left a false signal. Subtract it from the original to recover the real trail.',
+                    `${fmt(a, b)} − ${fmt(c, b)} = ?<sub>${b}</sub>`,
+                    `$$\\begin{aligned} & ${a.toString(b)}_{${b}} \\\\ - \\; & ${c.toString(b)}_{${b}} \\\\ \\hline & ?_{${b}} \\end{aligned} \\qquad \\text{(Borrowing } 1 \\text{ from left column adds } +${b}\\text{)}$$`,
+                    `Give the difference in base ${b}.`,
+                    (a - c).toString(b),
+                    b,
+                    `Decode each number to base 10 (${a} − ${c} = ${a - c}), then convert ${a - c} back to base ${b}.`,
+                    `${textNum(a, b)} = ${a} (base 10); ${textNum(c, b)} = ${c} (base 10). ${a} - ${c} = ${a - c}. ` + divisions(a - c, b),
+                    `Subtract ${textNum(c, b)} from ${textNum(a, b)}. Answer in base ${b}.`
+                );
+            }
+
+            // LOCK 8: Problem Solving Ledger
+            b = base();
+            to = level === 'Easy' ? 10 : choice(conf.bases.filter(v => v !== b));
+            a = rand(12, Math.floor(conf.range / 2));
+            c = rand(3, Math.floor(conf.range / 4));
+            const used = level === 'Hard' ? rand(2, a + c - 2) : 0;
+            const total = a + c - used;
+            add(
+                'Recover the archive',
+                'Problem solving',
+                'The last terminal stores an energy ledger. Decode the quantities and find the remaining energy.',
+                `${fmt(a, b)} + ${fmt(c, b)}${used ? ` − ${fmt(used, 10)}` : ''} → ?<sub>${to}</sub>`,
+                `$$\\text{Total Energy} = ${a.toString(b)}_{${b}} + ${c.toString(b)}_{${b}} ${used ? `- ${used}_{10}` : ''} = ?_{${to}}$$`,
+                `The vault has ${a.toString(b)} units (base ${b}) and gains ${c.toString(b)} units (base ${b}).${used ? ` It uses ${used} units (base ten).` : ''} How many units remain in base ${to}?`,
+                total.toString(to),
+                to,
+                `Translate every quantity to decimal (${a} + ${c}${used ? ' − ' + used : ''} = ${total}), then convert to base ${to}.`,
+                `${a} + ${c}${used ? ' - ' + used : ''} = ${total} (base 10). ` + (to === 10 ? `Result is ${total} (base 10).` : divisions(total, to)),
+                `Energy: ${textNum(a, b)} + ${textNum(c, b)}${used ? ' - ' + used + ' (base 10)' : ''}. Find total in base ${to}.`
+            );
+
+            return q;
+        }
+
+        /* =========================================================================
+           4. REUSABLE SCRATCHPAD ENGINE (For In-Question Working & Modal)
+           ========================================================================= */
+        class CanvasPad {
+            constructor(canvasEl, onChangeCallback = null) {
+                this.canvas = canvasEl;
+                this.ctx = canvasEl ? canvasEl.getContext('2d') : null;
+                this.drawing = false;
+                this.mode = 'pen';
+                this.color = '#22d3ee';
+                this.lineWidth = 2.8;
+                this.hasInk = false;
+                this.onChange = onChangeCallback;
+
+                if (this.canvas) {
+                    this.initEvents();
+                }
+            }
+
+            resize(preserveImage = null) {
+                if (!this.canvas || !this.ctx) return;
+                const rect = this.canvas.parentElement.getBoundingClientRect();
+                const w = Math.max(280, Math.floor(rect.width || 520));
+                const h = Math.max(180, Math.floor(rect.height || 220));
+                if (this.canvas.width !== w || this.canvas.height !== h) {
+                    this.canvas.width = w;
+                    this.canvas.height = h;
+                }
+                this.fillBackground();
+                if (preserveImage) {
+                    const img = new Image();
+                    img.onload = () => {
+                        this.ctx.drawImage(img, 0, 0, this.canvas.width, this.canvas.height);
+                        this.hasInk = true;
+                    };
+                    img.src = preserveImage;
+                }
+            }
+
+            fillBackground() {
+                if (!this.ctx) return;
+                this.ctx.fillStyle = '#070a14';
+                this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
+                // Subtle calculation grid lines
+                this.ctx.strokeStyle = 'rgba(148, 163, 184, 0.08)';
+                this.ctx.lineWidth = 1;
+                for (let x = 24; x < this.canvas.width; x += 24) {
+                    this.ctx.beginPath();
+                    this.ctx.moveTo(x, 0);
+                    this.ctx.lineTo(x, this.canvas.height);
+                    this.ctx.stroke();
+                }
+                for (let y = 24; y < this.canvas.height; y += 24) {
+                    this.ctx.beginPath();
+                    this.ctx.moveTo(0, y);
+                    this.ctx.lineTo(this.canvas.width, y);
+                    this.ctx.stroke();
+                }
+            }
+
+            clear() {
+                this.hasInk = false;
+                this.fillBackground();
+                if (this.onChange) this.onChange('');
+            }
+
+            toDataURL() {
+                if (!this.canvas || !this.hasInk) return '';
+                return this.canvas.toDataURL('image/png');
+            }
+
+            getPos(e) {
+                const rect = this.canvas.getBoundingClientRect();
+                const clientX = e.touches && e.touches.length ? e.touches[0].clientX : e.clientX;
+                const clientY = e.touches && e.touches.length ? e.touches[0].clientY : e.clientY;
+                return {
+                    x: (clientX - rect.left) * (this.canvas.width / rect.width),
+                    y: (clientY - rect.top) * (this.canvas.height / rect.height)
+                };
+            }
+
+            initEvents() {
+                const start = (e) => {
+                    if (e.cancelable) e.preventDefault();
+                    this.drawing = true;
+                    this.hasInk = true;
+                    const pos = this.getPos(e);
+                    this.ctx.beginPath();
+                    this.ctx.moveTo(pos.x, pos.y);
+                };
+                const move = (e) => {
+                    if (!this.drawing) return;
+                    if (e.cancelable) e.preventDefault();
+                    const pos = this.getPos(e);
+                    this.ctx.lineTo(pos.x, pos.y);
+                    this.ctx.strokeStyle = this.mode === 'eraser' ? '#070a14' : this.color;
+                    this.ctx.lineWidth = this.mode === 'eraser' ? 18 : this.lineWidth;
+                    this.ctx.lineCap = 'round';
+                    this.ctx.lineJoin = 'round';
+                    this.ctx.stroke();
+                };
+                const stop = () => {
+                    if (!this.drawing) return;
+                    this.drawing = false;
+                    if (this.onChange) {
+                        this.onChange(this.toDataURL());
+                    }
+                };
+
+                this.canvas.addEventListener('mousedown', start);
+                this.canvas.addEventListener('mousemove', move);
+                window.addEventListener('mouseup', stop);
+
+                this.canvas.addEventListener('touchstart', start, { passive: false });
+                this.canvas.addEventListener('touchmove', move, { passive: false });
+                window.addEventListener('touchend', stop);
+            }
+        }
+
+        /* =========================================================================
+           5. INTERACTIVE CYBER BASE CONVERTER SANDBOX (CIPHER LAB)
+           ========================================================================= */
+        class BaseCipherLab {
+            constructor() {
+                this.numInput = $('sandbox-number-input');
+                this.baseSelect = $('sandbox-base-select');
+                this.btnConvert = $('btn-sandbox-convert');
+                this.errorBox = $('sandbox-error');
+                this.tableContainer = $('sandbox-expansion-table');
+                this.basesGrid = $('sandbox-bases-grid');
+
+                if (this.btnConvert) this.btnConvert.addEventListener('click', () => this.analyze());
+                if (this.baseSelect) this.baseSelect.addEventListener('change', () => this.analyze());
+                document.querySelectorAll('.sandbox-preset').forEach(btn => {
+                    btn.addEventListener('click', () => {
+                        this.numInput.value = btn.dataset.num;
+                        this.baseSelect.value = btn.dataset.base;
+                        this.analyze();
+                    });
+                });
+            }
+
+            analyze() {
+                if (!this.numInput || !this.baseSelect) return;
+                const rawStr = this.numInput.value.trim().replace(/[^0-9]/g, '');
+                const base = parseInt(this.baseSelect.value, 10);
+                if (!rawStr) {
+                    this.showError('Please enter a valid positive number.');
+                    return;
+                }
+                const digits = rawStr.split('').map(ch => parseInt(ch, 10));
+                const invalid = digits.find(d => isNaN(d) || d >= base);
+                if (invalid !== undefined) {
+                    this.showError(`Digit "${invalid}" is not permitted in Base ${base}! Only digits 0 to ${base - 1} are valid.`);
+                    return;
+                }
+                this.errorBox.classList.add('hidden');
+                const n = digits.length;
+                let base10Val = 0;
+                const cols = digits.map((d, idx) => {
+                    const power = n - 1 - idx;
+                    const placeVal = Math.pow(base, power);
+                    const digitVal = d * placeVal;
+                    base10Val += digitVal;
+                    return { d, power, placeVal, digitVal };
+                });
+
+                this.tableContainer.innerHTML = `
+                    <table class="w-full border-collapse text-xs">
+                        <tbody>
+                            <tr class="bg-slate-900/90">
+                                <th class="px-3 py-1.5 text-left text-slate-400 border border-slate-800">Digit</th>
+                                ${cols.map(c => `<td class="px-3 py-1.5 font-code font-bold text-cyan-300 border border-slate-800 text-center">${c.d}</td>`).join('')}
+                            </tr>
+                            <tr>
+                                <th class="px-3 py-1.5 text-left text-slate-400 border border-slate-800">Place Value ($b^n$)</th>
+                                ${cols.map(c => `<td class="px-3 py-1.5 text-slate-300 border border-slate-800 text-center">$${base}^{${c.power}} = ${c.placeVal}$</td>`).join('')}
+                            </tr>
+                            <tr class="bg-slate-900/50">
+                                <th class="px-3 py-1.5 text-left text-slate-400 border border-slate-800">Digit Value</th>
+                                ${cols.map(c => `<td class="px-3 py-1.5 font-code text-emerald-300 border border-slate-800 text-center">$${c.d} \\times ${c.placeVal} = ${c.digitVal}$</td>`).join('')}
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="mt-2.5 text-xs text-slate-300 font-semibold">
+                        Base $10$ Sum: $${rawStr}_{${base}} = ${cols.map(c => c.digitVal).join(' + ')} = \\mathbf{${base10Val}_{10}}$
+                    </div>
+                `;
+
+                const targetBases = [2, 3, 4, 5, 6, 7, 8, 9, 10];
+                this.basesGrid.innerHTML = targetBases.slice(0, 8).map(tb => {
+                    const converted = base10Val.toString(tb);
+                    const isCurrent = tb === base;
+                    return `
+                        <div class="p-2.5 rounded-xl border ${isCurrent ? 'bg-cyan-500/15 border-cyan-400' : 'bg-slate-900/80 border-slate-800'}">
+                            <div class="text-[10px] uppercase font-bold ${isCurrent ? 'text-cyan-300' : 'text-slate-400'}">Base ${tb}</div>
+                            <div class="font-code font-black text-sm text-white mt-0.5 break-all">$${converted}_{${tb}}$</div>
+                        </div>
+                    `;
+                }).join('');
+
+                triggerMathRender(this.tableContainer);
+                triggerMathRender(this.basesGrid);
+            }
+
+            showError(msg) {
+                this.errorBox.textContent = msg;
+                this.errorBox.classList.remove('hidden');
+            }
+        }
+
+        const cipherLab = new BaseCipherLab();
+
+        /* =========================================================================
+           6. GAME STATE & PERSISTENCE
+           ========================================================================= */
+        let selectedLevel = 'Easy';
+        let selectedAvatar = '🔐';
+        let state = null;
+        let activeTimer = false;
+        let lastTick = Date.now();
+        let inlineScratchpad = null;
+        let modalScratchpad = null;
+
+        function toast(msg) {
+            const el = $('toast');
+            el.textContent = msg;
+            el.classList.remove('hidden');
+            clearTimeout(toast._t);
+            toast._t = setTimeout(() => el.classList.add('hidden'), 4500);
+        }
+
+        function saveState() {
+            if (!state) return;
+            try {
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+            } catch (e) {
+                if (!saveState.warned) {
+                    toast('Note: Browser storage is full or restricted. Keep this tab open until you download your report.');
+                    saveState.warned = true;
+                }
+            }
+        }
+
+        function loadState() {
+            try {
+                const s = JSON.parse(localStorage.getItem(STORAGE_KEY));
+                if (
+                    s && s.version === 2 && LEVELS[s.level] &&
+                    Array.isArray(s.questions) && s.questions.length === 8 &&
+                    Array.isArray(s.records) && s.records.length === 8 &&
+                    Number.isInteger(s.index) && s.index >= 0 && s.index <= 8
+                ) {
+                    return s;
+                }
+            } catch (e) {}
+            return null;
+        }
+
+        function switchView(viewId) {
+            ['view-home', 'view-game', 'view-report'].forEach(id => {
+                $(id).classList.toggle('hidden', id !== viewId);
+            });
+            activeTimer = (viewId === 'view-game' && state && !state.complete);
+            lastTick = Date.now();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function drawDifficultyCards() {
+            $('difficulty-grid').innerHTML = Object.entries(LEVELS).map(([k, v]) => {
+                const isSel = k === selectedLevel;
+                return `
+                    <button type="button" class="diff-card p-5 text-left flex flex-col justify-between" data-level="${k}" aria-pressed="${isSel}">
+                        <div>
+                            <div class="flex items-center justify-between mb-3">
+                                <span class="w-10 h-10 rounded-xl bg-slate-800 border border-slate-700 flex items-center justify-center text-cye-gold text-xl font-bold">${v.icon}</span>
+                                <span class="px-2.5 py-1 rounded-full text-[11px] font-bold ${isSel ? 'bg-cye-gold text-slate-950' : 'bg-slate-800 text-slate-400'}">${v.badge}</span>
+                            </div>
+                            <div class="text-lg font-extrabold text-white mb-1">
+                                ${k} <span class="font-code text-[10px] tracking-widest text-cye-gold ml-1">${v.tag}</span>
+                            </div>
+                            <p class="text-xs text-slate-400 leading-relaxed">${v.desc}</p>
+                        </div>
+                        <div class="border-t border-slate-800 mt-4 pt-3 flex items-center justify-between font-code text-[11px] text-slate-400">
+                            <span>${v.foot}</span>
+                            <span class="text-cye-gold font-bold">8 LOCKS</span>
+                        </div>
+                    </button>
+                `;
+            }).join('');
+
+            document.querySelectorAll('[data-level]').forEach(el => {
+                el.addEventListener('click', () => {
+                    sound.init();
+                    sound.playClick();
+                    selectedLevel = el.dataset.level;
+                    drawDifficultyCards();
+                });
+            });
+        }
+
+        function totalXP() {
+            if (!state) return 0;
+            return state.records.reduce((acc, r) => acc + r.xp, 0);
+        }
+
+        function formatElapsed() {
+            if (!state) return '00:00';
+            const secs = Math.floor(state.elapsed / 1000);
+            return `${String(Math.floor(secs / 60)).padStart(2, '0')}:${String(secs % 60).padStart(2, '0')}`;
+        }
+
+        function startNewMission() {
+            const nameVal = $('agent-name').value.trim();
+            const classVal = $('agent-class').value.trim();
+            if (!nameVal || !classVal) {
+                $('launch-error').textContent = 'Please enter both your Student Name and Class to begin.';
+                $('launch-error').classList.remove('hidden');
+                return;
+            }
+            $('launch-error').classList.add('hidden');
+
+            state = {
+                version: 2,
+                name: nameVal,
+                className: classVal,
+                avatar: selectedAvatar,
+                level: selectedLevel,
+                index: 0,
+                lives: 3,
+                streak: 0,
+                maxStreak: 0,
+                questions: makeQuestions(selectedLevel),
+                records: Array.from({ length: 8 }, () => ({
+                    attempts: [],
+                    hint: false,
+                    solved: false,
+                    xp: 0,
+                    working: '',
+                    scratchpadImg: ''
+                })),
+                elapsed: 0,
+                complete: false,
+                started: new Date().toISOString(),
+                finalAttempts: 0
+            };
+
+            saveState();
+            switchView('view-game');
+            renderGame();
+        }
+
+        /* =========================================================================
+           7. RENDER ACTIVE GAMEPLAY & INTERACTIVE DIGIT KEYPAD + SCRATCHPAD
+           ========================================================================= */
+        function updateMapAndHUD() {
+            const solvedCount = state.records.filter(r => r.solved).length;
+            $('route-progress-count').textContent = `${solvedCount} / 8`;
+
+            $('map-list').innerHTML = LOCK_NAMES.map((name, i) => {
+                const isSolved = state.records[i].solved;
+                const isCurrent = i === state.index;
+                return `
+                    <button type="button" class="route-node text-left ${isSolved ? 'done' : isCurrent ? 'current' : ''}" data-jump="${i}" ${i <= state.index || isSolved ? '' : 'disabled'}>
+                        <div class="route-badge">${isSolved ? '✓' : String(i + 1).padStart(2, '0')}</div>
+                        <div class="truncate">
+                            <div class="leading-tight truncate">${esc(name)}</div>
+                            <div class="text-[10px] font-code opacity-75">${isSolved ? `Key: ${SECRET[i]}` : `Lock 0${i + 1}`}</div>
+                        </div>
+                    </button>
+                `;
+            }).join('');
+
+            document.querySelectorAll('[data-jump]').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const idx = parseInt(btn.dataset.jump, 10);
+                    if (idx <= state.index || state.records[idx].solved) {
+                        sound.playClick();
+                        state.index = idx;
+                        saveState();
+                        renderGame();
+                    }
+                });
+            });
+
+            $('clues-strip').innerHTML = SECRET.split('').map((letter, i) => {
+                const solved = state.records[i].solved;
+                return `<div class="clue-cell ${solved ? 'revealed' : ''}">${solved ? letter : '·'}</div>`;
+            }).join('');
+
+            $('hud-avatar').textContent = state.avatar || '🔐';
+            $('mission-label').textContent = `${state.level.toUpperCase()} CLEARANCE • ${state.name} (${state.className})`;
+            $('hud-xp').textContent = String(totalXP()).padStart(3, '0');
+            $('hud-clock').textContent = formatElapsed();
+            $('hud-lives').textContent = '❤️'.repeat(Math.max(1, state.lives || 3)) + '🖤'.repeat(Math.max(0, 3 - (state.lives || 3)));
+            $('hud-streak').textContent = `🔥 x${Math.max(1, state.streak || 1)}`;
+            $('progress-fill').style.width = `${(solvedCount / 8) * 100}%`;
+        }
+
+        function renderGame() {
+            updateMapAndHUD();
+
+            if (state.index === 8) {
+                renderFinalVault();
+                return;
+            }
+
+            const q = state.questions[state.index];
+            const r = state.records[state.index];
+
+            $('terminal-id').textContent = `TERMINAL ${String(state.index + 1).padStart(2, '0')} / 08`;
+            $('terminal-status').className = r.solved ? 'text-emerald-400 font-bold' : 'text-amber-300 font-bold';
+            $('terminal-status').textContent = r.solved ? '● DECRYPTED' : '● ENCRYPTED';
+
+            $('terminal-body').innerHTML = `
+                <div class="space-y-2">
+                    <div class="flex flex-wrap items-center justify-between gap-2">
+                        <span class="font-code text-xs text-purple-300 uppercase tracking-wider font-bold">
+                            LOCK 0${state.index + 1} • ${esc(q.skill.toUpperCase())}
+                        </span>
+                        <span class="text-[11px] font-code px-2.5 py-0.5 rounded bg-slate-800 text-cye-gold border border-slate-700">
+                            Fragment #${state.index + 1}
+                        </span>
+                    </div>
+                    <h2 class="text-2xl sm:text-3xl font-black text-white">${esc(q.title)}</h2>
+                    <p class="text-xs sm:text-sm text-slate-400 leading-relaxed">${esc(q.story)}</p>
+                </div>
+
+                <!-- Visual Cipher Equation & Formula Card -->
+                <div class="rounded-2xl border border-[#45415e] bg-gradient-to-br from-[#232036] to-[#171c2c] p-5 text-center space-y-3 shadow-inner">
+                    <div class="font-code text-2xl sm:text-4xl font-extrabold text-cye-gold tracking-wider">${q.equation}</div>
+                    <div class="text-xs sm:text-sm text-cyan-200 math-render overflow-x-auto">${q.visualFormula || ''}</div>
+                    <div class="text-xs sm:text-sm font-semibold text-slate-200 pt-1">${esc(q.prompt)}</div>
+                </div>
+
+                <!-- Answer Input & Interactive Digit Keypad -->
+                <form id="answer-form" class="space-y-3">
+                    <div class="flex items-center justify-between">
+                        <label for="answer-input" class="text-xs font-bold uppercase tracking-wider text-slate-300">
+                            ${q.answerBase === 10 ? 'Answer in Base 10 (Decimal)' : `Answer in Base ${q.answerBase}`} • <span class="text-cye-gold">Digits Only</span>
+                        </label>
+                        <span class="text-[11px] font-code text-slate-400">
+                            ${q.answerBase === 10 ? 'Valid digits: 0–9' : `Valid digits in Base ${q.answerBase}: 0–${q.answerBase - 1}`}
+                        </span>
+                    </div>
+
+                    <!-- Input Row with Base Subscript Badge & Unlock Button -->
+                    <div class="flex flex-col sm:flex-row gap-2.5">
+                        <div class="relative flex-grow flex items-center">
+                            <input
+                                id="answer-input"
+                                type="text"
+                                inputmode="numeric"
+                                autocomplete="off"
+                                maxlength="16"
+                                value="${r.solved ? esc(q.answer) : ''}"
+                                placeholder="Press digits below or type..."
+                                ${r.solved ? 'disabled' : ''}
+                                class="w-full pl-4 pr-16 py-3.5 rounded-xl bg-[#0a0e1a] border-2 border-slate-700 focus:border-cye-gold focus:outline-none font-code text-xl sm:text-2xl font-bold text-white tracking-widest"
+                            >
+                            <span class="absolute right-3.5 px-2 py-0.5 rounded bg-purple-500/20 border border-purple-500/40 font-code text-xs font-bold text-purple-300 select-none">
+                                base ${q.answerBase}
+                            </span>
+                        </div>
+
+                        <button type="submit" ${r.solved ? 'disabled' : ''} class="py-3.5 px-6 rounded-xl bg-cye-gold hover:bg-[#ffdc99] disabled:opacity-40 text-slate-950 font-tech font-black text-sm transition shadow-lg shadow-amber-500/15 shrink-0">
+                            UNLOCK ↗
+                        </button>
+                    </div>
+
+                    <!-- Interactive Digit Keypad (0-9 + Backspace + Clear) -->
+                    <div class="space-y-2 pt-1" aria-label="Code digit keypad">
+                        <div class="grid grid-cols-5 sm:grid-cols-10 gap-1.5">
+                            ${Array.from({ length: 10 }, (_, d) => `
+                                <button type="button" class="key-btn text-base sm:text-lg" data-digit="${d}" ${r.solved || d >= q.answerBase ? 'disabled' : ''} title="${d >= q.answerBase ? `Digit ${d} not allowed in Base ${q.answerBase}` : `Enter digit ${d}`}">
+                                    ${d}
+                                </button>
+                            `).join('')}
+                        </div>
+
+                        <!-- Backspace & Clear Row -->
+                        <div class="grid grid-cols-2 gap-2">
+                            <button type="button" id="btn-key-backspace" ${r.solved ? 'disabled' : ''} class="key-btn action-del text-xs sm:text-sm py-2.5 gap-1.5">
+                                <span>⌫</span>
+                                <span>Delete Last Digit</span>
+                            </button>
+                            <button type="button" id="btn-key-clear" ${r.solved ? 'disabled' : ''} class="key-btn action-clear text-xs sm:text-sm py-2.5 gap-1.5">
+                                <span>🗑️</span>
+                                <span>Clear All Digits</span>
+                            </button>
+                        </div>
+                    </div>
+                </form>
+
+                <!-- Hint & Attempt Counter Row -->
+                <div class="flex flex-wrap items-center justify-between gap-2 pt-1">
+                    <div class="flex items-center gap-2">
+                        <button type="button" id="btn-request-hint" ${r.solved ? 'disabled' : ''} class="px-3.5 py-1.5 rounded-xl border border-amber-500/40 bg-amber-500/10 hover:bg-amber-500/20 text-amber-300 text-xs font-bold transition">
+                            ${r.hint ? '💡 Strategic Hint Opened' : '💡 Request Hint (−20 XP)'}
+                        </button>
+                        <button type="button" id="btn-inline-cipher-lab" class="px-3 py-1.5 rounded-xl border border-cyan-500/30 bg-cyan-500/10 hover:bg-cyan-500/20 text-cyan-300 text-xs font-bold transition">
+                            🔐 Cipher Lab
+                        </button>
+                    </div>
+                    <span id="attempts-counter" class="font-code text-xs text-slate-400">
+                        ${r.attempts.length} attempt${r.attempts.length === 1 ? '' : 's'}
+                    </span>
+                </div>
+
+                <!-- Hint Banner -->
+                <div id="hint-box" class="${r.hint ? '' : 'hidden'} rounded-xl bg-[#262338] border border-purple-400/40 p-3.5 text-xs sm:text-sm text-purple-200 math-render">
+                    <strong class="text-cye-gold">💡 Strategic Hint:</strong> ${esc(q.hint)}
+                </div>
+
+                <!-- Live Feedback Box -->
+                <div id="feedback-box" role="status" aria-live="polite" class="hidden"></div>
+
+                <!-- Next Lock Button Area (When Solved) -->
+                <div id="next-area"></div>
+
+                <!-- =================================================================
+                     MY WORKING / NOTES & INTERACTIVE SCRATCHPAD (INCLUDED IN REPORT)
+                     ================================================================= -->
+                <details id="working-details" class="rounded-2xl border border-slate-700/90 bg-[#101526] p-4" open>
+                    <summary class="cursor-pointer font-bold text-xs sm:text-sm text-cyan-300 flex items-center justify-between select-none">
+                        <span class="flex items-center gap-2">
+                            <span>✏️</span>
+                            <span>My Working / Notes &amp; Scratchpad (Included in Google Classroom Report)</span>
+                        </span>
+                        <span class="text-[10px] font-code text-slate-400 uppercase">Auto-Saved</span>
+                    </summary>
+
+                    <div class="mt-3.5 space-y-3">
+                        <!-- Scratchpad Toolbar -->
+                        <div class="flex flex-wrap items-center justify-between gap-2 bg-slate-900/90 p-2 rounded-xl border border-slate-800">
+                            <div class="flex items-center gap-1.5">
+                                <button type="button" id="inline-pen-btn" class="px-2.5 py-1 rounded-lg bg-cyan-500/20 text-cyan-300 border border-cyan-500/40 text-xs font-bold">✏️ Pen</button>
+                                <button type="button" id="inline-eraser-btn" class="px-2.5 py-1 rounded-lg bg-slate-800 text-slate-400 border border-slate-700 text-xs font-bold">🧽 Eraser</button>
+                                <div class="flex items-center gap-1.5 ml-1">
+                                    <button type="button" class="inline-color-dot w-5 h-5 rounded-full bg-cyan-400 ring-2 ring-white" data-color="#22d3ee" title="Cyan Pen"></button>
+                                    <button type="button" class="inline-color-dot w-5 h-5 rounded-full bg-amber-400" data-color="#fbbf24" title="Gold Pen"></button>
+                                    <button type="button" class="inline-color-dot w-5 h-5 rounded-full bg-emerald-400" data-color="#34d399" title="Green Pen"></button>
+                                    <button type="button" class="inline-color-dot w-5 h-5 rounded-full bg-rose-400" data-color="#fb7185" title="Red Pen"></button>
+                                    <button type="button" class="inline-color-dot w-5 h-5 rounded-full bg-white" data-color="#ffffff" title="White Pen"></button>
+                                </div>
+                            </div>
+                            <button type="button" id="inline-clear-canvas-btn" class="px-2.5 py-1 rounded-lg bg-red-500/20 hover:bg-red-500/30 text-red-300 border border-red-500/30 text-xs font-bold transition">
+                                Clear Scratchpad
+                            </button>
+                        </div>
+
+                        <!-- Touch/Stylus/Mouse Scratchpad Canvas -->
+                        <div class="w-full bg-[#070a14] rounded-xl border border-slate-700 overflow-hidden relative touch-none" style="height: 220px;">
+                            <canvas id="inline-scratch-canvas" class="w-full h-full cursor-crosshair"></canvas>
+                            <div class="absolute bottom-2 right-2.5 pointer-events-none text-[10px] font-code text-slate-500">
+                                Draw place values or division steps here
+                            </div>
+                        </div>
+
+                        <!-- Typed Working / Notes Textarea -->
+                        <div>
+                            <label for="working-textarea" class="block text-[11px] font-bold text-slate-400 mb-1">
+                                Optional Typed Working / Reasoning Notes (Also saved to report):
+                            </label>
+                            <textarea
+                                id="working-textarea"
+                                maxlength="600"
+                                rows="2"
+                                placeholder="e.g. 1101₂ = 8 + 4 + 0 + 1 = 13₁₀..."
+                                class="w-full px-3 py-2 rounded-xl bg-[#070a14] border border-slate-700 text-slate-200 placeholder-slate-500 text-xs sm:text-sm focus:outline-none focus:border-cyan-400"
+                            >${esc(r.working || '')}</textarea>
+                        </div>
+                    </div>
+                </details>
+            `;
+
+            // Initialize In-Question Scratchpad Canvas and restore saved drawing for this lock
+            const canvasEl = $('inline-scratch-canvas');
+            inlineScratchpad = new CanvasPad(canvasEl, (dataUrl) => {
+                r.scratchpadImg = dataUrl;
+                saveState();
+            });
+            setTimeout(() => {
+                inlineScratchpad.resize(r.scratchpadImg || null);
+            }, 30);
+
+            // Bind Scratchpad Toolbar Controls
+            $('inline-pen-btn').onclick = () => {
+                inlineScratchpad.mode = 'pen';
+                $('inline-pen-btn').className = 'px-2.5 py-1 rounded-lg bg-cyan-500/20 text-cyan-300 border border-cyan-500/40 text-xs font-bold';
+                $('inline-eraser-btn').className = 'px-2.5 py-1 rounded-lg bg-slate-800 text-slate-400 border border-slate-700 text-xs font-bold';
+            };
+            $('inline-eraser-btn').onclick = () => {
+                inlineScratchpad.mode = 'eraser';
+                $('inline-eraser-btn').className = 'px-2.5 py-1 rounded-lg bg-rose-500/20 text-rose-300 border border-rose-500/40 text-xs font-bold';
+                $('inline-pen-btn').className = 'px-2.5 py-1 rounded-lg bg-slate-800 text-slate-400 border border-slate-700 text-xs font-bold';
+            };
+            document.querySelectorAll('.inline-color-dot').forEach(dot => {
+                dot.onclick = () => {
+                    inlineScratchpad.mode = 'pen';
+                    inlineScratchpad.color = dot.dataset.color;
+                    document.querySelectorAll('.inline-color-dot').forEach(d => d.classList.remove('ring-2', 'ring-white'));
+                    dot.classList.add('ring-2', 'ring-white');
+                };
+            });
+            $('inline-clear-canvas-btn').onclick = () => {
+                sound.playClick(420);
+                inlineScratchpad.clear();
+            };
+
+            // Bind Typed Working Textarea
+            $('working-textarea').oninput = () => {
+                r.working = $('working-textarea').value;
+                saveState();
+            };
+
+            // Bind Keypad Digit Buttons (0-9)
+            const ansInput = $('answer-input');
+            document.querySelectorAll('[data-digit]').forEach(btn => {
+                btn.onclick = () => {
+                    sound.init();
+                    sound.playClick(720);
+                    if (ansInput.value.length < 16) {
+                        ansInput.value += btn.dataset.digit;
+                    }
+                    ansInput.focus();
+                };
+            });
+
+            // Bind Backspace Button
+            $('btn-key-backspace').onclick = () => {
+                sound.init();
+                sound.playClick(480);
+                ansInput.value = ansInput.value.slice(0, -1);
+                ansInput.focus();
+            };
+
+            // Bind Clear All Button
+            $('btn-key-clear').onclick = () => {
+                sound.init();
+                sound.playClick(360);
+                ansInput.value = '';
+                ansInput.focus();
+            };
+
+            // Bind Hint & Cipher Lab triggers
+            $('btn-request-hint').onclick = () => {
+                sound.init();
+                sound.playClick();
+                if (!r.hint) {
+                    r.hint = true;
+                    saveState();
+                }
+                $('hint-box').classList.remove('hidden');
+                $('btn-request-hint').textContent = '💡 Strategic Hint Opened';
+                triggerMathRender($('hint-box'));
+            };
+
+            $('btn-inline-cipher-lab').onclick = () => {
+                $('btn-cipher-lab').click();
+            };
+
+            // Bind Form Submit
+            $('answer-form').onsubmit = (e) => {
+                e.preventDefault();
+                submitLockAnswer();
+            };
+
+            if (r.solved) {
+                showLockSolvedBanner();
+            }
+
+            triggerMathRender($('terminal-body'));
+        }
+
+        function submitLockAnswer() {
+            const q = state.questions[state.index];
+            const r = state.records[state.index];
+            if (r.solved) return;
+
+            // Save current scratchpad drawing before validating
+            if (inlineScratchpad && inlineScratchpad.hasInk) {
+                r.scratchpadImg = inlineScratchpad.toDataURL();
+            }
+
+            const rawInput = $('answer-input').value.trim();
+            const fb = $('feedback-box');
+            fb.classList.remove('hidden');
+
+            if (!/^\d+$/.test(rawInput)) {
+                sound.playError();
+                fb.className = 'rounded-xl bg-rose-950/60 border border-rose-500/50 p-3.5 text-xs sm:text-sm text-rose-200';
+                fb.textContent = '⚠️ Enter digits only (0–9). Do not type spaces or base subscripts.';
+                return;
+            }
+
+            if (rawInput.split('').some(c => Number(c) >= q.answerBase)) {
+                sound.playError();
+                fb.className = 'rounded-xl bg-amber-950/60 border border-amber-500/50 p-3.5 text-xs sm:text-sm text-amber-200';
+                fb.textContent = `⚠️ Digit not permitted in Base ${q.answerBase}! Only digits 0 to ${q.answerBase - 1} are valid in Base ${q.answerBase}. (This does not count as an attempt.)`;
+                return;
+            }
+
+            const cleanInput = rawInput.replace(/^0+(?=\d)/, '');
+            r.attempts.push(rawInput);
+
+            if (cleanInput === q.answer) {
+                // Correct!
+                sound.playSuccess();
+                confetti.burst(40);
+                r.solved = true;
+                state.streak = (state.streak || 0) + 1;
+                if (state.streak > (state.maxStreak || 0)) state.maxStreak = state.streak;
+
+                const baseXP = Math.max(20, 100 - 15 * (r.attempts.length - 1) - (r.hint ? 20 : 0));
+                const streakBonus = (state.streak > 1) ? (state.streak - 1) * 10 : 0;
+                r.xp = baseXP + streakBonus;
+
+                saveState();
+                renderGame();
+                showLockSolvedBanner();
+            } else {
+                // Incorrect
+                sound.playError();
+                state.streak = 0;
+                state.lives = Math.max(1, (state.lives || 3) - 1);
+                saveState();
+                updateMapAndHUD();
+
+                fb.className = 'rounded-xl bg-rose-950/60 border border-rose-500/50 p-4 text-xs sm:text-sm text-rose-200 space-y-1';
+                fb.innerHTML = `
+                    <div class="font-bold text-rose-300">✗ Signal Rejected ("${esc(rawInput)}") — Try Again!</div>
+                    <div>💡 <strong>Hint:</strong> ${esc(q.hint)}</div>
+                    <div class="text-[11px] text-rose-300/80">Each incorrect attempt costs 15 XP. Use the Clear or Delete button to enter a new code.</div>
+                `;
+                $('attempts-counter').textContent = `${r.attempts.length} attempt${r.attempts.length === 1 ? '' : 's'}`;
+            }
+        }
+
+        function showLockSolvedBanner() {
+            const q = state.questions[state.index];
+            const r = state.records[state.index];
+            const fb = $('feedback-box');
+            fb.classList.remove('hidden');
+            fb.className = 'rounded-2xl bg-emerald-950/50 border border-emerald-500/50 p-4 text-xs sm:text-sm text-emerald-100 space-y-1.5';
+            fb.innerHTML = `
+                <div class="flex items-center justify-between">
+                    <span class="font-tech font-bold text-emerald-300">🔓 LOCK 0${state.index + 1} CRACKED! (+${r.xp} XP)</span>
+                    <span class="px-2.5 py-0.5 rounded bg-cye-gold/20 border border-cye-gold text-cye-gold font-code font-bold text-xs">
+                        KEY FRAGMENT: ${SECRET[state.index]}
+                    </span>
+                </div>
+                <div class="text-slate-200 leading-relaxed pt-1"><strong>Worked Solution:</strong> ${esc(q.solution)}</div>
+            `;
+
+            const allSolved = state.records.every(rec => rec.solved);
+            const nextLabel = (state.index === 7 || allSolved)
+                ? 'Approach the Final Vault Key Assembly ➔'
+                : `Continue to Lock 0${state.index + 2} ➔`;
+
+            $('next-area').innerHTML = `
+                <button type="button" id="btn-next-lock" class="w-full py-3.5 px-5 rounded-xl bg-emerald-400 hover:bg-emerald-300 text-slate-950 font-tech font-black text-sm transition shadow-lg shadow-emerald-500/20">
+                    ${nextLabel}
+                </button>
+            `;
+
+            $('btn-next-lock').onclick = () => {
+                sound.playClick();
+                if (inlineScratchpad && inlineScratchpad.hasInk) {
+                    r.scratchpadImg = inlineScratchpad.toDataURL();
+                }
+                if (state.index < 7) {
+                    state.index++;
+                } else {
+                    state.index = 8;
+                }
+                saveState();
+                renderGame();
+                $('terminal-body').scrollIntoView({ behavior: 'smooth', block: 'start' });
+            };
+        }
+
+        function renderFinalVault() {
+            $('terminal-id').textContent = 'FINAL VAULT / KEY ASSEMBLY';
+            $('terminal-status').className = 'text-cye-gold font-bold';
+            $('terminal-status').textContent = '● 8 KEY FRAGMENTS RECOVERED';
+
+            $('terminal-body').innerHTML = `
+                <div class="space-y-2 text-center">
+                    <div class="font-code text-xs text-purple-300 uppercase tracking-widest">THE MYSTERY / FINAL TRANSMISSION</div>
+                    <h2 class="text-2xl sm:text-3xl font-black text-white">Who Sent the Signal?</h2>
+                    <p class="text-xs sm:text-sm text-slate-300 max-w-lg mx-auto leading-relaxed">
+                        The archive was sealed by its own guardian to protect the MathVerse records. The 8 letters recovered at each lock reveal the guardian's callsign. Read them in lock order:
+                    </p>
+                </div>
+
+                <div class="rounded-2xl border border-cye-gold/50 bg-gradient-to-br from-[#282238] to-[#161b2c] p-6 text-center space-y-2">
+                    <div class="font-code text-3xl sm:text-5xl font-black text-cye-gold tracking-[0.25em]">${SECRET.split('').join(' ')}</div>
+                    <div class="text-xs text-slate-400 font-code">EIGHT FRAGMENTS • ONE GUARDIAN CALLSIGN</div>
+                </div>
+
+                <form id="final-vault-form" class="space-y-3">
+                    <label for="final-answer-input" class="block text-xs font-bold uppercase tracking-wider text-slate-300">
+                        Type or tap the recovered callsign to unlock the Archive Report:
+                    </label>
+                    <div class="flex flex-col sm:flex-row gap-2.5">
+                        <input
+                            id="final-answer-input"
+                            type="text"
+                            maxlength="20"
+                            value="${SECRET}"
+                            autocomplete="off"
+                            placeholder="Guardian callsign (STARFALL)"
+                            class="flex-grow px-4 py-3.5 rounded-xl bg-[#0a0e1a] border-2 border-cye-gold text-white font-code text-xl font-bold tracking-widest uppercase focus:outline-none"
+                        >
+                        <button type="submit" class="py-3.5 px-7 rounded-xl bg-cye-gold hover:bg-[#ffdc99] text-slate-950 font-tech font-black text-sm transition shadow-lg">
+                            OPEN VAULT 🏆
+                        </button>
+                    </div>
+                </form>
+
+                <div id="final-feedback" role="status" class="hidden"></div>
+                <p class="text-xs text-slate-400 text-center">
+                    Your official report will include all 8 locks, your attempts, XP score, worked solutions, and your handwritten scratchpad working for Google Classroom!
+                </p>
+            `;
+
+            $('final-vault-form').onsubmit = (e) => {
+                e.preventDefault();
+                state.finalAttempts = (state.finalAttempts || 0) + 1;
+                const val = $('final-answer-input').value.replace(/\s+/g, '').toUpperCase();
+                if (val === SECRET) {
+                    sound.playFanfare();
+                    confetti.burst(110);
+                    state.complete = true;
+                    state.finished = new Date().toISOString();
+                    saveState();
+                    activeTimer = false;
+                    renderReport();
+                    switchView('view-report');
+                } else {
+                    sound.playError();
+                    const fb = $('final-feedback');
+                    fb.className = 'rounded-xl bg-rose-950/60 border border-rose-500/50 p-3.5 text-xs text-rose-200 text-center';
+                    fb.textContent = 'Read the 8 recovered letters from left to right: S T A R F A L L.';
+                    fb.classList.remove('hidden');
+                    saveState();
+                }
+            };
+        }
+
+        /* =========================================================================
+           8. MISSION DEBRIEF REPORT & GOOGLE CLASSROOM PDF / IMAGE EXPORTER
+           ========================================================================= */
+        function renderReport() {
+            const firstTryCount = state.records.filter(r => r.solved && r.attempts.length === 1).length;
+            const hintsUsed = state.records.filter(r => r.hint).length;
+            const solvedCount = state.records.filter(r => r.solved).length;
+            const xp = totalXP();
+
+            $('view-report').innerHTML = `
+                <!-- Top Victory Card -->
+                <div class="vault-panel p-6 sm:p-8 text-center space-y-4 border border-cye-gold/40">
+                    <div class="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-slate-900 border border-teal-500/40 text-[11px] font-tech text-teal-300">
+                        <span>🏆</span>
+                        <span>CYE MathVerse • Official Google Classroom Dossier</span>
+                    </div>
+
+                    <div class="w-20 h-20 rounded-full border-2 border-cye-gold bg-cye-gold/10 flex items-center justify-center mx-auto text-4xl text-cye-gold shadow-lg shadow-amber-500/15">
+                        ${state.complete ? '✓' : '◇'}
+                    </div>
+
+                    <div class="font-code text-xs uppercase tracking-widest text-cye-gold">
+                        MISSION DEBRIEF • ${esc(state.level.toUpperCase())} CLEARANCE
+                    </div>
+
+                    <h1 class="text-3xl sm:text-5xl font-black text-white">
+                        ${state.complete ? 'Archive Recovered!' : 'Mission In Progress'}
+                    </h1>
+
+                    <p class="text-sm sm:text-base text-slate-300 max-w-xl mx-auto">
+                        <strong>${esc(state.avatar || '🔐')} ${esc(state.name)}</strong> · Class <strong>${esc(state.className)}</strong><br>
+                        <span class="text-slate-400 text-xs sm:text-sm">${state.complete ? 'Guardian STARFALL grants you full clearance. The MathVerse archive is safe.' : 'Complete every lock to unlock full archive clearance.'}</span>
+                    </p>
+
+                    <!-- 4 KPI Stats Grid -->
+                    <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-2">
+                        <div class="bg-[#0e1324] p-4 rounded-xl border border-slate-800">
+                            <strong class="block font-code text-2xl sm:text-3xl text-cye-gold">${xp} XP</strong>
+                            <span class="text-[11px] font-code uppercase text-slate-400">TOTAL MISSION XP</span>
+                        </div>
+                        <div class="bg-[#0e1324] p-4 rounded-xl border border-slate-800">
+                            <strong class="block font-code text-2xl sm:text-3xl text-emerald-400">${firstTryCount} / 8</strong>
+                            <span class="text-[11px] font-code uppercase text-slate-400">FIRST-TRY LOCKS</span>
+                        </div>
+                        <div class="bg-[#0e1324] p-4 rounded-xl border border-slate-800">
+                            <strong class="block font-code text-2xl sm:text-3xl text-purple-300">${hintsUsed}</strong>
+                            <span class="text-[11px] font-code uppercase text-slate-400">HINTS USED</span>
+                        </div>
+                        <div class="bg-[#0e1324] p-4 rounded-xl border border-slate-800">
+                            <strong class="block font-code text-2xl sm:text-3xl text-cyan-300">${formatElapsed()}</strong>
+                            <span class="text-[11px] font-code uppercase text-slate-400">ACTIVE TIME</span>
+                        </div>
+                    </div>
+
+                    <!-- Google Classroom Turn-In Action Box -->
+                    <div class="bg-emerald-950/35 border border-emerald-500/40 rounded-2xl p-5 text-left space-y-3 mt-4">
+                        <div class="flex flex-wrap items-center justify-between gap-2">
+                            <div class="font-tech font-bold text-sm sm:text-base text-emerald-300 flex items-center gap-2">
+                                <span>📥</span>
+                                <span>TURN IN TO GOOGLE CLASSROOM</span>
+                            </div>
+                            <span class="text-[11px] font-code bg-emerald-500/20 text-emerald-300 px-2.5 py-0.5 rounded border border-emerald-500/30">
+                                Includes Certificate + All 8 Locks + Scratchpad Working
+                            </span>
+                        </div>
+                        <p class="text-xs text-slate-300 leading-relaxed">
+                            Download your <strong>Official PDF Report</strong> or <strong>High-Res Result Image (.PNG)</strong> below. Then open Google Classroom ➔ <em>Add or create</em> ➔ <em>File</em> ➔ attach your downloaded file ➔ click <strong>Turn in</strong>.
+                        </p>
+                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5 pt-1">
+                            <button type="button" id="btn-download-pdf" class="py-3 px-4 rounded-xl bg-cye-gold hover:bg-[#ffdc99] text-slate-950 font-extrabold text-xs sm:text-sm flex items-center justify-center gap-2 transition shadow-md">
+                                <span>📄</span>
+                                <span>Download PDF Report (.PDF)</span>
+                            </button>
+                            <button type="button" id="btn-download-img" class="py-3 px-4 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-extrabold text-xs sm:text-sm flex items-center justify-center gap-2 transition shadow-md">
+                                <span>🖼️</span>
+                                <span>Download Result Image (.PNG)</span>
+                            </button>
+                            <button type="button" id="btn-print-report" class="py-3 px-4 rounded-xl bg-slate-800 hover:bg-slate-700 text-white border border-slate-700 font-bold text-xs sm:text-sm flex items-center justify-center gap-2 transition">
+                                <span>🖨️</span>
+                                <span>Print Full Report</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="flex flex-wrap justify-center gap-3 pt-2">
+                        <button type="button" id="btn-new-mission" class="px-5 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 text-xs font-bold transition">
+                            🔄 Start New Mission
+                        </button>
+                        <a href="../" class="px-5 py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-slate-300 border border-slate-800 text-xs font-bold transition">
+                            🏠 Back to Game Library
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Detailed Decrypted Trail & Student Working Review -->
+                <div class="space-y-3">
+                    <h2 class="text-xl font-black text-white">Your Decrypted Trail &amp; Saved Working (${solvedCount}/8 Locks)</h2>
+                    ${state.questions.map((q, i) => {
+                        const r = state.records[i];
+                        return `
+                            <article class="vault-panel p-5 space-y-2">
+                                <div class="flex flex-wrap items-center justify-between gap-2">
+                                    <span class="font-code text-xs text-cye-gold uppercase font-bold">LOCK 0${i + 1} · ${esc(q.skill)}</span>
+                                    <span class="font-code text-xs font-bold ${r.solved ? 'text-emerald-400' : 'text-slate-400'}">
+                                        ${r.solved ? `✓ Solved (+${r.xp} XP)` : 'Not Solved'}
+                                    </span>
+                                </div>
+                                <h3 class="text-base font-bold text-white">${esc(q.plain)}</h3>
+                                <p class="text-xs sm:text-sm text-emerald-300 font-code">
+                                    Correct Answer: <strong>${esc(q.answer)}</strong> (base ${q.answerBase}) · Attempts: ${esc(r.attempts.join(' → ') || 'None')} · Hint: ${r.hint ? 'Used' : 'Not used'}
+                                </p>
+                                <p class="text-xs text-slate-300 leading-relaxed"><strong>Worked Solution:</strong> ${esc(q.solution)}</p>
+                                ${r.working ? `<div class="text-xs bg-slate-950/80 p-3 rounded-xl border border-slate-800 text-cyan-200"><strong>My Typed Working:</strong> ${esc(r.working)}</div>` : ''}
+                                ${r.scratchpadImg ? `
+                                    <div class="pt-1">
+                                        <div class="text-[11px] font-bold text-slate-400 mb-1">My Handwritten Scratchpad Working:</div>
+                                        <img src="${r.scratchpadImg}" alt="Student scratchpad working for Lock ${i + 1}" class="max-h-44 rounded-xl border border-slate-700 bg-[#070a14]">
+                                    </div>
+                                ` : ''}
+                            </article>
+                        `;
+                    }).join('')}
+                </div>
+            `;
+
+            $('btn-download-pdf').onclick = () => downloadVisualPDF();
+            $('btn-download-img').onclick = () => downloadCertificateImage();
+            $('btn-print-report').onclick = () => printFullReport();
+            $('btn-new-mission').onclick = () => {
+                sound.playClick();
+                switchView('view-home');
+                updateResumeBanner();
+            };
+        }
+
+        /* =========================================================================
+           9. HIGH-RESOLUTION CANVAS CERTIFICATE & WORKING GENERATOR (FOR PNG & PDF)
+           ========================================================================= */
+        async function buildReportCanvas() {
+            // Load any scratchpad images first
+            const loadedImgs = await Promise.all(state.records.map(r => {
+                if (!r.scratchpadImg) return Promise.resolve(null);
+                return new Promise(resolve => {
+                    const img = new Image();
+                    img.onload = () => resolve(img);
+                    img.onerror = () => resolve(null);
+                    img.src = r.scratchpadImg;
+                });
+            }));
+
+            const W = 1200;
+            const H = 1520; // Fits Header + KPIs + 8 Lock Cards (with working & scratchpad thumbnails)
+            const canvas = document.createElement('canvas');
+            canvas.width = W;
+            canvas.height = H;
+            const c = canvas.getContext('2d');
+
+            // Background Gradient
+            const bg = c.createLinearGradient(0, 0, W, H);
+            bg.addColorStop(0, '#070b14');
+            bg.addColorStop(0.5, '#10172a');
+            bg.addColorStop(1, '#091122');
+            c.fillStyle = bg;
+            c.fillRect(0, 0, W, H);
+
+            // Tech Grid
+            c.strokeStyle = 'rgba(51, 65, 85, 0.22)';
+            c.lineWidth = 1;
+            for (let x = 0; x < W; x += 40) { c.beginPath(); c.moveTo(x, 0); c.lineTo(x, H); c.stroke(); }
+            for (let y = 0; y < H; y += 40) { c.beginPath(); c.moveTo(0, y); c.lineTo(W, y); c.stroke(); }
+
+            // Outer Frame
+            c.strokeStyle = '#f4c875';
+            c.lineWidth = 4;
+            c.strokeRect(20, 20, W - 40, H - 40);
+            c.strokeStyle = 'rgba(0, 242, 254, 0.35)';
+            c.lineWidth = 1.5;
+            c.strokeRect(28, 28, W - 56, H - 56);
+
+            // Header Banner
+            c.fillStyle = 'rgba(21, 26, 45, 0.95)';
+            c.fillRect(40, 40, W - 80, 105);
+            c.strokeStyle = 'rgba(244, 200, 117, 0.5)';
+            c.lineWidth = 1.5;
+            c.strokeRect(40, 40, W - 80, 105);
+
+            // CYE Emblem
+            c.fillStyle = '#0f172a';
+            c.fillRect(60, 58, 68, 68);
+            c.strokeStyle = '#f4c875';
+            c.lineWidth = 2.5;
+            c.strokeRect(60, 58, 68, 68);
+            c.fillStyle = '#f4c875';
+            c.font = '900 22px Orbitron, sans-serif';
+            c.textAlign = 'center';
+            c.fillText('CYE', 94, 100);
+
+            // Header Text
+            c.textAlign = 'left';
+            c.fillStyle = '#2dd4bf';
+            c.font = '800 13px Orbitron, sans-serif';
+            c.fillText('CYE MATHVERSE • OFFICIAL GOOGLE CLASSROOM SUBMISSION REPORT', 148, 68);
+
+            c.fillStyle = '#f4c875';
+            c.font = '900 28px Orbitron, sans-serif';
+            c.fillText('CIPHER VAULT: BASE PROTOCOL', 148, 100);
+
+            c.fillStyle = '#cbd5e1';
+            c.font = '600 15px "Plus Jakarta Sans", sans-serif';
+            c.fillText('Form 4 Mathematics • Chapter 2: Number Bases (Asas Nombor)', 148, 125);
+
+            // Right Status Badge
+            c.fillStyle = '#0b1120';
+            c.fillRect(W - 340, 56, 280, 72);
+            c.strokeStyle = state.complete ? '#34d399' : '#f4c875';
+            c.lineWidth = 2;
+            c.strokeRect(W - 340, 56, 280, 72);
+            c.textAlign = 'center';
+            c.fillStyle = '#f4c875';
+            c.font = 'bold 13px Orbitron, sans-serif';
+            c.fillText(`CLEARANCE: ${state.level.toUpperCase()}`, W - 200, 84);
+            c.fillStyle = state.complete ? '#34d399' : '#38bdf8';
+            c.font = 'bold 15px "Plus Jakarta Sans", sans-serif';
+            c.fillText(state.complete ? '✓ ARCHIVE UNLOCKED' : 'IN PROGRESS', W - 200, 110);
+
+            // Student Identity Row
+            const nowStr = new Date().toLocaleString('en-MY', { dateStyle: 'medium', timeStyle: 'short' });
+            const xp = totalXP();
+            const firstTry = state.records.filter(r => r.solved && r.attempts.length === 1).length;
+            const hints = state.records.filter(r => r.hint).length;
+            const verifyCode = `CV-${state.level.slice(0, 1).toUpperCase()}-${Math.abs((state.name.length * 313 + xp * 17 + firstTry * 89) % 90000 + 10000)}`;
+
+            c.fillStyle = 'rgba(15, 23, 42, 0.92)';
+            c.fillRect(40, 158, W - 80, 68);
+            c.strokeStyle = 'rgba(148, 163, 184, 0.25)';
+            c.lineWidth = 1;
+            c.strokeRect(40, 158, W - 80, 68);
+
+            c.textAlign = 'left';
+            c.fillStyle = '#94a3b8';
+            c.font = 'bold 11px Orbitron, sans-serif';
+            c.fillText('STUDENT NAME', 58, 180);
+            c.fillText('CLASS', 450, 180);
+            c.fillText('DATE & TIME', 650, 180);
+            c.fillText('VERIFICATION CODE', 960, 180);
+
+            c.fillStyle = '#ffffff';
+            c.font = 'bold 19px "Plus Jakarta Sans", sans-serif';
+            c.fillText(state.name.slice(0, 26), 58, 208);
+            c.fillStyle = '#38bdf8';
+            c.fillText(state.className.slice(0, 14), 450, 208);
+            c.fillStyle = '#e2e8f0';
+            c.font = 'bold 15px "JetBrains Mono", monospace';
+            c.fillText(nowStr, 650, 208);
+            c.fillStyle = '#f4c875';
+            c.fillText(verifyCode, 960, 208);
+
+            // 4 KPI Boxes
+            const kpis = [
+                { label: 'TOTAL MISSION XP', val: `${xp} / 800 XP`, col: '#f4c875' },
+                { label: 'FIRST-TRY SOLUTIONS', val: `${firstTry} / 8 LOCKS`, col: '#34d399' },
+                { label: 'HINTS USED', val: `${hints} HINTS`, col: '#b39bff' },
+                { label: 'ACTIVE TIME & KEY', val: `${formatElapsed()} • ${SECRET}`, col: '#38bdf8' }
+            ];
+            const kw = (W - 80 - 36) / 4;
+            kpis.forEach((k, idx) => {
+                const kx = 40 + idx * (kw + 12);
+                const ky = 238;
+                c.fillStyle = 'rgba(21, 26, 45, 0.95)';
+                c.fillRect(kx, ky, kw, 76);
+                c.strokeStyle = k.col;
+                c.lineWidth = 1.5;
+                c.strokeRect(kx, ky, kw, 76);
+                c.fillStyle = '#94a3b8';
+                c.font = 'bold 11px Orbitron, sans-serif';
+                c.fillText(k.label, kx + 16, ky + 26);
+                c.fillStyle = k.col;
+                c.font = '900 20px "JetBrains Mono", monospace';
+                c.fillText(k.val, kx + 16, ky + 56);
+            });
+
+            // Section Title for 8 Locks
+            c.fillStyle = '#f4c875';
+            c.font = 'bold 16px Orbitron, sans-serif';
+            c.fillText('DECRYPTED TRAIL & STUDENT SCRATCHPAD WORKING (8 CYBER LOCKS)', 40, 342);
+
+            // 2x4 Grid of Lock Cards (Each 550 x 268)
+            const cardW = 552;
+            const cardH = 265;
+            state.questions.forEach((q, i) => {
+                const r = state.records[i];
+                const col = i % 2;
+                const row = Math.floor(i / 2);
+                const cx = 40 + col * (cardW + 16);
+                const cy = 356 + row * (cardH + 14);
+
+                c.fillStyle = 'rgba(17, 23, 41, 0.95)';
+                c.fillRect(cx, cy, cardW, cardH);
+                c.strokeStyle = r.solved ? 'rgba(52, 211, 153, 0.45)' : 'rgba(148, 163, 184, 0.25)';
+                c.lineWidth = 1.5;
+                c.strokeRect(cx, cy, cardW, cardH);
+
+                // Lock Header
+                c.fillStyle = '#f4c875';
+                c.font = 'bold 13px "JetBrains Mono", monospace';
+                c.textAlign = 'left';
+                c.fillText(`LOCK 0${i + 1}: ${q.skill.toUpperCase()}`, cx + 16, cy + 24);
+
+                c.fillStyle = r.solved ? '#34d399' : '#f87171';
+                c.textAlign = 'right';
+                c.fillText(r.solved ? `✓ +${r.xp} XP` : 'UNSOLVED', cx + cardW - 16, cy + 24);
+
+                // Question & Answer
+                c.textAlign = 'left';
+                c.fillStyle = '#ffffff';
+                c.font = 'bold 14px "Plus Jakarta Sans", sans-serif';
+                c.fillText(q.plain.slice(0, 62), cx + 16, cy + 48);
+
+                c.fillStyle = '#6ee7b7';
+                c.font = '600 12px "JetBrains Mono", monospace';
+                c.fillText(`Answer: ${q.answer} (base ${q.answerBase}) | Attempts: ${(r.attempts.join(', ') || 'None').slice(0, 26)}`, cx + 16, cy + 70);
+
+                // Typed Working
+                c.fillStyle = '#94a3b8';
+                c.font = '500 12px "Plus Jakarta Sans", sans-serif';
+                const workStr = r.working ? `Notes: ${r.working.replace(/\s+/g, ' ').slice(0, 65)}` : `Solution: ${q.solution.slice(0, 65)}`;
+                c.fillText(workStr, cx + 16, cy + 92);
+
+                // Scratchpad Box inside Card
+                const sx = cx + 16;
+                const sy = cy + 104;
+                const sw = cardW - 32;
+                const sh = 148;
+                c.fillStyle = '#070a14';
+                c.fillRect(sx, sy, sw, sh);
+                c.strokeStyle = '#2b3350';
+                c.lineWidth = 1;
+                c.strokeRect(sx, sy, sw, sh);
+
+                if (loadedImgs[i]) {
+                    c.drawImage(loadedImgs[i], sx, sy, sw, sh);
+                } else {
+                    c.fillStyle = '#475569';
+                    c.font = 'italic 12px "Plus Jakarta Sans", sans-serif';
+                    c.textAlign = 'center';
+                    c.fillText(r.working ? `Typed working: "${r.working.slice(0, 55)}"` : '(No handwritten scratchpad recorded for this lock)', sx + sw / 2, sy + sh / 2);
+                }
+            });
+
+            // Footer
+            c.textAlign = 'center';
+            c.fillStyle = '#2dd4bf';
+            c.font = 'bold 13px Orbitron, sans-serif';
+            c.fillText('CYE MathVerse • Official Student Practice Evidence • Attach to Google Classroom Assignment', W / 2, H - 32);
+
+            return canvas;
+        }
+
+        function safeFileBase() {
+            const n = (state.name || 'Student').replace(/[^a-zA-Z0-9_-]/g, '_');
+            const cl = (state.className || 'Form4').replace(/[^a-zA-Z0-9_-]/g, '_');
+            return `CYE_CipherVault_${cl}_${n}_${state.level}`;
+        }
+
+        async function downloadCertificateImage() {
+            toast('Generating high-resolution PNG report image...');
+            const canvas = await buildReportCanvas();
+            const filename = `${safeFileBase()}.png`;
+            if (canvas.toBlob) {
+                canvas.toBlob(blob => {
+                    if (!blob) return;
+                    const url = URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = filename;
+                    document.body.appendChild(a);
+                    a.click();
+                    a.remove();
+                    setTimeout(() => URL.revokeObjectURL(url), 5000);
+                    toast('✓ Result PNG Image downloaded! Attach it to Google Classroom.');
+                }, 'image/png');
+            }
+        }
+
+        // Zero-dependency PDF 1.4 generator embedding the high-res JPEG canvas
+        function createPdfFromJpegDataUrl(jpegDataUrl, widthPx, heightPx) {
+            const base64 = jpegDataUrl.split(',')[1];
+            const binStr = atob(base64);
+            const imgBytes = new Uint8Array(binStr.length);
+            for (let i = 0; i < binStr.length; i++) imgBytes[i] = binStr.charCodeAt(i);
+
+            // A4 Portrait points: 595 x 842
+            const pageW = 595;
+            const pageH = 754;
+            const enc = new TextEncoder();
+            const chunks = [];
+            const offsets = [];
+            let currentOffset = 0;
+
+            const pushStr = (s) => {
+                const b = enc.encode(s);
+                chunks.push(b);
+                currentOffset += b.length;
+            };
+            const pushBytes = (b) => {
+                chunks.push(b);
+                currentOffset += b.length;
+            };
+
+            pushStr('%PDF-1.4\n%\xFF\xFF\xFF\xFF\n');
+
+            offsets[1] = currentOffset;
+            pushStr('1 0 obj\n<< /Type /Catalog /Pages 2 0 R >>\nendobj\n');
+
+            offsets[2] = currentOffset;
+            pushStr('2 0 obj\n<< /Type /Pages /Kids [3 0 R] /Count 1 >>\nendobj\n');
+
+            offsets[3] = currentOffset;
+            pushStr(`3 0 obj\n<< /Type /Page /Parent 2 0 R /MediaBox [0 0 ${pageW} ${pageH}] /Resources << /XObject << /Im0 4 0 R >> >> /Contents 5 0 R >>\nendobj\n`);
+
+            offsets[4] = currentOffset;
+            pushStr(`4 0 obj\n<< /Type /XObject /Subtype /Image /Width ${widthPx} /Height ${heightPx} /ColorSpace /DeviceRGB /BitsPerComponent 8 /Filter /DCTDecode /Length ${imgBytes.length} >>\nstream\n`);
+            pushBytes(imgBytes);
+            pushStr('\nendstream\nendobj\n');
+
+            const contentStream = `q\n${pageW} 0 0 ${pageH} 0 0 cm\n/Im0 Do\nQ\n`;
+            offsets[5] = currentOffset;
+            pushStr(`5 0 obj\n<< /Length ${contentStream.length} >>\nstream\n${contentStream}endstream\nendobj\n`);
+
+            const xrefOffset = currentOffset;
+            pushStr('xref\n0 6\n0000000000 65535 f \n');
+            for (let i = 1; i <= 5; i++) {
+                pushStr(String(offsets[i]).padStart(10, '0') + ' 00000 n \n');
+            }
+            pushStr(`trailer\n<< /Size 6 /Root 1 0 R >>\nstartxref\n${xrefOffset}\n%%EOF`);
+
+            return new Blob(chunks, { type: 'application/pdf' });
+        }
+
+        async function downloadVisualPDF() {
+            toast('Generating official PDF report (with scratchpad working)...');
+            const canvas = await buildReportCanvas();
+            const jpegUrl = canvas.toDataURL('image/jpeg', 0.94);
+            const pdfBlob = createPdfFromJpegDataUrl(jpegUrl, canvas.width, canvas.height);
+            const filename = `${safeFileBase()}.pdf`;
+            const url = URL.createObjectURL(pdfBlob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = filename;
+            document.body.appendChild(a);
+            a.click();
+            a.remove();
+            setTimeout(() => URL.revokeObjectURL(url), 5000);
+            toast('✓ PDF Report downloaded! Attach it to your Google Classroom assignment.');
+        }
+
+        function printFullReport() {
+            const w = window.open('', '_blank');
+            if (!w) {
+                toast('Please allow pop-ups to print the full report.');
+                return;
+            }
+            const firstTry = state.records.filter(r => r.solved && r.attempts.length === 1).length;
+            const rowsHtml = state.questions.map((q, i) => {
+                const r = state.records[i];
+                return `
+                    <div style="border:1px solid #cbd5e1;border-radius:10px;padding:12px;margin-bottom:12px;page-break-inside:avoid;">
+                        <div style="font-weight:bold;color:#0f172a;">LOCK 0${i + 1}: ${esc(q.skill)} — ${esc(q.plain)}</div>
+                        <div style="font-size:12px;color:#047857;margin:4px 0;">Correct Answer: <strong>${esc(q.answer)} (base ${q.answerBase})</strong> | XP: ${r.xp} | Attempts: ${esc(r.attempts.join(' → ') || 'None')} | Hint: ${r.hint ? 'Used' : 'Not used'}</div>
+                        <div style="font-size:12px;color:#334155;">Worked Solution: ${esc(q.solution)}</div>
+                        ${r.working ? `<div style="font-size:12px;color:#1e40af;margin-top:4px;"><strong>Student Typed Notes:</strong> ${esc(r.working)}</div>` : ''}
+                        ${r.scratchpadImg ? `<div style="margin-top:6px;"><img src="${r.scratchpadImg}" style="max-height:140px;border:1px solid #94a3b8;border-radius:6px;background:#070a14;"></div>` : ''}
+                    </div>
+                `;
+            }).join('');
+
+            w.document.write(`<!DOCTYPE html><html><head><meta charset="utf-8"><title>CYE-MathVerse Cipher Vault Report</title>
+                <style>body{font-family:system-ui,sans-serif;padding:24px;color:#0f172a;}h1{margin:0 0 4px;}</style>
+                </head><body>
+                <h1>CYE-MathVerse · Cipher Vault: Base Protocol</h1>
+                <p style="margin:0 0 16px;color:#475569;">Form 4 Mathematics · Chapter 2: Number Bases | Student: <strong>${esc(state.name)}</strong> (${esc(state.className)}) | Level: <strong>${esc(state.level)}</strong> | XP: <strong>${totalXP()}/800</strong> | First-try: <strong>${firstTry}/8</strong> | Time: <strong>${formatElapsed()}</strong></p>
+                ${rowsHtml}
+                </body></html>`);
+            w.document.close();
+            setTimeout(() => { w.focus(); w.print(); }, 300);
+        }
+
+        /* =========================================================================
+           10. INITIALIZE UI, MODALS & EVENT LISTENERS
+           ========================================================================= */
+        function renderFormulasModal(filterGroup = 'all') {
+            const container = $('formula-list-container');
+            const list = filterGroup === 'all' ? FORMULAS_DB : FORMULAS_DB.filter(f => f.group === filterGroup);
+            container.innerHTML = list.map(f => `
+                <div class="bg-slate-900/90 rounded-2xl p-4 border border-slate-800 space-y-2">
+                    <div class="flex items-center justify-between">
+                        <span class="text-xs font-bold text-cye-gold uppercase tracking-wide">${f.title}</span>
+                        <span class="text-[10px] font-bold px-2 py-0.5 rounded ${f.group === 'bases' ? 'bg-cyan-500/20 text-cyan-300' : 'bg-purple-500/20 text-purple-300'}">
+                            ${f.group === 'bases' ? 'Number Bases' : 'Trig & Triangles'}
+                        </span>
+                    </div>
+                    <div class="text-white bg-slate-950 px-3 py-2.5 rounded-xl border border-slate-800 text-center overflow-x-auto">${f.math}</div>
+                    <p class="text-xs text-slate-400 leading-relaxed">${f.desc}</p>
+                </div>
+            `).join('');
+            triggerMathRender(container);
+        }
+
+        function updateResumeBanner() {
+            const saved = loadState();
+            const box = $('resume-box');
+            if (saved) {
+                const solved = saved.records.filter(r => r.solved).length;
+                $('resume-summary-text').textContent = `Saved mission for ${saved.name} (${saved.className}) · ${saved.level} Clearance · ${solved}/8 Locks Cracked`;
+                box.classList.remove('hidden');
+            } else {
+                box.classList.add('hidden');
+            }
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            drawDifficultyCards();
+            renderFormulasModal('all');
+            updateResumeBanner();
+
+            // Avatar picker
+            document.querySelectorAll('.avatar-opt').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    sound.init();
+                    sound.playClick();
+                    document.querySelectorAll('.avatar-opt').forEach(b => {
+                        b.className = 'avatar-opt h-10 rounded-lg border border-slate-700 bg-[#0b0f1c] text-lg flex items-center justify-center';
+                    });
+                    btn.className = 'avatar-opt h-10 rounded-lg border border-cye-gold bg-cye-gold/20 text-lg flex items-center justify-center';
+                    selectedAvatar = btn.dataset.avatar;
+                });
+            });
+
+            // Launch Form
+            $('launch-form').addEventListener('submit', (e) => {
+                e.preventDefault();
+                sound.init();
+                sound.playClick();
+                startNewMission();
+            });
+
+            // Resume Saved Mission
+            $('btn-resume-mission').addEventListener('click', () => {
+                sound.init();
+                sound.playClick();
+                const saved = loadState();
+                if (!saved) {
+                    toast('No saved mission found.');
+                    return;
+                }
+                state = saved;
+                if (state.complete) {
+                    renderReport();
+                    switchView('view-report');
+                } else {
+                    switchView('view-game');
+                    renderGame();
+                }
+            });
+
+            // Save & Return
+            $('btn-save-exit').addEventListener('click', () => {
+                sound.playClick();
+                if (inlineScratchpad && inlineScratchpad.hasInk && state && state.index < 8) {
+                    state.records[state.index].scratchpadImg = inlineScratchpad.toDataURL();
+                }
+                activeTimer = false;
+                saveState();
+                switchView('view-home');
+                updateResumeBanner();
+            });
+
+            // Global Modal Triggers
+            const openModal = (id) => {
+                sound.init();
+                sound.playClick();
+                const m = $(id);
+                m.classList.remove('hidden');
+                if (id === 'modal-cipher-lab') {
+                    setTimeout(() => cipherLab.analyze(), 40);
+                }
+                if (id === 'modal-scratchpad') {
+                    if (!modalScratchpad) {
+                        modalScratchpad = new CanvasPad($('modal-scratch-canvas'));
+                    }
+                    const currentImg = (state && state.index < 8) ? state.records[state.index].scratchpadImg : null;
+                    setTimeout(() => modalScratchpad.resize(currentImg), 40);
+                }
+                triggerMathRender(m);
+            };
+
+            $('btn-cipher-lab').addEventListener('click', () => openModal('modal-cipher-lab'));
+            $('btn-quick-lab').addEventListener('click', () => openModal('modal-cipher-lab'));
+            $('btn-formulas').addEventListener('click', () => openModal('modal-formulas'));
+            $('btn-scratchpad-modal').addEventListener('click', () => openModal('modal-scratchpad'));
+            $('btn-guide').addEventListener('click', () => openModal('modal-guide'));
+
+            // Close Modals
+            document.querySelectorAll('.modal-close').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    sound.playClick();
+                    const modal = e.target.closest('.fixed');
+                    if (modal) modal.classList.add('hidden');
+                });
+            });
+
+            // Modal Scratchpad Controls
+            $('modal-pen-btn').addEventListener('click', () => {
+                if (modalScratchpad) modalScratchpad.mode = 'pen';
+                $('modal-pen-btn').className = 'px-3 py-1.5 rounded-lg bg-cyan-500/20 text-cyan-300 border border-cyan-500/40 text-xs font-bold';
+                $('modal-eraser-btn').className = 'px-3 py-1.5 rounded-lg bg-slate-800 text-slate-400 border border-slate-700 text-xs font-bold';
+            });
+            $('modal-eraser-btn').addEventListener('click', () => {
+                if (modalScratchpad) modalScratchpad.mode = 'eraser';
+                $('modal-eraser-btn').className = 'px-3 py-1.5 rounded-lg bg-rose-500/20 text-rose-300 border border-rose-500/40 text-xs font-bold';
+                $('modal-pen-btn').className = 'px-3 py-1.5 rounded-lg bg-slate-800 text-slate-400 border border-slate-700 text-xs font-bold';
+            });
+            document.querySelectorAll('.modal-color-dot').forEach(dot => {
+                dot.addEventListener('click', () => {
+                    if (modalScratchpad) {
+                        modalScratchpad.mode = 'pen';
+                        modalScratchpad.color = dot.dataset.color;
+                    }
+                    document.querySelectorAll('.modal-color-dot').forEach(d => d.classList.remove('ring-2', 'ring-white'));
+                    dot.classList.add('ring-2', 'ring-white');
+                });
+            });
+            $('modal-clear-scratch-btn').addEventListener('click', () => {
+                if (modalScratchpad) modalScratchpad.clear();
+            });
+            $('modal-save-to-lock-btn').addEventListener('click', () => {
+                if (modalScratchpad && state && state.index < 8) {
+                    const dataUrl = modalScratchpad.toDataURL();
+                    state.records[state.index].scratchpadImg = dataUrl;
+                    saveState();
+                    if (inlineScratchpad) inlineScratchpad.resize(dataUrl);
+                    toast('✓ Scratchpad saved to Lock 0' + (state.index + 1) + ' working!');
+                    $('modal-scratchpad').classList.add('hidden');
+                } else {
+                    toast('Start a lock first to attach scratchpad working to that lock.');
+                }
+            });
+
+            // Formula Filter Tabs
+            document.querySelectorAll('.formula-tab-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    sound.playClick();
+                    document.querySelectorAll('.formula-tab-btn').forEach(b => {
+                        b.className = 'formula-tab-btn px-3 py-1.5 rounded-xl bg-slate-800 text-slate-400 border border-slate-700 text-xs font-bold';
+                    });
+                    btn.className = 'formula-tab-btn px-3 py-1.5 rounded-xl bg-amber-500/20 text-amber-300 border border-amber-500/40 text-xs font-bold';
+                    renderFormulasModal(btn.dataset.tab);
+                });
+            });
+
+            // Sound Toggle
+            $('btn-sound-toggle').addEventListener('click', () => {
+                sound.init();
+                sound.enabled = !sound.enabled;
+                $('icon-sound-on').classList.toggle('hidden', !sound.enabled);
+                $('icon-sound-off').classList.toggle('hidden', sound.enabled);
+                if (sound.enabled) sound.playClick();
+            });
+
+            // Active Time Ticker
+            setInterval(() => {
+                const now = Date.now();
+                if (activeTimer && !document.hidden && state && !state.complete) {
+                    state.elapsed += Math.min(1500, now - lastTick);
+                    $('hud-clock').textContent = formatElapsed();
+                }
+                lastTick = now;
+            }, 1000);
+
+            setInterval(() => { if (activeTimer) saveState(); }, 5000);
+
+            setTimeout(() => triggerMathRender(document.body), 150);
+            setTimeout(() => triggerMathRender(document.body), 600);
+        });
+    </script>
+</body>
+</html>

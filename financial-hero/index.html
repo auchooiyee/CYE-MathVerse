@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>Financial Hero: Smart Saver 2D - Form 4 Mathematics</title>
+    <title>Financial Hero: Smart Saver 2D — CYE MathVerse</title>
+    <link rel="icon" type="image/svg+xml" href="../assets/cye-logo.svg">
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- jsPDF CDN for PDF Result Export -->
@@ -121,9 +122,13 @@
 
     <!-- TOP HUD BAR -->
     <header class="glass-panel w-full max-w-5xl mx-auto rounded-xl px-2 sm:px-3.5 py-1.5 sm:py-2.5 flex flex-wrap items-center justify-between gap-1.5 z-10 shrink-0">
-        <!-- Logo / Title & Stage Select Trigger -->
-        <div class="flex items-center space-x-2">
-            <button id="btn-logo" title="Home / Start Screen" class="w-8 h-8 sm:w-10 sm:h-10 rounded-lg sm:rounded-xl bg-gradient-to-tr from-emerald-500 via-teal-400 to-cyan-400 flex items-center justify-center font-tech font-black text-slate-950 text-lg sm:text-2xl shadow-lg hover:scale-105 transition cursor-pointer shrink-0">
+        <!-- Logo / Title & CYE MathVerse Branding -->
+        <div class="flex items-center space-x-1.5 sm:space-x-2">
+            <a href="../" title="Back to CYE MathVerse Portal" class="flex items-center space-x-1.5 px-2 py-1 rounded-lg bg-slate-900/90 hover:bg-slate-800 border border-teal-500/30 transition shrink-0 group">
+                <img src="../assets/cye-logo.svg" alt="CYE MathVerse" class="w-5 h-5 sm:w-6 sm:h-6">
+                <span class="hidden sm:inline font-tech text-[10px] sm:text-xs font-extrabold tracking-wide text-slate-200 group-hover:text-teal-300">CYE Math<span class="text-teal-400">Verse</span></span>
+            </a>
+            <button id="btn-logo" title="Home / Start Screen" class="w-8 h-8 sm:w-9 sm:h-9 rounded-lg sm:rounded-xl bg-gradient-to-tr from-emerald-500 via-teal-400 to-cyan-400 flex items-center justify-center font-tech font-black text-slate-950 text-base sm:text-xl shadow-lg hover:scale-105 transition cursor-pointer shrink-0">
                 $
             </button>
             <div class="leading-tight">
@@ -131,7 +136,7 @@
                     <h1 class="font-tech text-xs sm:text-sm md:text-base font-bold tracking-wider text-emerald-400">FINANCIAL HERO</h1>
                     <span class="hidden md:inline-block bg-emerald-500/20 text-emerald-300 text-[10px] font-bold px-1.5 py-0.5 rounded border border-emerald-500/30">SPM Form 4</span>
                 </div>
-                <p class="text-[11px] text-slate-400 hidden lg:block">Chapter 10: Financial Management 2D Adventure</p>
+                <p class="text-[11px] text-slate-400 hidden lg:block">CYE MathVerse • Chapter 10: Financial Management</p>
             </div>
         </div>
 
@@ -194,8 +199,14 @@
 
         <!-- START OVERLAY -->
         <div id="screen-start" class="absolute inset-0 glass-panel-glow rounded-xl flex flex-col items-center justify-start sm:justify-center p-4 sm:p-6 text-center z-20 overflow-y-auto" style="touch-action: pan-y;">
-            <div class="inline-block p-3 sm:p-4 rounded-2xl bg-gradient-to-tr from-emerald-500/20 to-cyan-500/20 border border-emerald-500/30 mb-2 animate-pulse-subtle shrink-0">
-                <span class="text-3xl sm:text-5xl">🚀</span>
+            <!-- CYE MathVerse Official Brand Pill -->
+            <a href="../" class="inline-flex items-center space-x-2 px-3.5 py-1 rounded-full bg-slate-900/90 border border-teal-500/40 mb-2 hover:border-teal-400 transition shrink-0 shadow-md">
+                <img src="../assets/cye-logo.svg" alt="CYE MathVerse Logo" class="w-5 h-5">
+                <span class="font-tech text-xs sm:text-sm font-extrabold tracking-wider text-slate-100">CYE Math<span class="text-teal-400">Verse</span></span>
+                <span class="text-[10px] uppercase tracking-widest px-1.5 py-0.5 rounded bg-teal-500/20 text-teal-300 font-bold">Official Game</span>
+            </a>
+            <div class="inline-block p-2.5 sm:p-3.5 rounded-2xl bg-gradient-to-tr from-emerald-500/20 to-cyan-500/20 border border-emerald-500/30 mb-1.5 animate-pulse-subtle shrink-0">
+                <span class="text-2xl sm:text-4xl">🚀</span>
             </div>
             <h2 class="font-tech text-2xl sm:text-4xl md:text-5xl font-black text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 via-teal-300 to-cyan-400 mb-1.5">
                 FINANCIAL HERO 2D
@@ -416,6 +427,10 @@
         <!-- STAGE CLEAR MODAL -->
         <div id="screen-stageclear" class="hidden fixed inset-0 bg-slate-950/85 backdrop-blur-md flex items-center justify-center p-2 sm:p-4 z-50 overflow-y-auto" style="touch-action: pan-y;">
             <div class="glass-panel-glow border border-emerald-500/30 rounded-2xl p-5 sm:p-7 max-w-md w-full text-center flex flex-col items-center shadow-2xl my-auto max-h-[92dvh] overflow-y-auto">
+                <div class="inline-flex items-center space-x-1.5 px-3 py-0.5 rounded-full bg-slate-900/90 border border-teal-500/30 mb-2">
+                    <img src="../assets/cye-logo.svg" alt="CYE MathVerse" class="w-4 h-4">
+                    <span class="font-tech text-[10px] font-bold tracking-wider text-slate-300">CYE Math<span class="text-teal-400">Verse</span></span>
+                </div>
                 <div class="text-4xl sm:text-5xl mb-1.5 animate-bounce">🎉</div>
                 <h2 class="font-tech text-2xl md:text-3xl font-black text-emerald-400 mb-1">STAGE CLEARED!</h2>
                 <p id="clear-stage-title" class="text-xs sm:text-sm text-slate-300 mb-2.5 font-semibold">Level Complete</p>
@@ -495,6 +510,10 @@
         <!-- GRAND VICTORY MODAL (ALL 6 STAGES COMPLETED) -->
         <div id="screen-victory" class="hidden fixed inset-0 bg-slate-950/85 backdrop-blur-md flex items-center justify-center p-2 sm:p-4 z-50 overflow-y-auto" style="touch-action: pan-y;">
             <div class="glass-panel-glow border border-cyan-500/30 rounded-2xl p-4 sm:p-7 max-w-lg w-full text-center flex flex-col items-center shadow-2xl my-auto max-h-[94dvh] overflow-y-auto">
+                <div class="inline-flex items-center space-x-1.5 px-3 py-0.5 rounded-full bg-slate-900/90 border border-teal-500/30 mb-1.5">
+                    <img src="../assets/cye-logo.svg" alt="CYE MathVerse" class="w-4 h-4">
+                    <span class="font-tech text-[10px] font-bold tracking-wider text-slate-300">CYE Math<span class="text-teal-400">Verse</span> Official Certificate</span>
+                </div>
                 <div class="text-4xl sm:text-5xl mb-1 animate-bounce">🏆</div>
                 <h2 class="font-tech text-2xl sm:text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 via-amber-300 to-cyan-300 mb-1">
                     FINANCIAL FREEDOM MASTER!
@@ -531,7 +550,7 @@
                 <div class="w-full bg-emerald-950/40 border border-emerald-500/40 rounded-xl p-3.5 mb-4 text-left space-y-2.5">
                     <div class="flex items-center justify-between">
                         <span class="font-tech text-xs sm:text-sm font-bold text-emerald-300">📥 TURN IN TO GOOGLE CLASSROOM</span>
-                        <span class="text-[10px] bg-emerald-500/20 text-emerald-300 px-2 py-0.5 rounded border border-emerald-500/30 font-semibold">Official Report</span>
+                        <span class="text-[10px] bg-emerald-500/20 text-emerald-300 px-2 py-0.5 rounded border border-emerald-500/30 font-semibold">CYE MathVerse Report</span>
                     </div>
                     <div class="grid grid-cols-1 sm:grid-cols-3 gap-2">
                         <input id="vic-student-name" type="text" placeholder="Enter Student Full Name" class="sm:col-span-2 px-3 py-2 rounded-lg bg-slate-950 border border-slate-700 text-slate-100 text-xs sm:text-sm focus:outline-none focus:border-emerald-400 select-text" style="user-select: text; -webkit-user-select: text;">
@@ -572,6 +591,7 @@
         </div>
 
         <div class="text-xs md:text-sm text-slate-300 hidden md:block text-center font-medium">
+            <span class="font-tech text-[11px] font-bold text-teal-400 mr-1.5">CYE MathVerse</span> &bull;
             Controls: <span class="bg-slate-800 px-2 py-0.5 rounded text-emerald-300 font-bold">A / ◀</span> Left &bull; 
             <span class="bg-slate-800 px-2 py-0.5 rounded text-emerald-300 font-bold">D / ▶</span> Right &bull; 
             <span class="bg-slate-800 px-2 py-0.5 rounded text-cyan-300 font-bold">Space / W / ▲</span> Jump &bull; 
@@ -2109,6 +2129,18 @@
             ctx.fillRect(player.x + 5, player.y + player.h - 6, 8, 6);
             ctx.fillRect(player.x + player.w - 13, player.y + player.h - 6, 8, 6);
 
+            // In-Canvas CYE MathVerse Watermark Badge
+            ctx.shadowBlur = 0;
+            ctx.fillStyle = 'rgba(15, 23, 42, 0.72)';
+            ctx.fillRect(V_WIDTH - 148, 12, 136, 24);
+            ctx.strokeStyle = 'rgba(20, 184, 166, 0.45)';
+            ctx.lineWidth = 1;
+            ctx.strokeRect(V_WIDTH - 148, 12, 136, 24);
+            ctx.fillStyle = '#2dd4bf';
+            ctx.font = '800 10px Orbitron, sans-serif';
+            ctx.textAlign = 'center';
+            ctx.fillText('CYE MATHVERSE', V_WIDTH - 80, 28);
+
             ctx.restore();
         }
 
@@ -2392,15 +2424,45 @@
             c.lineWidth = 1.5;
             c.strokeRect(40, 40, W - 80, 105);
 
-            // Title & Subtitle
-            c.fillStyle = '#34d399';
-            c.font = '900 32px Orbitron, sans-serif';
+            // CYE MathVerse Hexagon Emblem in Header
+            const hexX = 88;
+            const hexY = 92;
+            const hexR = 30;
+            c.save();
+            c.beginPath();
+            for (let i = 0; i < 6; i++) {
+                const angle = (Math.PI / 3) * i - Math.PI / 2;
+                const hx = hexX + hexR * Math.cos(angle);
+                const hy = hexY + hexR * Math.sin(angle);
+                if (i === 0) c.moveTo(hx, hy);
+                else c.lineTo(hx, hy);
+            }
+            c.closePath();
+            c.fillStyle = '#0f172a';
+            c.fill();
+            c.lineWidth = 3;
+            c.strokeStyle = '#14b8a6';
+            c.stroke();
+            c.fillStyle = '#2dd4bf';
+            c.font = '900 15px Orbitron, sans-serif';
+            c.textAlign = 'center';
+            c.fillText('CYE', hexX, hexY + 5);
+            c.restore();
+
+            // CYE MathVerse Pill & Title & Subtitle
+            c.fillStyle = '#2dd4bf';
+            c.font = '800 13px Orbitron, sans-serif';
             c.textAlign = 'left';
-            c.fillText('FINANCIAL HERO: SMART SAVER 2D', 65, 85);
+            c.fillText('CYE MATHVERSE • OFFICIAL INTERACTIVE MATHEMATICS PORTAL', 132, 66);
+
+            c.fillStyle = '#34d399';
+            c.font = '900 28px Orbitron, sans-serif';
+            c.textAlign = 'left';
+            c.fillText('FINANCIAL HERO: SMART SAVER 2D', 132, 98);
 
             c.fillStyle = '#e2e8f0';
-            c.font = '600 17px "Plus Jakarta Sans", sans-serif';
-            c.fillText('SPM Form 4 Mathematics • Chapter 10: Financial Management', 65, 115);
+            c.font = '600 16px "Plus Jakarta Sans", sans-serif';
+            c.fillText('SPM Form 4 Mathematics • Chapter 10: Financial Management', 132, 124);
 
             // Right Header Badge
             c.fillStyle = '#0f172a';
@@ -2572,10 +2634,10 @@
             });
 
             // Footer Note
-            c.fillStyle = '#94a3b8';
-            c.font = '600 13px "Plus Jakarta Sans", sans-serif';
+            c.fillStyle = '#2dd4bf';
+            c.font = 'bold 13px Orbitron, sans-serif';
             c.textAlign = 'center';
-            c.fillText('Official Result Certificate for Google Classroom Submission • CYE-MathVerse Financial Hero 2D • Note: Dying resets money to RM 0', W / 2, H - 40);
+            c.fillText('CYE MathVerse  •  Official Google Classroom Result Certificate  •  Financial Hero 2D (Zero-on-Death Mode)', W / 2, H - 38);
 
             return certCanvas;
         }
